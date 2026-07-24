@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Belgian Quadrupel</NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>Andre Lehmann</BREWER>
+    <BATCH_SIZE>5.0</BATCH_SIZE>
+    <BOIL_SIZE>7.42</BOIL_SIZE>
+    <BOIL_TIME>60.0</BOIL_TIME>
+    <EFFICIENCY>72.1</EFFICIENCY>
+    <OG>1.100134</OG>
+    <FG>1.015</FG>
+    <ABV>11.16</ABV>
+    <IBU>23.4</IBU>
+    <EST_COLOR>17.2</EST_COLOR>
+    <CARBONATION>3.0</CARBONATION>
+    <NOTES/>
+    <STYLE>
+      <NAME>Belgian Dark Strong Ale</NAME>
+      <VERSION>1</VERSION>
+      <CATEGORY>Monastic Ale</CATEGORY>
+      <CATEGORY_NUMBER>26</CATEGORY_NUMBER>
+      <STYLE_LETTER>D</STYLE_LETTER>
+      <STYLE_GUIDE>BJCP 2021</STYLE_GUIDE>
+      <TYPE>Strong Ale</TYPE>
+      <OG_MIN>1.075</OG_MIN>
+      <OG_MAX>1.11</OG_MAX>
+      <FG_MIN>1.01</FG_MIN>
+      <FG_MAX>1.024</FG_MAX>
+      <IBU_MIN>20.0</IBU_MIN>
+      <IBU_MAX>35.0</IBU_MAX>
+      <COLOR_MIN>6.1</COLOR_MIN>
+      <COLOR_MAX>11.2</COLOR_MAX>
+      <ABV_MIN>8.0</ABV_MIN>
+      <ABV_MAX>12.0</ABV_MAX>
+      <CARB_MIN>2.5</CARB_MIN>
+      <CARB_MAX>3.2</CARB_MAX>
+    </STYLE>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>Odd Amphibian – Lager/Pilsner Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>1.495</AMOUNT>
+        <YIELD>77.83</YIELD>
+        <COLOR>0.9</COLOR>
+        <ORIGIN>UK</ORIGIN>
+        <SUPPLIER>Pauls Malt</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>49.71</DIASTATIC_POWER>
+        <PROTEIN>11.5</PROTEIN>
+        <MOISTURE>4.5</MOISTURE>
+        <MAX_IN_BATCH>100.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Candi Syrup, D-90</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.176</AMOUNT>
+        <YIELD>90.0</YIELD>
+        <COLOR>45.7</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <SUPPLIER>Candi Syrup</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>FALSE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Special B</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.176</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>77.4</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>BEST Heidelberg Wheat Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.11</AMOUNT>
+        <YIELD>75.0</YIELD>
+        <COLOR>0.9</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>BESTMALZ</SUPPLIER>
+        <NOTES>BEST Heidelberger Wheat Malt is a particularly light malt and emphasizes the tangy freshness as well as the typical top-fermented wheat beer taste. BEST Heidelberg Wheat Malt is produced from high-quality brewing wheat varieties that have only a limited tendency to color during the malting process. Due to the raw materials used, the protein content is somewhat more moderate than in BEST Wheat Malt.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>120.0</DIASTATIC_POWER>
+        <PROTEIN>11.7</PROTEIN>
+        <MOISTURE>4.5</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>60.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Biscuit</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.11</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>12.9</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Captains Classic - Cara Malt </NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.066</AMOUNT>
+        <YIELD>0.0</YIELD>
+        <COLOR>7.7</COLOR>
+        <ORIGIN/>
+        <SUPPLIER>Pauls Malt</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Cane (Beet) Sugar</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.044</AMOUNT>
+        <YIELD>100.0</YIELD>
+        <COLOR>0</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <SUPPLIER/>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>FALSE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>BEST Chocolate</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.022</AMOUNT>
+        <YIELD>75.0</YIELD>
+        <COLOR>231.9</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>BESTMALZ</SUPPLIER>
+        <NOTES>BEST Chocolate provides an ideal gateway to the world of brewing with roasted malts. Due to the gentle roasting process, noticeably bitter flavors are largely avoided, which can also be demonstrated by the comparatively very low pyrazine levels. This means that BEST Chocolate can also be used to brew very pleasant dark to black beers with malt bill percentages of up to 10%, without these beers developing a bitter astringency. The foam of the beer remains light.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>120.0</DIASTATIC_POWER>
+        <PROTEIN>11.7</PROTEIN>
+        <MOISTURE>2.5</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>10.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <HOPS>
+      <HOP>
+        <NAME>East Kent Goldings (EKG)</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>6.1</ALPHA>
+        <AMOUNT>0.0125</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>30.0</TIME>
+        <NOTES/>
+        <TYPE>Pellet</TYPE>
+        <FORM>Pellet</FORM>
+        <ORIGIN>United Kingdom</ORIGIN>
+        <IBU>23.4</IBU>
+      </HOP>
+    </HOPS>
+    <YEASTS>
+      <YEAST>
+        <NAME>SafBrew Specialty Ale</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Ale</TYPE>
+        <FORM>Dry</FORM>
+        <AMOUNT>0.2</AMOUNT>
+        <LABORATORY>Fermentis</LABORATORY>
+        <PRODUCT_ID>T-58</PRODUCT_ID>
+        <MIN_TEMPERATURE>18.0</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>26.0</MAX_TEMPERATURE>
+        <ATTENUATION>78.0</ATTENUATION>
+        <NOTES>Specialty yeast selected for its estery somewhat peppery and spicy flavor development (POF+), producing clovelike aroma. Yeast with a medium sedimentation: forms no clumps but a powdery haze when resuspended in the beer.</NOTES>
+        <FLOCCULATION>Medium</FLOCCULATION>
+        <BEST_FOR/>
+      </YEAST>
+    </YEASTS>
+    <MISCS>
+      <MISC>
+        <NAME>Canning Salt (NaCl)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.0005</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Lactic Acid 80%</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.001</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+    </MISCS>
+    <MASH>
+      <NAME>Max fermentability with highest yield</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>20</GRAIN_TEMP>
+      <SPARGE_TEMP>76</SPARGE_TEMP>
+      <PH>5.43</PH>
+      <NOTES/>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME/>
+          <VERSION>1</VERSION>
+          <TYPE>Infusion</TYPE>
+          <STEP_TEMP>63.0</STEP_TEMP>
+          <STEP_TIME>20.0</STEP_TIME>
+          <END_TEMP>63.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME/>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>65.0</STEP_TEMP>
+          <STEP_TIME>20.0</STEP_TIME>
+          <END_TEMP>65.0</END_TEMP>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+    <FERMENTATION_STAGES>1</FERMENTATION_STAGES>
+    <PRIMARY_AGE>4.0</PRIMARY_AGE>
+    <PRIMARY_TEMP>20.0</PRIMARY_TEMP>
+  </RECIPE>
+</RECIPES>

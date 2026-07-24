@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Oatmeal Stout Curso</NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>Jamal</BREWER>
+    <BATCH_SIZE>5.0</BATCH_SIZE>
+    <BOIL_SIZE>7.42</BOIL_SIZE>
+    <BOIL_TIME>60.0</BOIL_TIME>
+    <EFFICIENCY>85.0</EFFICIENCY>
+    <OG>1.054157</OG>
+    <FG>1.014</FG>
+    <ABV>5.25</ABV>
+    <IBU>33.8</IBU>
+    <EST_COLOR>14.4</EST_COLOR>
+    <CARBONATION>2.4</CARBONATION>
+    <NOTES/>
+    <STYLE>
+      <NAME>Oatmeal Stout</NAME>
+      <VERSION>1</VERSION>
+      <CATEGORY>Dark British Beer</CATEGORY>
+      <CATEGORY_NUMBER>16</CATEGORY_NUMBER>
+      <STYLE_LETTER>B</STYLE_LETTER>
+      <STYLE_GUIDE>BJCP 2021</STYLE_GUIDE>
+      <TYPE>Stout</TYPE>
+      <OG_MIN>1.045</OG_MIN>
+      <OG_MAX>1.065</OG_MAX>
+      <FG_MIN>1.01</FG_MIN>
+      <FG_MAX>1.018</FG_MAX>
+      <IBU_MIN>25.0</IBU_MIN>
+      <IBU_MAX>40.0</IBU_MAX>
+      <COLOR_MIN>11.2</COLOR_MIN>
+      <COLOR_MAX>20.3</COLOR_MAX>
+      <ABV_MIN>4.2</ABV_MIN>
+      <ABV_MAX>5.9</ABV_MAX>
+      <CARB_MIN>2.4</CARB_MIN>
+      <CARB_MAX>2.9</CARB_MAX>
+    </STYLE>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>Extra Pale Maris Otter® Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.741</AMOUNT>
+        <YIELD>81.5</YIELD>
+        <COLOR>0.9</COLOR>
+        <ORIGIN>United Kingdom</ORIGIN>
+        <SUPPLIER>Crisp</SUPPLIER>
+        <NOTES>Lower colour version of Maris Otter® Ale malt suitable for lager and golden ale brewing</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>53.0</DIASTATIC_POWER>
+        <PROTEIN>9.0</PROTEIN>
+        <MOISTURE>4.5</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>100.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Oats, Flaked</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.154</AMOUNT>
+        <YIELD>85.0</YIELD>
+        <COLOR>0.7</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <SUPPLIER>Briess</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chocolate Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.062</AMOUNT>
+        <YIELD>72.0</YIELD>
+        <COLOR>268.8</COLOR>
+        <ORIGIN>United Kingdom</ORIGIN>
+        <SUPPLIER>Crisp</SUPPLIER>
+        <NOTES>Gives dry, toasty flavours to rich, dark beers</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>0.0</DIASTATIC_POWER>
+        <PROTEIN>10.0</PROTEIN>
+        <MOISTURE>2.0</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>5.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Biscuit</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.041</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>12.9</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Roasted Barley</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.021</AMOUNT>
+        <YIELD>75.0</YIELD>
+        <COLOR>335.0</COLOR>
+        <ORIGIN/>
+        <SUPPLIER>Weyermann</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <HOPS>
+      <HOP>
+        <NAME>East Kent Goldings (EKG)</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>6.0</ALPHA>
+        <AMOUNT>0.0106</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>60.0</TIME>
+        <NOTES/>
+        <TYPE>Pellet</TYPE>
+        <FORM>Pellet</FORM>
+        <ORIGIN>United Kingdom</ORIGIN>
+        <IBU>33.8</IBU>
+      </HOP>
+    </HOPS>
+    <YEASTS>
+      <YEAST>
+        <NAME>SafAle English Ale</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Ale</TYPE>
+        <FORM>Dry</FORM>
+        <AMOUNT>0.3</AMOUNT>
+        <LABORATORY>Fermentis</LABORATORY>
+        <PRODUCT_ID>S-04</PRODUCT_ID>
+        <MIN_TEMPERATURE>15.0</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>20.0</MAX_TEMPERATURE>
+        <ATTENUATION>75.0</ATTENUATION>
+        <NOTES>English ale yeast selected for its fast fermentation character and its ability to form a compact sediment at the end of fermentation, helping to improve beer clarity. Recommended for the production of a large range of ales and specially adapted to cask-conditioned ones and fermentation in cylindo-conical tanks.</NOTES>
+        <FLOCCULATION>Medium</FLOCCULATION>
+        <BEST_FOR/>
+      </YEAST>
+    </YEASTS>
+    <MISCS>
+      <MISC>
+        <NAME>Baking Soda (NaHCO3)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.0007</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Calcium Chloride (CaCl2)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.002</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Epsom Salt (MgSO4)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.000275</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Gypsum (CaSO4)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.0003</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+    </MISCS>
+    <MASH>
+      <NAME>Oatmeal</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>20</GRAIN_TEMP>
+      <SPARGE_TEMP>76</SPARGE_TEMP>
+      <PH>5.37</PH>
+      <NOTES/>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>b-glucanase</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Infusion</TYPE>
+          <STEP_TEMP>42.0</STEP_TEMP>
+          <STEP_TIME>10.0</STEP_TIME>
+          <END_TEMP>42.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Sacarificação</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>67.0</STEP_TEMP>
+          <STEP_TIME>60.0</STEP_TIME>
+          <END_TEMP>67.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Mash Out</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>78.0</STEP_TEMP>
+          <STEP_TIME>10.0</STEP_TIME>
+          <END_TEMP>78.0</END_TEMP>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+    <FERMENTATION_STAGES>4</FERMENTATION_STAGES>
+    <PRIMARY_AGE>4.0</PRIMARY_AGE>
+    <PRIMARY_TEMP>18.0</PRIMARY_TEMP>
+    <SECONDARY_AGE>2.0</SECONDARY_AGE>
+    <SECONDARY_TEMP>21.0</SECONDARY_TEMP>
+    <TERTIARY_AGE>1.0</TERTIARY_AGE>
+    <TERTIARY_TEMP>10.0</TERTIARY_TEMP>
+  </RECIPE>
+</RECIPES>

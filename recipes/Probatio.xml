@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Probatio </NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>Lehmann</BREWER>
+    <BATCH_SIZE>4.0</BATCH_SIZE>
+    <BOIL_SIZE>5.38</BOIL_SIZE>
+    <BOIL_TIME>30.0</BOIL_TIME>
+    <EFFICIENCY>85.0</EFFICIENCY>
+    <OG>1.090592</OG>
+    <FG>1.019669</FG>
+    <ABV>9.31</ABV>
+    <IBU>50.2</IBU>
+    <EST_COLOR>22.1</EST_COLOR>
+    <CARBONATION>2.4</CARBONATION>
+    <NOTES/>
+    <STYLE>
+      <NAME>Imperial Stout</NAME>
+      <VERSION>1</VERSION>
+      <CATEGORY>American Porter and Stout</CATEGORY>
+      <CATEGORY_NUMBER>20</CATEGORY_NUMBER>
+      <STYLE_LETTER>C</STYLE_LETTER>
+      <STYLE_GUIDE>BJCP 2021</STYLE_GUIDE>
+      <TYPE>Stout</TYPE>
+      <OG_MIN>1.075</OG_MIN>
+      <OG_MAX>1.115</OG_MAX>
+      <FG_MIN>1.018</FG_MIN>
+      <FG_MAX>1.03</FG_MAX>
+      <IBU_MIN>50.0</IBU_MIN>
+      <IBU_MAX>90.0</IBU_MAX>
+      <COLOR_MIN>15.2</COLOR_MIN>
+      <COLOR_MAX>20.3</COLOR_MAX>
+      <ABV_MIN>8.0</ABV_MIN>
+      <ABV_MAX>12.0</ABV_MAX>
+      <CARB_MIN>2.2</CARB_MIN>
+      <CARB_MAX>2.8</CARB_MAX>
+    </STYLE>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>Swaen Pilsner</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.542</AMOUNT>
+        <YIELD>80.0</YIELD>
+        <COLOR>1.0</COLOR>
+        <ORIGIN>Netherlands</ORIGIN>
+        <SUPPLIER>The Swaen</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>76.0</DIASTATIC_POWER>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>BEST Munich</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.479</AMOUNT>
+        <YIELD>75.0</YIELD>
+        <COLOR>3.9</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>BESTMALZ</SUPPLIER>
+        <NOTES>BEST Munich pleasantly enhances the full-bodied, malty taste in amber-colored to dark beers. Even with low grain bill proportions, a typical malty note is achieved in the beer. BEST Munich is thus perfectly suited for adding more body to beers with very high fermentation levels. Due to the generally higher protein content, the foam values of the beers brewed with it also improve with increasing grain bill proportion.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>120.0</DIASTATIC_POWER>
+        <PROTEIN>11.7</PROTEIN>
+        <MOISTURE>4.0</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>100.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Aveia em flocos</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.128</AMOUNT>
+        <YIELD>80.0</YIELD>
+        <COLOR>0.5</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <SUPPLIER/>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Candi Sugar, Dark</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.082</AMOUNT>
+        <YIELD>78.3</YIELD>
+        <COLOR>139.6</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER/>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>FALSE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>BEST Chocolate</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.056</AMOUNT>
+        <YIELD>75.0</YIELD>
+        <COLOR>231.9</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>BESTMALZ</SUPPLIER>
+        <NOTES>BEST Chocolate provides an ideal gateway to the world of brewing with roasted malts. Due to the gentle roasting process, noticeably bitter flavors are largely avoided, which can also be demonstrated by the comparatively very low pyrazine levels. This means that BEST Chocolate can also be used to brew very pleasant dark to black beers with malt bill percentages of up to 10%, without these beers developing a bitter astringency. The foam of the beer remains light.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>120.0</DIASTATIC_POWER>
+        <PROTEIN>11.7</PROTEIN>
+        <MOISTURE>2.5</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>10.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Special B</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.04</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>77.4</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Melanoidin</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.032</AMOUNT>
+        <YIELD>80.07</YIELD>
+        <COLOR>15.2</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>Weyermann</SUPPLIER>
+        <NOTES>Red colored malt that improved head retention and stability. Used in red lagers, ales, dark beers. Intense red colour and malty aroma.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>0.0</DIASTATIC_POWER>
+        <PROTEIN>0.0</PROTEIN>
+        <MOISTURE>3.8</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>20.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Caramunich III</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.02</AMOUNT>
+        <YIELD>80.07</YIELD>
+        <COLOR>36.0</COLOR>
+        <ORIGIN>Germany</ORIGIN>
+        <SUPPLIER>Weyermann</SUPPLIER>
+        <NOTES>German crystal malt. Adds maltiness, body, aroma and color.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>0.0</DIASTATIC_POWER>
+        <PROTEIN>0.0</PROTEIN>
+        <MOISTURE>4.7</MOISTURE>
+        <COARSE_FINE_DIFF>0.0</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>10.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Biscuit</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.017</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>12.9</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>BlackSwan Roasted Barley</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.016</AMOUNT>
+        <YIELD>73.1</YIELD>
+        <COLOR>309.2</COLOR>
+        <ORIGIN>Netherlands</ORIGIN>
+        <SUPPLIER>BlackSwan</SUPPLIER>
+        <NOTES>BEST Roasted Barley bestows the beer with a characteristically dark depth of color. Depending on the grain bill proportion, it complements the flavor profile of the beer with intense roasted notes and bitter aromas reminiscent of strong black coffee or Italian espresso. The foam stability of the beer is also significantly improved. The barley is roasted directly without malting. Therefore, its use for beer production does not comply with the German Purity Law.</NOTES>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <DIASTATIC_POWER>120.0</DIASTATIC_POWER>
+        <PROTEIN>11.7</PROTEIN>
+        <MOISTURE>3.8</MOISTURE>
+        <COARSE_FINE_DIFF>1.5</COARSE_FINE_DIFF>
+        <MAX_IN_BATCH>5.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <HOPS>
+      <HOP>
+        <NAME>Magnum</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>12.4</ALPHA>
+        <AMOUNT>0.0094</AMOUNT>
+        <USE>First Wort</USE>
+        <TIME>30.0</TIME>
+        <NOTES/>
+        <TYPE>Pellet</TYPE>
+        <FORM>Pellet</FORM>
+        <ORIGIN>Germany</ORIGIN>
+        <IBU>50.2</IBU>
+      </HOP>
+    </HOPS>
+    <YEASTS>
+      <YEAST>
+        <NAME/>
+        <VERSION>1</VERSION>
+        <TYPE>Ale</TYPE>
+        <FORM>Dry</FORM>
+        <AMOUNT>0.2</AMOUNT>
+        <LABORATORY/>
+        <PRODUCT_ID/>
+        <MIN_TEMPERATURE>13.9</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>21.1</MAX_TEMPERATURE>
+        <ATTENUATION>84.0</ATTENUATION>
+        <NOTES/>
+        <FLOCCULATION>High</FLOCCULATION>
+        <BEST_FOR/>
+      </YEAST>
+    </YEASTS>
+    <MISCS>
+      <MISC>
+        <NAME>Canning Salt (NaCl)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.0005</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Lactic Acid</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.0015</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>American Oak Infusion Spirals</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Flavor</TYPE>
+        <USE>Secondary</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.00016</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Cacao Nibs</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Flavor</TYPE>
+        <USE>Secondary</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.012</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>café</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Other</TYPE>
+        <USE>Secondary</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.012</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+    </MISCS>
+    <MASH>
+      <NAME>Alta Fermentabilidade Belga (copy)</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>20</GRAIN_TEMP>
+      <SPARGE_TEMP>76</SPARGE_TEMP>
+      <PH>5.34</PH>
+      <NOTES/>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>Hidratação / Protein Rest</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Infusion</TYPE>
+          <STEP_TEMP>55.0</STEP_TEMP>
+          <STEP_TIME>10.0</STEP_TIME>
+          <END_TEMP>55.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME/>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>62.0</STEP_TEMP>
+          <STEP_TIME>40.0</STEP_TIME>
+          <END_TEMP>62.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Step 3</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>68.0</STEP_TEMP>
+          <STEP_TIME>15.0</STEP_TIME>
+          <END_TEMP>68.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME/>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>72.0</STEP_TEMP>
+          <STEP_TIME>10.0</STEP_TIME>
+          <END_TEMP>72.0</END_TEMP>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+    <FERMENTATION_STAGES>4</FERMENTATION_STAGES>
+    <PRIMARY_AGE>10.0</PRIMARY_AGE>
+    <PRIMARY_TEMP>21.0</PRIMARY_TEMP>
+    <SECONDARY_AGE>2.0</SECONDARY_AGE>
+    <SECONDARY_TEMP>10.0</SECONDARY_TEMP>
+    <TERTIARY_AGE>30.0</TERTIARY_AGE>
+    <TERTIARY_TEMP>4.0</TERTIARY_TEMP>
+  </RECIPE>
+</RECIPES>

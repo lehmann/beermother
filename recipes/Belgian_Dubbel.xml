@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Belgian Dubbel</NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>André Lehmann</BREWER>
+    <BATCH_SIZE>5.0</BATCH_SIZE>
+    <BOIL_SIZE>8.75</BOIL_SIZE>
+    <BOIL_TIME>60.0</BOIL_TIME>
+    <EFFICIENCY>70.8</EFFICIENCY>
+    <OG>1.065285</OG>
+    <FG>1.0119</FG>
+    <ABV>7.01</ABV>
+    <IBU>19.5</IBU>
+    <EST_COLOR>7.8</EST_COLOR>
+    <CARBONATION>2.8</CARBONATION>
+    <NOTES>Uma ale Trapista de profunda cor vermelha-acobreada, moderadamente forte, maltada, complexa, com ricos sabores de malte, ésteres de frutas escuras ou secas e leve álcool, mesclados juntos em uma apresentação que, embora maltado, tem um final bastante seco.</NOTES>
+    <STYLE>
+      <NAME>Belgian Dubbel</NAME>
+      <VERSION>1</VERSION>
+      <CATEGORY>Trappist Ale</CATEGORY>
+      <CATEGORY_NUMBER>26</CATEGORY_NUMBER>
+      <STYLE_LETTER>B</STYLE_LETTER>
+      <STYLE_GUIDE>BJCP 2015</STYLE_GUIDE>
+      <TYPE>Amber Ale</TYPE>
+      <OG_MIN>1.062</OG_MIN>
+      <OG_MAX>1.075</OG_MAX>
+      <FG_MIN>1.008</FG_MIN>
+      <FG_MAX>1.018</FG_MAX>
+      <IBU_MIN>15.0</IBU_MIN>
+      <IBU_MAX>25.0</IBU_MAX>
+      <COLOR_MIN>5.1</COLOR_MIN>
+      <COLOR_MAX>8.6</COLOR_MAX>
+      <ABV_MIN>6.0</ABV_MIN>
+      <ABV_MAX>7.6</ABV_MAX>
+      <CARB_MIN>1.5</CARB_MIN>
+      <CARB_MAX>3.0</CARB_MAX>
+    </STYLE>
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>Swaen Pilsner</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>1.35</AMOUNT>
+        <YIELD>80.0</YIELD>
+        <COLOR>1.0</COLOR>
+        <ORIGIN>Netherlands</ORIGIN>
+        <SUPPLIER>The Swaen</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Chateau Special B</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.05</AMOUNT>
+        <YIELD>77.0</YIELD>
+        <COLOR>77.4</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER>Castle Malting</SUPPLIER>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>TRUE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Candi Sugar, Dark</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.04</AMOUNT>
+        <YIELD>78.3</YIELD>
+        <COLOR>139.6</COLOR>
+        <ORIGIN>Belgium</ORIGIN>
+        <SUPPLIER/>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>FALSE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Brown Sugar, Light</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Sugar</TYPE>
+        <AMOUNT>0.035</AMOUNT>
+        <YIELD>100.0</YIELD>
+        <COLOR>4.1</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <SUPPLIER/>
+        <NOTES/>
+        <ADD_AFTER_BOIL>FALSE</ADD_AFTER_BOIL>
+        <RECOMMEND_MASH>FALSE</RECOMMEND_MASH>
+        <MAX_IN_BATCH>0.0</MAX_IN_BATCH>
+      </FERMENTABLE>
+    </FERMENTABLES>
+    <HOPS>
+      <HOP>
+        <NAME>German Tradition</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>6.0</ALPHA>
+        <AMOUNT>0.006</AMOUNT>
+        <USE>First Wort</USE>
+        <TIME>60.0</TIME>
+        <NOTES/>
+        <TYPE>Pellet</TYPE>
+        <FORM>Pellet</FORM>
+        <ORIGIN>Germany</ORIGIN>
+        <IBU>17.7</IBU>
+      </HOP>
+      <HOP>
+        <NAME>Saaz</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>3.08</ALPHA>
+        <AMOUNT>0.004</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>10.0</TIME>
+        <NOTES>Saaz is the famous aroma landrace variety originating in the Czech area of the same name. It has very mild, pleasant noble hoppy notes perfectly suited for and defines the Czech-style pilsner beers.
+
+Pedigree Czech landrace variety Aroma Classic noble aroma hop with long and strong tradition associated with classic pilsner beer.</NOTES>
+        <TYPE>Pellet</TYPE>
+        <FORM>Pellet</FORM>
+        <ORIGIN>Czech Republic</ORIGIN>
+        <BETA>6.3</BETA>
+        <MYRCENE>33.0</MYRCENE>
+        <HUMULENE>20.0</HUMULENE>
+        <CARYOPHYLLENE>11.0</CARYOPHYLLENE>
+        <COHUMULONE>24.5</COHUMULONE>
+        <IBU>1.8</IBU>
+      </HOP>
+    </HOPS>
+    <YEASTS>
+      <YEAST>
+        <NAME>SafBrew Specialty Ale</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Ale</TYPE>
+        <FORM>Dry</FORM>
+        <AMOUNT>0.2</AMOUNT>
+        <LABORATORY>Fermentis</LABORATORY>
+        <PRODUCT_ID>T-58</PRODUCT_ID>
+        <MIN_TEMPERATURE>18.0</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>26.0</MAX_TEMPERATURE>
+        <ATTENUATION>78.0</ATTENUATION>
+        <NOTES>Specialty yeast selected for its estery somewhat peppery and spicy flavor development (POF+), producing clovelike aroma. Yeast with a medium sedimentation: forms no clumps but a powdery haze when resuspended in the beer.</NOTES>
+        <FLOCCULATION>Medium</FLOCCULATION>
+        <BEST_FOR/>
+      </YEAST>
+    </YEASTS>
+    <MISCS>
+      <MISC>
+        <NAME>Canning Salt (NaCl)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.00069</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Lactic Acid</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.002</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+      <MISC>
+        <NAME>Biersol</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Other</TYPE>
+        <USE>Boil</USE>
+        <TIME>0.0</TIME>
+        <AMOUNT>0.002</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES/>
+        <USE_FOR/>
+      </MISC>
+    </MISCS>
+    <MASH>
+      <NAME>Parada Proteica - Corpo Alto</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>20</GRAIN_TEMP>
+      <SPARGE_TEMP>76</SPARGE_TEMP>
+      <PH>5.4</PH>
+      <NOTES/>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>Protein Rest</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Infusion</TYPE>
+          <STEP_TEMP>50.0</STEP_TEMP>
+          <STEP_TIME>10.0</STEP_TIME>
+          <RAMP_TIME>2.0</RAMP_TIME>
+          <END_TEMP>50.0</END_TEMP>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Saccharification</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>62.0</STEP_TEMP>
+          <STEP_TIME>20.0</STEP_TIME>
+          <RAMP_TIME>15.0</RAMP_TIME>
+          <END_TEMP>62.0</END_TEMP>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+    <FERMENTATION_STAGES>2</FERMENTATION_STAGES>
+    <PRIMARY_AGE>7.0</PRIMARY_AGE>
+    <PRIMARY_TEMP>22.0</PRIMARY_TEMP>
+    <SECONDARY_AGE>2.0</SECONDARY_AGE>
+    <SECONDARY_TEMP>8.0</SECONDARY_TEMP>
+  </RECIPE>
+</RECIPES>
