@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Receitas Dinâmicas · Beer School</title>
+    <meta name="description" content="Motor de brassagem dinâmica da Beer School — versão Fable." />
+    <link href="assets/fonts/inter.css" rel="stylesheet" />
+    <link href="css/tokens.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="css/screens.css" rel="stylesheet" />
+    <link href="css/editor.css" rel="stylesheet" />
+    <script>
+      // Aplica o tema salvo antes do primeiro paint para evitar flash.
+      (function () {
+        try {
+          var saved = localStorage.getItem("beerSchool.receitasDinamicas.fable.theme.v1");
+          var theme = saved === "dark" || saved === "light"
+            ? saved
+            : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.dataset.theme = theme;
+        } catch (error) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
