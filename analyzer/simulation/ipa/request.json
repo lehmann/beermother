@@ -1,0 +1,179 @@
+{
+    "draft": {
+        "id": "recipe-mryhruji-vnjgr",
+        "name": "PFC - IPA",
+        "styleName": "American IPA",
+        "brewer": "Jamal",
+        "batchVolumeL": 20,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 68.3,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.05,
+        "evaporationPct": 10.3,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Malte Pale Ale",
+                "type": "Grão",
+                "yieldPct": 82.23,
+                "colorEbc": 6,
+                "amountKg": 4.6,
+                "when": "Fervura"
+            },
+            {
+                "name": "Malte Munique",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 22.5,
+                "amountKg": 0.6501,
+                "when": "Fervura"
+            },
+            {
+                "name": "Wheat Malt, Pale",
+                "type": "Grão",
+                "yieldPct": 78,
+                "colorEbc": 3.7,
+                "amountKg": 0.6501,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Columbus/Tomahawk/Zeus (CTZ)",
+                "alphaAcidPct": 15.5,
+                "amountG": 20,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 0
+            },
+            {
+                "name": "Centennial",
+                "alphaAcidPct": 10,
+                "amountG": 20,
+                "use": "Hopstand",
+                "timeMin": 10,
+                "temperatureC": 0
+            },
+            {
+                "name": "Citra",
+                "alphaAcidPct": 12,
+                "amountG": 20,
+                "use": "Hopstand",
+                "timeMin": 10,
+                "temperatureC": 0
+            },
+            {
+                "name": "Idaho #7",
+                "alphaAcidPct": 13,
+                "amountG": 20,
+                "use": "Hopstand",
+                "timeMin": 10,
+                "temperatureC": 0
+            },
+            {
+                "name": "Mosaic",
+                "alphaAcidPct": 12.25,
+                "amountG": 20,
+                "use": "Hopstand",
+                "timeMin": 10,
+                "temperatureC": 0
+            },
+            {
+                "name": "Centennial",
+                "alphaAcidPct": 10,
+                "amountG": 30,
+                "use": "Dry hop",
+                "timeMin": 3,
+                "temperatureC": 0
+            },
+            {
+                "name": "Citra",
+                "alphaAcidPct": 12,
+                "amountG": 30,
+                "use": "Dry hop",
+                "timeMin": 3,
+                "temperatureC": 0
+            },
+            {
+                "name": "Idaho #7",
+                "alphaAcidPct": 13,
+                "amountG": 30,
+                "use": "Dry hop",
+                "timeMin": 3,
+                "temperatureC": 0
+            },
+            {
+                "name": "Mosaic",
+                "alphaAcidPct": 12.25,
+                "amountG": 30,
+                "use": "Dry hop",
+                "timeMin": 3,
+                "temperatureC": 0
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "SafAle English Ale",
+                "attenuationPct": 75,
+                "amount": 1,
+                "unit": "pacote"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 40
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 72,
+                "timeMin": 20
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 17,
+                "days": 5
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 19,
+                "days": 2
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 2.5
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 9.3
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 4
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

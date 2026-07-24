@@ -1,0 +1,131 @@
+{
+    "draft": {
+        "id": "recipe-mryhst2d-v5edd",
+        "name": "PFC - Oatmeal Stout",
+        "styleName": "Oatmeal Stout",
+        "brewer": "Jamal",
+        "batchVolumeL": 20,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 73.5,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.05,
+        "evaporationPct": 10.3,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Extra Pale Maris Otter® Malt",
+                "type": "Grão",
+                "yieldPct": 81.5,
+                "colorEbc": 3.1,
+                "amountKg": 3.6,
+                "when": "Fervura"
+            },
+            {
+                "name": "Oats, Flaked",
+                "type": "Grão",
+                "yieldPct": 85,
+                "colorEbc": 2.5,
+                "amountKg": 0.75,
+                "when": "Fervura"
+            },
+            {
+                "name": "Chocolate Malt",
+                "type": "Grão",
+                "yieldPct": 72,
+                "colorEbc": 1046.2,
+                "amountKg": 0.3,
+                "when": "Fervura"
+            },
+            {
+                "name": "Chateau Biscuit",
+                "type": "Grão",
+                "yieldPct": 77,
+                "colorEbc": 49.8,
+                "amountKg": 0.2,
+                "when": "Fervura"
+            },
+            {
+                "name": "Roasted Barley",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 1300.2,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "East Kent Goldings (EKG)",
+                "alphaAcidPct": 6,
+                "amountG": 50,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 0
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "SafAle English Ale",
+                "attenuationPct": 75,
+                "amount": 2,
+                "unit": "pacote"
+            }
+        ],
+        "mash": [
+            {
+                "name": "b-glucanase",
+                "temperatureC": 42,
+                "timeMin": 10
+            },
+            {
+                "name": "Sacarificação",
+                "temperatureC": 67,
+                "timeMin": 60
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 18,
+                "days": 4
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 21,
+                "days": 2
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 8
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 1.2
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 1.1
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

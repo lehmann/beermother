@@ -1,0 +1,123 @@
+{
+    "draft": {
+        "id": "recipe-mryhqjxv-mf7l0",
+        "name": "PFC - IRA",
+        "styleName": "Irish Red Ale",
+        "brewer": "Jamal",
+        "batchVolumeL": 22,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 73.3,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.0455,
+        "evaporationPct": 9.4,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Malte Pale Ale",
+                "type": "Grão",
+                "yieldPct": 82.23,
+                "colorEbc": 6,
+                "amountKg": 3.5,
+                "when": "Fervura"
+            },
+            {
+                "name": "Malte Vienna",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.1,
+                "amountKg": 0.55,
+                "when": "Fervura"
+            },
+            {
+                "name": "Crystal",
+                "type": "Grão",
+                "yieldPct": 69.57,
+                "colorEbc": 138.1,
+                "amountKg": 0.26,
+                "when": "Fervura"
+            },
+            {
+                "name": "Roasted Barley",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 1300.2,
+                "amountKg": 0.05,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "East Kent Goldings (EKG)",
+                "alphaAcidPct": 5,
+                "amountG": 43,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 0
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "SafAle English Ale",
+                "attenuationPct": 75,
+                "amount": 1,
+                "unit": "pacote"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 30
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 30
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 17,
+                "days": 3
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 21,
+                "days": 2
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 7.7
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 2.9
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 1.8
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}
