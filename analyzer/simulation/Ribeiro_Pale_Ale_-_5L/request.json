@@ -1,0 +1,100 @@
+{
+    "draft": {
+        "id": "recipe-mryir877-cbo9e",
+        "name": "Ribeiro Pale Ale - 5L",
+        "styleName": "International Amber Lager",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 100.5,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Malte Pilsen",
+                "type": "Grão",
+                "yieldPct": 82.8,
+                "colorEbc": 0.9,
+                "amountKg": 0.8,
+                "when": "Fervura"
+            },
+            {
+                "name": "Malte Vienna",
+                "type": "Grão",
+                "yieldPct": 83,
+                "colorEbc": 4.1,
+                "amountKg": 0.2,
+                "when": "Fervura"
+            },
+            {
+                "name": "Molasses",
+                "type": "Açúcar",
+                "yieldPct": 78.3,
+                "colorEbc": 106.8,
+                "amountKg": 0.15,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Huell Melon",
+                "alphaAcidPct": 7.4,
+                "amountG": 25,
+                "use": "Hopstand",
+                "timeMin": 15,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Levedura",
+                "attenuationPct": 84,
+                "amount": 1,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 30
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 22,
+                "days": 4
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

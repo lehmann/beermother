@@ -1,0 +1,110 @@
+{
+    "draft": {
+        "id": "recipe-mryioqfz-pb46n",
+        "name": "G10Saosin",
+        "styleName": "Saison",
+        "brewer": "",
+        "batchVolumeL": 5,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 120.3,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 31.4,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Odd Amphibian – Lager/Pilsner Malt",
+                "type": "Grão",
+                "yieldPct": 77.83,
+                "colorEbc": 0.9,
+                "amountKg": 0.9,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Heidelberg Wheat Malt",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 0.9,
+                "amountKg": 0.18,
+                "when": "Fervura"
+            },
+            {
+                "name": "Oats, Flaked",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 0,
+                "amountKg": 0.05,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Lúpulo",
+                "alphaAcidPct": 4.3,
+                "amountG": 14.6,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Farmhouse Saison",
+                "attenuationPct": 84,
+                "amount": 58.8,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Parada proteica",
+                "temperatureC": 52,
+                "timeMin": 10
+            },
+            {
+                "name": "Beta",
+                "temperatureC": 64,
+                "timeMin": 60
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 78,
+                "timeMin": 8
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 26,
+                "days": 14
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

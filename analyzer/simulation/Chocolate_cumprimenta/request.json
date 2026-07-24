@@ -1,0 +1,131 @@
+{
+    "draft": {
+        "id": "recipe-mryincrm-a5665",
+        "name": "Chocolate cumprimenta",
+        "styleName": "Winter Seasonal Beer",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 118.8,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Ale",
+                "type": "Grão",
+                "yieldPct": 80.13,
+                "colorEbc": 3.3,
+                "amountKg": 0.7,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Munich",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.9,
+                "amountKg": 0.2,
+                "when": "Fervura"
+            },
+            {
+                "name": "Candi Sugar, Clear",
+                "type": "Açúcar",
+                "yieldPct": 78.3,
+                "colorEbc": 0,
+                "amountKg": 0.125,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Chocolate",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 617.3,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            },
+            {
+                "name": "Oats, Flaked",
+                "type": "Grão",
+                "yieldPct": 85,
+                "colorEbc": 0.4,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "German Tradition",
+                "alphaAcidPct": 5.4,
+                "amountG": 5,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Levedura",
+                "attenuationPct": 84,
+                "amount": 1,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 60
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 23,
+                "days": 7
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": [
+            {
+                "name": "Cacao Nibs",
+                "amount": 50,
+                "unit": "g",
+                "use": "Fervura",
+                "timeMin": 10
+            },
+            {
+                "name": "Chilis",
+                "amount": 2,
+                "unit": "g",
+                "use": "Fermentação",
+                "timeMin": 0
+            }
+        ]
+    },
+    "seed": 1
+}

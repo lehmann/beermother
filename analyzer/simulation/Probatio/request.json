@@ -1,0 +1,203 @@
+{
+    "draft": {
+        "id": "recipe-mryir0ys-0tbln",
+        "name": "Probatio",
+        "styleName": "Imperial Stout",
+        "brewer": "Lehmann",
+        "batchVolumeL": 4,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 138.1,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 39.5,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 0.542,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Munich",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.9,
+                "amountKg": 0.479,
+                "when": "Fervura"
+            },
+            {
+                "name": "Aveia em flocos",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 0,
+                "amountKg": 0.128,
+                "when": "Fervura"
+            },
+            {
+                "name": "Candi Sugar, Dark",
+                "type": "Açúcar",
+                "yieldPct": 78.3,
+                "colorEbc": 371,
+                "amountKg": 0.082,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Chocolate",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 617.3,
+                "amountKg": 0.056,
+                "when": "Fervura"
+            },
+            {
+                "name": "Chateau Special B",
+                "type": "Grão",
+                "yieldPct": 77,
+                "colorEbc": 205,
+                "amountKg": 0.04,
+                "when": "Fervura"
+            },
+            {
+                "name": "Melanoidin",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 39.1,
+                "amountKg": 0.032,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.02,
+                "when": "Fervura"
+            },
+            {
+                "name": "Chateau Biscuit",
+                "type": "Grão",
+                "yieldPct": 77,
+                "colorEbc": 32.9,
+                "amountKg": 0.017,
+                "when": "Fervura"
+            },
+            {
+                "name": "BlackSwan Roasted Barley",
+                "type": "Grão",
+                "yieldPct": 73.1,
+                "colorEbc": 823.6,
+                "amountKg": 0.016,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Magnum",
+                "alphaAcidPct": 12.4,
+                "amountG": 9.4,
+                "use": "First wort",
+                "timeMin": 30,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Levedura",
+                "attenuationPct": 84,
+                "amount": 200,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Hidratação / Protein Rest",
+                "temperatureC": 55,
+                "timeMin": 10
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 40
+            },
+            {
+                "name": "Step 3",
+                "temperatureC": 68,
+                "timeMin": 15
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 72,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 21,
+                "days": 10
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 10,
+                "days": 2
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 4,
+                "days": 30
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": [
+            {
+                "name": "American Oak Infusion Spirals",
+                "amount": 0.16,
+                "unit": "mL",
+                "use": "Fermentação",
+                "timeMin": 0
+            },
+            {
+                "name": "Cacao Nibs",
+                "amount": 12,
+                "unit": "g",
+                "use": "Fermentação",
+                "timeMin": 0
+            },
+            {
+                "name": "café",
+                "amount": 12,
+                "unit": "g",
+                "use": "Fermentação",
+                "timeMin": 0
+            }
+        ]
+    },
+    "seed": 1
+}

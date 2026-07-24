@@ -1,0 +1,100 @@
+{
+    "draft": {
+        "id": "recipe-mryis2v0-k1xsg",
+        "name": "TBS 005: Short & Shoddy | Czech Premium Pale Lager",
+        "styleName": "Czech Premium Pale Lager",
+        "brewer": "Martin Keen",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 135,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 0.958,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Munich",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.9,
+                "amountKg": 0.094,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Hallertau Blanc",
+                "alphaAcidPct": 10.5,
+                "amountG": 7,
+                "use": "First wort",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.08,
+                "amountG": 10,
+                "use": "Hopstand",
+                "timeMin": 20,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Czech Pilsner",
+                "attenuationPct": 84,
+                "amount": 2,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 72,
+                "timeMin": 30
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 20,
+                "days": 5
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

@@ -1,0 +1,120 @@
+{
+    "draft": {
+        "id": "recipe-mryip7wa-y37de",
+        "name": "Helles",
+        "styleName": "Munich Helles",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 45,
+        "mashEfficiencyPct": 127.5,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 33.2,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 0.856,
+                "when": "Fervura"
+            },
+            {
+                "name": "Carahell",
+                "type": "Grão",
+                "yieldPct": 75.74,
+                "colorEbc": 16.1,
+                "amountKg": 0.044,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "German Tradition",
+                "alphaAcidPct": 6,
+                "amountG": 4.9,
+                "use": "Fervura",
+                "timeMin": 45,
+                "temperatureC": 90
+            },
+            {
+                "name": "German Tradition",
+                "alphaAcidPct": 6,
+                "amountG": 4,
+                "use": "Fervura",
+                "timeMin": 5,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Levedura",
+                "attenuationPct": 84,
+                "amount": 1,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 10
+            },
+            {
+                "name": "Step 2",
+                "temperatureC": 70,
+                "timeMin": 20
+            },
+            {
+                "name": "Step 3",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 16,
+                "days": 4
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 22,
+                "days": 3
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 10,
+                "days": 1
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

@@ -1,0 +1,112 @@
+{
+    "draft": {
+        "id": "recipe-mryimvzv-ql215",
+        "name": "Carrot cake",
+        "styleName": "Weissbier",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 129.6,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "BEST Heidelberg Wheat Malt",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 0.9,
+                "amountKg": 0.6,
+                "when": "Fervura"
+            },
+            {
+                "name": "Carrot Juice",
+                "type": "Adjunto",
+                "yieldPct": 75.8,
+                "colorEbc": 12.4,
+                "amountKg": 0.33,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "German Tradition",
+                "alphaAcidPct": 6,
+                "amountG": 4,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Bread yeast",
+                "attenuationPct": 84,
+                "amount": 1,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Step 1",
+                "temperatureC": 45,
+                "timeMin": 5
+            },
+            {
+                "name": "Step 2",
+                "temperatureC": 55,
+                "timeMin": 5
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 20
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 23,
+                "days": 3
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 23,
+                "days": 2
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 10,
+                "days": 2
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

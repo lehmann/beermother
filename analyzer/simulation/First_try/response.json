@@ -1,0 +1,3698 @@
+{
+    "ok": true,
+    "analysis": {
+        "schema": "beer-school-recipe-analysis/v1",
+        "seed": 1,
+        "styleSlug": "",
+        "styleEntry": null,
+        "styleOptions": [
+            {
+                "code": "1A",
+                "name": "American Light Lager",
+                "slug": "a.-american-light-lager"
+            },
+            {
+                "code": "1B",
+                "name": "American Lager",
+                "slug": "b.-american-lager"
+            },
+            {
+                "code": "1C",
+                "name": "Cream Ale",
+                "slug": "c.-cream-ale"
+            },
+            {
+                "code": "1D",
+                "name": "American Wheat Beer",
+                "slug": "d.-american-wheat-beer"
+            },
+            {
+                "code": "2A",
+                "name": "International Pale Lager",
+                "slug": "a.-international-pale-lager"
+            },
+            {
+                "code": "2B",
+                "name": "International Amber Lager",
+                "slug": "b.-international-amber-lager"
+            },
+            {
+                "code": "2C",
+                "name": "International Dark Lager",
+                "slug": "c.-international-dark-lager"
+            },
+            {
+                "code": "3A",
+                "name": "Czech Pale Lager",
+                "slug": "a.-czech-pale-lager"
+            },
+            {
+                "code": "3B",
+                "name": "Czech Premium Pale Lager",
+                "slug": "b.-czech-premium-pale-lager"
+            },
+            {
+                "code": "3C",
+                "name": "Czech Amber Lager",
+                "slug": "c.-czech-amber-lager"
+            },
+            {
+                "code": "3D",
+                "name": "Czech Dark Lager",
+                "slug": "d.-czech-dark-lager"
+            },
+            {
+                "code": "4A",
+                "name": "Munich Helles",
+                "slug": "a.-munich-helles"
+            },
+            {
+                "code": "4B",
+                "name": "Festbier",
+                "slug": "b.-festbier"
+            },
+            {
+                "code": "4C",
+                "name": "Helles Bock",
+                "slug": "c.-helles-bock"
+            },
+            {
+                "code": "5A",
+                "name": "German Leichtbier",
+                "slug": "a.-german-leichtbier"
+            },
+            {
+                "code": "5B",
+                "name": "Kölsch",
+                "slug": "b.-kölsch"
+            },
+            {
+                "code": "5C",
+                "name": "German Helles Exportbier",
+                "slug": "c.-german-helles-exportbier"
+            },
+            {
+                "code": "5D",
+                "name": "German Pils",
+                "slug": "d.-german-pils"
+            },
+            {
+                "code": "6A",
+                "name": "Märzen",
+                "slug": "a.-märzen"
+            },
+            {
+                "code": "6B",
+                "name": "Rauchbier",
+                "slug": "b.-rauchbier"
+            },
+            {
+                "code": "6C",
+                "name": "Dunkles Bock",
+                "slug": "c.-dunkles-bock"
+            },
+            {
+                "code": "7A",
+                "name": "Vienna Lager",
+                "slug": "a.-vienna-lager"
+            },
+            {
+                "code": "7B",
+                "name": "Altbier",
+                "slug": "b.-altbier"
+            },
+            {
+                "code": "8A",
+                "name": "Munich Dunkel",
+                "slug": "a.-munich-dunkel"
+            },
+            {
+                "code": "8B",
+                "name": "Schwarzbier",
+                "slug": "b.-schwarzbier"
+            },
+            {
+                "code": "9A",
+                "name": "Doppelbock",
+                "slug": "a.-doppelbock"
+            },
+            {
+                "code": "9B",
+                "name": "Eisbock",
+                "slug": "b.-eisbock"
+            },
+            {
+                "code": "9C",
+                "name": "Baltic Porter",
+                "slug": "c.-baltic-porter"
+            },
+            {
+                "code": "10A",
+                "name": "Weissbier",
+                "slug": "a.-weissbier"
+            },
+            {
+                "code": "10B",
+                "name": "Dunkles Weissbier",
+                "slug": "b.-dunkles-weissbier"
+            },
+            {
+                "code": "10C",
+                "name": "Weizenbock",
+                "slug": "c.-weizenbock"
+            },
+            {
+                "code": "11A",
+                "name": "Ordinary Bitter",
+                "slug": "a.-ordinary-bitter"
+            },
+            {
+                "code": "11B",
+                "name": "Best Bitter",
+                "slug": "b.-best-bitter"
+            },
+            {
+                "code": "11C",
+                "name": "Strong Bitter",
+                "slug": "c.-strong-bitter"
+            },
+            {
+                "code": "12A",
+                "name": "British Golden Ale",
+                "slug": "a.-british-golden-ale"
+            },
+            {
+                "code": "12B",
+                "name": "Australian Sparkling Ale",
+                "slug": "b.-australian-sparkling-ale"
+            },
+            {
+                "code": "12C",
+                "name": "English IPA",
+                "slug": "c.-english-ipa"
+            },
+            {
+                "code": "13A",
+                "name": "Dark Mild",
+                "slug": "a.-dark-mild"
+            },
+            {
+                "code": "13B",
+                "name": "British Brown Ale",
+                "slug": "b.-british-brown-ale"
+            },
+            {
+                "code": "13C",
+                "name": "English Porter",
+                "slug": "c.-english-porter"
+            },
+            {
+                "code": "14A",
+                "name": "Scottish Light",
+                "slug": "a.-scottish-light"
+            },
+            {
+                "code": "14B",
+                "name": "Scottish Heavy",
+                "slug": "b.-scottish-heavy"
+            },
+            {
+                "code": "14C",
+                "name": "Scottish Export",
+                "slug": "c.-scottish-export"
+            },
+            {
+                "code": "15A",
+                "name": "Irish Red Ale",
+                "slug": "a.-irish-red-ale"
+            },
+            {
+                "code": "15B",
+                "name": "Irish Stout",
+                "slug": "b.-irish-stout"
+            },
+            {
+                "code": "15C",
+                "name": "Irish Extra Stout",
+                "slug": "c.-irish-extra-stout"
+            },
+            {
+                "code": "16A",
+                "name": "Sweet Stout",
+                "slug": "a.-sweet-stout"
+            },
+            {
+                "code": "16B",
+                "name": "Oatmeal Stout",
+                "slug": "b.-oatmeal-stout"
+            },
+            {
+                "code": "16C",
+                "name": "Tropical Stout",
+                "slug": "c.-tropical-stout"
+            },
+            {
+                "code": "16D",
+                "name": "Foreign Extra Stout",
+                "slug": "d.-foreign-extra-stout"
+            },
+            {
+                "code": "17A",
+                "name": "British Strong Ale",
+                "slug": "a.-british-strong-ale"
+            },
+            {
+                "code": "17B",
+                "name": "Old Ale",
+                "slug": "b.-old-ale"
+            },
+            {
+                "code": "17C",
+                "name": "Wee Heavy",
+                "slug": "c.-wee-heavy"
+            },
+            {
+                "code": "17D",
+                "name": "English Barley wine",
+                "slug": "d.-english-barley-wine"
+            },
+            {
+                "code": "18A",
+                "name": "Blonde Ale",
+                "slug": "a.-blonde-ale"
+            },
+            {
+                "code": "18B",
+                "name": "American Pale Ale",
+                "slug": "b.-american-pale-ale"
+            },
+            {
+                "code": "19A",
+                "name": "American Amber Ale",
+                "slug": "a.-american-amber-ale"
+            },
+            {
+                "code": "19B",
+                "name": "California Common",
+                "slug": "b.-california-common"
+            },
+            {
+                "code": "19C",
+                "name": "American Brown Ale",
+                "slug": "c.-american-brown-ale"
+            },
+            {
+                "code": "20A",
+                "name": "American Porter",
+                "slug": "a.-american-porter"
+            },
+            {
+                "code": "20B",
+                "name": "American Stout",
+                "slug": "b.-american-stout"
+            },
+            {
+                "code": "20C",
+                "name": "Imperial Stout",
+                "slug": "c.-imperial-stout"
+            },
+            {
+                "code": "21A",
+                "name": "American IPA",
+                "slug": "a.-american-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Belgian IPA",
+                "slug": "b.-specialty-ipa-belgian-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Black IPA",
+                "slug": "b.-specialty-ipa-black-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Brown IPA",
+                "slug": "b.-specialty-ipa-brown-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Brut IPA",
+                "slug": "b.-specialty-ipa-brut-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Red IPA",
+                "slug": "b.-specialty-ipa-red-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: Rye IPA",
+                "slug": "b.-specialty-ipa-rye-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA: White IPA",
+                "slug": "b.-specialty-ipa-white-ipa"
+            },
+            {
+                "code": "21B",
+                "name": "Specialty IPA",
+                "slug": "b.-specialty-ipa"
+            },
+            {
+                "code": "21C",
+                "name": "Hazy IPA",
+                "slug": "c.-hazy-ipa"
+            },
+            {
+                "code": "22A",
+                "name": "Double IPA",
+                "slug": "a.-double-ipa"
+            },
+            {
+                "code": "22B",
+                "name": "American Strong Ale",
+                "slug": "b.-american-strong-ale"
+            },
+            {
+                "code": "22C",
+                "name": "American Barleywine",
+                "slug": "c.-american-barleywine"
+            },
+            {
+                "code": "22D",
+                "name": "Wheatwine",
+                "slug": "d.-wheatwine"
+            },
+            {
+                "code": "23A",
+                "name": "Berliner Weisse",
+                "slug": "a.-berliner-weisse"
+            },
+            {
+                "code": "23B",
+                "name": "Flanders Red Ale",
+                "slug": "b.-flanders-red-ale"
+            },
+            {
+                "code": "23C",
+                "name": "Oud Bruin",
+                "slug": "c.-oud-bruin"
+            },
+            {
+                "code": "23D",
+                "name": "Lambic",
+                "slug": "d.-lambic"
+            },
+            {
+                "code": "23E",
+                "name": "Gueuze",
+                "slug": "e.-gueuze"
+            },
+            {
+                "code": "23F",
+                "name": "Fruit Lambic",
+                "slug": "f.-fruit-lambic"
+            },
+            {
+                "code": "23G",
+                "name": "Gose",
+                "slug": "g.-gose"
+            },
+            {
+                "code": "24A",
+                "name": "Witbier",
+                "slug": "a.-witbier"
+            },
+            {
+                "code": "24B",
+                "name": "Belgian Pale Ale",
+                "slug": "b.-belgian-pale-ale"
+            },
+            {
+                "code": "24C",
+                "name": "Bière de Garde",
+                "slug": "c.-bière-de-garde"
+            },
+            {
+                "code": "25A",
+                "name": "Belgian Blond Ale",
+                "slug": "a.-belgian-blond-ale"
+            },
+            {
+                "code": "25B",
+                "name": "Saison",
+                "slug": "b.-saison"
+            },
+            {
+                "code": "25C",
+                "name": "Belgian Golden Strong Ale",
+                "slug": "c.-belgian-golden-strong-ale"
+            },
+            {
+                "code": "26A",
+                "name": "Belgian Single",
+                "slug": "a.-belgian-single"
+            },
+            {
+                "code": "26B",
+                "name": "Belgian Dubbel",
+                "slug": "b.-belgian-dubbel"
+            },
+            {
+                "code": "26C",
+                "name": "Belgian Tripel",
+                "slug": "c.-belgian-tripel"
+            },
+            {
+                "code": "26D",
+                "name": "Belgian Dark Strong Ale",
+                "slug": "d.-belgian-dark-strong-ale"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Kellerbier",
+                "slug": "a.-historical-beer-kellerbier"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Kentucky Common",
+                "slug": "a.-historical-beer-kentucky-common"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Lichtenhainer",
+                "slug": "a.-historical-beer-lichtenhainer"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: London Brown Ale",
+                "slug": "a.-historical-beer-london-brown-ale"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Piwo Grodziskie",
+                "slug": "a.-historical-beer-piwo-grodziskie"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Pre-Prohibition Lager",
+                "slug": "a.-historical-beer-pre-prohibition-lager"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Pre-Prohibition Porter",
+                "slug": "a.-historical-beer-pre-prohibition-porter"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Roggenbier",
+                "slug": "a.-historical-beer-roggenbier"
+            },
+            {
+                "code": "27A",
+                "name": "Historical Beer: Sahti",
+                "slug": "a.-historical-beer-sahti"
+            },
+            {
+                "code": "28A",
+                "name": "Brett Beer",
+                "slug": "a.-brett-beer"
+            },
+            {
+                "code": "28B",
+                "name": "Mixed-Fermentation Sour Beer",
+                "slug": "b.-mixed-fermentation-sour-beer"
+            },
+            {
+                "code": "28C",
+                "name": "Wild Specialty Beer",
+                "slug": "c.-wild-specialty-beer"
+            },
+            {
+                "code": "28D",
+                "name": "Straight Sour Beer",
+                "slug": "d.-straight-sour-beer"
+            },
+            {
+                "code": "29A",
+                "name": "Fruit Beer",
+                "slug": "a.-fruit-beer"
+            },
+            {
+                "code": "29B",
+                "name": "Fruit and Spice Beer",
+                "slug": "b.-fruit-and-spice-beer"
+            },
+            {
+                "code": "29C",
+                "name": "Specialty Fruit Beer",
+                "slug": "c.-specialty-fruit-beer"
+            },
+            {
+                "code": "29D",
+                "name": "Grape Ale",
+                "slug": "d.-grape-ale"
+            },
+            {
+                "code": "30A",
+                "name": "Spice, Herb, or Vegetable Beer",
+                "slug": "a.-spice-herb-or-vegetable-beer"
+            },
+            {
+                "code": "30B",
+                "name": "Autumn Seasonal Beer",
+                "slug": "b.-autumn-seasonal-beer"
+            },
+            {
+                "code": "30C",
+                "name": "Winter Seasonal Beer",
+                "slug": "c.-winter-seasonal-beer"
+            },
+            {
+                "code": "30D",
+                "name": "Specialty Spice Beer",
+                "slug": "d.-specialty-spice-beer"
+            },
+            {
+                "code": "31A",
+                "name": "Alternative Grain Beer",
+                "slug": "a.-alternative-grain-beer"
+            },
+            {
+                "code": "31B",
+                "name": "Alternative Sugar Beer",
+                "slug": "b.-alternative-sugar-beer"
+            },
+            {
+                "code": "32A",
+                "name": "Classic Style Smoked Beer",
+                "slug": "a.-classic-style-smoked-beer"
+            },
+            {
+                "code": "32B",
+                "name": "Specialty Smoked Beer",
+                "slug": "b.-specialty-smoked-beer"
+            },
+            {
+                "code": "33A",
+                "name": "Wood-Aged Beer",
+                "slug": "a.-wood-aged-beer"
+            },
+            {
+                "code": "33B",
+                "name": "Specialty Wood-Aged Beer",
+                "slug": "b.-specialty-wood-aged-beer"
+            },
+            {
+                "code": "34A",
+                "name": "Commercial Specialty Beer",
+                "slug": "a.-commercial-specialty-beer"
+            },
+            {
+                "code": "34B",
+                "name": "Mixed-Style Beer",
+                "slug": "b.-mixed-style-beer"
+            },
+            {
+                "code": "34C",
+                "name": "Experimental Beer",
+                "slug": "c.-experimental-beer"
+            },
+            {
+                "code": "X1",
+                "name": "Dorada Pampeana",
+                "slug": "x1.-dorada-pampeana"
+            },
+            {
+                "code": "X2",
+                "name": "IPA Argenta",
+                "slug": "x2.-ipa-argenta"
+            },
+            {
+                "code": "X3",
+                "name": "Italian Grape Ale",
+                "slug": "x3.-italian-grape-ale"
+            },
+            {
+                "code": "X4",
+                "name": "Catharina Sour",
+                "slug": "x4.-catharina-sour"
+            },
+            {
+                "code": "X5",
+                "name": "New Zealand Pilsner",
+                "slug": "x5.-new-zealand-pilsner"
+            }
+        ],
+        "recipe": {
+            "editorId": "recipe-mryioky1-0moke",
+            "name": "First try",
+            "styleName": "Red IPA",
+            "brewer": "Andre Lehmann",
+            "batchVolumeL": 5,
+            "boilTimeMin": 30,
+            "boilSize": 9.48,
+            "trubLossL": 2.5,
+            "evaporationLh": 3.33,
+            "evaporationPct": 35.1,
+            "trubLossPct": 0.5,
+            "whirlpoolNoChillMin": 5,
+            "whirlpoolTemperatureC": 90,
+            "heatingRateCMin": 1.5,
+            "efficiencyPct": 108,
+            "mashEfficiencyPct": 93.9,
+            "og": 1.046,
+            "fg": 1.011,
+            "fgManual": false,
+            "ibu": 43,
+            "colorEbc": 18.4,
+            "fermentables": [
+                {
+                    "id": "f0",
+                    "name": "Carahell",
+                    "type": "Grão",
+                    "draftType": "Grão",
+                    "use": "Mostura",
+                    "amountKg": 0.5,
+                    "ppg": 34.840399999999995,
+                    "yieldPct": 75.74,
+                    "colorLovibond": 6.594263127482142
+                },
+                {
+                    "id": "f1",
+                    "name": "Carared",
+                    "type": "Grão",
+                    "draftType": "Grão",
+                    "use": "Mostura",
+                    "amountKg": 0.35,
+                    "ppg": 35.834,
+                    "yieldPct": 77.9,
+                    "colorLovibond": 12.215267998270232
+                },
+                {
+                    "id": "f2",
+                    "name": "Caramunich III",
+                    "type": "Grão",
+                    "draftType": "Grão",
+                    "use": "Mostura",
+                    "amountKg": 0.15,
+                    "ppg": 36.8322,
+                    "yieldPct": 80.07,
+                    "colorLovibond": 36.010855284606464
+                },
+                {
+                    "id": "f3",
+                    "name": "Honey",
+                    "type": "Açúcar",
+                    "draftType": "Açúcar",
+                    "use": "Fervura",
+                    "timeMin": 10,
+                    "amountKg": 0.1,
+                    "ppg": 34.5,
+                    "yieldPct": 75,
+                    "colorLovibond": 0.5610512328362616
+                }
+            ],
+            "hops": [
+                {
+                    "id": "h0",
+                    "name": "Mandarina Bavaria",
+                    "alphaAcidPct": 8.5,
+                    "type": "Pellet",
+                    "use": "Fervura",
+                    "timeMin": 30,
+                    "amountG": 12
+                },
+                {
+                    "id": "h1",
+                    "name": "Mandarina Bavaria",
+                    "alphaAcidPct": 8.5,
+                    "type": "Pellet",
+                    "use": "Fervura",
+                    "timeMin": 5,
+                    "amountG": 5
+                }
+            ],
+            "yeasts": [],
+            "salts": [],
+            "miscs": [
+                {
+                    "id": "m0",
+                    "name": "Orange Peel, Sweet",
+                    "type": "Insumo",
+                    "use": "Fervura",
+                    "timeMin": 5,
+                    "amount": 1,
+                    "unit": "mL"
+                }
+            ],
+            "baseWaterProfile": {
+                "calciumPpm": 10,
+                "magnesiumPpm": 4,
+                "sodiumPpm": 4,
+                "chloridePpm": 12,
+                "sulfatePpm": 10,
+                "bicarbonatePpm": 30
+            },
+            "saltReferenceWaterL": 10.4,
+            "fermentationProfileName": "",
+            "fermentation": [
+                {
+                    "name": "Inoculação",
+                    "temperatureC": 22,
+                    "days": 8
+                },
+                {
+                    "name": "Primária",
+                    "temperatureC": 4,
+                    "days": 1
+                }
+            ],
+            "mash": [
+                {
+                    "id": "m0",
+                    "name": "Mostura",
+                    "type": "Temperature",
+                    "temperatureC": 70,
+                    "timeMin": 60
+                }
+            ],
+            "waterToGrainRatioLkg": 3
+        },
+        "context": {
+            "ogPlato": 11.4,
+            "srm": 9.34010152284264,
+            "ibu": 43,
+            "ogPoints": 46.00000000000004,
+            "fg": 1.011,
+            "abv": 4.593750000000019,
+            "pitchRate": 0
+        },
+        "deterministic": {
+            "steps": [
+                {
+                    "id": "config",
+                    "kind": "config",
+                    "titleKey": "Configuração",
+                    "effects": [],
+                    "fired": []
+                },
+                {
+                    "id": "water",
+                    "kind": "water",
+                    "titleKey": "Água",
+                    "effects": [],
+                    "fired": []
+                },
+                {
+                    "id": "ferm-carahell",
+                    "kind": "fermentable",
+                    "titleData": "Carahell",
+                    "effects": [],
+                    "fired": [
+                        "malte-familia-caramelo"
+                    ],
+                    "gPerL": 100,
+                    "ref": "caramelo-claro"
+                },
+                {
+                    "id": "ferm-carared",
+                    "kind": "fermentable",
+                    "titleData": "Carared",
+                    "effects": [],
+                    "fired": [
+                        "malte-familia-caramelo"
+                    ],
+                    "gPerL": 70,
+                    "ref": "caramelo-claro"
+                },
+                {
+                    "id": "ferm-caramunich-iii",
+                    "kind": "fermentable",
+                    "titleData": "Caramunich III",
+                    "effects": [
+                        {
+                            "text": "Caramelo em dose alta: caramelo intenso, uva passa e mais corpo — tende a atenuar menos.",
+                            "tone": "alerta",
+                            "confidence": "alta"
+                        }
+                    ],
+                    "fired": [
+                        "cristal-caramel60",
+                        "cristal-caramel60:alta"
+                    ],
+                    "gPerL": 30,
+                    "ref": "caramelo-escuro"
+                },
+                {
+                    "id": "ferm-honey",
+                    "kind": "fermentable",
+                    "titleData": "Honey",
+                    "effects": [],
+                    "fired": [],
+                    "gPerL": 20,
+                    "ref": "mel"
+                },
+                {
+                    "id": "mash-70",
+                    "kind": "mash",
+                    "titleData": "Mostura",
+                    "titleMeta": "70°C",
+                    "effects": [
+                        {
+                            "text": "Sacarificação alta favorece a α-amilase — mais dextrinas, corpo e menos atenuação.",
+                            "tone": "neutro",
+                            "confidence": "média"
+                        }
+                    ],
+                    "fired": [
+                        "sacar-alta"
+                    ]
+                },
+                {
+                    "id": "hop-mandarina-bavaria",
+                    "kind": "hop",
+                    "titleData": "Mandarina Bavaria",
+                    "titleUse": "Fervura",
+                    "effects": [
+                        {
+                            "text": "Adição de fervura: parte do óleo evapora; o que fica é o caráter condimentado dos oxigenados.",
+                            "tone": "neutro",
+                            "confidence": "média"
+                        }
+                    ],
+                    "fired": [
+                        "kettle-aroma"
+                    ]
+                },
+                {
+                    "id": "hop-mandarina-bavaria",
+                    "kind": "hop",
+                    "titleData": "Mandarina Bavaria",
+                    "titleUse": "Fervura",
+                    "effects": [
+                        {
+                            "text": "Adição a {min} min de fervura: sobra cerca de {pct}% do óleo — pouco, mas não zero.",
+                            "data": {
+                                "t": 80,
+                                "min": 5,
+                                "pct": 36
+                            },
+                            "tone": "bom",
+                            "confidence": "média"
+                        },
+                        {
+                            "text": "Adição de fervura: parte do óleo evapora; o que fica é o caráter condimentado dos oxigenados.",
+                            "tone": "neutro",
+                            "confidence": "média"
+                        }
+                    ],
+                    "fired": [
+                        "fervura-curta-preserva-oleo",
+                        "kettle-aroma"
+                    ]
+                }
+            ],
+            "compounds": {
+                "betaGlucano": 0,
+                "acidoFerulico": 0,
+                "geraniol": 0.17403952637291714,
+                "linalool": 0.17403952637291714,
+                "mirceno": 0.1450329386440976,
+                "kettle": 0.26818181818181813,
+                "geraniolQuente": 0.17403952637291714,
+                "citronelol": 0,
+                "tiolPrec": {
+                    "mh": 1.6609090909090907,
+                    "mmp": 1.6609090909090907,
+                    "mo": 0.5536363636363636
+                },
+                "tiois": {
+                    "mha": 0,
+                    "mh": 0.21354545454545448,
+                    "mmp": 0.21354545454545448,
+                    "mo": 0.07118181818181817
+                },
+                "tiolPrecursor": 1.6609090909090907,
+                "tiol": 0,
+                "glicosidos": 0.949090909090909
+            },
+            "profile": {
+                "aroma": [],
+                "sabor": [
+                    {
+                        "text": "caramelo intenso, uva passa",
+                        "confidence": "alta"
+                    }
+                ],
+                "corpo": "alto",
+                "turbidez": "médio",
+                "espuma": "médio",
+                "atenuacao": "baixo",
+                "axes": {
+                    "corpo": 6.2,
+                    "maltosidade": 1.6,
+                    "cor": 3.6,
+                    "atenuacao": -2.96
+                },
+                "notas": [
+                    {
+                        "categoria": "sabor",
+                        "text": "caramelo intenso, uva passa",
+                        "confidence": "alta"
+                    }
+                ]
+            },
+            "controls": {
+                "maltAroma": {
+                    "value": 4.18,
+                    "section": "aroma",
+                    "max": 5
+                },
+                "hopAroma": {
+                    "value": 0.43,
+                    "section": "aroma",
+                    "max": 5
+                },
+                "fermentationAroma": {
+                    "value": 1,
+                    "section": "aroma",
+                    "max": 5
+                },
+                "color": {
+                    "value": 2,
+                    "section": "appearance",
+                    "max": 5
+                },
+                "clarity": {
+                    "value": 0,
+                    "section": "appearance",
+                    "max": 3
+                },
+                "foamFormation": {
+                    "value": 2.96,
+                    "section": "appearance",
+                    "max": 5
+                },
+                "retention": {
+                    "value": 2.25,
+                    "section": "appearance",
+                    "max": 4
+                },
+                "maltFlavor": {
+                    "value": 4.56,
+                    "section": "flavor",
+                    "max": 5
+                },
+                "hopFlavor": {
+                    "value": 0.38,
+                    "section": "flavor",
+                    "max": 5
+                },
+                "fermentationFlavor": {
+                    "value": 1,
+                    "section": "flavor",
+                    "max": 5
+                },
+                "bitterness": {
+                    "value": 5,
+                    "section": "flavor",
+                    "max": 5
+                },
+                "balance": {
+                    "value": 1.1,
+                    "section": "flavor",
+                    "max": 4
+                },
+                "finish": {
+                    "value": 2.31,
+                    "section": "flavor",
+                    "max": 4
+                },
+                "body": {
+                    "value": 4.23,
+                    "section": "mouthfeel",
+                    "max": 5
+                },
+                "carbonation": {
+                    "value": 2,
+                    "section": "mouthfeel",
+                    "max": 4
+                },
+                "warming": {
+                    "value": 1,
+                    "section": "mouthfeel",
+                    "max": 5
+                },
+                "creaminess": {
+                    "value": 0.92,
+                    "section": "mouthfeel",
+                    "max": 5
+                },
+                "astringency": {
+                    "value": 0,
+                    "section": "mouthfeel",
+                    "max": 5
+                }
+            },
+            "maltPerception": [
+                {
+                    "d": "Toffee",
+                    "forca": 1,
+                    "from": [
+                        "Carahell",
+                        "Carared"
+                    ]
+                },
+                {
+                    "d": "Caramelo",
+                    "forca": 1,
+                    "from": [
+                        "Carahell",
+                        "Carared"
+                    ]
+                },
+                {
+                    "d": "Ameixa/passa",
+                    "forca": 0.53,
+                    "from": [
+                        "Caramunich III"
+                    ]
+                },
+                {
+                    "d": "Mel",
+                    "forca": 0.5,
+                    "from": [
+                        "Carahell",
+                        "Carared"
+                    ]
+                }
+            ],
+            "ingredientDescriptors": [
+                {
+                    "d": "Mel",
+                    "family": "Malte",
+                    "intensity": 0.39999999999999997,
+                    "from": [
+                        "Honey"
+                    ]
+                }
+            ],
+            "hopAroma": [],
+            "ferment": null,
+            "maltMasked": [
+                "Melaço",
+                "Frutas secas",
+                "Açúcar mascavo"
+            ],
+            "hopMasked": [],
+            "hopSilenced": null,
+            "provenance": {
+                "maltRef": 4,
+                "maltFallback": 0,
+                "hopRef": 2,
+                "hopUnknown": 0,
+                "hopTimed": 2,
+                "hopTotal": 2,
+                "yeastRef": null,
+                "yeastConf": null,
+                "fermentSteps": 0,
+                "fermentTemp": false,
+                "water": true
+            },
+            "redTone": 3
+        },
+        "stochastic": {
+            "seed": 1,
+            "runs": 200,
+            "notes": [
+                {
+                    "categoria": "sabor",
+                    "text": "caramelo intenso, uva passa",
+                    "freq": 0.905,
+                    "word": "provável"
+                }
+            ],
+            "interactions": {
+                "malte-familia-caramelo": {
+                    "freq": 1,
+                    "word": "provável"
+                },
+                "cristal-caramel60": {
+                    "freq": 1,
+                    "word": "provável"
+                },
+                "cristal-caramel60:alta": {
+                    "freq": 0.905,
+                    "word": "provável"
+                },
+                "sacar-alta": {
+                    "freq": 0.87,
+                    "word": "provável"
+                },
+                "kettle-aroma": {
+                    "freq": 1,
+                    "word": "provável"
+                },
+                "fervura-curta-preserva-oleo": {
+                    "freq": 1,
+                    "word": "provável"
+                },
+                "cristal-caramel60:média": {
+                    "freq": 0.095,
+                    "word": "improvável"
+                }
+            },
+            "axes": {
+                "corpo": {
+                    "mean": 5.795017045505095,
+                    "word": "alto",
+                    "wordMin": "alto",
+                    "wordMax": "alto",
+                    "incerto": false
+                },
+                "maltosidade": {
+                    "mean": 1.6183516867023962,
+                    "word": "alto",
+                    "wordMin": "médio-alto",
+                    "wordMax": "alto",
+                    "incerto": true
+                },
+                "cor": {
+                    "mean": 3.490444896125062,
+                    "word": "alto",
+                    "wordMin": "alto",
+                    "wordMax": "alto",
+                    "incerto": false
+                },
+                "atenuacao": {
+                    "mean": -2.7228636664527675,
+                    "word": "baixo",
+                    "wordMin": "baixo",
+                    "wordMax": "médio-baixo",
+                    "incerto": true
+                }
+            },
+            "controls": {
+                "maltAroma": {
+                    "p10": 3.83,
+                    "p50": 4.13,
+                    "p90": 4.41,
+                    "mean": 4.13,
+                    "standardDeviation": 0.22,
+                    "section": "aroma",
+                    "max": 5,
+                    "saturado": null
+                },
+                "hopAroma": {
+                    "p10": 0.36,
+                    "p50": 0.44,
+                    "p90": 0.53,
+                    "mean": 0.44,
+                    "standardDeviation": 0.07,
+                    "section": "aroma",
+                    "max": 5,
+                    "saturado": null
+                },
+                "fermentationAroma": {
+                    "p10": 1,
+                    "p50": 1,
+                    "p90": 1,
+                    "mean": 1,
+                    "standardDeviation": 0,
+                    "section": "aroma",
+                    "max": 5,
+                    "saturado": null
+                },
+                "color": {
+                    "p10": 2,
+                    "p50": 2,
+                    "p90": 2,
+                    "mean": 1.97,
+                    "standardDeviation": 0.18,
+                    "section": "appearance",
+                    "max": 5,
+                    "saturado": null
+                },
+                "clarity": {
+                    "p10": 0,
+                    "p50": 0,
+                    "p90": 0,
+                    "mean": 0,
+                    "standardDeviation": 0,
+                    "section": "appearance",
+                    "max": 3,
+                    "saturado": "piso"
+                },
+                "foamFormation": {
+                    "p10": 2.79,
+                    "p50": 2.95,
+                    "p90": 2.99,
+                    "mean": 2.92,
+                    "standardDeviation": 0.09,
+                    "section": "appearance",
+                    "max": 5,
+                    "saturado": null
+                },
+                "retention": {
+                    "p10": 2.13,
+                    "p50": 2.24,
+                    "p90": 2.27,
+                    "mean": 2.22,
+                    "standardDeviation": 0.06,
+                    "section": "appearance",
+                    "max": 4,
+                    "saturado": null
+                },
+                "maltFlavor": {
+                    "p10": 4.14,
+                    "p50": 4.5,
+                    "p90": 4.82,
+                    "mean": 4.49,
+                    "standardDeviation": 0.26,
+                    "section": "flavor",
+                    "max": 5,
+                    "saturado": null
+                },
+                "hopFlavor": {
+                    "p10": 0.32,
+                    "p50": 0.4,
+                    "p90": 0.47,
+                    "mean": 0.4,
+                    "standardDeviation": 0.06,
+                    "section": "flavor",
+                    "max": 5,
+                    "saturado": null
+                },
+                "fermentationFlavor": {
+                    "p10": 1,
+                    "p50": 1,
+                    "p90": 1,
+                    "mean": 1,
+                    "standardDeviation": 0,
+                    "section": "flavor",
+                    "max": 5,
+                    "saturado": null
+                },
+                "bitterness": {
+                    "p10": 3.56,
+                    "p50": 4.93,
+                    "p90": 5,
+                    "mean": 4.53,
+                    "standardDeviation": 0.68,
+                    "section": "flavor",
+                    "max": 5,
+                    "saturado": null
+                },
+                "balance": {
+                    "p10": 0.93,
+                    "p50": 1.12,
+                    "p90": 1.66,
+                    "mean": 1.24,
+                    "standardDeviation": 0.38,
+                    "section": "flavor",
+                    "max": 4,
+                    "saturado": null
+                },
+                "finish": {
+                    "p10": 1.84,
+                    "p50": 2.27,
+                    "p90": 2.8,
+                    "mean": 2.29,
+                    "standardDeviation": 0.36,
+                    "section": "flavor",
+                    "max": 4,
+                    "saturado": null
+                },
+                "body": {
+                    "p10": 3.5,
+                    "p50": 4.12,
+                    "p90": 4.63,
+                    "mean": 4.09,
+                    "standardDeviation": 0.45,
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "saturado": null
+                },
+                "carbonation": {
+                    "p10": 2,
+                    "p50": 2,
+                    "p90": 2,
+                    "mean": 2,
+                    "standardDeviation": 0,
+                    "section": "mouthfeel",
+                    "max": 4,
+                    "saturado": null
+                },
+                "warming": {
+                    "p10": 0.5,
+                    "p50": 1,
+                    "p90": 1,
+                    "mean": 0.79,
+                    "standardDeviation": 0.25,
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "saturado": null
+                },
+                "creaminess": {
+                    "p10": 0.63,
+                    "p50": 0.97,
+                    "p90": 1.28,
+                    "mean": 0.96,
+                    "standardDeviation": 0.25,
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "saturado": null
+                },
+                "astringency": {
+                    "p10": 0,
+                    "p50": 0,
+                    "p90": 0,
+                    "mean": 0,
+                    "standardDeviation": 0,
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "saturado": "piso"
+                }
+            },
+            "descriptors": [
+                {
+                    "d": "Toffee",
+                    "familia": "Malte",
+                    "from": [
+                        "Carahell",
+                        "Carared"
+                    ],
+                    "chance": 1,
+                    "word": "provável",
+                    "p10": 3.83,
+                    "p50": 4.13,
+                    "p90": 4.41,
+                    "bins": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        191,
+                        9
+                    ]
+                },
+                {
+                    "d": "Caramelo",
+                    "familia": "Malte",
+                    "from": [
+                        "Carahell",
+                        "Carared"
+                    ],
+                    "chance": 1,
+                    "word": "provável",
+                    "p10": 3.83,
+                    "p50": 4.13,
+                    "p90": 4.41,
+                    "bins": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        191,
+                        9
+                    ]
+                },
+                {
+                    "d": "Ameixa/passa",
+                    "familia": "Malte",
+                    "from": [
+                        "Caramunich III"
+                    ],
+                    "chance": 0.87,
+                    "word": "provável",
+                    "p10": 1.97,
+                    "p50": 2.19,
+                    "p90": 2.44,
+                    "bins": [
+                        26,
+                        0,
+                        162,
+                        11,
+                        1,
+                        0
+                    ]
+                },
+                {
+                    "d": "Mel",
+                    "familia": "Malte",
+                    "from": [
+                        "Honey"
+                    ],
+                    "chance": 0.75,
+                    "word": "provável",
+                    "p10": 1.9,
+                    "p50": 2.07,
+                    "p90": 2.2,
+                    "bins": [
+                        50,
+                        1,
+                        149,
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "d": "Melaço",
+                    "familia": "Malte",
+                    "from": [
+                        "Caramunich III"
+                    ],
+                    "chance": 0.14,
+                    "word": "pouco provável",
+                    "p10": 1.41,
+                    "p50": 1.52,
+                    "p90": 2.16,
+                    "bins": [
+                        172,
+                        12,
+                        16,
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "d": "Frutas secas",
+                    "familia": "Malte",
+                    "from": [
+                        "Caramunich III"
+                    ],
+                    "chance": 0.14,
+                    "word": "pouco provável",
+                    "p10": 1.41,
+                    "p50": 1.52,
+                    "p90": 2.16,
+                    "bins": [
+                        172,
+                        12,
+                        16,
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "d": "Açúcar mascavo",
+                    "familia": "Malte",
+                    "from": [
+                        "Caramunich III"
+                    ],
+                    "chance": 0.14,
+                    "word": "pouco provável",
+                    "p10": 1.41,
+                    "p50": 1.52,
+                    "p90": 2.16,
+                    "bins": [
+                        172,
+                        12,
+                        16,
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            ]
+        },
+        "forecast": {
+            "schema": "beer-school-perception-forecast/v1",
+            "seed": 1,
+            "runs": 200,
+            "controls": [
+                {
+                    "key": "maltAroma",
+                    "section": "aroma",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.955,
+                        0.045
+                    ],
+                    "mode": 4,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 4,
+                        "mass": 0.955
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "hopAroma",
+                    "section": "aroma",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0.785,
+                        0.215,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 1,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "fermentationAroma",
+                    "section": "aroma",
+                    "max": 5,
+                    "labels": [
+                        "Limpa",
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": [
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 1,
+                    "interval80": {
+                        "lo": 1,
+                        "hi": 1,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "color",
+                    "section": "appearance",
+                    "max": 5,
+                    "labels": [
+                        "Palha",
+                        "Dourada",
+                        "Âmbar",
+                        "Cobre",
+                        "Marrom",
+                        "Preto"
+                    ],
+                    "distribution": [
+                        0,
+                        0.035,
+                        0.965,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 2,
+                    "interval80": {
+                        "lo": 2,
+                        "hi": 2,
+                        "mass": 0.965
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "clarity",
+                    "section": "appearance",
+                    "max": 3,
+                    "labels": [
+                        "Brilhante",
+                        "Leve turbidez",
+                        "Turva",
+                        "Opaca"
+                    ],
+                    "distribution": [
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 1,
+                        "ceiling": 0,
+                        "status": "floor"
+                    },
+                    "style": null
+                },
+                {
+                    "key": "foamFormation",
+                    "section": "appearance",
+                    "max": 5,
+                    "labels": [
+                        "Nenhuma",
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0
+                    ],
+                    "mode": 3,
+                    "interval80": {
+                        "lo": 3,
+                        "hi": 3,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "retention",
+                    "section": "appearance",
+                    "max": 4,
+                    "labels": [
+                        "Rápida",
+                        "Média curta",
+                        "Média",
+                        "Média alta",
+                        "Persistente"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        1,
+                        0,
+                        0
+                    ],
+                    "mode": 2,
+                    "interval80": {
+                        "lo": 2,
+                        "hi": 2,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "maltFlavor",
+                    "section": "flavor",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.495,
+                        0.505
+                    ],
+                    "mode": 5,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 5,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0.02,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "hopFlavor",
+                    "section": "flavor",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0.935,
+                        0.065,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 0.935
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "fermentationFlavor",
+                    "section": "flavor",
+                    "max": 5,
+                    "labels": [
+                        "Limpa",
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": [
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 1,
+                    "interval80": {
+                        "lo": 1,
+                        "hi": 1,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "bitterness",
+                    "section": "flavor",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        0.015,
+                        0.08,
+                        0.25,
+                        0.655
+                    ],
+                    "mode": 5,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 5,
+                        "mass": 0.905
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0.475,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "balance",
+                    "section": "flavor",
+                    "max": 4,
+                    "labels": [
+                        "Lupulado",
+                        "Leve lúpulo",
+                        "Equilibrado",
+                        "Leve malte",
+                        "Maltado"
+                    ],
+                    "distribution": [
+                        0,
+                        0.805,
+                        0.165,
+                        0.03,
+                        0
+                    ],
+                    "mode": 1,
+                    "interval80": {
+                        "lo": 1,
+                        "hi": 1,
+                        "mass": 0.805
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "finish",
+                    "section": "flavor",
+                    "max": 4,
+                    "labels": [
+                        "Seco",
+                        "Médio seco",
+                        "Médio",
+                        "Médio doce",
+                        "Doce"
+                    ],
+                    "distribution": [
+                        0,
+                        0.01,
+                        0.695,
+                        0.295,
+                        0
+                    ],
+                    "mode": 2,
+                    "interval80": {
+                        "lo": 2,
+                        "hi": 3,
+                        "mass": 0.99
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "body",
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "labels": [
+                        "Ralo",
+                        "Leve",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Cheio"
+                    ],
+                    "distribution": [
+                        0,
+                        0,
+                        0,
+                        0.1,
+                        0.71,
+                        0.19
+                    ],
+                    "mode": 4,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 5,
+                        "mass": 0.8999999999999999
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0.015,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "carbonation",
+                    "section": "mouthfeel",
+                    "max": 4,
+                    "labels": [
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": null,
+                    "mode": null,
+                    "interval80": null,
+                    "assumed": true,
+                    "censoring": null,
+                    "style": null
+                },
+                {
+                    "key": "warming",
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "labels": [
+                        "Nenhum",
+                        "Baixo",
+                        "Médio baixo",
+                        "Médio",
+                        "Médio alto",
+                        "Alto"
+                    ],
+                    "distribution": [
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 1,
+                    "interval80": {
+                        "lo": 1,
+                        "hi": 1,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "creaminess",
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "labels": [
+                        "Nenhuma",
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": [
+                        0.015,
+                        0.96,
+                        0.025,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 1,
+                    "interval80": {
+                        "lo": 1,
+                        "hi": 1,
+                        "mass": 0.96
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "style": null
+                },
+                {
+                    "key": "astringency",
+                    "section": "mouthfeel",
+                    "max": 5,
+                    "labels": [
+                        "Nenhuma",
+                        "Baixa",
+                        "Média baixa",
+                        "Média",
+                        "Média alta",
+                        "Alta"
+                    ],
+                    "distribution": [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 1
+                    },
+                    "assumed": false,
+                    "censoring": {
+                        "floor": 1,
+                        "ceiling": 0,
+                        "status": "floor"
+                    },
+                    "style": null
+                }
+            ],
+            "descriptors": [
+                {
+                    "key": "malte:caramelo",
+                    "id": "caramelo",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Caramelo",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Carahell",
+                        "Carared"
+                    ],
+                    "scenarioDistribution": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.955,
+                        0.045
+                    ],
+                    "presentCount": 200,
+                    "scenarioPresence": 1,
+                    "mode": 4,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 4,
+                        "mass": 0.955
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:toffee",
+                    "id": "toffee",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Toffee",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Carahell",
+                        "Carared"
+                    ],
+                    "scenarioDistribution": [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0.955,
+                        0.045
+                    ],
+                    "presentCount": 200,
+                    "scenarioPresence": 1,
+                    "mode": 4,
+                    "interval80": {
+                        "lo": 4,
+                        "hi": 4,
+                        "mass": 0.955
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:ameixa-passa",
+                    "id": "ameixa-passa",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Ameixa/passa",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Caramunich III"
+                    ],
+                    "scenarioDistribution": [
+                        0.13,
+                        0,
+                        0.81,
+                        0.055,
+                        0.005,
+                        0
+                    ],
+                    "presentCount": 174,
+                    "scenarioPresence": 0.87,
+                    "mode": 2,
+                    "interval80": {
+                        "lo": 2,
+                        "hi": 2,
+                        "mass": 0.81
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:mel",
+                    "id": "mel",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Mel",
+                    "group": "Base",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Honey",
+                        "Carahell",
+                        "Carared"
+                    ],
+                    "scenarioDistribution": [
+                        0.25,
+                        0.005,
+                        0.745,
+                        0,
+                        0,
+                        0
+                    ],
+                    "presentCount": 150,
+                    "scenarioPresence": 0.75,
+                    "mode": 2,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 2,
+                        "mass": 1
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:frutas-secas",
+                    "id": "frutas-secas",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Frutas secas",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Caramunich III"
+                    ],
+                    "scenarioDistribution": [
+                        0.86,
+                        0.06,
+                        0.08,
+                        0,
+                        0,
+                        0
+                    ],
+                    "presentCount": 28,
+                    "scenarioPresence": 0.14,
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 0.86
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:mascavo",
+                    "id": "mascavo",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Mascavo",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Caramunich III"
+                    ],
+                    "scenarioDistribution": [
+                        0.86,
+                        0.06,
+                        0.08,
+                        0,
+                        0,
+                        0
+                    ],
+                    "presentCount": 28,
+                    "scenarioPresence": 0.14,
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 0.86
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                },
+                {
+                    "key": "malte:melaco",
+                    "id": "melaco",
+                    "family": "Malte",
+                    "familyId": "malte",
+                    "label": "Melaço",
+                    "group": "Caramelo",
+                    "known": true,
+                    "unmapped": false,
+                    "modeled": true,
+                    "sources": [
+                        "Caramunich III"
+                    ],
+                    "scenarioDistribution": [
+                        0.86,
+                        0.06,
+                        0.08,
+                        0,
+                        0,
+                        0
+                    ],
+                    "presentCount": 28,
+                    "scenarioPresence": 0.14,
+                    "mode": 0,
+                    "interval80": {
+                        "lo": 0,
+                        "hi": 0,
+                        "mass": 0.86
+                    },
+                    "censoring": {
+                        "floor": 0,
+                        "ceiling": 0,
+                        "status": null
+                    },
+                    "calibration": "uncalibrated",
+                    "perceptionDistribution": null,
+                    "detection": null,
+                    "perceptionMode": null,
+                    "perceptionInterval80": null,
+                    "support": "alto",
+                    "typicalOfStyle": false
+                }
+            ],
+            "typicalDescriptors": [],
+            "completeness": {
+                "pct": 60,
+                "gaps": [
+                    {
+                        "key": "cepa",
+                        "label": "cepa de levedura",
+                        "frac": 0
+                    },
+                    {
+                        "key": "tempFerm",
+                        "label": "temperatura de fermentação",
+                        "frac": 0
+                    },
+                    {
+                        "key": "carbonatacao",
+                        "label": "carbonatação",
+                        "frac": 0
+                    }
+                ]
+            },
+            "calibrationVersion": "0.0.0-untrained"
+        },
+        "comparisons": [
+            {
+                "schema": "beer-school-sensory-counterfactual/v1",
+                "seed": 1,
+                "runs": 200,
+                "mutation": {
+                    "type": "fermentableAmount",
+                    "index": 0,
+                    "deltaPct": 10
+                },
+                "applied": {
+                    "type": "fermentableAmount",
+                    "index": 0,
+                    "field": "amountKg",
+                    "before": 0.5,
+                    "after": 0.55,
+                    "label": "Carahell"
+                },
+                "controlDeltas": [
+                    {
+                        "key": "maltAroma",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.02499999999999991,
+                            0.02500000000000001
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopAroma",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationAroma",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "color",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "clarity",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "foamFormation",
+                        "beforeMode": 3,
+                        "afterMode": 3,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "retention",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "maltFlavor",
+                        "beforeMode": 5,
+                        "afterMode": 5,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.12,
+                            0.12
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopFlavor",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationFlavor",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "bitterness",
+                        "beforeMode": 5,
+                        "afterMode": 5,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "balance",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "finish",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "body",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "carbonation",
+                        "beforeMode": null,
+                        "afterMode": null,
+                        "distributionDelta": null,
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "warming",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "creaminess",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "astringency",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    }
+                ],
+                "descriptorDeltas": [
+                    {
+                        "key": "malte:ameixa-passa",
+                        "family": "Malte",
+                        "label": "Ameixa/passa",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 174,
+                        "afterPresent": 174,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            -0.0050000000000000044,
+                            0.0049999999999999975,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:caramelo",
+                        "family": "Malte",
+                        "label": "Caramelo",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.02499999999999991,
+                            0.02500000000000001
+                        ]
+                    },
+                    {
+                        "key": "malte:frutas-secas",
+                        "family": "Malte",
+                        "label": "Frutas secas",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            -0.0049999999999999975,
+                            0.0050000000000000044,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mascavo",
+                        "family": "Malte",
+                        "label": "Mascavo",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            -0.0049999999999999975,
+                            0.0050000000000000044,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mel",
+                        "family": "Malte",
+                        "label": "Mel",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 150,
+                        "afterPresent": 150,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:melaco",
+                        "family": "Malte",
+                        "label": "Melaço",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            -0.0049999999999999975,
+                            0.0050000000000000044,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:toffee",
+                        "family": "Malte",
+                        "label": "Toffee",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.02499999999999991,
+                            0.02500000000000001
+                        ]
+                    }
+                ],
+                "descriptorChanges": []
+            },
+            {
+                "schema": "beer-school-sensory-counterfactual/v1",
+                "seed": 1,
+                "runs": 200,
+                "mutation": {
+                    "type": "hopAmount",
+                    "index": 1,
+                    "deltaPct": 10
+                },
+                "applied": {
+                    "type": "hopAmount",
+                    "index": 1,
+                    "field": "amountG",
+                    "before": 5,
+                    "after": 5.5,
+                    "label": "Mandarina Bavaria"
+                },
+                "controlDeltas": [
+                    {
+                        "key": "maltAroma",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopAroma",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            -0.09500000000000008,
+                            0.095,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationAroma",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "color",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "clarity",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "foamFormation",
+                        "beforeMode": 3,
+                        "afterMode": 3,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "retention",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "maltFlavor",
+                        "beforeMode": 5,
+                        "afterMode": 5,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopFlavor",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            -0.04500000000000004,
+                            0.045,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationFlavor",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "bitterness",
+                        "beforeMode": 5,
+                        "afterMode": 5,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "balance",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "finish",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "body",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "carbonation",
+                        "beforeMode": null,
+                        "afterMode": null,
+                        "distributionDelta": null,
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "warming",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "creaminess",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "astringency",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    }
+                ],
+                "descriptorDeltas": [
+                    {
+                        "key": "malte:ameixa-passa",
+                        "family": "Malte",
+                        "label": "Ameixa/passa",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 174,
+                        "afterPresent": 174,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:caramelo",
+                        "family": "Malte",
+                        "label": "Caramelo",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:frutas-secas",
+                        "family": "Malte",
+                        "label": "Frutas secas",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mascavo",
+                        "family": "Malte",
+                        "label": "Mascavo",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mel",
+                        "family": "Malte",
+                        "label": "Mel",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 150,
+                        "afterPresent": 150,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:melaco",
+                        "family": "Malte",
+                        "label": "Melaço",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 28,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:toffee",
+                        "family": "Malte",
+                        "label": "Toffee",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                ],
+                "descriptorChanges": []
+            },
+            {
+                "schema": "beer-school-sensory-counterfactual/v1",
+                "seed": 1,
+                "runs": 200,
+                "mutation": {
+                    "type": "mashTemperature",
+                    "index": 0,
+                    "deltaC": 1
+                },
+                "applied": {
+                    "type": "mashTemperature",
+                    "index": 0,
+                    "field": "temperatureC",
+                    "before": 70,
+                    "after": 71,
+                    "label": "Mostura"
+                },
+                "controlDeltas": [
+                    {
+                        "key": "maltAroma",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.015000000000000013,
+                            0.015
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopAroma",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            -0.05500000000000005,
+                            0.05500000000000002,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationAroma",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "color",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            -0.010000000000000002,
+                            0.010000000000000009,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "clarity",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "foamFormation",
+                        "beforeMode": 3,
+                        "afterMode": 3,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "retention",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "maltFlavor",
+                        "beforeMode": 5,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0.015000000000000013,
+                            -0.015000000000000013
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "hopFlavor",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            -0.0050000000000000044,
+                            0.0050000000000000044,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "fermentationFlavor",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "bitterness",
+                        "beforeMode": 5,
+                        "afterMode": 5,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            -0.009999999999999995,
+                            -0.0050000000000000044,
+                            0.015000000000000013
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "balance",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0.019999999999999907,
+                            -0.0050000000000000044,
+                            -0.015,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "finish",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "distributionDelta": [
+                            0,
+                            0.004999999999999999,
+                            0.04500000000000004,
+                            -0.04999999999999999,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "body",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0.0049999999999999906,
+                            0,
+                            -0.0050000000000000044
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "carbonation",
+                        "beforeMode": null,
+                        "afterMode": null,
+                        "distributionDelta": null,
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "warming",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "creaminess",
+                        "beforeMode": 1,
+                        "afterMode": 1,
+                        "distributionDelta": [
+                            0.015,
+                            -0.0050000000000000044,
+                            -0.010000000000000002,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    },
+                    {
+                        "key": "astringency",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        "insideBefore": null,
+                        "insideAfter": null,
+                        "insideDelta": null
+                    }
+                ],
+                "descriptorDeltas": [
+                    {
+                        "key": "malte:ameixa-passa",
+                        "family": "Malte",
+                        "label": "Ameixa/passa",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 174,
+                        "afterPresent": 173,
+                        "distributionDelta": [
+                            0.0050000000000000044,
+                            0,
+                            -0.030000000000000027,
+                            0.030000000000000006,
+                            -0.005,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:caramelo",
+                        "family": "Malte",
+                        "label": "Caramelo",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.015000000000000013,
+                            0.015
+                        ]
+                    },
+                    {
+                        "key": "malte:frutas-secas",
+                        "family": "Malte",
+                        "label": "Frutas secas",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 36,
+                        "distributionDelta": [
+                            -0.040000000000000036,
+                            0.015,
+                            0.024999999999999994,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mascavo",
+                        "family": "Malte",
+                        "label": "Mascavo",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 36,
+                        "distributionDelta": [
+                            -0.040000000000000036,
+                            0.015,
+                            0.024999999999999994,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:mel",
+                        "family": "Malte",
+                        "label": "Mel",
+                        "beforeMode": 2,
+                        "afterMode": 2,
+                        "beforePresent": 150,
+                        "afterPresent": 154,
+                        "distributionDelta": [
+                            -0.01999999999999999,
+                            -0.005,
+                            0.025000000000000022,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:melaco",
+                        "family": "Malte",
+                        "label": "Melaço",
+                        "beforeMode": 0,
+                        "afterMode": 0,
+                        "beforePresent": 28,
+                        "afterPresent": 36,
+                        "distributionDelta": [
+                            -0.040000000000000036,
+                            0.015,
+                            0.024999999999999994,
+                            0,
+                            0,
+                            0
+                        ]
+                    },
+                    {
+                        "key": "malte:toffee",
+                        "family": "Malte",
+                        "label": "Toffee",
+                        "beforeMode": 4,
+                        "afterMode": 4,
+                        "beforePresent": 200,
+                        "afterPresent": 200,
+                        "distributionDelta": [
+                            0,
+                            0,
+                            0,
+                            0,
+                            -0.015000000000000013,
+                            0.015
+                        ]
+                    }
+                ],
+                "descriptorChanges": []
+            }
+        ]
+    }
+}

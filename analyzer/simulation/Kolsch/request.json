@@ -1,0 +1,131 @@
+{
+    "draft": {
+        "id": "recipe-mryipkjb-3vqcp",
+        "name": "Kolsch",
+        "styleName": "Kölsch",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 108.2,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 0.85,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Heidelberg Wheat Malt",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 0.9,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Munich",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.9,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "German Tradition",
+                "alphaAcidPct": 6,
+                "amountG": 7,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Hallertauer Mittelfrueh",
+                "alphaAcidPct": 3.4,
+                "amountG": 4,
+                "use": "Fervura",
+                "timeMin": 15,
+                "temperatureC": 90
+            },
+            {
+                "name": "Hallertauer Mittelfrueh",
+                "alphaAcidPct": 3.4,
+                "amountG": 6,
+                "use": "Fervura",
+                "timeMin": 5,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Kolsch",
+                "attenuationPct": 75,
+                "amount": 300,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Step 1",
+                "temperatureC": 55,
+                "timeMin": 5
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 20
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 15
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 15.555556,
+                "days": 5
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 16.666667,
+                "days": 11
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

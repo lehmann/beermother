@@ -1,0 +1,122 @@
+{
+    "draft": {
+        "id": "recipe-mryioky1-0moke",
+        "name": "First try",
+        "styleName": "Red IPA",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 108,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Carahell",
+                "type": "Grão",
+                "yieldPct": 75.74,
+                "colorEbc": 16.1,
+                "amountKg": 0.5,
+                "when": "Fervura"
+            },
+            {
+                "name": "Carared",
+                "type": "Grão",
+                "yieldPct": 77.9,
+                "colorEbc": 31.1,
+                "amountKg": 0.35,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.15,
+                "when": "Fervura"
+            },
+            {
+                "name": "Honey",
+                "type": "Açúcar",
+                "yieldPct": 75,
+                "colorEbc": 0,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Mandarina Bavaria",
+                "alphaAcidPct": 8.5,
+                "amountG": 12,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Mandarina Bavaria",
+                "alphaAcidPct": 8.5,
+                "amountG": 5,
+                "use": "Fervura",
+                "timeMin": 5,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 60
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 22,
+                "days": 8
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 4,
+                "days": 1
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": [
+            {
+                "name": "Orange Peel, Sweet",
+                "amount": 1,
+                "unit": "mL",
+                "use": "Fervura",
+                "timeMin": 5
+            }
+        ]
+    },
+    "seed": 1
+}

@@ -1,0 +1,157 @@
+{
+    "draft": {
+        "id": "recipe-mryirdr6-81fmb",
+        "name": "Rubinfränkisch",
+        "styleName": "Schwarzbier",
+        "brewer": "Jamal",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 125.1,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Pilsner",
+                "type": "Grão",
+                "yieldPct": 82.23,
+                "colorEbc": 0.9,
+                "amountKg": 0.809,
+                "when": "Fervura"
+            },
+            {
+                "name": "Melanoidin",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 39.1,
+                "amountKg": 0.072,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Chocolate",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 617.3,
+                "amountKg": 0.045,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.045,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Spalter",
+                "alphaAcidPct": 4.5,
+                "amountG": 3.6,
+                "use": "First wort",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Tettnang",
+                "alphaAcidPct": 4.5,
+                "amountG": 3.6,
+                "use": "First wort",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Spalter",
+                "alphaAcidPct": 4.5,
+                "amountG": 4.6,
+                "use": "Fervura",
+                "timeMin": 10,
+                "temperatureC": 90
+            },
+            {
+                "name": "Tettnang",
+                "alphaAcidPct": 4.5,
+                "amountG": 4.6,
+                "use": "Fervura",
+                "timeMin": 10,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Fermolager W",
+                "attenuationPct": 84,
+                "amount": 300,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Hidratação",
+                "temperatureC": 55,
+                "timeMin": 10
+            },
+            {
+                "name": "Beta Amilase",
+                "temperatureC": 65,
+                "timeMin": 10
+            },
+            {
+                "name": "Alfa Amilase",
+                "temperatureC": 71,
+                "timeMin": 20
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 77,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 10,
+                "days": 9
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 16,
+                "days": 2
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 0,
+                "days": 14
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

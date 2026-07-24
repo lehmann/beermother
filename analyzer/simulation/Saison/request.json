@@ -1,0 +1,139 @@
+{
+    "draft": {
+        "id": "recipe-mryirjy4-kyf0b",
+        "name": "Saison",
+        "styleName": "Imported style",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 120.3,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Pilsner",
+                "type": "Grão",
+                "yieldPct": 75.45,
+                "colorEbc": 0.9,
+                "amountKg": 0.7,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Heidelberg Wheat Malt",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 0.9,
+                "amountKg": 0.2,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Munich",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 8.9,
+                "amountKg": 0.13,
+                "when": "Fervura"
+            },
+            {
+                "name": "Sugar, Table (Sucrose)",
+                "type": "Açúcar",
+                "yieldPct": 100,
+                "colorEbc": 0,
+                "amountKg": 0.05,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Premiant",
+                "alphaAcidPct": 8.7,
+                "amountG": 4.7,
+                "use": "First wort",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "East Kent Goldings (EKG)",
+                "alphaAcidPct": 6.1,
+                "amountG": 3.5,
+                "use": "Fervura",
+                "timeMin": 20,
+                "temperatureC": 90
+            },
+            {
+                "name": "East Kent Goldings (EKG)",
+                "alphaAcidPct": 6.1,
+                "amountG": 8.8,
+                "use": "Fervura",
+                "timeMin": 0,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "SafBrew DW-17",
+                "attenuationPct": 98,
+                "amount": 200,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 15
+            },
+            {
+                "name": "Step 2",
+                "temperatureC": 72,
+                "timeMin": 15
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 20,
+                "days": 0
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 26,
+                "days": 7
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 8,
+                "days": 21
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

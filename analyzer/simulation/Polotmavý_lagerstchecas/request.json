@@ -1,0 +1,136 @@
+{
+    "draft": {
+        "id": "recipe-mryiqusq-uvfe6",
+        "name": "Polotmavý #lagerstchecas",
+        "styleName": "Czech Amber Lager",
+        "brewer": "Jamal",
+        "batchVolumeL": 25,
+        "boilTimeMin": 90,
+        "mashEfficiencyPct": 77,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.1,
+        "evaporationPct": 4.7,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Malte Pale Ale",
+                "type": "Grão",
+                "yieldPct": 82.23,
+                "colorEbc": 2.5,
+                "amountKg": 3.11,
+                "when": "Fervura"
+            },
+            {
+                "name": "Munich II",
+                "type": "Grão",
+                "yieldPct": 82.23,
+                "colorEbc": 10,
+                "amountKg": 2.49,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.62,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 4.3,
+                "amountG": 30,
+                "use": "Fervura",
+                "timeMin": 90,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 4.3,
+                "amountG": 30,
+                "use": "Fervura",
+                "timeMin": 50,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 4.3,
+                "amountG": 40,
+                "use": "Fervura",
+                "timeMin": 20,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Bohemian Lager Yeast",
+                "attenuationPct": 75,
+                "amount": 200,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Decocção reversa 50% - Sacarificação",
+                "temperatureC": 70,
+                "timeMin": 10
+            },
+            {
+                "name": "Decocção reversa 50%",
+                "temperatureC": 100,
+                "timeMin": 30
+            },
+            {
+                "name": "Sacarificação",
+                "temperatureC": 70,
+                "timeMin": 60
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 10,
+                "days": 7
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 0,
+                "days": 30
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 6.3
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 1.1
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 1.1
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

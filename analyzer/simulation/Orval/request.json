@@ -1,0 +1,195 @@
+{
+    "draft": {
+        "id": "recipe-mryiq4yr-0znac",
+        "name": "Orval",
+        "styleName": "Saison",
+        "brewer": "Jamal",
+        "batchVolumeL": 5,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 127.5,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 31.4,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Pale Ale",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 3,
+                "amountKg": 0.385,
+                "when": "Fervura"
+            },
+            {
+                "name": "Pilsen MD",
+                "type": "Grão",
+                "yieldPct": 74.78,
+                "colorEbc": 0.6,
+                "amountKg": 0.239,
+                "when": "Fervura"
+            },
+            {
+                "name": "Candi Syrup, D-45",
+                "type": "Açúcar",
+                "yieldPct": 69.57,
+                "colorEbc": 59.3,
+                "amountKg": 0.236,
+                "when": "Fervura"
+            },
+            {
+                "name": "Cara 20 MD",
+                "type": "Grão",
+                "yieldPct": 67.88,
+                "colorEbc": 12.4,
+                "amountKg": 0.077,
+                "when": "Fervura"
+            },
+            {
+                "name": "Munich",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 6,
+                "amountKg": 0.077,
+                "when": "Fervura"
+            },
+            {
+                "name": "Cara 120 MD",
+                "type": "Grão",
+                "yieldPct": 69.56,
+                "colorEbc": 81,
+                "amountKg": 0.0075,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Hallertauer Hersbrucker",
+                "alphaAcidPct": 4,
+                "amountG": 6.9,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 90
+            },
+            {
+                "name": "Styrian Gold",
+                "alphaAcidPct": 4,
+                "amountG": 3.4,
+                "use": "Fervura",
+                "timeMin": 60,
+                "temperatureC": 90
+            },
+            {
+                "name": "Hallertauer Hersbrucker",
+                "alphaAcidPct": 4,
+                "amountG": 3.9,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Styrian Gold",
+                "alphaAcidPct": 4,
+                "amountG": 1.9,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Styrian Gold",
+                "alphaAcidPct": 4,
+                "amountG": 2.5,
+                "use": "Dry hop",
+                "timeMin": 15,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Bastogne Belgian Ale",
+                "attenuationPct": 80,
+                "amount": 300,
+                "unit": "mL"
+            },
+            {
+                "name": "Brettanomyces Lambicus",
+                "attenuationPct": 84,
+                "amount": 300,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 62,
+                "timeMin": 40
+            },
+            {
+                "name": "Step 2",
+                "temperatureC": 66,
+                "timeMin": 30
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 72,
+                "timeMin": 30
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 78,
+                "timeMin": 10
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 18,
+                "days": 0
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 22,
+                "days": 5
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 18,
+                "days": 4
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": [
+            {
+                "name": "Whirlfloc",
+                "amount": 0.156,
+                "unit": "g",
+                "use": "Fervura",
+                "timeMin": 10
+            }
+        ]
+    },
+    "seed": 1
+}

@@ -1,0 +1,92 @@
+{
+    "draft": {
+        "id": "recipe-mryipeov-xuouz",
+        "name": "Keptinis",
+        "styleName": "Historical Beer",
+        "brewer": "Andre Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 108.2,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 1,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Celeia",
+                "alphaAcidPct": 3,
+                "amountG": 6.8,
+                "use": "Fervura",
+                "timeMin": 15,
+                "temperatureC": 90
+            },
+            {
+                "name": "Ariana",
+                "alphaAcidPct": 10.2,
+                "amountG": 4.5,
+                "use": "Fervura",
+                "timeMin": 15,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Levedura",
+                "attenuationPct": 84,
+                "amount": 200,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 72,
+                "timeMin": 30
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 20,
+                "days": 4
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

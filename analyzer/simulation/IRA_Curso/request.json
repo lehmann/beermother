@@ -1,0 +1,131 @@
+{
+    "draft": {
+        "id": "recipe-mrz3zhj7-u8d2a",
+        "name": "IRA Curso",
+        "styleName": "Irish Red Ale",
+        "brewer": "Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 120,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 31.4,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Ale",
+                "type": "Grão",
+                "yieldPct": 80.13,
+                "colorEbc": 3.3,
+                "amountKg": 0.632,
+                "when": "Fervura"
+            },
+            {
+                "name": "Vienna Malt",
+                "type": "Grão",
+                "yieldPct": 77.35,
+                "colorEbc": 6,
+                "amountKg": 0.1,
+                "when": "Fervura"
+            },
+            {
+                "name": "Carared",
+                "type": "Grão",
+                "yieldPct": 77.9,
+                "colorEbc": 31.1,
+                "amountKg": 0.087,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.08,
+                "when": "Fervura"
+            },
+            {
+                "name": "BlackSwan Roasted Barley",
+                "type": "Grão",
+                "yieldPct": 73.1,
+                "colorEbc": 823.6,
+                "amountKg": 0.01,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "East Kent Goldings (EKG)",
+                "alphaAcidPct": 7.1,
+                "amountG": 5.4,
+                "use": "First wort",
+                "timeMin": 60,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "SafAle English Ale",
+                "attenuationPct": 75,
+                "amount": 100,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Step 1",
+                "temperatureC": 62,
+                "timeMin": 15
+            },
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 15
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 17,
+                "days": 3
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 21,
+                "days": 2
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 10,
+                "days": 2
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

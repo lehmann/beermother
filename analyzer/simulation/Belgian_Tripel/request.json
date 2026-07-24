@@ -1,0 +1,134 @@
+{
+    "draft": {
+        "id": "recipe-mryimhwt-cpgw4",
+        "name": "Belgian Tripel",
+        "styleName": "Belgian Tripel",
+        "brewer": "André Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 30,
+        "mashEfficiencyPct": 100,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 35.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Swaen Pilsner",
+                "type": "Grão",
+                "yieldPct": 80,
+                "colorEbc": 1.2,
+                "amountKg": 1.4,
+                "when": "Fervura"
+            },
+            {
+                "name": "Sugar, Table (Sucrose)",
+                "type": "Açúcar",
+                "yieldPct": 100,
+                "colorEbc": 0,
+                "amountKg": 0.2,
+                "when": "Fervura"
+            },
+            {
+                "name": "BEST Heidelberg Wheat Malt",
+                "type": "Grão",
+                "yieldPct": 75,
+                "colorEbc": 0.9,
+                "amountKg": 0.18,
+                "when": "Fervura"
+            },
+            {
+                "name": "Candi Sugar, Dark",
+                "type": "Açúcar",
+                "yieldPct": 78.3,
+                "colorEbc": 371,
+                "amountKg": 0.01,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Hallertau Blanc",
+                "alphaAcidPct": 10.5,
+                "amountG": 7,
+                "use": "Fervura",
+                "timeMin": 30,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.75,
+                "amountG": 7,
+                "use": "Fervura",
+                "timeMin": 15,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.75,
+                "amountG": 5,
+                "use": "Fervura",
+                "timeMin": 5,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Bread yeast",
+                "attenuationPct": 84,
+                "amount": 300,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Protein",
+                "temperatureC": 53,
+                "timeMin": 10
+            },
+            {
+                "name": "Sacc",
+                "temperatureC": 71,
+                "timeMin": 20
+            },
+            {
+                "name": "Mash out",
+                "temperatureC": 75.6,
+                "timeMin": 5
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 17.8,
+                "days": 3
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}

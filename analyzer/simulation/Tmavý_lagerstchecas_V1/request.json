@@ -1,0 +1,131 @@
+{
+    "draft": {
+        "id": "recipe-mrz3jmsf-0f5yp",
+        "name": "Tmavý #lagerstchecas V1",
+        "styleName": "Czech Dark Lager",
+        "brewer": "Jamal",
+        "batchVolumeL": 25,
+        "boilTimeMin": 60,
+        "mashEfficiencyPct": 80.3,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.1,
+        "evaporationPct": 3.1,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Malte Pilsen",
+                "type": "Grão",
+                "yieldPct": 82.8,
+                "colorEbc": 0.9,
+                "amountKg": 4.53,
+                "when": "Fervura"
+            },
+            {
+                "name": "Caramunich III",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 94.6,
+                "amountKg": 0.85,
+                "when": "Fervura"
+            },
+            {
+                "name": "Carafa Special III",
+                "type": "Grão",
+                "yieldPct": 75.74,
+                "colorEbc": 961.1,
+                "amountKg": 0.28,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 4.3,
+                "amountG": 50,
+                "use": "Fervura",
+                "timeMin": 90,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 4.3,
+                "amountG": 30,
+                "use": "Fervura",
+                "timeMin": 20,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Bohemian Lager Yeast",
+                "attenuationPct": 69,
+                "amount": 200,
+                "unit": "un."
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 70,
+                "timeMin": 30
+            },
+            {
+                "name": "Decocção Schmitz",
+                "temperatureC": 100,
+                "timeMin": 30
+            },
+            {
+                "name": "Segunda conversão (com enzima)",
+                "temperatureC": 90,
+                "timeMin": 20
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 10,
+                "days": 7
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 0,
+                "days": 30
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 6
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 1.1
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 1
+            }
+        ],
+        "miscs": [
+            {
+                "name": "amilase termo estável",
+                "amount": 5,
+                "unit": "g",
+                "use": "Mostura",
+                "timeMin": 0
+            }
+        ]
+    },
+    "seed": 1
+}

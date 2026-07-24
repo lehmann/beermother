@@ -1,0 +1,118 @@
+{
+    "draft": {
+        "id": "recipe-mryimr2d-t5t5h",
+        "name": "Bohemian curso versão moderna",
+        "styleName": "Bohemian-Style Pilsener",
+        "brewer": "Lehmann",
+        "batchVolumeL": 5,
+        "boilTimeMin": 80,
+        "mashEfficiencyPct": 120,
+        "manualFg": "",
+        "equipmentProfileName": "",
+        "trubLossPct": 0.5,
+        "evaporationPct": 29.4,
+        "whirlpoolNoChillMin": 5,
+        "whirlpoolTemperatureC": 90,
+        "heatingRateCMin": 1.5,
+        "fermentables": [
+            {
+                "name": "Odd Amphibian – Lager/Pilsner Malt",
+                "type": "Grão",
+                "yieldPct": 77.83,
+                "colorEbc": 0.9,
+                "amountKg": 0.96,
+                "when": "Fervura"
+            },
+            {
+                "name": "Melanoidin",
+                "type": "Grão",
+                "yieldPct": 80.07,
+                "colorEbc": 39.1,
+                "amountKg": 0.04,
+                "when": "Fervura"
+            }
+        ],
+        "hops": [
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.08,
+                "amountG": 7.9,
+                "use": "First wort",
+                "timeMin": 80,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.08,
+                "amountG": 7.3,
+                "use": "Fervura",
+                "timeMin": 80,
+                "temperatureC": 90
+            },
+            {
+                "name": "Saaz",
+                "alphaAcidPct": 3.08,
+                "amountG": 9.2,
+                "use": "Fervura",
+                "timeMin": 25,
+                "temperatureC": 90
+            }
+        ],
+        "yeasts": [
+            {
+                "name": "Lager-BF16",
+                "attenuationPct": 82,
+                "amount": 200,
+                "unit": "mL"
+            }
+        ],
+        "mash": [
+            {
+                "name": "Mostura",
+                "temperatureC": 71,
+                "timeMin": 30
+            }
+        ],
+        "fermentation": [
+            {
+                "name": "Inoculação",
+                "temperatureC": 8,
+                "days": 11
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 12,
+                "days": 4
+            },
+            {
+                "name": "Primária",
+                "temperatureC": 2,
+                "days": 30
+            }
+        ],
+        "baseWaterProfile": {
+            "calciumPpm": 10,
+            "magnesiumPpm": 4,
+            "sodiumPpm": 4,
+            "chloridePpm": 12,
+            "sulfatePpm": 10,
+            "bicarbonatePpm": 30
+        },
+        "salts": [
+            {
+                "formula": "CaCl2",
+                "amountG": 0
+            },
+            {
+                "formula": "CaSO4",
+                "amountG": 0
+            },
+            {
+                "formula": "MgSO4",
+                "amountG": 0
+            }
+        ],
+        "miscs": []
+    },
+    "seed": 1
+}
