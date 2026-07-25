@@ -1,0 +1,2 @@
+id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
+recipe-mryin0uh-ni129,ChatIPA,American Pale Ale,Andre Lehmann,5,60,115.3,,,0.5,31.4,5,90,1.5,10,4,4,12,10,30

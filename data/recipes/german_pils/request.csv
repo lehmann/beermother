@@ -1,0 +1,2 @@
+id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
+recipe-mryhnq7g-9h3e8,PFC - German Pils,German Pils,Jamal,21,60,67.1,,,0.119,12.5,5,90,1.5,10,4,4,12,10,30

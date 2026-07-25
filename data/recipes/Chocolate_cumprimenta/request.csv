@@ -1,0 +1,2 @@
+id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
+recipe-mryincrm-a5665,Chocolate cumprimenta,Winter Seasonal Beer,Andre Lehmann,5,30,118.8,,,0.5,35.1,5,90,1.5,10,4,4,12,10,30

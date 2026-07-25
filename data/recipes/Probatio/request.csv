@@ -1,0 +1,2 @@
+id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
+recipe-mryir0ys-0tbln,Probatio,Imperial Stout,Lehmann,4,30,138.1,,,0.5,39.5,5,90,1.5,10,4,4,12,10,30
