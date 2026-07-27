@@ -1,1 +1,357 @@
-import{n as r,fmt as m,mashTimerItems as h,boilTimerItems as b,calculate as v,additionCountLabel as g,formatIngredientAmount as M,effectiveHeatingRateCMin as T}from"./engine.js";import{app as s}from"./state.js";import{toast as y}from"./ui.js";import{t as n,tEngine as l}from"./i18n.js";export const timer={state:null,interval:null,openContext:"",onTick:null};export function timerItemsForContext(t){if(!s.session)return[];const e=v(s.session),a=T(e.props,e.recipe);return t==="mash"?h(e.recipe.mash,a):t==="boil"?b(e):[]}export function startTimer(t,e){primeTimerAudio();const a=Math.max(0,r(e.durationMin))*60*1e3;timer.state={context:t,itemId:e.id,label:e.label,detail:e.detail||"",phase:e.phase||t,eventTimeLabel:e.eventTimeLabel||"",eventType:e.eventType||"",eventCount:r(e.eventCount),eventActionLabel:e.eventActionLabel||"",eventSummaryLabel:e.eventSummaryLabel||"",eventTargetLabel:e.eventTargetLabel||"",infoLabel:e.infoLabel||"",additions:Array.isArray(e.additions)?e.additions:[],withReading:!!e.withReading,durationMs:a,stageRemainingMs:Number.isFinite(Number(e.stageRemainingMin))?e.stageRemainingMin*60*1e3:a,targetStageRemainingMs:Number.isFinite(Number(e.targetStageRemainingMin))?e.targetStageRemainingMin*60*1e3:0,boilRemainingMs:Number.isFinite(Number(e.boilRemainingMin))?e.boilRemainingMin*60*1e3:0,targetBoilRemainingMs:Number.isFinite(Number(e.targetBoilRemainingMin))?e.targetBoilRemainingMin*60*1e3:0,startedAt:Date.now(),endsAt:Date.now()+a,pausedRemainingMs:0,status:a?"running":"done"},recordTimerStart(t,e),startTimerTicker(),c()}export function moveTimerStep(t,e){const a=timerItemsForContext(t);if(!a.length)return;if(!timer.state||timer.state.context!==t){startTimer(t,e<0?a[a.length-1]:a[0]);return}if(e>0&&timer.state.status!=="done"){completeTimerSegment();return}const i=currentTimerItemIndex(a),o=i===-1?e>0?-1:a.length:i,f=Math.min(a.length-1,Math.max(0,o+e));f!==i&&startTimer(t,a[f])}export function currentTimerItemIndex(t){if(!timer.state)return-1;const e=t.findIndex(o=>o.id===timer.state.itemId);if(e>=0)return e;const a=timer.state.phase||"boil",i=r(timer.state.targetStageRemainingMs,timer.state.targetBoilRemainingMs)/6e4;return t.findIndex(o=>o.phase===a&&Math.abs(r(o.targetStageRemainingMin,o.targetBoilRemainingMin)-i)<.02)}export function completeTimerSegment(){timer.state&&(timer.state.status="done",timer.state.pausedRemainingMs=0,timer.state.endsAt=Date.now(),c())}export function toggleTimerControls(t){timer.openContext=timer.openContext===t?"":t,c()}export function startFirstTimer(t){const e=timerItemsForContext(t),a=["boil","mash"].includes(t)?e[0]:e.find(i=>r(i.durationMin)>0);a&&startTimer(t,a)}export function toggleTimerPause(t){if(!timer.state||timer.state.context!==t){startFirstTimer(t);return}timer.state.status==="running"?pauseTimer():timer.state.status==="paused"?resumeTimer():timer.state.status==="done"&&resumeFromHold(t)}export function resumeFromHold(t){const e=timerItemsForContext(t);if(!e.length)return;const a=timer.state&&timer.state.context===t&&timer.state.status==="done"?timer.state:null;a&&recordTimerConfirmation(a);const i=currentTimerItemIndex(e),o=i>=0?e[i+1]:e[0];if(o){startTimer(t,o);return}x(a)}function x(t){const e=t?.eventType==="mash-end"?n("Mostura finalizada."):t?.eventType==="hopstand-end"?n("Hopstand finalizado."):t?.eventType==="boil-end"?n("Fervura finalizada."):"";timer.state=null,timer.openContext="",c(),e&&y(e)}export function pauseTimer(){!timer.state||timer.state.status!=="running"||(timer.state.pausedRemainingMs=timerRemainingMs(),timer.state.status="paused",delete timer.state.endsAt,c())}export function resumeTimer(){if(!timer.state||timer.state.status!=="paused")return;const t=Math.max(0,r(timer.state.pausedRemainingMs));timer.state.endsAt=Date.now()+t,timer.state.status="running",timer.state.pausedRemainingMs=0,startTimerTicker(),c()}export function timerRemainingMs(){return timer.state?timer.state.status==="paused"?Math.max(0,r(timer.state.pausedRemainingMs)):Math.max(0,r(timer.state.endsAt)-Date.now()):0}export function activeTimerStageRemainingMs(){if(!timer.state)return 0;if(timer.state.status==="done")return Math.max(0,r(timer.state.targetStageRemainingMs,timer.state.targetBoilRemainingMs));const t=Math.max(0,r(timer.state.durationMs)-timerRemainingMs());return Math.max(0,r(timer.state.stageRemainingMs,timer.state.boilRemainingMs)-t)}export function timerDoneActionLabel(){return timer.state?.eventActionLabel||"Confirmar etapa"}export function syncTimerDone(){const t=timerRemainingMs();timer.state&&timer.state.status==="running"&&t<=0&&(timer.state.status="done",timer.state.pausedRemainingMs=0,timer.state.endsAt=Date.now(),R()),p()}let u=null,d=null;export function primeTimerAudio(){try{const t=window.AudioContext||window.webkitAudioContext;if(!t)return;u=u||new t,u.state==="suspended"&&u.resume()}catch{u=null}}function R(){k();try{navigator.vibrate&&navigator.vibrate([220,90,220,90,320])}catch{}}function k(){if(u)try{const t=u.currentTime;[0,.28,.56].forEach((e,a)=>{const i=u.createOscillator(),o=u.createGain();i.type="sine",i.frequency.value=a===2?1175:880,o.gain.setValueAtTime(1e-4,t+e),o.gain.exponentialRampToValueAtTime(.32,t+e+.02),o.gain.exponentialRampToValueAtTime(1e-4,t+e+.22),i.connect(o).connect(u.destination),i.start(t+e),i.stop(t+e+.24)})}catch{}}async function p(){const t=!!(timer.state&&timer.state.status==="running");try{t&&!d&&navigator.wakeLock?.request&&(d=await navigator.wakeLock.request("screen"),d.addEventListener?.("release",()=>{d=null})),!t&&d&&(await d.release(),d=null)}catch{d=null}}typeof document<"u"&&document.addEventListener&&document.addEventListener("visibilitychange",()=>{document.visibilityState==="visible"&&p()});export function startTimerTicker(){timer.interval||(timer.interval=window.setInterval(()=>{c(),(!timer.state||timer.state.status!=="running")&&(window.clearInterval(timer.interval),timer.interval=null)},1e3))}function c(){syncTimerDone(),typeof timer.onTick=="function"&&timer.onTick()}export function formatTimerClock(t){const e=Math.max(0,Math.ceil(r(t)/1e3)),a=Math.floor(e/60),i=e%60;return`${String(a).padStart(2,"0")}:${String(i).padStart(2,"0")}`}export function recordTimerStart(t,e={}){if(!(!s.session||!e)){if(t==="mash"){const i=hasTimerEvent("mash-start");recordTimerEvent({key:i?`mash-stage-${e.id}-${Date.now()}`:"mash-start",stage:n("Mostura"),event:i?n("In\xEDcio da etapa"):n("In\xEDcio da mostura"),detail:`${l(e.label)||n("Mostura")} \xB7 ${e.detail||"-"} \xB7 ${m(r(e.durationMin),0)} min`});return}if(t==="boil"){const i=e.phase||"boil";i==="boil"&&!hasTimerEvent("boil-start")&&recordTimerEvent({key:"boil-start",stage:n("Fervura"),event:n("In\xEDcio da fervura"),detail:`${m(r(e.boilRemainingMin,e.stageRemainingMin||e.durationMin),0)} min`}),i==="hopstand"&&!hasTimerEvent("hopstand-start")&&recordTimerEvent({key:"hopstand-start",stage:n("Hopstand"),event:n("In\xEDcio do hopstand"),detail:`${m(r(e.stageRemainingMin,e.durationMin),0)} min`})}}}export function recordTimerConfirmation(t={}){if(s.session){if(t.context==="mash"){t.eventType==="mash-end"&&recordTimerEvent({key:`mash-end-${Date.now()}`,stage:n("Mostura"),event:n("Fim da mostura"),detail:n("Mostura finalizada")});return}if(t.context==="boil"){if(t.eventType==="addition"){const a=t.phase==="hopstand"?n("Hopstand"):n("Fervura"),i=timerAdditionsDetail(t.additions||[]);recordTimerEvent({key:`addition-${t.phase||"boil"}-${t.eventTimeLabel}-${Date.now()}`,stage:a,event:n("Adi\xE7\xE3o confirmada"),detail:[t.eventTimeLabel||"-",r(t.eventCount)?l(g(r(t.eventCount))):"",i].filter(Boolean).join(" \xB7 ")}),w(t.additions||[]);return}if(t.eventType==="boil-end"){recordTimerEvent({key:`boil-end-${Date.now()}`,stage:n("Fervura"),event:n("Fim da fervura"),detail:n("Fervura finalizada")});return}t.eventType==="hopstand-end"&&recordTimerEvent({key:`hopstand-end-${Date.now()}`,stage:n("Hopstand"),event:n("Fim do hopstand"),detail:n("Hopstand finalizado")})}}}export function recordTimerEvent(t={}){const e=s.session;e&&(e.timerEvents=e.timerEvents||[],!(t.key&&e.timerEvents.some(a=>a.key===t.key))&&(e.timerEvents.push({at:new Date().toISOString(),key:t.key||`timer-${Date.now()}`,stage:t.stage||"-",event:t.event||"-",detail:t.detail||"-"}),typeof s.requestRender=="function"&&s.requestRender()))}export function hasTimerEvent(t){return!!(s.session&&(s.session.timerEvents||[]).some(e=>e.key===t))}function w(t=[]){const e=s.session;if(!e)return;e.additionChecks=e.additionChecks||{};let a=!1;t.forEach(i=>{if(!i||!i.id)return;const o=`${i.kind||"misc"}:${i.id}`;e.additionChecks[o]||(e.additionChecks[o]=new Date().toISOString(),a=!0)}),a&&s.requestRender()}export function timerAdditionsDetail(t=[]){return t.map(e=>`${e.name||n("Insumo")} ${M(e.amount,e.unit)}`).join("; ")}export function timerRunningSummaryParts(t={}){return t.context==="mash"||t.phase==="mash"?{action:l(t.label)||n("Mostura"),target:t.detail||"-",info:""}:t.eventType==="boil-end"?{action:n("Fim da"),target:n("fervura")}:t.eventType==="hopstand-end"?{action:n("Fim do"),target:n("hopstand")}:{action:n("Pr\xF3xima adi\xE7\xE3o"),target:t.eventTimeLabel||"-"}}export function timerIdleMashSummaryParts(t={}){return{action:n("Iniciar mostura"),target:t.detail||"-",info:formatTimerClock(r(t.durationMin)*6e4)}}export function timerIdleBoilSummaryParts(t={}){const e=r(t.boilRemainingMin,t.stageRemainingMin||t.durationMin);return{action:n("Iniciar fervura"),target:`${m(e,0)} min`,info:formatTimerClock(e*6e4)}}export function timerDoneSummaryParts(t={}){return t.eventType==="mash-next"?{action:l(t.eventActionLabel||"Confirmar etapa"),target:l(t.eventTargetLabel||t.eventTimeLabel||"-"),info:l(t.infoLabel||"agora")}:t.eventType==="mash-end"?{action:n("Finalizar"),target:n("mostura"),info:n("agora")}:t.eventType==="boil-end"?/hopstand/i.test(t.eventActionLabel||"")?{action:n("Iniciar"),target:n("hopstand"),info:n("agora")}:{action:n("Finalizar"),target:n("fervura"),info:n("agora")}:t.eventType==="hopstand-end"?{action:n("Finalizar"),target:n("hopstand"),info:n("agora")}:{action:n("Confirmar adi\xE7\xE3o"),target:t.eventTimeLabel||"-",info:r(t.eventCount)?l(g(r(t.eventCount))):n("agora")}}
+import {
+    n as r,
+    fmt as m,
+    mashTimerItems as h,
+    boilTimerItems as b,
+    calculate as v,
+    additionCountLabel as g,
+    formatIngredientAmount as M,
+    effectiveHeatingRateCMin as T
+} from "./engine.js";
+import {
+    app as s
+} from "./state.js";
+import {
+    toast as y
+} from "./ui.js";
+import {
+    t as n,
+    tEngine as l
+} from "./i18n.js";
+export const timer = {
+    state: null,
+    interval: null,
+    openContext: "",
+    onTick: null
+};
+export function timerItemsForContext(t) {
+    if (!s.session) return [];
+    const e = v(s.session),
+        a = T(e.props, e.recipe);
+    return t === "mash" ? h(e.recipe.mash, a) : t === "boil" ? b(e) : []
+}
+export function startTimer(t, e) {
+    primeTimerAudio();
+    const a = Math.max(0, r(e.durationMin)) * 60 * 1e3;
+    timer.state = {
+        context: t,
+        itemId: e.id,
+        label: e.label,
+        detail: e.detail || "",
+        phase: e.phase || t,
+        eventTimeLabel: e.eventTimeLabel || "",
+        eventType: e.eventType || "",
+        eventCount: r(e.eventCount),
+        eventActionLabel: e.eventActionLabel || "",
+        eventSummaryLabel: e.eventSummaryLabel || "",
+        eventTargetLabel: e.eventTargetLabel || "",
+        infoLabel: e.infoLabel || "",
+        additions: Array.isArray(e.additions) ? e.additions : [],
+        withReading: !!e.withReading,
+        durationMs: a,
+        stageRemainingMs: Number.isFinite(Number(e.stageRemainingMin)) ? e.stageRemainingMin * 60 * 1e3 : a,
+        targetStageRemainingMs: Number.isFinite(Number(e.targetStageRemainingMin)) ? e.targetStageRemainingMin * 60 * 1e3 : 0,
+        boilRemainingMs: Number.isFinite(Number(e.boilRemainingMin)) ? e.boilRemainingMin * 60 * 1e3 : 0,
+        targetBoilRemainingMs: Number.isFinite(Number(e.targetBoilRemainingMin)) ? e.targetBoilRemainingMin * 60 * 1e3 : 0,
+        startedAt: Date.now(),
+        endsAt: Date.now() + a,
+        pausedRemainingMs: 0,
+        status: a ? "running" : "done"
+    }, recordTimerStart(t, e), startTimerTicker(), c()
+}
+export function moveTimerStep(t, e) {
+    const a = timerItemsForContext(t);
+    if (!a.length) return;
+    if (!timer.state || timer.state.context !== t) {
+        startTimer(t, e < 0 ? a[a.length - 1] : a[0]);
+        return
+    }
+    if (e > 0 && timer.state.status !== "done") {
+        completeTimerSegment();
+        return
+    }
+    const i = currentTimerItemIndex(a),
+        o = i === -1 ? e > 0 ? -1 : a.length : i,
+        f = Math.min(a.length - 1, Math.max(0, o + e));
+    f !== i && startTimer(t, a[f])
+}
+export function currentTimerItemIndex(t) {
+    if (!timer.state) return -1;
+    const e = t.findIndex(o => o.id === timer.state.itemId);
+    if (e >= 0) return e;
+    const a = timer.state.phase || "boil",
+        i = r(timer.state.targetStageRemainingMs, timer.state.targetBoilRemainingMs) / 6e4;
+    return t.findIndex(o => o.phase === a && Math.abs(r(o.targetStageRemainingMin, o.targetBoilRemainingMin) - i) < .02)
+}
+export function completeTimerSegment() {
+    timer.state && (timer.state.status = "done", timer.state.pausedRemainingMs = 0, timer.state.endsAt = Date.now(), c())
+}
+export function toggleTimerControls(t) {
+    timer.openContext = timer.openContext === t ? "" : t, c()
+}
+export function startFirstTimer(t) {
+    const e = timerItemsForContext(t),
+        a = ["boil", "mash"].includes(t) ? e[0] : e.find(i => r(i.durationMin) > 0);
+    a && startTimer(t, a)
+}
+export function toggleTimerPause(t) {
+    if (!timer.state || timer.state.context !== t) {
+        startFirstTimer(t);
+        return
+    }
+    timer.state.status === "running" ? pauseTimer() : timer.state.status === "paused" ? resumeTimer() : timer.state.status === "done" && resumeFromHold(t)
+}
+export function resumeFromHold(t) {
+    const e = timerItemsForContext(t);
+    if (!e.length) return;
+    const a = timer.state && timer.state.context === t && timer.state.status === "done" ? timer.state : null;
+    a && recordTimerConfirmation(a);
+    const i = currentTimerItemIndex(e),
+        o = i >= 0 ? e[i + 1] : e[0];
+    if (o) {
+        startTimer(t, o);
+        return
+    }
+    x(a)
+}
+
+function x(t) {
+    const e = t ? .eventType === "mash-end" ? n("Mostura finalizada.") : t ? .eventType === "hopstand-end" ? n("Hopstand finalizado.") : t ? .eventType === "boil-end" ? n("Fervura finalizada.") : "";
+    timer.state = null, timer.openContext = "", c(), e && y(e)
+}
+export function pauseTimer() {
+    !timer.state || timer.state.status !== "running" || (timer.state.pausedRemainingMs = timerRemainingMs(), timer.state.status = "paused", delete timer.state.endsAt, c())
+}
+export function resumeTimer() {
+    if (!timer.state || timer.state.status !== "paused") return;
+    const t = Math.max(0, r(timer.state.pausedRemainingMs));
+    timer.state.endsAt = Date.now() + t, timer.state.status = "running", timer.state.pausedRemainingMs = 0, startTimerTicker(), c()
+}
+export function timerRemainingMs() {
+    return timer.state ? timer.state.status === "paused" ? Math.max(0, r(timer.state.pausedRemainingMs)) : Math.max(0, r(timer.state.endsAt) - Date.now()) : 0
+}
+export function activeTimerStageRemainingMs() {
+    if (!timer.state) return 0;
+    if (timer.state.status === "done") return Math.max(0, r(timer.state.targetStageRemainingMs, timer.state.targetBoilRemainingMs));
+    const t = Math.max(0, r(timer.state.durationMs) - timerRemainingMs());
+    return Math.max(0, r(timer.state.stageRemainingMs, timer.state.boilRemainingMs) - t)
+}
+export function timerDoneActionLabel() {
+    return timer.state ? .eventActionLabel || "Confirmar etapa"
+}
+export function syncTimerDone() {
+    const t = timerRemainingMs();
+    timer.state && timer.state.status === "running" && t <= 0 && (timer.state.status = "done", timer.state.pausedRemainingMs = 0, timer.state.endsAt = Date.now(), R()), p()
+}
+let u = null,
+    d = null;
+export function primeTimerAudio() {
+    try {
+        const t = window.AudioContext || window.webkitAudioContext;
+        if (!t) return;
+        u = u || new t, u.state === "suspended" && u.resume()
+    } catch {
+        u = null
+    }
+}
+
+function R() {
+    k();
+    try {
+        navigator.vibrate && navigator.vibrate([220, 90, 220, 90, 320])
+    } catch {}
+}
+
+function k() {
+    if (u) try {
+        const t = u.currentTime;
+        [0, .28, .56].forEach((e, a) => {
+            const i = u.createOscillator(),
+                o = u.createGain();
+            i.type = "sine", i.frequency.value = a === 2 ? 1175 : 880, o.gain.setValueAtTime(1e-4, t + e), o.gain.exponentialRampToValueAtTime(.32, t + e + .02), o.gain.exponentialRampToValueAtTime(1e-4, t + e + .22), i.connect(o).connect(u.destination), i.start(t + e), i.stop(t + e + .24)
+        })
+    } catch {}
+}
+async function p() {
+    const t = !!(timer.state && timer.state.status === "running");
+    try {
+        t && !d && navigator.wakeLock ? .request && (d = await navigator.wakeLock.request("screen"), d.addEventListener ? .("release", () => {
+            d = null
+        })), !t && d && (await d.release(), d = null)
+    } catch {
+        d = null
+    }
+}
+typeof document < "u" && document.addEventListener && document.addEventListener("visibilitychange", () => {
+    document.visibilityState === "visible" && p()
+});
+export function startTimerTicker() {
+    timer.interval || (timer.interval = window.setInterval(() => {
+        c(), (!timer.state || timer.state.status !== "running") && (window.clearInterval(timer.interval), timer.interval = null)
+    }, 1e3))
+}
+
+function c() {
+    syncTimerDone(), typeof timer.onTick == "function" && timer.onTick()
+}
+export function formatTimerClock(t) {
+    const e = Math.max(0, Math.ceil(r(t) / 1e3)),
+        a = Math.floor(e / 60),
+        i = e % 60;
+    return `${String(a).padStart(2,"0")}:${String(i).padStart(2,"0")}`
+}
+export function recordTimerStart(t, e = {}) {
+    if (!(!s.session || !e)) {
+        if (t === "mash") {
+            const i = hasTimerEvent("mash-start");
+            recordTimerEvent({
+                key: i ? `mash-stage-${e.id}-${Date.now()}` : "mash-start",
+                stage: n("Mostura"),
+                event: i ? n("In\xEDcio da etapa") : n("In\xEDcio da mostura"),
+                detail: `${l(e.label)||n("Mostura")} \xB7 ${e.detail||"-"} \xB7 ${m(r(e.durationMin),0)} min`
+            });
+            return
+        }
+        if (t === "boil") {
+            const i = e.phase || "boil";
+            i === "boil" && !hasTimerEvent("boil-start") && recordTimerEvent({
+                key: "boil-start",
+                stage: n("Fervura"),
+                event: n("In\xEDcio da fervura"),
+                detail: `${m(r(e.boilRemainingMin,e.stageRemainingMin||e.durationMin),0)} min`
+            }), i === "hopstand" && !hasTimerEvent("hopstand-start") && recordTimerEvent({
+                key: "hopstand-start",
+                stage: n("Hopstand"),
+                event: n("In\xEDcio do hopstand"),
+                detail: `${m(r(e.stageRemainingMin,e.durationMin),0)} min`
+            })
+        }
+    }
+}
+export function recordTimerConfirmation(t = {}) {
+    if (s.session) {
+        if (t.context === "mash") {
+            t.eventType === "mash-end" && recordTimerEvent({
+                key: `mash-end-${Date.now()}`,
+                stage: n("Mostura"),
+                event: n("Fim da mostura"),
+                detail: n("Mostura finalizada")
+            });
+            return
+        }
+        if (t.context === "boil") {
+            if (t.eventType === "addition") {
+                const a = t.phase === "hopstand" ? n("Hopstand") : n("Fervura"),
+                    i = timerAdditionsDetail(t.additions || []);
+                recordTimerEvent({
+                    key: `addition-${t.phase||"boil"}-${t.eventTimeLabel}-${Date.now()}`,
+                    stage: a,
+                    event: n("Adi\xE7\xE3o confirmada"),
+                    detail: [t.eventTimeLabel || "-", r(t.eventCount) ? l(g(r(t.eventCount))) : "", i].filter(Boolean).join(" \xB7 ")
+                }), w(t.additions || []);
+                return
+            }
+            if (t.eventType === "boil-end") {
+                recordTimerEvent({
+                    key: `boil-end-${Date.now()}`,
+                    stage: n("Fervura"),
+                    event: n("Fim da fervura"),
+                    detail: n("Fervura finalizada")
+                });
+                return
+            }
+            t.eventType === "hopstand-end" && recordTimerEvent({
+                key: `hopstand-end-${Date.now()}`,
+                stage: n("Hopstand"),
+                event: n("Fim do hopstand"),
+                detail: n("Hopstand finalizado")
+            })
+        }
+    }
+}
+export function recordTimerEvent(t = {}) {
+    const e = s.session;
+    e && (e.timerEvents = e.timerEvents || [], !(t.key && e.timerEvents.some(a => a.key === t.key)) && (e.timerEvents.push({
+        at: new Date().toISOString(),
+        key: t.key || `timer-${Date.now()}`,
+        stage: t.stage || "-",
+        event: t.event || "-",
+        detail: t.detail || "-"
+    }), typeof s.requestRender == "function" && s.requestRender()))
+}
+export function hasTimerEvent(t) {
+    return !!(s.session && (s.session.timerEvents || []).some(e => e.key === t))
+}
+
+function w(t = []) {
+    const e = s.session;
+    if (!e) return;
+    e.additionChecks = e.additionChecks || {};
+    let a = !1;
+    t.forEach(i => {
+        if (!i || !i.id) return;
+        const o = `${i.kind||"misc"}:${i.id}`;
+        e.additionChecks[o] || (e.additionChecks[o] = new Date().toISOString(), a = !0)
+    }), a && s.requestRender()
+}
+export function timerAdditionsDetail(t = []) {
+    return t.map(e => `${e.name||n("Insumo")} ${M(e.amount,e.unit)}`).join("; ")
+}
+export function timerRunningSummaryParts(t = {}) {
+    return t.context === "mash" || t.phase === "mash" ? {
+        action: l(t.label) || n("Mostura"),
+        target: t.detail || "-",
+        info: ""
+    } : t.eventType === "boil-end" ? {
+        action: n("Fim da"),
+        target: n("fervura")
+    } : t.eventType === "hopstand-end" ? {
+        action: n("Fim do"),
+        target: n("hopstand")
+    } : {
+        action: n("Pr\xF3xima adi\xE7\xE3o"),
+        target: t.eventTimeLabel || "-"
+    }
+}
+export function timerIdleMashSummaryParts(t = {}) {
+    return {
+        action: n("Iniciar mostura"),
+        target: t.detail || "-",
+        info: formatTimerClock(r(t.durationMin) * 6e4)
+    }
+}
+export function timerIdleBoilSummaryParts(t = {}) {
+    const e = r(t.boilRemainingMin, t.stageRemainingMin || t.durationMin);
+    return {
+        action: n("Iniciar fervura"),
+        target: `${m(e,0)} min`,
+        info: formatTimerClock(e * 6e4)
+    }
+}
+export function timerDoneSummaryParts(t = {}) {
+    return t.eventType === "mash-next" ? {
+        action: l(t.eventActionLabel || "Confirmar etapa"),
+        target: l(t.eventTargetLabel || t.eventTimeLabel || "-"),
+        info: l(t.infoLabel || "agora")
+    } : t.eventType === "mash-end" ? {
+        action: n("Finalizar"),
+        target: n("mostura"),
+        info: n("agora")
+    } : t.eventType === "boil-end" ? /hopstand/i.test(t.eventActionLabel || "") ? {
+        action: n("Iniciar"),
+        target: n("hopstand"),
+        info: n("agora")
+    } : {
+        action: n("Finalizar"),
+        target: n("fervura"),
+        info: n("agora")
+    } : t.eventType === "hopstand-end" ? {
+        action: n("Finalizar"),
+        target: n("hopstand"),
+        info: n("agora")
+    } : {
+        action: n("Confirmar adi\xE7\xE3o"),
+        target: t.eventTimeLabel || "-",
+        info: r(t.eventCount) ? l(g(r(t.eventCount))) : n("agora")
+    }
+}
