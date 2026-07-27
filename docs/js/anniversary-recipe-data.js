@@ -1,8 +1,4 @@
-export const ANNIVERSARY_RECIPE = {
-    id: "beer-school-11-anos",
-    name: "Onze",
-    styleName: "Saison",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+export const ANNIVERSARY_RECIPE={id:"beer-school-11-anos",name:"Onze",styleName:"Saison",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES><RECIPE>
 <NAME>Onze</NAME>
 <VERSION>1</VERSION>
@@ -52,5 +48,4 @@ export const ANNIVERSARY_RECIPE = {
 <MASH_STEP><NAME>Sacarifica\xE7\xE3o</NAME><VERSION>1</VERSION><TYPE>Temperature</TYPE><STEP_TEMP>66</STEP_TEMP><STEP_TIME>60</STEP_TIME></MASH_STEP>
 <MASH_STEP><NAME>Mash out</NAME><VERSION>1</VERSION><TYPE>Temperature</TYPE><STEP_TEMP>76</STEP_TEMP><STEP_TIME>10</STEP_TIME></MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-};
+</RECIPE></RECIPES>`};

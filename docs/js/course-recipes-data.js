@@ -1,8 +1,4 @@
-export const COURSE_RECIPES = [{
-    id: "curso-cream-ale",
-    name: "PFC - Cream Ale",
-    styleName: "Cream Ale",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+export const COURSE_RECIPES=[{id:"curso-cream-ale",name:"PFC - Cream Ale",styleName:"Cream Ale",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - Cream Ale</NAME>
@@ -106,12 +102,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>60</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-weiss",
-    name: "PFC - Weiss",
-    styleName: "Weissbier",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-weiss",name:"PFC - Weiss",styleName:"Weissbier",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - Weiss</NAME>
@@ -266,12 +257,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-german-pils",
-    name: "PFC - German Pils",
-    styleName: "German Pils",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-german-pils",name:"PFC - German Pils",styleName:"German Pils",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - German Pils</NAME>
@@ -424,12 +410,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-apa",
-    name: "PFC - APA",
-    styleName: "American Pale Ale",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-apa",name:"PFC - APA",styleName:"American Pale Ale",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - APA</NAME>
@@ -600,12 +581,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>5</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-ira",
-    name: "PFC - IRA",
-    styleName: "Irish Red Ale",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-ira",name:"PFC - IRA",styleName:"Irish Red Ale",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - IRA</NAME>
@@ -754,12 +730,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-ipa",
-    name: "PFC - IPA",
-    styleName: "American IPA",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-ipa",name:"PFC - IPA",styleName:"American IPA",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - IPA</NAME>
@@ -980,12 +951,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-oatmeal-stout",
-    name: "PFC - Oatmeal Stout",
-    styleName: "Oatmeal Stout",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-oatmeal-stout",name:"PFC - Oatmeal Stout",styleName:"Oatmeal Stout",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - Oatmeal Stout</NAME>
@@ -1151,12 +1117,7 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}, {
-    id: "curso-barleywine",
-    name: "PFC - Barleywine",
-    styleName: "English Barleywine",
-    xml: `<?xml version="1.0" encoding="UTF-8"?>
+</RECIPE></RECIPES>`},{id:"curso-barleywine",name:"PFC - Barleywine",styleName:"English Barleywine",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES>
 <RECIPE>
 <NAME>PFC - Barleywine</NAME>
@@ -1306,5 +1267,4 @@ export const COURSE_RECIPES = [{
 <STEP_TIME>10</STEP_TIME>
 </MASH_STEP>
 </MASH_STEPS></MASH>
-</RECIPE></RECIPES>`
-}];
+</RECIPE></RECIPES>`}];
