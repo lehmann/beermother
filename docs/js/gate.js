@@ -1,6 +1,6 @@
 const GOOGLE_CLIENT_ID = "737027827720-hvm2q49b9cnojoe0voo8nlfu2ehhtdsd.apps.googleusercontent.com";
 
-const ALLOWED_USERS_PATH = "/allowed.users";
+const ALLOWED_USERS_PATH = "allowed.users";
 
 const GATE_LANG = (() => {
     const l = String(navigator.language || "").toLowerCase();
