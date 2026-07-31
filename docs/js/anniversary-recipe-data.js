@@ -1,4 +1,4 @@
-export const ANNIVERSARY_RECIPE={id:"beer-school-11-anos",name:"Onze",styleName:"Saison",xml:`<?xml version="1.0" encoding="UTF-8"?>
+export const ANNIVERSARY_RECIPE={id:"beermother-11-anos",name:"Onze",styleName:"Saison",xml:`<?xml version="1.0" encoding="UTF-8"?>
 <RECIPES><RECIPE>
 <NAME>Onze</NAME>
 <VERSION>1</VERSION>

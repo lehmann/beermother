@@ -2,7 +2,7 @@
 
 ## O que é este projeto
 
-**Beermother** (também chamado de *Receitas Dinâmicas* ou *Fable*) é um assistente de cerveja artesanal. É uma SPA estática em português brasileiro, servida via GitHub Pages (`https://lehmann.github.io`). Não há servidor de aplicação — todo o estado do usuário fica no `localStorage` do navegador.
+**Beermother** é um assistente de cerveja artesanal. É uma SPA estática em português brasileiro, servida via GitHub Pages (`https://lehmann.github.io`). Não há servidor de aplicação — todo o estado do usuário fica no `localStorage` do navegador.
 
 ---
 
@@ -69,13 +69,13 @@ Tudo fica no `localStorage` do navegador. Chaves relevantes:
 
 | Chave | Conteúdo |
 |---|---|
-| `beerSchool.receitasDinamicas.fable.myRecipes.v1` | Receitas salvas do usuário |
-| `beerSchool.receitasDinamicas.fable.brews.v1` | Registro de brassagens |
-| `beerSchool.receitasDinamicas.fable.activeSession.v1` | Autosave da brassagem ativa |
-| `beerSchool.receitasDinamicas.fable.settings.v1` | Configurações do usuário (inclui `driveEnabled`, `driveFolderName`) |
-| `beerSchool.receitasDinamicas.productionProfile.v1` | Perfil de equipamento ativo |
-| `beerSchool.receitasDinamicas.fable.productionProfiles.v1` | Todos os perfis de equipamento |
-| `beerSchool.receitasDinamicas.fable.userLibrary.v1` | Biblioteca pessoal de ingredientes |
+| `beermother.fable.myRecipes.v1` | Receitas salvas do usuário |
+| `beermother.fable.brews.v1` | Registro de brassagens |
+| `beermother.fable.activeSession.v1` | Autosave da brassagem ativa |
+| `beermother.fable.settings.v1` | Configurações do usuário (inclui `driveEnabled`, `driveFolderName`) |
+| `beermother.productionProfile.v1` | Perfil de equipamento ativo |
+| `beermother.fable.productionProfiles.v1` | Todos os perfis de equipamento |
+| `beermother.fable.userLibrary.v1` | Biblioteca pessoal de ingredientes |
 
 Funções de acesso ficam em `state.js`. O padrão é `loadX()` / `saveX()` — sempre lendo do storage para evitar estado desincronizado.
 

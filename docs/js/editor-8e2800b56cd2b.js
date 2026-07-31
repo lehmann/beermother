@@ -479,7 +479,7 @@ function pn() {
         o = d(t("Abrir receita especial"), () => Na(e), "btn primary anniversary-recipe-button");
     return a("section", "card anniversary-recipe-card", [a("div", "anniversary-recipe-mark", "11", {
         "aria-hidden": "true"
-    }), a("div", "anniversary-recipe-body", [a("div", "anniversary-recipe-copy", [a("span", "anniversary-recipe-kicker", t("Edi\xE7\xE3o comemorativa")), a("h2", "anniversary-recipe-heading", t("11 anos Beer School")), a("p", "anniversary-recipe-name", e.name), a("p", "anniversary-recipe-text", t("Uma receita especial para celebrar essa hist\xF3ria.")), a("div", "anniversary-recipe-meta", [a("span", "anniversary-recipe-pill", "20 L"), a("span", "anniversary-recipe-pill", `OG ${P(1.06,3)}`), a("span", "anniversary-recipe-pill", "25 IBU")])]), o])])
+    }), a("div", "anniversary-recipe-body", [a("div", "anniversary-recipe-copy", [a("span", "anniversary-recipe-kicker", t("Edi\xE7\xE3o comemorativa")), a("h2", "anniversary-recipe-heading", t("11 anos Beermother")), a("p", "anniversary-recipe-name", e.name), a("p", "anniversary-recipe-text", t("Uma receita especial para celebrar essa hist\xF3ria.")), a("div", "anniversary-recipe-meta", [a("span", "anniversary-recipe-pill", "20 L"), a("span", "anniversary-recipe-pill", `OG ${P(1.06,3)}`), a("span", "anniversary-recipe-pill", "25 IBU")])]), o])])
 }
 
 function fn() {
@@ -840,8 +840,8 @@ const Cn = {
             label: "Cor padr\xE3o",
             swatch: "#c9701a"
         },
-        beerschool: {
-            label: "Beer School Academy",
+        beermother: {
+            label: "Beermother Academy",
             swatch: "#ed6823"
         }
     },
@@ -976,7 +976,7 @@ export function openSettingsSheet() {
             })) : null,
             x = a("div", "settings-guide", [a("div", "settings-toggle-row", [V]), L, M ? a("p", "settings-hint settings-guide-desc", t("Cards opcionais no dia: trate as \xE1guas, confira a mostura, registre a fervura. O app aprende quanto \xE1cido a SUA \xE1gua pede \u2014 sem f\xF3rmula.")) : null]),
             ae = a("div", "settings-appearance", [u, a("div", "palette-row", N)]);
-        return [a("b", "sheet-title", t("Configura\xE7\xF5es")), a("div", "sheet-fields settings-scroll", [ie(t("Seu nome"), t("Entra autom\xE1tico como autor nas receitas novas."), q), ie(t("Idioma"), t("Portugu\xEAs \xE9 o idioma de refer\xEAncia; English e Espa\xF1ol em tradu\xE7\xE3o."), g), ie(t("Apar\xEAncia"), t("Tema e cor do app \u2014 valem no claro e no escuro."), ae), a("p", "settings-group-title", t("Ferramentas em desenvolvimento")), ie(t("Guia"), t("Quanta companhia durante a brassagem."), E), ie(t("\xC1gua e pH"), t("Medi\xE7\xE3o de pH no dia de brassagem, com dose de \xE1cido sugerida."), x), ie(t("Previs\xE3o de fermenta\xE7\xE3o"), t("A curva esperada e as faixas durante a fermenta\xE7\xE3o."), a("div", "settings-toggle-row", [v])), ie(t("An\xE1lise da receita (beta)"), t("Simula tend\xEAncias de aroma e sabor. O bot\xE3o s\xF3 aparece no editor quando este modo est\xE1 ativo."), a("div", "settings-toggle-row", [$])), a("p", "settings-version", t("Receitas Din\xE2micas \xB7 Fable \u2014 v{v}", {
+        return [a("b", "sheet-title", t("Configura\xE7\xF5es")), a("div", "sheet-fields settings-scroll", [ie(t("Seu nome"), t("Entra autom\xE1tico como autor nas receitas novas."), q), ie(t("Idioma"), t("Portugu\xEAs \xE9 o idioma de refer\xEAncia; English e Espa\xF1ol em tradu\xE7\xE3o."), g), ie(t("Apar\xEAncia"), t("Tema e cor do app \u2014 valem no claro e no escuro."), ae), a("p", "settings-group-title", t("Ferramentas em desenvolvimento")), ie(t("Guia"), t("Quanta companhia durante a brassagem."), E), ie(t("\xC1gua e pH"), t("Medi\xE7\xE3o de pH no dia de brassagem, com dose de \xE1cido sugerida."), x), ie(t("Previs\xE3o de fermenta\xE7\xE3o"), t("A curva esperada e as faixas durante a fermenta\xE7\xE3o."), a("div", "settings-toggle-row", [v])), ie(t("An\xE1lise da receita (beta)"), t("Simula tend\xEAncias de aroma e sabor. O bot\xE3o s\xF3 aparece no editor quando este modo est\xE1 ativo."), a("div", "settings-toggle-row", [$])), a("p", "settings-version", t("Beermother \xB7 Fable \u2014 v{v}", {
             v: bt
         }))]), a("div", "sheet-actions", [d(t("Fechar"), () => h(), "btn ghost")])]
     };
@@ -1268,8 +1268,8 @@ function Dn(e) {
     });
     return a("section", "card home-card", [a("header", "card-head", [R("summary", "icon card-icon"), a("h2", "card-title", t("Levas conclu\xEDdas")), e.length > 1 ? a("span", "card-count num", String(e.length)) : null].filter(Boolean)), a("div", "card-body", o)])
 }
-const $a = "bsa-receitas-dinamicas-backup",
-    Ia = "beerSchool.receitasDinamicas";
+const $a = "beermother-backup",
+    Ia = "beermother";
 
 function On() {
     const e = {};

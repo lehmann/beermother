@@ -61,7 +61,7 @@ import{n as d,normalizeReading as R,correctionSummary as h,correctionCheckResult
     <div class="print-actions"><button class="ghost" onclick="window.close(); history.length > 1 && history.back();">${htmlEscape(e("Voltar \xE0 brassagem"))}</button><button onclick="window.print()">${htmlEscape(e("Salvar em PDF"))}</button></div>
     <header>
       <div class="brand">
-        <img src="${htmlEscape(P(N))}" alt="Beer School Academy">
+        <img src="${htmlEscape(P(N))}" alt="Beermother">
         <span class="date">${htmlEscape(r.generatedAt)}</span>
       </div>
       <div>
