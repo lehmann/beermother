@@ -47,7 +47,13 @@ function decodeJwtPayload(token) {
     }
 }
 
-async function fetchAllowedEmails() {
+async function hashEmail(email) {
+    const encoded = new TextEncoder().encode(email.toLowerCase());
+    const buf = await crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function fetchAllowedHashes() {
     const res = await fetch(ALLOWED_USERS_PATH, { cache: "no-cache" });
     if (!res.ok) throw new Error("Could not load allowed users list.");
     const text = await res.text();
@@ -61,8 +67,11 @@ async function handleCredential(response) {
         return;
     }
     try {
-        const allowed = await fetchAllowedEmails();
-        if (allowed.includes(payload.email.toLowerCase())) {
+        const [allowed, emailHash] = await Promise.all([
+            fetchAllowedHashes(),
+            hashEmail(payload.email)
+        ]);
+        if (allowed.includes(emailHash)) {
             await boot();
         } else {
             showError(GATE_TEXT.denied);
