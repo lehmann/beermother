@@ -1,1 +1,1826 @@
-export default{"test.hello":"Hola","test.greet":"\xA1Hola, {name}!","Sua sess\xE3o expirou. Recarregue a p\xE1gina para entrar novamente.":"Tu sesi\xF3n caduc\xF3. Recarga la p\xE1gina para volver a entrar.","N\xE3o foi poss\xEDvel analisar esta receita.":"No se pudo analizar esta receta.","Tentar novamente":"Intentar de nuevo","A an\xE1lise ainda n\xE3o foi executada.":"El an\xE1lisis a\xFAn no se ha ejecutado.",Copiar:"Copiar",Copiado:"Copiado","Abrir menu":"Abrir men\xFA","Anotar algo agora":"Anotar algo ahora","Alternar tema claro/escuro":"Cambiar tema claro/oscuro","Recolher menu":"Contraer men\xFA","Criar nova receita":"Crear receta nueva","Nova receita":"Receta nueva",Receitas:"Recetas",Brassagens:"Cocciones",Caderno:"Cuaderno",Equipamentos:"Equipos",Importar:"Importar",Anotar:"Anotar",Configura\u00E7\u00F5es:"Ajustes",Backup:"Copia de seguridad",Retomar:"Retomar","Brassagem retomada de onde parou.":"Cocci\xF3n retomada donde la dejaste.",Descartar:"Descartar","Brassagem anterior descartada.":"Cocci\xF3n anterior descartada.","Brassagem em andamento: {recipe}":"Cocci\xF3n en curso: {recipe}","Salva automaticamente em {when}":"Guardado autom\xE1ticamente a las {when}","Salva automaticamente":"Guardado autom\xE1ticamente",Mostura:"Maceraci\xF3n",Hopstand:"Hopstand",Fervura:"Hervido","{stage} restante {clock}":"{stage} restante {clock}","Etapa anterior":"Paso anterior","Pr\xF3xima etapa":"Paso siguiente","Iniciar contagem":"Iniciar cuenta","Iniciar fervura":"Iniciar hervido",Feito:"Hecho","Abrir leitura":"Abrir lectura","Ver ajuste":"Ver ajuste",Guia:"Gu\xEDa","Reabrir o painel do guia":"Reabrir el panel de la gu\xEDa","Mostura finalizada.":"Maceraci\xF3n finalizada.","Hopstand finalizado.":"Hopstand finalizado.","Fervura finalizada.":"Hervido finalizado.","In\xEDcio da etapa":"Inicio del paso","In\xEDcio da mostura":"Inicio de la maceraci\xF3n","In\xEDcio da fervura":"Inicio del hervido","In\xEDcio do hopstand":"Inicio del hopstand","Fim da mostura":"Fin de la maceraci\xF3n","Mostura finalizada":"Maceraci\xF3n finalizada","Adi\xE7\xE3o confirmada":"Adici\xF3n confirmada","Fim da fervura":"Fin del hervido","Fervura finalizada":"Hervido finalizado","Fim do hopstand":"Fin del hopstand","Hopstand finalizado":"Hopstand finalizado",Insumo:"Insumo","Fim da":"Fin del",fervura:"hervido","Fim do":"Fin del",hopstand:"hopstand","Pr\xF3xima adi\xE7\xE3o":"Pr\xF3xima adici\xF3n","Iniciar mostura":"Iniciar maceraci\xF3n",Finalizar:"Finalizar",mostura:"maceraci\xF3n",agora:"ahora",Iniciar:"Iniciar","Confirmar adi\xE7\xE3o":"Confirmar adici\xF3n","Confirmar etapa":"Confirmar paso","Confirmar adi\xE7\xE3o de hopstand {x}":"Confirmar adici\xF3n de hopstand {x}","Confirmar adi\xE7\xE3o de {x}":"Confirmar adici\xF3n de {x}","Confirmar in\xEDcio: {x}":"Confirmar inicio: {x}","Confirmar {x}":"Confirmar {x}","Aquecer at\xE9 {x}":"Calentar hasta {x}","Adi\xE7\xE3o de hopstand {x}":"Adici\xF3n de hopstand {x}","adi\xE7\xE3o de hopstand {x}":"adici\xF3n de hopstand {x}","Adi\xE7\xE3o de {x}":"Adici\xF3n de {x}","adi\xE7\xE3o de {x}":"adici\xF3n de {x}","Pr\xF3x. {x}":"Pr\xF3x. {x}","Leitura {x}":"Lectura {x}","{x} adi\xE7\xF5es":"{x} adiciones","{x} adi\xE7\xE3o":"{x} adici\xF3n","Come\xE7ar {x}":"Comenzar {x}","Aquecendo para {x}":"Calentando hacia {x}",Aquecimento:"Calentamiento","Finalizar mostura":"Finalizar maceraci\xF3n","Finalizar fervura":"Finalizar hervido","Finalizar hopstand":"Finalizar hopstand","Iniciar hopstand":"Iniciar hopstand","Fazer a leitura p\xF3s-fervura":"Hacer la lectura posthervido","Leitura p\xF3s-fervura":"Lectura posthervido","leia volume e WRI ainda fervendo":"lee volumen y WRI a\xFAn hirviendo","fim da fervura":"fin del hervido","fim do hopstand":"fin del hopstand",Fim:"Fin","Fim hopstand":"Fin hopstand",etapa:"paso","Minimizar o painel":"Minimizar el panel","pr\xF3xima etapa":"siguiente etapa","dia de brassagem":"d\xEDa de cocci\xF3n","A levedura assume agora.":"La levadura toma el mando ahora.","Brassagem conclu\xEDda \u2014 bom trabalho.":"Cocci\xF3n concluida \u2014 buen trabajo.","Iniciar fermenta\xE7\xE3o":"Iniciar fermentaci\xF3n","Ver an\xE1lise":"Ver an\xE1lisis","Adicione {list}":"A\xF1ade {list}","e a leitura p\xF3s-fervura":"y la lectura posthervido","Come\xE7ar {step}":"Comenzar {step}","Aquecendo para {step}":"Calentando hacia {step}","o pr\xF3ximo patamar":"el pr\xF3ximo escal\xF3n",restante:"restante","pr\xF3ximo:":"siguiente:","Mostrar na tela":"Mostrar en pantalla","Voltar etapa do contador":"Contador: paso anterior","Pular etapa do contador":"Contador: saltar paso",Confirmar:"Confirmar",Pausar:"Pausar","Espiar a a\xE7\xE3o anterior":"Ver la acci\xF3n anterior","Espiar a pr\xF3xima a\xE7\xE3o":"Ver la pr\xF3xima acci\xF3n",feito:"hecho",pulada:"omitida","a seguir":"a continuaci\xF3n","{i} de {n}":"{i} de {n}","voltar ao agora":"volver al ahora","marcar {n} anteriores":"marcar {n} anteriores","marcar {n} anterior":"marcar {n} anterior",Desfazer:"Deshacer","feito \u2713":"hecho \u2713","Abra uma receita para anotar.":"Abre una receta para anotar.","Ex.: esqueci o Whirlfloc aos 10 min":"Ej.: olvid\xE9 el Whirlfloc a los 10 min","Adicionar nota":"A\xF1adir nota","Nota adicionada com hor\xE1rio.":"Nota a\xF1adida con hora.",Fechar:"Cerrar","Nota r\xE1pida":"Nota r\xE1pida","Par\xE2metros aplicados.":"Par\xE1metros aplicados.","N\xE3o encontrei um c\xF3digo completo de par\xE2metros.":"No encontr\xE9 un c\xF3digo completo de par\xE1metros.","N\xE3o foi poss\xEDvel carregar a receita do link.":"No se pudo cargar la receta del enlace.","N\xE3o foi poss\xEDvel carregar a receita incorporada no link.":"No se pudo cargar la receta incorporada en el enlace.","N\xE3o foi poss\xEDvel salvar os par\xE2metros neste navegador.":"No se pudieron guardar los par\xE1metros en este navegador.","Par\xE2metros importados":"Par\xE1metros importados",Aplicado:"Aplicado","Par\xE2metros importados da receita aplicados.":"Par\xE1metros de la receta importados y aplicados.","Brassagem de calibra\xE7\xE3o":"Cocci\xF3n de calibraci\xF3n","Calibra\xE7\xE3o aplicada: os erros do dia ser\xE3o f\xE1ceis de corrigir. Anote seus par\xE2metros reais na An\xE1lise.":"Calibraci\xF3n aplicada: los errores del d\xEDa ser\xE1n f\xE1ciles de corregir. Anota tus par\xE1metros reales en An\xE1lisis.","Clipboard bloqueado":"Portapapeles bloqueado","N\xE3o consegui ler o clipboard neste navegador.":"No se pudo leer el portapapeles en este navegador.","Nada copiado":"Nada copiado","N\xE3o h\xE1 par\xE2metros copiados.":"No hay par\xE1metros copiados.","Formato inv\xE1lido":"Formato inv\xE1lido","O navegador bloqueou a leitura do clipboard.":"El navegador bloque\xF3 la lectura del portapapeles.",Salvo:"Guardado","Sess\xE3o salva em arquivo.":"Sesi\xF3n guardada en archivo.",Falhou:"Fall\xF3","N\xE3o foi poss\xEDvel salvar a sess\xE3o.":"No se pudo guardar la sesi\xF3n.",Abrindo:"Abriendo",Aberta:"Abierta","N\xE3o abriu":"No abri\xF3","Sess\xE3o aberta.":"Sesi\xF3n abierta.","Arquivo de brassagem inv\xE1lido.":"Archivo de cocci\xF3n inv\xE1lido.","Receita carregada.":"Receta cargada.","N\xE3o foi poss\xEDvel abrir o BeerXML.":"No se pudo abrir el BeerXML.","PDF aberto":"PDF abierto","Confira data e hora e clique em Inserir.":"Revisa fecha y hora y pulsa Insertar.","Leitura de fermenta\xE7\xE3o inserida.":"Lectura de fermentaci\xF3n a\xF1adida.","Leitura de fermenta\xE7\xE3o removida.":"Lectura de fermentaci\xF3n eliminada.","Alguns par\xE2metros s\xE3o conservadores de prop\xF3sito. Me\xE7a pr\xE9-fervura, p\xF3s-fervura e frio e corrija com \xE1gua quando o app pedir \u2014 no fim, esta leva vira o seu equipamento real.":"Algunos par\xE1metros son conservadores a prop\xF3sito. Mide prehervido, posthervido y en fr\xEDo, y corrige con agua cuando la app lo pida \u2014 al final, este lote se convierte en tu equipo real.","Preparo conferido":"Preparaci\xF3n revisada","Mostura conclu\xEDda":"Maceraci\xF3n concluida","Fervura conclu\xEDda":"Hervido concluido","An\xE1lise conferida":"An\xE1lisis revisado","Fermenta\xE7\xE3o registrada":"Fermentaci\xF3n registrada",Concluir:"Concluir","Abrir sess\xE3o salva":"Abrir sesi\xF3n guardada","Abrir BeerXML do computador":"Abrir BeerXML del ordenador","Escolha uma receita para brassar":"Elige una receta para cocinar","Entre na \xE1rea de Receitas da Beermother Academy e abra a receita que deseja produzir \u2014 ou continue uma brassagem salva.":"Entra en el \xE1rea de Recetas de Beermother Academy y abre la receta que quieres producir \u2014 o contin\xFAa una cocci\xF3n guardada.","Ver receitas na BSA":"Ver recetas en BSA","Iniciar receita din\xE2mica":"Iniciar receta din\xE1mica","Receita pronta para brassar":"Receta lista para cocinar","Lista de compras":"Lista de la compra",Receita:"Receta","sem autor":"sin autor","Volume no fermentador":"Volumen en el fermentador","Efici\xEAncia do equipamento":"Eficiencia del equipo",Evapora\u00E7\u00E3o:"Evaporaci\xF3n","Perda Trub":"P\xE9rdida de trub","Absor\xE7\xE3o dos gr\xE3os":"Absorci\xF3n de los granos","Rela\xE7\xE3o \xC1gua/Malte":"Relaci\xF3n agua/grano","Volume morto recuper\xE1vel":"Volumen muerto recuperable","\xC1gua sob o fundo falso da tina: precisa ser preenchida na mostura, mas volta pelo dreno. Muda a divis\xE3o mostura/lavagem sem alterar o total (padr\xE3o 0).":"Agua bajo el fondo falso de la olla: debe llenarse en la maceraci\xF3n, pero vuelve por el desag\xFCe. Cambia el reparto maceraci\xF3n/lavado sin alterar el total (predeterminado 0).","Fator WRI do refrat\xF4metro":"Factor WRI del refract\xF3metro","Fator de corre\xE7\xE3o do refrat\xF4metro para mosto (padr\xE3o 1,04).":"Factor de correcci\xF3n del refract\xF3metro para mosto (predeterminado 1,04).","Taxa de aquecimento":"Tasa de calentamiento","Velocidade de subida entre as rampas \u2014 gera as etapas estimadas de aquecimento no rel\xF3gio (0 desliga; padr\xE3o 1,5).":"Velocidad de subida entre escalones \u2014 genera los pasos estimados de calentamiento en el temporizador (0 lo desactiva; predeterminado 1,5).","Efici\xEAncia de mostura":"Eficiencia de maceraci\xF3n","Perda Trub calculada":"P\xE9rdida de trub calculada","Evapora\xE7\xE3o calculada":"Evaporaci\xF3n calculada","Selecionar equipamento":"Seleccionar equipo","Equipamento em observa\xE7\xE3o \u2014 \xE9 o que esta brassagem vai medir.":"Equipo en observaci\xF3n \u2014 es lo que esta cocci\xF3n va a medir.","Aplica um perfil de equipamento salvo a esta brassagem.":"Aplica un perfil de equipo guardado a esta cocci\xF3n.","Par\xE2metros de produ\xE7\xE3o":"Par\xE1metros de producci\xF3n",Essencial:"Esencial","Mostra apenas volume e efici\xEAncia de mostura.":"Muestra solo volumen y eficiencia de maceraci\xF3n.",Completo:"Completo","Mostra todos os par\xE2metros de produ\xE7\xE3o.":"Muestra todos los par\xE1metros de producci\xF3n.","\xC1gua base":"Agua base",Cor:"Color","Desmarcar {name}":"Desmarcar {name}","Marcar {name} como adicionado":"Marcar {name} como a\xF1adido","Marcar {name} como feito":"Marcar {name} como hecho","Ocultar sais":"Ocultar sales","Mostrar sais":"Mostrar sales",Calculado:"Calculado",Usado:"Usado","\xC1gua desta brassagem":"Agua de esta cocci\xF3n","\xC1gua ajustada":"Agua ajustada","Pulado \u2014 o dia segue normal.":"Omitido \u2014 el d\xEDa sigue normal.",opcional:"opcional","Toque na dose para corrigir o que voc\xEA realmente adicionou.":"Toca la dosis para corregir lo que realmente a\xF1adiste.","Mesma \xE1gua de hoje: a dose j\xE1 vem calculada. Registre uma leitura, aplique e fa\xE7a o ajuste fino.":"Misma agua de hoy: la dosis ya viene calculada. Registra una lectura, apl\xEDcala y haz el ajuste fino.","Me\xE7a o pH da \xE1gua de lavagem \u2014 se for a mesma \xE1gua da mostura, a dose vem quase pronta.":"Mide el pH del agua de lavado \u2014 si es la misma agua de la maceraci\xF3n, la dosis viene casi lista.","10\u201315 min ap\xF3s o dough-in, tire uma amostra do mosto, esfrie a ~20 \xB0C e leia.":"10\u201315 min tras el dough-in, toma una muestra del mosto, enfr\xEDala a ~20 \xB0C y mide.","Me\xE7a o pH da \xE1gua antes do dough-in \u2014 o tratamento come\xE7a aqui.":"Mide el pH del agua antes del dough-in \u2014 el tratamiento empieza aqu\xED.","Registrar leitura":"Registrar lectura","Esfrie a amostra a ~20 \xB0C antes de ler \u2014 pH cai com a temperatura e os alvos s\xE3o a frio.":"Enfr\xEDa la muestra a ~20 \xB0C antes de medir \u2014 el pH baja con la temperatura y los objetivos son en fr\xEDo.","Calibrou o pHmetro? Buffers 4,0 e 7,0 \u2014 dois minutos que mudam tudo.":"\xBFCalibraste el pHmetro? Buffers 4,0 y 7,0 \u2014 dos minutos que lo cambian todo.",Pular:"Omitir","pH do dia":"pH del d\xEDa",pulado:"omitido","Checklist do dia":"Checklist del d\xEDa","Iniciar brassagem":"Iniciar cocci\xF3n",Maltes:"Maltas","Rampas de mostura":"Escalones de maceraci\xF3n","Adi\xE7\xF5es de mostura":"Adiciones de maceraci\xF3n","Leitura pr\xE9-fervura":"Lectura prehervido","Leitura p\xF3s-fervura":"Lectura posthervido",Esperado:"Esperado","Sua leitura":"Tu lectura","No flameout":"En el flameout",Real:"Real","Informe volume e WRI":"Introduce volumen y WRI","Me\xE7a o volume e o WRI no fim da fervura (flameout), com o mosto ainda quente \u2014 o esperado j\xE1 considera a temperatura.":"Mide el volumen y el WRI al final del hervido (flameout), con el mosto a\xFAn caliente \u2014 el esperado ya considera la temperatura.","Me\xE7a o volume quente e o WRI no refrat\xF4metro \u2014 o esperado j\xE1 considera a temperatura.":"Mide el volumen caliente y el WRI en el refract\xF3metro \u2014 el esperado ya considera la temperatura.","Aqui nasce a sua evapora\xE7\xE3o real. Se o mosto vier curto e forte, o app pede \xE1gua no flameout \u2014 e o dia fecha certo.":"Aqu\xED nace tu evaporaci\xF3n real. Si el mosto sale corto y fuerte, la app pide agua en el flameout \u2014 y el d\xEDa cierra bien.","Aqui nasce a sua efici\xEAncia real. Se a densidade vier alta, o app pede \xE1gua antes de ferver \u2014 era o esperado.":"Aqu\xED nace tu eficiencia real. Si la densidad sale alta, la app pide agua antes de hervir \u2014 era lo esperado.","Me\xE7a de novo para conferir a corre\xE7\xE3o.":"Mide de nuevo para comprobar la correcci\xF3n.","Anotado \u2014 seguimos com a leitura como est\xE1.":"Anotado \u2014 seguimos con la lectura tal como est\xE1.","Maltes e ferment\xE1veis":"Maltas y fermentables","Sais de \xE1gua":"Sales de agua","Outros insumos":"Otros insumos",ocultar:"ocultar",ajustar:"ajustar","N\xE3o copiou":"No copi\xF3","Pedir insumos":"Pedir insumos","Toque no valor para ajustar \xE0 m\xE3o.":"Toca el valor para ajustar a mano.","Corre\xE7\xE3o pr\xE9-fervura":"Correcci\xF3n prehervido","Corre\xE7\xE3o p\xF3s-fervura":"Correcci\xF3n posthervido","Apliquei a corre\xE7\xE3o":"Apliqu\xE9 la correcci\xF3n","Seguir sem corrigir":"Seguir sin corregir","Me\xE7a de novo (WRI)":"Mide de nuevo (WRI)","WRI ap\xF3s corre\xE7\xE3o":"WRI tras correcci\xF3n","Apliquei o ajuste":"Apliqu\xE9 el ajuste","Ajuste fino":"Ajuste fino","Concluir corre\xE7\xE3o":"Concluir correcci\xF3n","Corre\xE7\xE3o conferida \u2014 dentro da margem.":"Correcci\xF3n comprobada \u2014 dentro del margen.","Est\xE1 bom assim":"Est\xE1 bien as\xED","Outras adi\xE7\xF5es de fervura":"Otras adiciones de hervido","L\xFApulos e fervura":"L\xFApulos y hervido","Adi\xE7\xF5es p\xF3s-fervura":"Adiciones posthervido","\xC1gua de lavagem":"Agua de lavado","Aguardando leitura":"Esperando lectura","Voc\xEA escolheu seguir com a leitura como est\xE1. Fica no log da brassagem.":"Elegiste seguir con la lectura tal como est\xE1. Queda en el registro de la cocci\xF3n.","Preencha a leitura acima para calcular a corre\xE7\xE3o.":"Rellena la lectura de arriba para calcular la correcci\xF3n.","voltar a corrigir":"volver a corregir","Alvo ":"Objetivo ","Hopstand / whirlpool":"Hopstand / whirlpool","Toque para ajustar \xE0 m\xE3o":"Toca para ajustar a mano","pH \xB7 {title}":"pH \xB7 {title}","Dose ap\xF3s a leitura {n}":"Dosis tras la lectura {n}","Desfazer esta leitura":"Deshacer esta lectura","Registrado: pH {ph}. Vai para o resumo da leva.":"Registrado: pH {ph}. Va al resumen del lote.","pH {ph} \u2014 abaixo da faixa. N\xE3o h\xE1 corre\xE7\xE3o para cima; anote e siga (o malte manda).":"pH {ph} \u2014 por debajo del rango. No hay correcci\xF3n hacia arriba; an\xF3talo y sigue (manda la malta).","Adicione ~{dose} mL de {acid}":"A\xF1ade ~{dose} mL de {acid}"," no mosto, misture bem (~1 min) e leia de novo.":" al mosto, mezcla bien (~1 min) y mide de nuevo."," nos {vol} L, misture bem (~1 min) e leia de novo.":" a los {vol} L, mezcla bien (~1 min) y mide de nuevo.","\u2713 pH {ph} \u2014 na faixa ({min}\u2013{max}). Siga o dia.":"\u2713 pH {ph} \u2014 en rango ({min}\u2013{max}). Sigue el d\xEDa.","\u2713 pH {ph} \u2014 no alvo. Siga o dia.":"\u2713 pH {ph} \u2014 en el objetivo. Sigue el d\xEDa.","ex.: 7,2":"ej.: 7,2",\u00E1cido:"\xE1cido","alvo 5,5":"objetivo 5,5","faixa 5,2\u20135,6":"rango 5,2\u20135,6","s\xF3 registro":"solo registro","pela sua \xE1gua de hoje":"por tu agua de hoy","pela mem\xF3ria da casa":"por la memoria de la casa","chute inicial conservador \u2014 a pr\xF3xima leitura ensina":"estimaci\xF3n inicial conservadora \u2014 la pr\xF3xima lectura ense\xF1a","{ion} \xE1gua base":"{ion} agua base","\xE1gua da mostura":"agua de maceraci\xF3n"," \xB7 {ml} mL de \xE1cido":" \xB7 {ml} mL de \xE1cido","Desmarcar: {title}":"Desmarcar: {title}","Marcar feito: {title}":"Marcar hecho: {title}","ver a lista \u2192":"ver la lista \u2192","Durante: ":"Durante: ",Total:"Total","Resfrie o mosto at\xE9 ~{t} \xB0C":"Enfr\xEDa el mosto a ~{t} \xB0C","Resfrie o mosto at\xE9 a temperatura de inocula\xE7\xE3o":"Enfr\xEDa el mosto a la temperatura de inoculaci\xF3n",Volume:"Volumen",Extrato:"Extracto","Leitura do refrat\xF4metro (escala WRI/Brix)":"Lectura del refract\xF3metro (escala WRI/Brix)","{count} pacote":"{count} paquete","{count} pacotes":"{count} paquetes","receita pede {x} g":"la receta pide {x} g",L\u00FApulos:"L\xFApulos",Levedura:"Levadura","Cloreto de c\xE1lcio (CaCl2)":"Cloruro de calcio (CaCl2)","Sulfato de c\xE1lcio (CaSO4)":"Sulfato de calcio (CaSO4)","Sulfato de magn\xE9sio (MgSO4)":"Sulfato de magnesio (MgSO4)","receita pede {x} pacote":"la receta pide {x} paquete","receita pede {x}":"la receta pide {x}",brassagem:"cocci\xF3n","Ol\xE1! Gostaria de encomendar os insumos para *{name}*:":"\xA1Hola! Quisiera pedir los insumos para *{name}*:","Pedido \u2014 {name}":"Pedido \u2014 {name}","Fracionamento de {label} em gramas":"Fraccionamiento de {label} en gramos","{n} adi\xE7\xF5es":"{n} adiciones","Margem em %":"Margen en %"," \xB7 margem de {pct}% no p\xF3s-fervura":" \xB7 margen de {pct}% en posthervido","Arredondada pelo fracionamento do seu brewshop{tail} \u2014 ":"Redondeada por el fraccionamiento de tu brewshop{tail} \u2014 ",Margem:"Margen",Malte:"Malta",L\u00FApulo:"L\xFApulo",Sais:"Sales",Outros:"Otros","{n} item":"{n} \xEDtem","{n} itens":"{n} \xEDtems"," \xB7 {n} fora":" \xB7 {n} fuera","Brassagem de calibra\xE7\xE3o: os itens que escalam com a corre\xE7\xE3o (l\xFApulo, levedura) v\xEAm refor\xE7ados em {pct}% por garantia. O malte j\xE1 est\xE1 dimensionado com folga.":"Cocci\xF3n de calibraci\xF3n: los insumos que escalan con la correcci\xF3n (l\xFApulo, levadura) vienen reforzados en {pct}% por garant\xEDa. La malta ya est\xE1 dimensionada con holgura.","por {shop}":"por {shop}","Incluir {name} no pedido":"Incluir {name} en el pedido","Quantidade de {name} (apague para voltar \xE0 sugest\xE3o)":"Cantidad de {name} (borra para volver a la sugerencia)",Lavagem:"Lavado",dia:"d\xEDa",dias:"d\xEDas",\u00C1guas:"Aguas",Fermenta\u00E7\u00E3o:"Fermentaci\xF3n",resfriamento:"enfriamiento","Desvio aceito \u2014 seguir para {stage}":"Desviaci\xF3n aceptada \u2014 seguir a {stage}","Dentro da margem \u2014 seguir para {stage}":"Dentro del margen \u2014 seguir a {stage}","Sem corre\xE7\xE3o \u2014 seguir para {stage}":"Sin correcci\xF3n \u2014 seguir a {stage}","Desvio de {vol} \u2014 menor que o erro de medi\xE7\xE3o.":"Desviaci\xF3n de {vol} \u2014 menor que el error de medici\xF3n.","Volume para atingir o extrato: {vol}":"Volumen para alcanzar el extracto: {vol}","{n}\xAA corre\xE7\xE3o":"correcci\xF3n n.\xBA {n}","A \xE1gua resfria o mosto: \u2248 ":"El agua enfr\xEDa el mosto: \u2248 "," ap\xF3s adicionar (\xE1gua a 25 \xB0C)":" tras a\xF1adir (agua a 25 \xB0C)"," \xB7 alvo do hopstand: {t} \xB0C":" \xB7 objetivo del hopstand: {t} \xB0C","Fervura extra estimada: ":"Hervido extra estimado: ","Somar ao contador":"Sumar al temporizador","Inicia um contador com o tempo extra de fervura recomendado.":"Inicia un temporizador con el tiempo extra de hervido recomendado.","Aceita a leitura como est\xE1 e segue a brassagem \u2014 a decis\xE3o fica no log.":"Acepta la lectura tal como est\xE1 y sigue \u2014 la decisi\xF3n queda en el registro.","Informe WRI ap\xF3s corrigir":"Introduce WRI tras corregir","Encerra a corre\xE7\xE3o com a leitura atual \u2014 a decis\xE3o fica no log.":"Cierra la correcci\xF3n con la lectura actual \u2014 la decisi\xF3n queda en el registro.","Alfa \xE1cido real de {name}":"Alfa \xE1cido real de {name}","Hopstand / whirlpool \xB7 {t} \xB0C":"Hopstand / whirlpool \xB7 {t} \xB0C","{min} min de repouso":"{min} min de reposo","Dry hop \xB7 na fermenta\xE7\xE3o":"Dry hop \xB7 en fermentaci\xF3n","durante a fermenta\xE7\xE3o":"durante la fermentaci\xF3n","Lave com {vol} de \xE1gua a ~76\u201378 \xB0C, ao fim das rampas.":"Lava con {vol} de agua a ~76\u201378 \xB0C, al final de los escalones.","\xE1gua de lavagem":"agua de lavado","mosto resfriado":"mosto enfriado","Leitura fria":"Lectura en fr\xEDo","Volume trub":"Volumen de trub",Fermentador:"Fermentador","Leituras esperadas (beta) ativado.":"Lecturas esperadas (beta) activado.",Ativado:"Activado",Desativado:"Desactivado","Leituras esperadas \xB7 beta":"Lecturas esperadas \xB7 beta","Ative para ver o corredor esperado de extrato no gr\xE1fico e a leitura classificada.":"Act\xEDvalo para ver el corredor esperado de extracto en el gr\xE1fico y la lectura clasificada.","Fam\xEDlia da levedura para o modelo de fermenta\xE7\xE3o":"Familia de la levadura para el modelo de fermentaci\xF3n","Autom\xE1tico \u2014 {family}":"Autom\xE1tico \u2014 {family}","Atenua\xE7\xE3o aparente esperada":"Atenuaci\xF3n aparente esperada","50% da atenua\xE7\xE3o":"50% de la atenuaci\xF3n","90% da atenua\xE7\xE3o":"90% de la atenuaci\xF3n","Plat\xF4 prov\xE1vel":"Meseta probable","Informe OG e FG para gerar o corredor.":"Introduce OG y FG para generar el corredor.","{family} n\xE3o gera curva autom\xE1tica.":"{family} no genera curva autom\xE1tica.","Esta levedura":"Esta levadura","Fam\xEDlia da levedura":"Familia de la levadura","Atenua\xE7\xE3o esperada":"Atenuaci\xF3n esperada","Refer\xEAncia beta \u2014 para pegar desvios grandes, n\xE3o como garantia de t\xE9rmino ou qualidade. Confirme estabilidade de extrato antes de envasar.":"Referencia beta \u2014 para detectar desviaciones grandes, no como garant\xEDa de terminaci\xF3n o calidad. Confirma la estabilidad del extracto antes de envasar.","Rampas de fermenta\xE7\xE3o":"Escalones de fermentaci\xF3n","Sem levedura no XML.":"Sin levadura en el XML.","Sem perfil de fermenta\xE7\xE3o no XML.":"Sin perfil de fermentaci\xF3n en el XML.","Adicionar leitura de fermenta\xE7\xE3o":"A\xF1adir lectura de fermentaci\xF3n",Dia:"D\xEDa","Data/hora":"Fecha/hora","Temp.":"Temp.","Real corrigido":"Real corregido","Leitura do refrat\xF4metro na fermenta\xE7\xE3o":"Lectura del refract\xF3metro en la fermentaci\xF3n","Remover leitura":"Eliminar lectura","Nova leitura do refrat\xF4metro na fermenta\xE7\xE3o":"Nueva lectura del refract\xF3metro en la fermentaci\xF3n","Cancelar nova leitura":"Cancelar nueva lectura",Esperada:"Esperada","Acompanhamento da fermenta\xE7\xE3o":"Seguimiento de la fermentaci\xF3n","Temperatura lida na fermenta\xE7\xE3o":"Temperatura le\xEDda en la fermentaci\xF3n","Data da leitura de fermenta\xE7\xE3o":"Fecha de la lectura de fermentaci\xF3n","Hora da leitura de fermenta\xE7\xE3o":"Hora de la lectura de fermentaci\xF3n","Data e hora da leitura":"Fecha y hora de la lectura",Data:"Fecha",Hora:"Hora","Dia {n} de fermenta\xE7\xE3o":"D\xEDa {n} de fermentaci\xF3n",Cancelar:"Cancelar",Inserir:"Insertar",Aplicar:"Aplicar","Dia {n} \xB7 {date} {time}":"D\xEDa {n} \xB7 {date} {time}","Gr\xE1fico da fermenta\xE7\xE3o":"Gr\xE1fico de la fermentaci\xF3n","Temp. planejada":"Temp. planeada","Temp. lida":"Temp. medida","Esperado (beta)":"Esperado (beta)","Adicione leituras para acompanhar a curva de extrato.":"A\xF1ade lecturas para seguir la curva de extracto.","An\xE1lise da brassagem":"An\xE1lisis de la cocci\xF3n","Efici\xEAncia equipamento":"Eficiencia del equipo","Absor\xE7\xE3o gr\xE3os":"Absorci\xF3n de granos","Perda trub":"P\xE9rdida de trub","Par\xE2metros para a pr\xF3xima brassagem":"Par\xE1metros para la pr\xF3xima cocci\xF3n","Log de brassagem":"Registro de la cocci\xF3n","Abrir log completo":"Abrir registro completo","Pr\xF3xima etapa: fermenta\xE7\xE3o":"Siguiente etapa: fermentaci\xF3n","O dia de brassagem termina aqui \u2014 agora a levedura assume. Registre as leituras ao longo dos dias.":"El d\xEDa de cocci\xF3n termina aqu\xED \u2014 ahora la levadura toma el mando. Registra las lecturas a lo largo de los d\xEDas.","Encerrar a leva":"Cerrar el lote","Concluir move esta brassagem para o Caderno, com o log completo guardado. D\xE1 para reabrir por l\xE1.":"Concluir mueve esta cocci\xF3n al Cuaderno, con el registro completo guardado. Puedes reabrirla desde all\xED.","Concluir brassagem":"Concluir cocci\xF3n","Brassagem conclu\xEDda \u2014 a ficha dela mora no Caderno.":"Cocci\xF3n concluida \u2014 su ficha vive en el Cuaderno.","Anota\xE7\xF5es livres da brassagem":"Notas libres de la cocci\xF3n",Anota\u00E7\u00F5es:"Notas",'Aque\xE7a a \xE1gua de lavagem a ~76\u201378 \xB0C. Ajuste "Usado" na mostura se mudar algo na hora.':'Calienta el agua de lavado a ~76\u201378 \xB0C. Ajusta "Usado" en la maceraci\xF3n si cambias algo sobre la marcha.','A \xE1gua de mostura prevista \xE9 {vol}, mas coloque o quanto for preciso para cobrir o gr\xE3o. Em equipamentos com fundo falso grande, boa parte da \xE1gua fica embaixo, sem contato com os gr\xE3os \u2014 isso \xE9 o volume morto do seu sistema. Ajuste "Usado" com o que voc\xEA realmente usou.':'El agua de maceraci\xF3n prevista es {vol}, pero pon la que haga falta para cubrir el grano. En equipos con fondo falso grande, buena parte del agua queda debajo, sin contacto con el grano \u2014 ese es el volumen muerto de tu sistema. Ajusta "Usado" con lo que realmente usaste.',"Sem corre\xE7\xE3o":"Sin correcci\xF3n","Adicionar \xE1gua":"A\xF1adir agua","Fervura extra":"Hervido extra","Finalizar fervura extra":"Finalizar hervido extra","\xC1gua da mostura \xB7 {vol}":"Agua de maceraci\xF3n \xB7 {vol}","confira o usado (e os sais)":"revisa lo usado (y las sales)","Adicione os maltes (dough-in)":"A\xF1ade las maltas (dough-in)","{mass} de gr\xE3os":"{mass} de granos","Adicione {name} na mostura":"A\xF1ade {name} a la maceraci\xF3n","Aquecer para {step}":"Calentar a {step}","~{min} min (estimado)":"~{min} min (estimado)","Lave com {vol}":"Lava con {vol}","\xE1gua a ~76\u201378 \xB0C":"agua a ~76\u201378 \xB0C","Ajuste a pr\xE9-fervura":"Ajusta el prehervido","Adicione {names}":"A\xF1ade {names}","first wort \u2014 antes de ferver":"first wort \u2014 antes de hervir","Leve o mosto \xE0 fervura":"Lleva el mosto a hervir","{min} min de fervura":"{min} min de hervido","no fim da fervura (flameout)":"al final del hervido (flameout)","Ajuste a p\xF3s-fervura":"Ajusta el posthervido","hopstand {time}":"hopstand {time}"," a {t}\xB0C":" a {t}\xB0C","Resfrie o mosto":"Enfr\xEDa el mosto","at\xE9 a temperatura de inocula\xE7\xE3o":"hasta la temperatura de inoculaci\xF3n","volume no fermentador e trub":"volumen en el fermentador y trub","Moa {mass} de malte (se em gr\xE3o)":"Muele {mass} de malta (si es en grano)","Aque\xE7a {vol} a ~{t} \xB0C para a mostura":"Calienta {vol} a ~{t} \xB0C para la maceraci\xF3n","Aque\xE7a {vol} para a mostura":"Calienta {vol} para la maceraci\xF3n","Aque\xE7a {vol} a 76\u201378 \xB0C para a lavagem":"Calienta {vol} a 76\u201378 \xB0C para el lavado","Aproveite para aquecer a \xE1gua de lavagem enquanto faz a mostura \u2014 {vol} a 76\u201378 \xB0C":"Aprovecha para calentar el agua de lavado mientras maceras \u2014 {vol} a 76\u201378 \xB0C","Transfira o mosto para a panela \u2014 alvo {vol}":"Transfiere el mosto a la olla \u2014 objetivo {vol}","Adicione a levedura \u2014 {yeast}":"Inocula la levadura \u2014 {yeast}","Adicione a levedura":"Inocula la levadura","Leve \xE0 geladeira \u2014 fermenta\xE7\xE3o a {t} \xB0C":"Lleva a la nevera \u2014 fermentaci\xF3n a {t} \xB0C","Leve \xE0 geladeira na temperatura de fermenta\xE7\xE3o":"Lleva a la nevera a la temperatura de fermentaci\xF3n","desvio aceito \u2014 seguindo como est\xE1":"desviaci\xF3n aceptada \u2014 siguiendo tal cual","aplicada \u2014 confira ou conclua":"aplicada \u2014 revisa o concluye","aguardando a leitura":"esperando la lectura","sem corre\xE7\xE3o necess\xE1ria":"sin correcci\xF3n necesaria","no alvo \u2014 sem corre\xE7\xE3o \u2713":"en el objetivo \u2014 sin correcci\xF3n \u2713","fora do alvo \u2014 veja o ajuste":"fuera del objetivo \u2014 mira el ajuste","Revise a receita e o plano do dia":"Revisa la receta y el plan del d\xEDa","Confira se tem todos os ingredientes":"Comprueba que tienes todos los insumos","Limpe os equipamentos de brassagem":"Limpia el equipo de cocci\xF3n","Feche as v\xE1lvulas dos equipamentos":"Cierra las v\xE1lvulas del equipo","Com a chama ligada, mantenha agita\xE7\xE3o":"Con la llama encendida, mant\xE9n la agitaci\xF3n","Recircule o mosto at\xE9 clarificar":"Recircula el mosto hasta que clarifique","Hotbreak no in\xEDcio: controle o fogo e agite":"Hotbreak al inicio: controla el fuego y agita","Aos ~5 min do fim, mergulhe o chiller":"A ~5 min del final, sumerge el chiller","Aproveite para deixar o chiller \xE0 m\xE3o \u2014 ele entra na panela aos ~5 min do fim":"Ten el chiller a mano \u2014 entra en la olla a ~5 min del final","Fa\xE7a o whirlpool (redemoinho)":"Haz el whirlpool (remolino)","Sanitize tudo que vai tocar o mosto frio":"Sanitiza todo lo que tocar\xE1 el mosto fr\xEDo","Fermentador, torneira, mangueiras e airlock sanitizados":"Fermentador, grifo, mangueras y airlock sanitizados","Aere o mosto":"Airea el mosto","Feche o fermentador e ponha o airlock":"Cierra el fermentador y coloca el airlock","Limpe os equipamentos da brassagem":"Limpia el equipo de la cocci\xF3n","Alfa \xE1cido":"Alfa \xE1cido",Atenua\u00E7\u00E3o:"Atenuaci\xF3n","S\xF3 nesta receita":"Solo en esta receta",Conclu\u00EDdas:"Concluidas","Fa\xE7a a brassagem de calibra\xE7\xE3o \u2014 uma Cream Ale simples que revela sua efici\xEAncia, evapora\xE7\xE3o e perdas reais.":"Haz la cocci\xF3n de calibraci\xF3n \u2014 una Cream Ale simple que revela tu eficiencia, evaporaci\xF3n y p\xE9rdidas reales.","Come\xE7ar calibra\xE7\xE3o":"Empezar calibraci\xF3n","1 leva medida pronta para ajustar seu equipamento pelos n\xFAmeros reais.":"1 lote medido listo para ajustar tu equipo con los n\xFAmeros reales.","Crie do zero ou traga do Brewfather \u2014 receita e equipamento v\xEAm no mesmo arquivo BeerXML.":"Crea desde cero o tr\xE1ela de Brewfather \u2014 receta y equipo vienen en el mismo archivo BeerXML.","Lan\xE7ar leitura":"Registrar lectura","Voltar \xE0 brassagem":"Volver a la cocci\xF3n","A\xE7\xF5es da leva":"Acciones del lote","Sess\xE3o exportada \u2014 d\xE1 para abrir em qualquer dispositivo.":"Sesi\xF3n exportada \u2014 se puede abrir en cualquier dispositivo.","Receita salva \u2014 d\xE1 para editar e adaptar.":"Receta guardada \u2014 se puede editar y adaptar.","N\xE3o foi poss\xEDvel salvar a receita.":"No se pudo guardar la receta.","Brassagem conclu\xEDda \u2014 ela mora no Caderno.":"Cocci\xF3n concluida \u2014 vive en el Cuaderno.","O registro e o log desta leva ser\xE3o apagados. Essa a\xE7\xE3o n\xE3o pode ser desfeita.":"El registro y el log de este lote se borrar\xE1n. Esta acci\xF3n no se puede deshacer.","Leva exclu\xEDda.":"Lote eliminado.","N\xE3o foi poss\xEDvel abrir a vers\xE3o para imprimir.":"No se pudo abrir la versi\xF3n para imprimir.","ver r\xE1pido como foi":"vistazo r\xE1pido de c\xF3mo fue","conclu\xEDda {date}":"concluida {date}","N\xE3o foi poss\xEDvel ler esta leva \u2014 o arquivo pode estar corrompido. A vers\xE3o para imprimir e o backup ainda podem ajudar.":"No se pudo leer este lote \u2014 el archivo puede estar da\xF1ado. La versi\xF3n para imprimir y la copia de seguridad a\xFAn pueden ayudar.","Pr\xE9-fervura":"Prehervido","P\xF3s-fervura":"Posthervido","Par\xE2metros pr\xF3xima brassagem":"Par\xE1metros de la pr\xF3xima cocci\xF3n","Entra nos n\xFAmeros do equipamento.":"Cuenta para los n\xFAmeros del equipo.","Fora dos n\xFAmeros \u2014 n\xE3o calibra o equipamento.":"Fuera de los n\xFAmeros \u2014 no calibra el equipo.","Excluir dos n\xFAmeros":"Excluir de los n\xFAmeros","Incluir nos n\xFAmeros":"Incluir en los n\xFAmeros","Leva fora dos n\xFAmeros.":"Lote fuera de los n\xFAmeros.","Leva de volta aos n\xFAmeros.":"Lote de vuelta a los n\xFAmeros.","Sem leituras neste dia \u2014 os valores acima s\xE3o os planejados, e a leva n\xE3o entra nos n\xFAmeros.":"Sin lecturas ese d\xEDa \u2014 los valores de arriba son los planeados, y el lote no cuenta para los n\xFAmeros.","Sem anota\xE7\xF5es ainda \u2014 d\xE1 para acrescentar quando quiser, mesmo agora.":"Sin notas todav\xEDa \u2014 puedes a\xF1adirlas cuando quieras, incluso ahora.","Vers\xE3o para imprimir":"Versi\xF3n para imprimir","Estilo pr\xF3prio":"Estilo propio","Essa a\xE7\xE3o n\xE3o pode ser desfeita.":"Esta acci\xF3n no se puede deshacer.","{name} (c\xF3pia)":"{name} (copia)","Receita exclu\xEDda.":"Receta eliminada.","os \xFAltimos par\xE2metros usados":"los \xFAltimos par\xE1metros usados","o padr\xE3o Beermother":"el est\xE1ndar Beermother","Ex.: Jamal":"Ej.: Jamal","Seu nome":"Tu nombre","Cards opcionais no dia: trate as \xE1guas, confira a mostura, registre a fervura. O app aprende quanto \xE1cido a SUA \xE1gua pede \u2014 sem f\xF3rmula.":"Tarjetas opcionales en el d\xEDa: trata las aguas, revisa la maceraci\xF3n, registra el hervido. La app aprende cu\xE1nto \xE1cido pide TU agua \u2014 sin f\xF3rmula.","Entra autom\xE1tico como autor nas receitas novas.":"Entra autom\xE1tico como autor en las recetas nuevas.","Portugu\xEAs \xE9 o idioma de refer\xEAncia; English e Espa\xF1ol em tradu\xE7\xE3o.":"El portugu\xE9s es el idioma de referencia; English y Espa\xF1ol en traducci\xF3n.",Apar\u00EAncia:"Apariencia","\xC1gua e pH":"Agua y pH","Medi\xE7\xE3o de pH no dia de brassagem, com dose de \xE1cido sugerida.":"Medici\xF3n de pH el d\xEDa de cocci\xF3n, con dosis de \xE1cido sugerida.","Previs\xE3o de fermenta\xE7\xE3o":"Previsi\xF3n de fermentaci\xF3n","A curva esperada e as faixas durante a fermenta\xE7\xE3o.":"La curva esperada y los rangos durante la fermentaci\xF3n.","Beermother \xB7 Fable \u2014 v{v} (beta)":"Beermother \xB7 Fable \u2014 v{v} (beta)",Efici\u00EAncia:"Eficiencia",Absor\u00E7\u00E3o:"Absorci\xF3n","\xC1gua/malte":"Agua/grano","Quanto tempo o mosto fica quente ap\xF3s o flameout \u2014 as adi\xE7\xF5es tardias de fervura seguem isomerizando nesse per\xEDodo.":"Cu\xE1nto tiempo el mosto queda caliente tras el flameout \u2014 las adiciones tard\xEDas de hervido siguen isomerizando en ese periodo.","Velocidade de subida entre patamares \u2014 o rel\xF3gio da mostura conta uma etapa estimada de aquecimento. 0 desliga.":"Velocidad de subida entre escalones \u2014 el temporizador de maceraci\xF3n cuenta un paso estimado de calentamiento. 0 lo desactiva.","{ion} da \xE1gua base":"{ion} del agua base","A \xE1gua da SUA fonte. Nos valores padr\xE3o, vale a \xE1gua de cada receita; mudou, receitas novas e o Preparo usam a sua.":"El agua de TU fuente. En los valores por defecto, vale el agua de cada receta; si cambia, las recetas nuevas y la Preparaci\xF3n usan la tuya.","Perfil exclu\xEDdo.":"Perfil eliminado.","s\xF3 fechar":"solo cerrar",Criado:"Creado",Atualizado:"Actualizado"," e definido como seu equipamento principal":" y definido como tu equipo principal",". J\xE1 vale para receitas novas e para o Preparo.":". Ya vale para recetas nuevas y para la Preparaci\xF3n.","Seu caderno est\xE1 em branco":"Tu cuaderno est\xE1 en blanco","Cada brassagem conclu\xEDda entra aqui com o log completo \u2014 e as que voc\xEA mediu calibram seu equipamento sozinhas.":"Cada cocci\xF3n concluida entra aqu\xED con el log completo \u2014 y las que mediste calibran tu equipo solas.","{n} leva":"{n} lote","{n} levas":"{n} lotes","{n} entra nos n\xFAmeros":"{n} cuenta en los n\xFAmeros","{n} entram nos n\xFAmeros":"{n} cuentan en los n\xFAmeros","nenhuma inclu\xEDda":"ninguna incluida","nenhuma medida ainda":"ninguna medida todav\xEDa","{n} de fora":"{n} fuera","Absor\xE7\xE3o do gr\xE3o":"Absorci\xF3n del grano","Efici\xEAncia, evapora\xE7\xE3o, absor\xE7\xE3o, trub e \xE1gua/malte passam a valer os n\xFAmeros da sua leva medida. O volume e o resto do perfil ficam como est\xE3o.":"Eficiencia, evaporaci\xF3n, absorci\xF3n, trub y agua/grano pasan a valer los n\xFAmeros de tu lote medido. El volumen y el resto del perfil quedan como est\xE1n.","Efici\xEAncia, evapora\xE7\xE3o, absor\xE7\xE3o, trub e \xE1gua/malte passam a valer a mediana das suas levas medidas. O volume e o resto do perfil ficam como est\xE3o.":"Eficiencia, evaporaci\xF3n, absorci\xF3n, trub y agua/grano pasan a valer la mediana de tus lotes medidos. El volumen y el resto del perfil quedan como est\xE1n.","Calibra\xE7\xE3o \xB7 {date}":"Calibraci\xF3n \xB7 {date}","1 leva medida (leitura \xFAnica)":"1 lote medido (lectura \xFAnica)","mediana de {n} leva no c\xE1lculo":"mediana de {n} lote en el c\xE1lculo","mediana de {n} levas no c\xE1lculo":"mediana de {n} lotes en el c\xE1lculo","Uma leva s\xF3 \u2014 pode ter sido um dia at\xEDpico. Com mais levas medidas a mediana ignora o dia fora da curva e fica robusta.":"Un solo lote \u2014 pudo ser un d\xEDa at\xEDpico. Con m\xE1s lotes medidos, la mediana ignora el d\xEDa fuera de la curva y se vuelve robusta.","A mediana ignora um dia fora da curva (lavagem travada, transbordo) \u2014 por isso ela calibra o perfil, n\xE3o a m\xE9dia.":"La mediana ignora un d\xEDa fuera de la curva (lavado atascado, rebose) \u2014 por eso calibra el perfil, no el promedio.","Seu equipamento em n\xFAmeros":"Tu equipo en n\xFAmeros","sem leituras \u2014 fora dos n\xFAmeros":"sin lecturas \u2014 fuera de los n\xFAmeros","efic. {pct}% \xB7 fora dos n\xFAmeros (voc\xEA excluiu)":"efic. {pct}% \xB7 fuera de los n\xFAmeros (lo excluiste)","efic. {pct}% \xB7 fermenta\xE7\xE3o acompanhada":"efic. {pct}% \xB7 fermentaci\xF3n seguida","efic. {pct}% \xB7 sem fermenta\xE7\xE3o \u2014 vale para o equipamento":"efic. {pct}% \xB7 sin fermentaci\xF3n \u2014 vale para el equipo","Entra nos n\xFAmeros \u2014 tocar para excluir":"En los n\xFAmeros \u2014 toca para excluir","Fora dos n\xFAmeros \u2014 tocar para incluir":"Fuera de los n\xFAmeros \u2014 toca para incluir","Levas conclu\xEDdas":"Lotes concluidos","Backup vazio ou inv\xE1lido.":"Copia de seguridad vac\xEDa o inv\xE1lida.","Receitas, perfis, hist\xF3rico e biblioteca atuais ser\xE3o substitu\xEDdos pelos do arquivo.":"Las recetas, perfiles, historial y biblioteca actuales se reemplazar\xE1n por los del archivo.","N\xE3o foi poss\xEDvel ler o arquivo.":"No se pudo leer el archivo.","Receita salva \u2014 d\xE1 para editar e brassar quando quiser.":"Receta guardada \u2014 se puede editar y cocinar cuando quieras.","N\xE3o foi poss\xEDvel salvar o perfil.":"No se pudo guardar el perfil.","FG muito baixa \u2014 confira a toler\xE2ncia alco\xF3lica da sua levedura; ela pode travar antes de fermentar tudo.":"FG muy baja \u2014 revisa la tolerancia al alcohol de tu levadura; puede atascarse antes de fermentar todo.","FG fixada \xE0 m\xE3o \u2014 sobrescreve a calculada.":"FG fijada a mano \u2014 sobrescribe la calculada.","Sem levedura: atenua\xE7\xE3o assumida de 78%.":"Sin levadura: atenuaci\xF3n asumida del 78%.","Defina as quantidades primeiro \u2014 os maltes est\xE3o em 0 kg.":"Define las cantidades primero \u2014 las maltas est\xE1n en 0 kg.","Os maltes ser\xE3o escalados proporcionalmente para atingir a densidade.":"Las maltas se escalar\xE1n proporcionalmente para alcanzar la densidad.","Equipamento padr\xE3o":"Equipo por defecto","Escolha um perfil salvo (volume, efici\xEAncia e fervura entram na receita) ou crie um novo.":"Elige un perfil guardado (volumen, eficiencia y hervido entran en la receta) o crea uno nuevo.","Escolha um perfil salvo \u2014 volume, efici\xEAncia e os par\xE2metros de produ\xE7\xE3o entram nesta brassagem.":"Elige un perfil guardado \u2014 volumen, eficiencia y los par\xE1metros de producci\xF3n entran en esta cocci\xF3n.","Quanto voc\xEA costuma produzir? (volume no fermentador)":"\xBFCu\xE1nto sueles producir? (volumen en el fermentador)","Use o volume do seu dia t\xEDpico \u2014 a calibra\xE7\xE3o vale para o padr\xE3o. Evapora\xE7\xE3o e volume morto s\xE3o absolutos, n\xE3o escalam com o lote.":"Usa el volumen de tu d\xEDa t\xEDpico \u2014 la calibraci\xF3n vale para el est\xE1ndar. Evaporaci\xF3n y volumen muerto son absolutos, no escalan con el lote.","Alguns par\xE2metros v\xE3o ser conservadores de prop\xF3sito (efici\xEAncia e evapora\xE7\xE3o).":"Algunos par\xE1metros ser\xE1n conservadores a prop\xF3sito (eficiencia y evaporaci\xF3n).","Durante o dia voc\xEA mede e corrige com \xC1GUA \u2014 e a brassagem termina certa.":"Durante el d\xEDa mides y corriges con AGUA \u2014 y la cocci\xF3n termina bien.","Pe\xE7a alguns insumos a mais por garantia: haver\xE1 corre\xE7\xF5es, ent\xE3o a lista j\xE1 vem refor\xE7ada.":"Pide algunos insumos de m\xE1s por garant\xEDa: habr\xE1 correcciones, as\xED que la lista viene reforzada.","Me\xE7a o volume e a densidade no pr\xE9-fervura e no p\xF3s-fervura. Sem essas leituras, os n\xFAmeros acima ainda s\xE3o a partida conservadora \u2014 n\xE3o o seu sistema.":"Mide el volumen y la densidad en el prehervido y el posthervido. Sin esas lecturas, los n\xFAmeros de arriba siguen siendo el punto de partida conservador \u2014 no tu sistema.","e a\xED, deu certo?":"\xBFy qu\xE9, sali\xF3 bien?","Perfil criado e definido como principal.":"Perfil creado y definido como principal.","Equipamento salvo e definido como principal.":"Equipo guardado y definido como principal.","Calibra\xE7\xE3o conclu\xEDda \u2014 seu equipamento real":"Calibraci\xF3n concluida \u2014 tu equipo real","Medimos o seu sistema nesta brassagem. Salve como seu equipamento e as pr\xF3ximas receitas j\xE1 nascem no ponto \u2014 a partida conservadora era s\xF3 para o dia terminar certo.":"Medimos tu sistema en esta cocci\xF3n. Gu\xE1rdalo como tu equipo y las pr\xF3ximas recetas nacen en su punto \u2014 el arranque conservador era solo para que el d\xEDa terminara bien.",base:"base","Tornar {name} o malte-base (absorve a diferen\xE7a).":"Hacer de {name} la malta base (absorbe la diferencia).","O malte-base absorve a diferen\xE7a \u2014 a soma \xE9 sempre 100% e a OG n\xE3o muda.":"La malta base absorbe la diferencia \u2014 la suma es siempre 100% y la OG no cambia.","Percentuais aplicados \u2014 a OG n\xE3o muda.":"Porcentajes aplicados \u2014 la OG no cambia.","N\xE3o deu para aplicar: os percentuais est\xE3o todos zerados.":"No se pudo aplicar: los porcentajes est\xE1n todos en cero.","Adicione o primeiro malte.":"A\xF1ade la primera malta.","Adicionar malte":"A\xF1adir malta","Malte adicionado.":"Malta a\xF1adida.","Tipo do ferment\xE1vel":"Tipo de fermentable","Momento do ferment\xE1vel":"Momento del fermentable","Entra na fermenta\xE7\xE3o: conta no OG e no ABV, mas n\xE3o entra na leitura p\xF3s-fervura.":"Entra en la fermentaci\xF3n: cuenta en OG y ABV, pero no en la lectura posthervido.","Toque para editar alfa \xE1cido, momento e temperatura.":"Toca para editar alfa \xE1cido, momento y temperatura.","Momento do l\xFApulo":"Momento del l\xFApulo","Contribui\xE7\xE3o desta adi\xE7\xE3o no IBU total.":"Contribuci\xF3n de esta adici\xF3n al IBU total.","Duplicar (mesmo l\xFApulo, outro momento)":"Duplicar (mismo l\xFApulo, otro momento)","Ocultar IBU por adi\xE7\xE3o":"Ocultar IBU por adici\xF3n","Mostrar IBU por adi\xE7\xE3o":"Mostrar IBU por adici\xF3n","Ordenar por tempo de adi\xE7\xE3o":"Ordenar por tiempo de adici\xF3n","Adicione um l\xFApulo de amargor antes de definir o IBU.":"A\xF1ade un l\xFApulo de amargor antes de definir el IBU.","Definir o IBU desejado e escalar os l\xFApulos proporcionalmente.":"Define el IBU deseado y escala los l\xFApulos proporcionalmente.","Adicione o primeiro l\xFApulo.":"A\xF1ade el primer l\xFApulo.","Adicionar l\xFApulo":"A\xF1adir l\xFApulo","Buscar l\xFApulo\u2026":"Buscar l\xFApulo\u2026","{n} l\xFApulos adicionados.":"{n} l\xFApulos a\xF1adidos.","L\xFApulo adicionado.":"L\xFApulo a\xF1adido.","S\xF3 os l\xFApulos de amargor (fervura com 30+ min) s\xE3o escalados \u2014 aroma tardio, hopstand e dry hop ficam como est\xE3o.":"Solo los l\xFApulos de amargor (hervido con 30+ min) se escalan \u2014 aroma tard\xEDo, hopstand y dry hop quedan como est\xE1n.","Escalar l\xFApulos":"Escalar l\xFApulos","Nenhum l\xFApulo de amargor (fervura com 30+ min) para escalar \u2014 as adi\xE7\xF5es tardias somam {ibu} IBU.":"Ning\xFAn l\xFApulo de amargor (hervido con 30+ min) para escalar \u2014 las adiciones tard\xEDas suman {ibu} IBU.","As adi\xE7\xF5es tardias sozinhas j\xE1 passam do alvo ({ibu} IBU) \u2014 amargor zerado. Ctrl+Z desfaz.":"Las adiciones tard\xEDas por s\xED solas ya superan el objetivo ({ibu} IBU) \u2014 amargor en cero. Ctrl+Z lo deshace.","L\xFApulos de amargor escalados para {ibu} IBU.":"L\xFApulos de amargor escalados a {ibu} IBU.","Alfa \xE1cido do lote":"Alfa \xE1cido del lote","S\xF3 esta adi\xE7\xE3o":"Solo esta adici\xF3n","Alfa de {pct}% aplicado a {count} adi\xE7\xE3o(\xF5es) e salvo para as pr\xF3ximas.":"Alfa de {pct}% aplicado a {count} adici\xF3n(es) y guardado para las pr\xF3ximas.","Toque para editar a atenua\xE7\xE3o.":"Toca para editar la atenuaci\xF3n.","In\xF3culo estimado ~{rate} M c\xE9ls/mL/\xB0P \u2014 ":"In\xF3culo estimado ~{rate} M c\xE9l/mL/\xB0P \u2014 "," \xB7 {cells} bi c\xE9lulas (estimativa)":" \xB7 {cells} mil millones de c\xE9lulas (estimaci\xF3n)","Sem levedura: a FG* assume atenua\xE7\xE3o de 78%.":"Sin levadura: la FG* asume 78% de atenuaci\xF3n.","A atenua\xE7\xE3o da levedura define a FG.":"La atenuaci\xF3n de la levadura define la FG.","Adicionar levedura":"A\xF1adir levadura","Buscar levedura\u2026":"Buscar levadura\u2026","pouco (sub-in\xF3culo)":"poco (sub-in\xF3culo)","Lembrar esta atenua\xE7\xE3o para novas adi\xE7\xF5es":"Recordar esta atenuaci\xF3n para nuevas adiciones","Atenua\xE7\xE3o de {name} salva na sua biblioteca.":"Atenuaci\xF3n de {name} guardada en tu biblioteca.","Toque para fixar a FG \xE0 m\xE3o.":"Toca para fijar la FG a mano.","Calculada: {fg} \u2014 da OG e da atenua\xE7\xE3o da levedura. Fixe uma FG \xE0 m\xE3o para sobrescrever: ela entra no ABV e no BeerXML.":"Calculada: {fg} \u2014 de la OG y la atenuaci\xF3n de la levadura. Fija una FG a mano para sobrescribir: entra en el ABV y en el BeerXML.","\xC1gua e sais":"Agua y sales",\u00C1gua:"Agua","refer\xEAncia \xB7 L":"referencia \xB7 L",'"{name}" agora \xE9 o principal.':'"{name}" ahora es el principal.','Perfil "{name}" criado e definido como principal.':'Perfil "{name}" creado y definido como principal.','Salvo como "{name}" e definido como principal. Suas pr\xF3ximas receitas j\xE1 nascem calibradas pelo seu sistema \u2014 siga para a fermenta\xE7\xE3o; ao concluir, a leva fica no Caderno.':'Guardado como "{name}" y definido como principal. Tus pr\xF3ximas recetas nacen calibradas a tu sistema \u2014 sigue a la fermentaci\xF3n; al concluir, el lote queda en el Cuaderno.',Autom\u00E1tico:"Autom\xE1tico",Claro:"Claro",Escuro:"Oscuro",Copiloto:"Copiloto","Cor padr\xE3o":"Color por defecto","S\xF3 as leituras e corre\xE7\xF5es \u2014 o app aparece onde \xE9 mais esperto que voc\xEA.":"Solo las lecturas y correcciones \u2014 la app aparece donde es m\xE1s lista que t\xFA.","Acompanha o dia da brassagem pela receita (o padr\xE3o).":"Acompa\xF1a el d\xEDa de cocci\xF3n por la receta (el est\xE1ndar).","Passo a passo, do preparo ao envase \u2014 com o porqu\xEA de cada passo.":"Paso a paso, de la preparaci\xF3n al envasado \u2014 con el porqu\xE9 de cada paso.",pacote:"paquete",sach\u00EA:"sobre","un.":"u.","\xC1gua de mostura":"Agua de maceraci\xF3n","\xC1cido l\xE1tico 85%":"\xC1cido l\xE1ctico 85%","\xC1cido fosf\xF3rico 10%":"\xC1cido fosf\xF3rico 10%",Simples:"Simple",Completa:"Completa","Abra uma receita pela comunidade antes de iniciar.":"Abre una receta de la comunidad antes de empezar.","Receita inv\xE1lida. Confira o arquivo publicado.":"Receta inv\xE1lida. Revisa el archivo publicado.","Nenhuma receita encontrada.":"No se encontr\xF3 ninguna receta.","Gr\xE1fico de fermenta\xE7\xE3o com temperatura e extrato":"Gr\xE1fico de fermentaci\xF3n con temperatura y extracto","{label}: ajustado para {value} (faixa {min}\u2013{max}).":"{label}: ajustado a {value} (rango {min}\u2013{max}).",Adicionar:"A\xF1adir",Nome:"Nombre",Rendimento:"Rendimiento","Salvar na biblioteca":"Guardar en la biblioteca","Abrir receita do curso":"Abrir receta del curso","Receitas do curso":"Recetas del curso","Nenhuma brassagem em andamento":"Ninguna cocci\xF3n en curso","Escolha uma receita na prateleira e comece \u2014 a leva fica aqui enquanto brassa e fermenta. Ao concluir, ela vai para o Caderno.":"Elige una receta del estante y empieza \u2014 el lote se queda aqu\xED mientras cuece y fermenta. Al terminar, pasa al Cuaderno.","Ver receitas":"Ver recetas","Nunca mediu seu equipamento?":"\xBFNunca mediste tu equipo?","Calibrar com minhas levas":"Calibrar con mis lotes","Abrir no Caderno":"Abrir en el Cuaderno","Sua primeira receita":"Tu primera receta","Criar receita":"Crear receta","Importar BeerXML":"Importar BeerXML","Em andamento":"En curso","Abrir a ficha":"Abrir la ficha","Exportar arquivo":"Exportar archivo","Salvar receita em Minhas receitas":"Guardar receta en Mis recetas","Reabrir leva":"Reabrir lote",Excluir:"Eliminar","\u2039 Caderno":"\u2039 Cuaderno","Como foi":"C\xF3mo fue","O equipamento no dia":"El equipo en el d\xEDa","Ex.: carbonatou perfeito, amargor limpo":"Ej.: carbonat\xF3 perfecto, amargor limpio","Adicionar nota com hora":"A\xF1adir nota con hora","Buscar receita\u2026":"Buscar receta\u2026","Descartar rascunho":"Descartar borrador","Minhas receitas":"Mis recetas","Nenhuma receita bate com a busca.":"Ninguna receta coincide con la b\xFAsqueda.","Brassar esta receita":"Cocer esta receta",Editar:"Editar",Duplicar:"Duplicar","Exportar BeerXML":"Exportar BeerXML","Receita importada":"Receta importada","Seu equipamento":"Tu equipo","Novo perfil":"Nuevo perfil","Editar perfil":"Editar perfil","Meus equipamentos":"Mis equipos","Seus dados ficam neste navegador. O backup gera um arquivo .json com tudo (receitas, brassagens, perfis) \u2014 restaure aqui ou em outro dispositivo.":"Tus datos quedan en este navegador. La copia genera un archivo .json con todo (recetas, cocciones, perfiles) \u2014 rest\xE1uralo aqu\xED o en otro dispositivo.","Fazer backup":"Hacer copia","Restaurar backup":"Restaurar copia","Ferramentas em desenvolvimento":"Herramientas en desarrollo","Nome do perfil":"Nombre del perfil","Panela 30 L":"Olla 30 L","Tempo de whirlpool":"Tiempo de whirlpool","Temperatura do whirlpool":"Temperatura del whirlpool","Efic. mostura":"Efic. maceraci\xF3n",Trub:"Trub",Salvar:"Guardar","Meu equipamento":"Mi equipo","Ver brassagens":"Ver cocciones","Criar novo perfil":"Crear nuevo perfil","sem perfil":"sin perfil","Abrir a ficha da leva":"Abrir la ficha del lote","Restaurar backup?":"\xBFRestaurar copia?","Salva em Minhas receitas \u2713":"Guardada en Mis recetas \u2713","Salvar em Minhas receitas":"Guardar en Mis recetas","Brassar agora":"Cocer ahora",Equipamento:"Equipo","Importar como perfil de equipamento":"Importar como perfil de equipo","Importar do BeerXML":"Importar desde BeerXML","\u2190 Voltar":"\u2190 Volver","Desfazer (Ctrl+Z)":"Deshacer (Ctrl+Z)","Refazer (Ctrl+Y)":"Rehacer (Ctrl+Y)","Definir OG":"Definir OG","OG desejada":"OG deseada","Escalar maltes":"Escalar maltas","Arrastar para reordenar":"Arrastrar para reordenar","sem nome":"sin nombre","Escolher estilo\u2026":"Elegir estilo\u2026",Estilo:"Estilo","Buscar estilo\u2026":"Buscar estilo\u2026","Estilos BJCP mostram as faixas abaixo dos alvos.":"Los estilos BJCP muestran los rangos debajo de los objetivos.","Nome da receita":"Nombre de la receta","APA da casa":"APA de la casa",Cervejeiro:"Cervecero",Autor:"Autor","Escolher ou editar o perfil de equipamento.":"Elegir o editar el perfil de equipo.","Editar este perfil":"Editar este perfil","Nenhum perfil salvo ainda.":"Ning\xFAn perfil guardado a\xFAn.","Novo perfil\u2026":"Nuevo perfil\u2026","Nenhum perfil salvo ainda \u2014 crie um na aba Equipamentos.":"Ning\xFAn perfil guardado a\xFAn \u2014 crea uno en la pesta\xF1a Equipos.","Uma Cream Ale simples e barata para medir o SEU equipamento. No fim, ela vira o seu perfil real.":"Una Cream Ale simple y barata para medir TU equipo. Al final, se convierte en tu perfil real.","Como funciona":"C\xF3mo funciona","Falta medir para revelar seu equipamento":"Falta medir para revelar tu equipo","seu equipamento":"tu equipo","Renomear ou editar":"Renombrar o editar","Equipamento salvo":"Equipo guardado","Salvar como meu equipamento":"Guardar como mi equipo","0 kg":"0 kg","Definir a OG desejada e escalar os maltes proporcionalmente.":"Definir la OG deseada y escalar las maltas proporcionalmente.","Ordenar por quantidade":"Ordenar por cantidad","Buscar malte\u2026":"Buscar malta\u2026",Tipo:"Tipo",Momento:"Momento","Definir IBU":"Definir IBU","IBU desejado":"IBU deseado","Temperatura do hopstand":"Temperatura del hopstand","presets:":"presets:","{a} a {b}":"{a} a {b}",Nenhum:"Ninguno","Muito baixo":"Muy bajo",Baixo:"Bajo","M\xE9dio baixo":"Medio bajo",M\u00E9dio:"Medio","M\xE9dio alto":"Medio alto",Alto:"Alto",Nenhuma:"Ninguna","Muito baixa":"Muy baja",Baixa:"Baja","M\xE9dia baixa":"Media baja",M\u00E9dia:"Media","M\xE9dia alta":"Media alta",Alta:"Alta",Limpa:"Limpia",Palha:"Paja",Dourada:"Dorada",\u00C2mbar:"\xC1mbar",Cobre:"Cobre",Marrom:"Marr\xF3n",Preto:"Negro",Brilhante:"Brillante","Leve turbidez":"Ligera turbidez",Turva:"Turbia",Opaca:"Opaca",R\u00E1pida:"R\xE1pida","M\xE9dia curta":"Media corta",Persistente:"Persistente",Lupulado:"Lupulado","Leve l\xFApulo":"Ligero l\xFApulo",Equilibrado:"Equilibrado","Leve malte":"Ligera malta",Maltado:"Maltoso",Seco:"Seco","M\xE9dio seco":"Medio seco","M\xE9dio doce":"Medio dulce",Doce:"Dulce",Ralo:"Aguado",Leve:"Ligero",Cheio:"Lleno",Picante:"Picante",Amadeirado:"Amaderado",Herbal:"Herbal","Raz\xE3o \xE1gua:malte de {ratio} L/kg dilui a \u03B2-amilase: a FG pode sair at\xE9 ~{pts} pontos acima da prevista, deixando mais dul\xE7or e corpo do que o n\xFAmero diz.":"Una relaci\xF3n agua:malta de {ratio} L/kg diluye la beta-amilasa: la FG puede quedar hasta ~{pts} puntos por encima de la prevista, dejando m\xE1s dulzor y cuerpo de lo que el n\xFAmero dice.","No whirlpool a quente sobram linalol e geraniol (oxigenados): qualidade mais fina, pot\xEAncia menor que o dry hop \u2014 e este geraniol a levedura ainda alcan\xE7a.":"En el whirlpool caliente quedan linalol y geraniol (oxigenados): calidad m\xE1s fina, menos potencia que el dry hop \u2014 y a este geraniol la levadura todav\xEDa llega.","{t}\xB0C est\xE1 ABAIXO da faixa da cepa ({lo}\u2013{hi}\xB0C): o \xE9ster \xE9 contido, mas n\xE3o some \u2014 fica um frutado discreto.":"{t}\xB0C est\xE1 POR DEBAJO del rango de la cepa ({lo}\u2013{hi}\xB0C): el \xE9ster se contiene, pero no desaparece \u2014 queda un frutado discreto.","{t}\xB0C est\xE1 ACIMA da faixa da cepa ({lo}\u2013{hi}\xB0C): \xE9ster e \xE1lcool superior sobem bastante.":"{t}\xB0C est\xE1 POR ENCIMA del rango de la cepa ({lo}\u2013{hi}\xB0C): \xE9ster y alcohol superior suben bastante.","{t}\xB0C cai na faixa da cepa ({lo}\u2013{hi}\xB0C) \u2014 o \xE9ster fica no meio do potencial dela.":"{t}\xB0C cae en el rango de la cepa ({lo}\u2013{hi}\xB0C) \u2014 el \xE9ster queda a media potencia.","In\xF3culo de {rate} M c\xE9ls/mL/\xB0P \xE9 baixo para esta densidade \u2014 levedura estressada produz MAIS \xE9ster e \xE1lcool superior.":"Un in\xF3culo de {rate} M c\xE9l/mL/\xB0P es bajo para esta densidad \u2014 la levadura estresada produce M\xC1S \xE9ster y alcohol superior.","Fermenta\xE7\xE3o a {atm} atm inibe a forma\xE7\xE3o de \xE9ster (aqui, cerca de {pct}% a menos) \u2014 o perfil fica mais limpo.":"Fermentar a {atm} atm inhibe la formaci\xF3n de \xE9ster (aqu\xED, cerca de {pct}% menos) \u2014 el perfil queda m\xE1s limpio.","A levedura reduz o geraniol da parte quente a citronelol (c\xEDtrico/floral) \u2014 nota que o l\xFApulo sozinho n\xE3o daria, e que o dry hop tardio n\xE3o produz.":"La levadura reduce el geraniol de la parte caliente a citronelol (c\xEDtrico/floral) \u2014 una nota que el l\xFApulo solo no dar\xEDa, y que el dry hop tard\xEDo no produce.","A levedura tem \u03B2-liase e libera os ti\xF3is que vieram ligados no l\xFApulo (maracuj\xE1, goiaba, groselha-preta).":"La levadura tiene beta-liasa y libera los tioles que llegaron ligados en el l\xFApulo (maracuy\xE1, guayaba, grosella negra).","Esta cepa tem baixa atividade de \u03B2-liase: pode liberar tra\xE7os de tiol, mas n\xE3o foi selecionada para essa biotransforma\xE7\xE3o.":"Esta cepa tiene baja actividad de beta-liasa: puede liberar trazas de tioles, pero no fue seleccionada para esta biotransformaci\xF3n.","O l\xFApulo trouxe precursores de tiol, mas esta cepa tem pouca \u03B2-liase \u2014 a maior parte fica ligada e n\xE3o vira aroma.":"El l\xFApulo trajo precursores de tiol, pero esta cepa tiene poca beta-liasa \u2014 la mayor\xEDa queda ligada y no se vuelve aroma.","A cepa tem \u03B2-glicosidase e solta o terpeno que veio LIGADO a a\xE7\xFAcar no l\xFApulo \u2014 aroma que n\xE3o estava livre no cone.":"La cepa tiene beta-glucosidasa y suelta el terpeno que lleg\xF3 LIGADO a az\xFAcar en el l\xFApulo \u2014 aroma que no estaba libre en el cono.","Cepa frutada + tiol do l\xFApulo: os dois se somam na percep\xE7\xE3o e o tropical fica mais alto do que qualquer um dos dois entregaria sozinho.":"Cepa frutada + tiol del l\xFApulo: los dos se suman en la percepci\xF3n y el tropical queda m\xE1s alto de lo que cualquiera dar\xEDa solo.","{hop} na mostura: as proteases do mosto liberam os precursores de tiol \u2014 esta variedade rende cerca de 3\xD7 mais precursor por essa via que pela fervura ou pelo dry hop.":"{hop} en la maceraci\xF3n: las proteasas del mosto liberan los precursores de tiol \u2014 esta variedad rinde cerca de 3x m\xE1s precursor por esta v\xEDa que por el hervor o el dry hop.","Fervura longa: o \xF3leo vol\xE1til evapora, mas humuleno e cariofileno OXIDAM \u2014 sobra um aroma condimentado e amadeirado, o car\xE1ter 'lager'.":"Hervor largo: el aceite vol\xE1til se evapora, pero humuleno y cariofileno se OXIDAN \u2014 queda un aroma especiado y amaderado, el car\xE1cter 'lager'.","Adi\xE7\xE3o de fervura: parte do \xF3leo evapora; o que fica \xE9 o car\xE1ter condimentado dos oxigenados.":"Adici\xF3n de hervor: parte del aceite se evapora; lo que queda es el car\xE1cter especiado de los oxigenados.","Adi\xE7\xE3o a {min} min: tempo curto no quente preserva parte do linalol e do geraniol.":"Adici\xF3n a {min} min: poco tiempo en caliente preserva parte del linalol y del geraniol.","Dry hop preserva mirceno e todo o \xF3leo \u2014 m\xE1ximo de pot\xEAncia arom\xE1tica, mas tarde demais para a levedura converter geraniol em citronelol.":"El dry hop preserva mirceno y todo el aceite \u2014 m\xE1xima potencia arom\xE1tica, pero demasiado tarde para que la levadura convierta geraniol en citronelol.",Tropical:"Tropical",C\u00EDtrico:"C\xEDtrico",Floral:"Floral",Terroso:"Terroso",Condimentado:"Especiado",Pinho:"Pino",Resinoso:"Resinoso",Dank:"Dank","F. de caro\xE7o":"F. de hueso","F. vermelha":"F. roja","Frutas claras":"Frutas claras","Uva branca":"Uva blanca",Mel\u00E3o:"Mel\xF3n",Gram\u00EDneo:"Herb\xE1ceo",Vegetal:"Vegetal","Cebola/alho":"Cebolla/ajo",Queijo:"Queso","A levedura acetila parte do 3MH (grapefruit) em 3MHA (maracuj\xE1, goiaba) \u2014 o mesmo tiol muda de cheiro ao fermentar, e o 3MHA \xE9 percept\xEDvel em concentra\xE7\xE3o muito menor.":"La levadura acetila parte del 3MH (pomelo) en 3MHA (maracuy\xE1, guayaba) \u2014 el mismo tiol cambia de olor al fermentar, y el 3MHA es perceptible en concentraci\xF3n mucho menor.","Dry hop de {gl} g/L passa do ponto em que o aroma ainda cresce: daqui em diante sobe mais o lado verde e o polifenol (adstring\xEAncia) do que a fruta.":"Un dry hop de {gl} g/L pasa del punto en que el aroma a\xFAn crece: de aqu\xED en adelante sube m\xE1s el lado verde y el polifenol (astringencia) que la fruta.","Cepa fen\xF3lica com l\xFApulo frutado: cravo e tropical n\xE3o se somam \u2014 brigam. A cerveja n\xE3o fica 'condimentada e tropical', fica confusa, e as duas notas se derrubam.":"Cepa fen\xF3lica con l\xFApulo frutado: clavo y tropical no se suman \u2014 pelean. La cerveza no queda 'especiada y tropical', queda confusa, y las dos notas se derriban.","Whirlpool a {t}\xB0C: sobra cerca de {pct}% do \xF3leo arom\xE1tico \u2014 quanto mais perto da fervura, menos sobra. E este geraniol a levedura ainda alcan\xE7a.":"Whirlpool a {t}\xB0C: queda cerca del {pct}% del aceite arom\xE1tico \u2014 cuanto m\xE1s cerca del hervor, menos queda. Y a este geraniol la levadura todav\xEDa llega.","Adi\xE7\xE3o a {min} min de fervura: sobra cerca de {pct}% do \xF3leo \u2014 pouco, mas n\xE3o zero.":"Adici\xF3n a {min} min de hervor: queda cerca del {pct}% del aceite \u2014 poco, pero no cero.","Nome da etapa":"Nombre del paso",Pressurizada:"Presurizada","Press\xE3o (atm)":"Presi\xF3n (atm)",Press\u00E3o:"Presi\xF3n","{atm} atm":"{atm} atm",Sim:"S\xED",N\u00E3o:"No","Adicione a primeira rampa.":"A\xF1ade la primera rampa.","Adicionar rampa":"A\xF1adir rampa","FG (densidade final)":"FG (densidad final)","FG manual":"FG manual","Usar calculada":"Usar calculada","Adicione a primeira etapa.":"A\xF1ade el primer paso.","Adicionar etapa":"A\xF1adir paso","Whirlfloc, especiarias, clarificantes \u2014 opcional.":"Whirlfloc, especias, clarificantes \u2014 opcional.","Adicionar insumo":"A\xF1adir insumo","Buscar insumo\u2026":"Buscar insumo\u2026",Unidade:"Unidad",Uso:"Uso",Tempo:"Tiempo","Exportar .xml":"Exportar .xml","Brassar esta receita \u2192":"Cocer esta receta \u2192","Remover linha":"Quitar fila","Beermother":"Beermother","Beermother":"Beermother","Receita incorporada":"Receta incorporada","Volume alvo":"Volumen objetivo","Volume original":"Volumen original",Fonte:"Fuente","Perda de trub":"P\xE9rdida de trub","Rela\xE7\xE3o \xE1gua/malte":"Relaci\xF3n agua/malta","Malte total":"Malta total","Volume final da receita":"Volumen final de la receta","Fria / Trub":"Fr\xEDa / Trub",fermentador:"fermentador","Registro final":"Registro final","Fator WRI":"Factor WRI","Pr\xF3xima brassagem":"Pr\xF3xima cocci\xF3n","Tempo de fervura":"Tiempo de hervido",Inocula\u00E7\u00E3o:"Inoculaci\xF3n","Perfil de fermenta\xE7\xE3o - {name}":"Perfil de fermentaci\xF3n - {name}","Perfil de fermenta\xE7\xE3o":"Perfil de fermentaci\xF3n","Sem perfil no XML":"Sin perfil en el XML","{round}\xAA":"{round}\xAA",trub:"trub","Fervura extra {min} min \xB7 IBU estimado {ibu}":"Hervido extra {min} min \xB7 IBU estimado {ibu}","Relat\xF3rio de Brassagem":"Informe de cocci\xF3n","Gerado em":"Generado el",Resumo:"Resumen",Item:"\xCDtem",Valor:"Valor","Receita usada":"Receta usada","Leituras e corre\xE7\xF5es":"Lecturas y correcciones",Etapa:"Etapa",Leitura:"Lectura",Corre\u00E7\u00E3o:"Correcci\xF3n",Par\u00E2metros:"Par\xE1metros",Par\u00E2metro:"Par\xE1metro","Rodadas de corre\xE7\xE3o":"Rondas de correcci\xF3n",Rodada:"Ronda","A\xE7\xE3o executada":"Acci\xF3n ejecutada","Leitura seguinte":"Lectura siguiente",Hor\u00E1rio:"Hora","Confer\xEAncia das corre\xE7\xF5es":"Verificaci\xF3n de correcciones",Alvo:"Objetivo","Leitura ap\xF3s corre\xE7\xE3o":"Lectura tras correcci\xF3n",Resultado:"Resultado","pH final":"pH final","\xC1cido total":"\xC1cido total","Adi\xE7\xF5es registradas":"Adiciones registradas",Dose:"Dosis","Eventos do contador":"Eventos del temporizador",Evento:"Evento",Detalhe:"Detalle","Salvar em PDF":"Guardar en PDF","Relat\xF3rio de brassagem din\xE2mica":"Informe de cocci\xF3n din\xE1mica","a.a.":"a.a.","~20 \xB0C":"~20 \xB0C","N\xE3o foi poss\xEDvel carregar a receita ({status}).":"No se pudo cargar la receta ({status}).","Link de receita inv\xE1lido.":"Enlace de receta inv\xE1lido.","Formato de receita n\xE3o suportado.":"Formato de receta no soportado.","Receita incorporada inv\xE1lida.":"Receta incorporada inv\xE1lida.","Receita incorporada sem conte\xFAdo.":"Receta incorporada sin contenido.","Este navegador n\xE3o consegue abrir receita compactada.":"Este navegador no puede abrir una receta comprimida.","N\xE3o foi poss\xEDvel descompactar a receita incorporada.":"No se pudo descomprimir la receta incorporada.","Nenhuma sess\xE3o aberta.":"Ninguna sesi\xF3n abierta.","Vers\xE3o de sess\xE3o incompat\xEDvel.":"Versi\xF3n de sesi\xF3n incompatible.","Abrir sess\xE3o salva? A brassagem atual ser\xE1 substitu\xEDda.":"\xBFAbrir sesi\xF3n guardada? La cocci\xF3n actual ser\xE1 reemplazada.",Gr\u00E3o:"Grano",Adjunto:"Adjunto",A\u00E7\u00FAcar:"Az\xFAcar","A\xE7\xFAcar n\xE3o ferment\xE1vel":"Az\xFAcar no fermentable","First wort":"First wort",Whirlpool:"Whirlpool","Dry hop":"Dry hop",Matura\u00E7\u00E3o:"Maduraci\xF3n","Ale comum / neutra":"Ale com\xFAn / neutra","Ale inglesa / alta flocula\xE7\xE3o":"Ale inglesa / alta floculaci\xF3n","Ale frutada / NEIPA":"Ale afrutada / NEIPA","Lager fria":"Lager fr\xEDa","Lager com pitch/arranque quente":"Lager con pitch/arranque caliente","Saison / diastaticus":"Saison / diastaticus",Kveik:"Kveik","Fermenta\xE7\xE3o mista / sour":"Fermentaci\xF3n mixta / sour","Atenua\xE7\xE3o acima do previsto \u2014 pode ser receita mais ferment\xE1vel, FG prevista otimista, erro de medi\xE7\xE3o ou levedura mais atenuante. N\xE3o conclua por uma leitura isolada.":"Atenuaci\xF3n por encima de lo previsto \u2014 puede ser una receta m\xE1s fermentable, una FG prevista optimista, un error de medici\xF3n o una levadura m\xE1s atenuante. No concluyas por una sola lectura.","Dentro do esperado.":"Dentro de lo esperado.","Um pouco mais lenta que o esperado.":"Un poco m\xE1s lenta de lo esperado.","Um pouco mais r\xE1pida que o esperado.":"Un poco m\xE1s r\xE1pida de lo esperado.","Fora da faixa esperada (mais lenta) \u2014 investigar temperatura, pitch, vitalidade e medi\xE7\xE3o.":"Fuera del rango esperado (m\xE1s lenta) \u2014 revisar temperatura, pitch, vitalidad y medici\xF3n.","Fora da faixa esperada (mais r\xE1pida) \u2014 conferir medi\xE7\xE3o e temperatura.":"Fuera del rango esperado (m\xE1s r\xE1pida) \u2014 revisar medici\xF3n y temperatura.",Dias:"D\xEDas",Gramas:"Gramos",Quantidade:"Cantidad",Temperatura:"Temperatura","Volume morto":"Volumen muerto",Preparo:"Preparaci\xF3n",An\u00E1lise:"An\xE1lisis","no esperado":"en lo esperado",r\u00E1pida:"r\xE1pida","muito lenta":"muy lenta","muito r\xE1pida":"muy r\xE1pida","atenuou +":"atenu\xF3 +",pacotes:"paquetes",sach\u00EAs:"sobres","Estilo importado":"Estilo importado","{n} na prateleira":"{n} en el estante","{n} em andamento":"{n} en curso","{n} perfil":"{n} perfil","{n} perfis":"{n} perfiles","{count} levas medidas prontas para ajustar seu equipamento pela mediana real.":"{count} lotes medidos listos para ajustar tu equipo por la mediana real.","OG / FG":"OG / FG","ABV / IBU":"ABV / IBU","Nota adicionada com data e hora.":"Nota a\xF1adida con fecha y hora.","Buscar receita":"Buscar receta","Continuar editando":"Seguir editando","Toque para continuar editando":"Toca para seguir editando","Rascunho descartado.":"Borrador descartado.","Receita duplicada.":"Receta duplicada.","BeerXML exportado.":"BeerXML exportado.","Perfil principal":"Perfil principal","Tornar principal":"Hacer principal","Tema e cor do app \u2014 valem no claro e no escuro.":"Tema y color de la app \u2014 valen en claro y oscuro.","Quanta companhia durante a brassagem.":"Cu\xE1nta compa\xF1\xEDa durante la cocci\xF3n.","Editar: {name}":"Editar: {name}","Novo perfil de equipamento":"Nuevo perfil de equipo","a leva medida":"el lote medido","a mediana":"la mediana","Perda no trub":"P\xE9rdida en trub"," \xB7 perfil: {name}":" \xB7 perfil: {name}"," \xB7 sem perfil principal":" \xB7 sin perfil principal","Backup exportado \u2014 guarde o arquivo em lugar seguro.":"Copia exportada \u2014 guarda el archivo en un lugar seguro.","Backup restaurado.":"Copia restaurada.","Rascunho guardado em Receitas.":"Borrador guardado en Recetas.","Nada para desfazer.":"Nada que deshacer.","Nada para refazer.":"Nada que rehacer.","Adicione maltes antes de definir a OG.":"A\xF1ade maltas antes de definir la OG.","Usar estilo livre":"Usar estilo libre","Toque para editar tipo, rendimento e cor.":"Toca para editar tipo, rendimiento y color.","Defina os percentuais primeiro.":"Define los porcentajes primero.","Normalizar e aplicar":"Normalizar y aplicar","Sair do modo percentual":"Salir del modo porcentaje","Editar percentuais do grist":"Editar porcentajes del grist","Adicione ao menos dois maltes para editar percentuais.":"A\xF1ade al menos dos maltas para editar porcentajes.","Tempo em minutos":"Tiempo en minutos","adequado p/ ale":"adecuado p/ ale","ale de alta densidade":"ale de alta densidad","lager de alta densidade / muito":"lager de alta densidad / muy","Remover etapa":"Quitar paso","Toque para renomear a rampa.":"Toca para renombrar la rampa.","Toque para renomear a etapa.":"Toca para renombrar el paso.","Toque para renomear a etapa ou definir a press\xE3o.":"Toca para renombrar el paso o definir la presi\xF3n.","Toque para editar uso e momento.":"Toca para editar uso y momento.","Receita salva em Minhas receitas.":"Receta guardada en Mis recetas.","Adicione ao menos um ingrediente para a lista.":"A\xF1ade al menos un insumo a la lista.","Adicione ao menos um malte antes de brassar.":"A\xF1ade al menos una malta antes de cocer.",'Importado de "{name}" \u2014 confira os valores e salve.':'Importado de "{name}" \u2014 revisa los valores y guarda.','Perfil "{name}" criado':'Perfil "{name}" creado','Perfil "{name}" salvo':'Perfil "{name}" guardado','Atualizar "{name}"':'Actualizar "{name}"','Calibrar "{name}" com {source}?':'\xBFCalibrar "{name}" con {source}?','Igual ao perfil "{name}" \u2014 nada novo a importar.':'Igual al perfil "{name}" \u2014 nada nuevo que importar.','Perfil "{name}" salvo \u2713':'Perfil "{name}" guardado \u2713','Perfil "{name}" salvo em Equipamentos.':'Perfil "{name}" guardado en Equipos.',"Receita sem nome":"Receta sin nombre","Dia de brassagem":"D\xEDa de cocci\xF3n",Sacarifica\u00E7\u00E3o:"Sacarificaci\xF3n",Prim\u00E1ria:"Primaria","Descanso de diacetil":"Reposo de diacetilo","Cold crash":"Cold crash",Rampa:"Rampa",Idioma:"Idioma",Ativada:"Activada",Desativada:"Desactivada","An\xE1lise da receita (beta)":"An\xE1lisis de la receta (beta)","Simula tend\xEAncias de aroma e sabor. O bot\xE3o s\xF3 aparece no editor quando este modo est\xE1 ativo.":"Simula tendencias de aroma y sabor. El bot\xF3n solo aparece en el editor mientras este modo est\xE1 activo.","Ativar an\xE1lise da receita em modo beta?":"\xBFActivar el an\xE1lisis de la receta en modo beta?","Este recurso est\xE1 em fase de testes e pode errar. Ingredientes ainda n\xE3o cadastrados, diferen\xE7as entre lotes, t\xE9cnicas e condi\xE7\xF5es de cada produ\xE7\xE3o podem alterar bastante o resultado.":"Esta funci\xF3n est\xE1 en fase de pruebas y puede equivocarse. Los ingredientes a\xFAn no registrados, las diferencias entre lotes, las t\xE9cnicas y las condiciones de cada elaboraci\xF3n pueden cambiar mucho el resultado.","Ativar mesmo assim":"Activar de todos modos","Analisar receita \xB7 Beta":"Analizar receta \xB7 Beta","Modo beta":"Modo beta","Realizando simula\xE7\xF5es\u2026":"Realizando simulaciones\u2026","Estimando a faixa sensorial prov\xE1vel desta receita.":"Estimando el rango sensorial probable de esta receta.","Por enquanto vale {current}. Crie um perfil \u2014 ou traga um BeerXML do Brewfather pelo Importar da sidebar. Receitas novas e o Preparo passam a usar o seu.":"Por ahora vale {current}. Crea un perfil \u2014 o trae un BeerXML de Brewfather con Importar de la barra lateral. Las recetas nuevas y la Preparaci\xF3n pasan a usar el tuyo.","Maltes escalados para OG {og}.":"Maltas escaladas a OG {og}.","O malte-base completa o grist ({pct}%) \xB7 defina a OG e o app calcula as quantidades.":"La malta base completa el grist ({pct}%) \xB7 define la OG y la app calcula las cantidades.","Soma {pct}% \xB7 defina a OG e o app calcula as quantidades.":"Suma {pct}% \xB7 define la OG y la app calcula las cantidades.","Quantidades calculadas para OG {og}.":"Cantidades calculadas para OG {og}.","Todas de {name} + lembrar":"Todas de {name} + recordar","FG manual \u2014 calculada seria {fg}. Toque para editar.":"FG manual \u2014 la calculada ser\xEDa {fg}. Toca para editar.",'"{name}" salvo na sua biblioteca.':'"{name}" guardado en tu biblioteca.','"{name}" voltou para Em andamento.':'"{name}" volvi\xF3 a En curso.','Excluir a leva de "{name}"?':'\xBFEliminar el lote de "{name}"?','Descartar o rascunho "{name}"?':'\xBFDescartar el borrador "{name}"?','Brassagem de "{name}" iniciada.':'Cocci\xF3n de "{name}" iniciada.','"{name}" calibrado com {source}.':'"{name}" calibrado con {source}.','Equipamento "{name}" aplicado a esta brassagem.':'Equipo "{name}" aplicado a esta cocci\xF3n.','"{name}" calibrado com esta brassagem.':'"{name}" calibrado con esta cocci\xF3n.',"Contador de fervura extra iniciado: {time}.":"Temporizador de hervido extra iniciado: {time}.","OG planejada":"OG planificada","OG real":"OG real","OG real \xB7 confer\xEAncia p\xF3s-corre\xE7\xE3o":"OG real \xB7 verificaci\xF3n tras correcci\xF3n","OG real \xB7 leitura p\xF3s-fervura":"OG real \xB7 lectura tras hervido","Adicionar mais \xE1gua":"A\xF1adir m\xE1s agua","Fa\xE7a a leitura principal antes de conferir":"Haz la lectura principal antes de verificar","Aguardando confer\xEAncia":"Esperando verificaci\xF3n","Informe WRI ap\xF3s corrigir para confirmar":"Introduce el WRI tras corregir para confirmar","Corre\xE7\xE3o confirmada":"Correcci\xF3n confirmada","Desvio pequeno: seguir se a leitura estiver confi\xE1vel":"Desviaci\xF3n peque\xF1a: sigue si la lectura es fiable","o Equipamento padr\xE3o (20 L \xB7 efici\xEAncia 65% \xB7 absor\xE7\xE3o 1,0 L/kg)":"el Equipo est\xE1ndar (20 L \xB7 eficiencia 65% \xB7 absorci\xF3n 1,0 L/kg)","{vol} \xB7 efic. {pct}%":"{vol} \xB7 efic. {pct}%"," \xB7 principal":" \xB7 principal","Sem um perfil principal, vale o Equipamento padr\xE3o: 20 L \xB7 efici\xEAncia 65% \xB7 absor\xE7\xE3o 1,0 L/kg.":"Sin un perfil principal, vale el Equipo est\xE1ndar: 20 L \xB7 eficiencia 65% \xB7 absorci\xF3n 1,0 L/kg.","Beermother \xB7 Fable \u2014 v{v}":"Beermother \xB7 Fable \u2014 v{v}","Escalar a receita para o novo equipamento?":"\xBFEscalar la receta al nuevo equipo?",'Malte, l\xFApulo, levedura, sais e insumos escalam para manter a OG e o IBU de antes no volume novo \u2014 a cor pode variar com a efici\xEAncia. "Manter" s\xF3 troca o equipamento e deixa as quantidades como est\xE3o.':'Malta, l\xFApulo, levadura, sales e insumos escalan para mantener la OG y el IBU de antes en el volumen nuevo \u2014 el color puede variar con la eficiencia. "Mantener" solo cambia el equipo y deja las cantidades como est\xE1n.',"Escalar receita":"Escalar receta","Manter como est\xE1":"Mantener como est\xE1","Receita escalada para {vol}: OG {og} e {ibu} IBU preservados. Ctrl+Z desfaz.":"Receta escalada a {vol}: OG {og} y {ibu} IBU preservados. Ctrl+Z deshace.","Escolha um perfil (volume, efici\xEAncia e fervura entram na receita) ou crie um novo. Se a receita j\xE1 tem ingredientes, o app pergunta se escala as quantidades.":"Elige un perfil (volumen, eficiencia y hervido entran en la receta) o crea uno nuevo. Si la receta ya tiene insumos, la app pregunta si escala las cantidades.",'Equipamento "{name}" aplicado.':'Equipo "{name}" aplicado.',"Rendimento baixo potencializa a maltosidade, o perfil sensorial do malte e a cor.":"Un rendimiento bajo potencia la maltosidad, el perfil sensorial de la malta y el color.","Mostura fina dilui a \u03B2-amilase e limita seu efeito \u2014 tende a atenuar menos que o previsto.":"Una maceraci\xF3n fina diluye la \u03B2-amilasa y limita su efecto \u2014 tiende a atenuar menos de lo previsto.","Mostura grossa favorece a \u03B2-amilase e a fermentabilidade.":"Una maceraci\xF3n espesa favorece la \u03B2-amilasa y la fermentabilidad.","Cloreto alto acentua o corpo e a maciez, arredondando a cerveja.":"El cloruro alto acent\xFAa el cuerpo y la suavidad, redondeando la cerveza.","Sulfato alto seca o final e real\xE7a o amargor.":"El sulfato alto seca el final y realza el amargor.","Malte Pilsen: p\xE3o leve e cereal cru leve \u2014 base limpa.":"Malta Pilsen: pan ligero y cereal crudo ligero \u2014 base limpia.","\u03B2-glucanos: maciez e sensa\xE7\xE3o de corpo, mas turbidez e efeito negativo na espuma.":"\u03B2-glucanos: suavidad y sensaci\xF3n de cuerpo, pero turbidez y efecto negativo en la espuma.","Malte base p\xE1lido: dul\xE7or de malte leve e limpo.":"Malta base p\xE1lida: dulzor de malta ligero y limpio.","Malte muito torrado traz potencial de adstring\xEAncia e nota tostada/torrada.":"La malta muy tostada aporta astringencia potencial y una nota tostada/torrefacta.","Descanso \xE1cido/proteico baixo: pouca a\xE7\xE3o enzim\xE1tica, leve ajuste de pH.":"Reposo \xE1cido/proteico bajo: poca acci\xF3n enzim\xE1tica, leve ajuste de pH.","\u03B2-glucanase quebra os \u03B2-glucanos \u2014 reduz espessura e turbidez.":"La \u03B2-glucanasa rompe los \u03B2-glucanos \u2014 reduce el espesor y la turbidez.","Libera \xE1cido fer\xFAlico dos maltes \u2014 precursor de 4-VG na fermenta\xE7\xE3o.":"Libera \xE1cido fer\xFAlico de las maltas \u2014 precursor de 4-VG en la fermentaci\xF3n.","Descanso proteico: mexe em espuma e clareza; use com parcim\xF4nia.":"Reposo proteico: afecta a la espuma y la claridad; \xFAsalo con moderaci\xF3n.","Sacarifica\xE7\xE3o baixa favorece a \u03B2-amilase \u2014 mosto mais ferment\xE1vel, corpo mais seco.":"Sacarificaci\xF3n baja favorece la \u03B2-amilasa \u2014 mosto m\xE1s fermentable, cuerpo m\xE1s seco.","Sacarifica\xE7\xE3o alta favorece a \u03B1-amilase \u2014 mais dextrinas, corpo e menos atenua\xE7\xE3o.":"Sacarificaci\xF3n alta favorece la \u03B1-amilasa \u2014 m\xE1s dextrinas, cuerpo y menos atenuaci\xF3n.","Fora das bandas enzim\xE1ticas mapeadas \u2014 sem efeito modelado.":"Fuera de las bandas enzim\xE1ticas mapeadas \u2014 sin efecto modelado.","No whirlpool a quente sobram linalol e geraniol (oxigenados): qualidade mais fina, pot\xEAncia menor que o dry hop.":"En el whirlpool caliente sobreviven linalol y geraniol (oxigenados): calidad m\xE1s fina, menos potencia que el dry hop.","Dry hop preserva mirceno e todo o \xF3leo \u2014 m\xE1ximo de pot\xEAncia arom\xE1tica.":"El dry hop preserva el mirceno y todo el aceite \u2014 m\xE1xima potencia arom\xE1tica.","Adi\xE7\xE3o de fervura: aroma vol\xE1til evapora, contribui mais para amargor/sabor.":"Adici\xF3n de hervido: el aroma vol\xE1til se evapora, aporta m\xE1s al amargor/sabor.","Fermenta\xE7\xE3o frutada e intensa \u2014 a densidade alta puxa ainda mais \xE9ster.":"Fermentaci\xF3n afrutada e intensa \u2014 la densidad alta empuja a\xFAn m\xE1s \xE9ster.","Fermenta\xE7\xE3o com \xE9steres frutados.":"Fermentaci\xF3n con \xE9steres afrutados.","Levedura POF+ encontra o \xE1cido fer\xFAlico e produz 4-VG (cravo, condimentado).":"La levadura POF+ encuentra el \xE1cido fer\xFAlico y produce 4-VG (clavo, especiado).","Levedura POF+, mas sem \xE1cido fer\xFAlico dispon\xEDvel \u2014 pouco 4-VG (falta o descanso ~43\xB0C).":"Levadura POF+, pero sin \xE1cido fer\xFAlico disponible \u2014 poco 4-VG (falta el reposo ~43\xB0C).","A levedura biotransforma o geraniol em citronelol (c\xEDtrico/floral) \u2014 nota que o l\xFApulo sozinho n\xE3o daria.":"La levadura biotransforma el geraniol en citronelol (c\xEDtrico/floral) \u2014 una nota que el l\xFApulo por s\xED solo no dar\xEDa.","p\xE3o leve, cereal":"pan ligero, cereal","malte, biscoito leve":"malta, galleta ligera","torrado / caf\xE9":"tostado / caf\xE9","banana e frutas passadas":"pl\xE1tano y fruta madura","banana e cravo (weizen)":"pl\xE1tano y clavo (weizen)","laranja e frutas tropicais":"naranja y frutas tropicales","apimentado e frutado":"especiado y afrutado","4-VG (cravo)":"4-VG (clavo)","citronelol (c\xEDtrico/floral)":"citronelol (c\xEDtrico/floral)",Corpo:"Cuerpo",Turbidez:"Turbidez",Espuma:"Espuma",Aroma:"Aroma",Sabor:"Sabor",alto:"alto","m\xE9dio-alto":"medio-alto",m\u00E9dio:"medio","m\xE9dio-baixo":"medio-bajo",baixo:"bajo",alta:"alta",m\u00E9dia:"media",baixa:"baja","Sem notas marcantes previstas.":"Sin notas destacadas previstas.","Perfil previsto":"Perfil previsto","Voltar \xE0 receita":"Volver a la receta","An\xE1lise da receita":"An\xE1lisis de la receta","Adicione ao menos um malte para analisar a receita.":"A\xF1ade al menos una malta para analizar la receta.","Simula\xE7\xE3o do efeito de cada adi\xE7\xE3o, na ordem da brassagem \u2014 tend\xEAncias, n\xE3o veredito. N\xE3o conclua por uma leitura s\xF3.":"Simulaci\xF3n del efecto de cada adici\xF3n, en el orden de la cocci\xF3n \u2014 tendencias, no un veredicto. No concluyas por una sola lectura.","Di\xE1rio da an\xE1lise":"Diario del an\xE1lisis","Perfil de fermenta\xE7\xE3o limpo \u2014 poucos \xE9steres e fen\xF3is; deixa o malte e o l\xFApulo falarem.":"Perfil de fermentaci\xF3n limpio \u2014 pocos \xE9steres y fenoles; deja hablar a la malta y el l\xFApulo.",levedura:"levadura",Configura\u00E7\u00E3o:"Configuraci\xF3n","Caramelo em dose baixa: leve toque de toffee e cor dourada.":"Malta caramelo en dosis baja: un toque ligero de toffee y color dorado.","toffee leve":"toffee ligero","Caramelo em dose m\xE9dia: caramelo e toffee pronunciados, corpo redondo.":"Malta caramelo en dosis media: caramelo y toffee pronunciados, cuerpo redondo.","caramelo, toffee":"caramelo, toffee","Caramelo em dose alta: caramelo intenso, uva passa e mais corpo \u2014 tende a atenuar menos.":"Malta caramelo en dosis alta: caramelo intenso, pasa y m\xE1s cuerpo \u2014 tiende a atenuar menos.","caramelo intenso, uva passa":"caramelo intenso, pasa","Chocolate em dose baixa: cor e um toque de cacau / chocolate ao leite.":"Malta chocolate en dosis baja: color y un toque de cacao / chocolate con leche.","cacau leve":"cacao ligero","Chocolate em dose m\xE9dia: chocolate escuro e cacau n\xEDtidos.":"Malta chocolate en dosis media: chocolate negro y cacao n\xEDtidos.","chocolate escuro, cacau":"chocolate negro, cacao","Chocolate em dose alta: chocolate amargo e caf\xE9, com risco de adstring\xEAncia torrada.":"Malta chocolate en dosis alta: chocolate amargo y caf\xE9, con riesgo de astringencia tostada.","chocolate amargo, caf\xE9":"chocolate amargo, caf\xE9",prov\u00E1vel:"probable",poss\u00EDvel:"posible","pouco prov\xE1vel":"poco probable",improv\u00E1vel:"improbable","varia {a}\u2013{b}":"var\xEDa {a}\u2013{b}","De {n} simula\xE7\xF5es com pesos variando dentro da incerteza \u2014 a barra \xE9 qu\xE3o prov\xE1vel a nota aparece.":"De {n} simulaciones con pesos variando dentro de la incertidumbre \u2014 la barra es qu\xE9 tan probable es que la nota aparezca.","Semente: {seed}":"Semilla: {seed}","Re-simular":"Re-simular","Barra escura = faixa prevista (p10\u2013p90) de {n} simula\xE7\xF5es; ponto = prov\xE1vel. \xC1rea clara = o que {s} espera; risco = ideal.":"Barra oscura = rango previsto (p10\u2013p90) de {n} simulaciones; punto = probable. \xC1rea clara = lo que {s} espera; marca = ideal.","Barra = faixa prevista (p10\u2013p90) de {n} simula\xE7\xF5es. Escolha um estilo para ver a faixa esperada ao lado.":"Barra = rango previsto (p10\u2013p90) de {n} simulaciones. Elige un estilo para ver el rango esperado al lado.","Barra escura = faixa prov\xE1vel de {n} simula\xE7\xF5es com margem m\xEDnima; ponto = centro. \xC1rea clara = o que {s} espera; risco = ideal.":"Barra oscura = rango probable de {n} simulaciones con un margen m\xEDnimo; punto = centro. \xC1rea clara = lo que {s} espera; marca = ideal.","Barra = faixa prov\xE1vel de {n} simula\xE7\xF5es com margem m\xEDnima. Escolha um estilo para ver a faixa esperada ao lado.":"Barra = rango probable de {n} simulaciones con un margen m\xEDnimo. Elige un estilo para ver el rango esperado al lado.","Sem estilo de refer\xEAncia":"Sin estilo de referencia","Comparar com o estilo:":"Comparar con el estilo:","Notas marcantes":"Notas marcadas","Aroma de malte":"Aroma de malta","Aroma de l\xFApulo":"Aroma de l\xFApulo","Aroma de fermenta\xE7\xE3o":"Aroma de fermentaci\xF3n",Limpidez:"Limpidez","Forma\xE7\xE3o de espuma":"Formaci\xF3n de espuma","Reten\xE7\xE3o de espuma":"Retenci\xF3n de espuma","Sabor de malte":"Sabor de malta","Sabor de l\xFApulo":"Sabor de l\xFApulo","Sabor de fermenta\xE7\xE3o":"Sabor de fermentaci\xF3n",Amargor:"Amargor",Equil\u00EDbrio:"Equilibrio",Final:"Final",Carbonata\u00E7\u00E3o:"Carbonataci\xF3n","Aquecimento alco\xF3lico":"Calidez alcoh\xF3lica",Cremosidade:"Cremosidad",Adstring\u00EAncia:"Astringencia","Sensa\xE7\xE3o de boca":"Sensaci\xF3n en boca","Cepa STA1+ (diastaticus): atenua al\xE9m do previsto \u2014 final bem seco e mais fenol/apimentado.":"Cepa STA1+ (diastaticus): aten\xFAa m\xE1s de lo previsto \u2014 final muy seco y m\xE1s fenol/especiado.","banana e cravo":"pl\xE1tano y clavo","frutado intenso":"afrutado intenso",frutado:"afrutado","levemente frutado":"ligeramente afrutado","perfil limpo":"perfil limpio","frutado (ma\xE7\xE3, pera)":"afrutado (manzana, pera)",cereal:"cereal",Farinha:"Harina",Mel:"Miel","Casca de p\xE3o":"Corteza de pan",Biscoito:"Galleta",cracker:"cracker",Nozes:"Nueces",Toffee:"Toffee","A\xE7\xFAcar mascavo":"Az\xFAcar moreno",Mela\u00E7o:"Melaza","Frutas secas":"Frutos secos","Ameixa/passa":"Ciruela/pasa",Chocolate:"Chocolate",Caf\u00E9:"Caf\xE9",Torrado:"Tostado",Queimado:"Quemado","Tom vermelho":"Tono rojo",Cereal:"Cereal",P\u00E3o:"Pan",Tostado:"Tostado",Cracker:"Cracker",Caramelo:"Caramelo",neutro:"neutro",leve:"ligero",acentuado:"acentuado","Perfil e bandas":"Perfil y rangos","Vis\xE3o sensorial":"Vista sensorial","Assinatura prov\xE1vel":"Firma probable","{d} {w}":"{d} {w}","final {w}":"final {w}","Sem descritor acima do limiar de percep\xE7\xE3o.":"Ning\xFAn descriptor supera el umbral de percepci\xF3n.","Menos frequente, mas forte quando acontece: {d}.":"Menos frecuente, pero fuerte cuando ocurre: {d}.",Cobertura:"Cobertura","Assumido: {list}":"Asumido: {list}","maltes reconhecidos":"maltas reconocidas","variedades de l\xFApulo":"variedades de l\xFApulo","tempo/temperatura do l\xFApulo":"tiempo/temperatura del l\xFApulo","cepa de levedura":"cepa de levadura","temperatura de fermenta\xE7\xE3o":"temperatura de fermentaci\xF3n","perfil de \xE1gua":"perfil de agua",carbonata\u00E7\u00E3o:"carbonataci\xF3n",dominante:"dominante",evidente:"evidente",n\u00EDtido:"n\xEDtido",discreto:"discreto",t\u00EAnue:"tenue",Descritor:"Descriptor",Chance:"Probabilidad",Intensidade:"Intensidad",Suporte:"Respaldo","Distribui\xE7\xE3o da intensidade em {n} simula\xE7\xF5es":"Distribuci\xF3n de la intensidad en {n} simulaciones","0 = ausente":"0 = ausente","3 = n\xEDtido":"3 = n\xEDtido","5 = dominante":"5 = dominante","Selecione um descritor para ver de onde ele vem.":"Elige un descriptor para ver de d\xF3nde viene.","Vem de:":"Viene de:","Segurado por:":"Contenido por:","Incerteza:":"Incertidumbre:","entre {a} e {b} conforme a simula\xE7\xE3o":"entre {a} y {b} seg\xFAn la simulaci\xF3n","Suporte do dado:":"Respaldo del dato:","{n}% de chance":"{n}% de probabilidad","{v} de 5 se percebido":"{v} de 5 si se percibe","{label} {w}":"{label} {w}","Est\xE1 na receita, mas n\xE3o se sente":"Est\xE1 en la receta, pero no se siente","dose baixa demais para falar \u2014 nenhum aroma passa do limiar":"dosis demasiado baja para hablar \u2014 ning\xFAn aroma supera el umbral","sob {d}":"bajo {d}","Nenhum descritor previsto para esta receita.":"Ning\xFAn descriptor previsto para esta receta.","Mostrar s\xF3 os relevantes":"Mostrar solo los relevantes","Ver perfil completo":"Ver perfil completo","Chance = quantas simula\xE7\xF5es passam do limiar de percep\xE7\xE3o \xB7 intensidade = for\xE7a quando passa \xB7 suporte = qualidade do dado por tr\xE1s da leitura.":"Probabilidad = cu\xE1ntas simulaciones superan el umbral de percepci\xF3n \xB7 intensidad = fuerza cuando lo supera \xB7 respaldo = calidad del dato tras la lectura.","presente, mas abaixo do n\xEDvel em que nomear descritores significa algo":"presente, pero por debajo del nivel en que nombrar descriptores significa algo","Estourou a escala: a leitura para aqui, o valor n\xE3o.":"Se sale de la escala: la lectura para aqu\xED, el valor no.","O modelo bruto atingiu o limite; a faixa inclui a incerteza m\xEDnima.":"El modelo bruto alcanz\xF3 el l\xEDmite; el rango incluye la incertidumbre m\xEDnima.","Cen\xE1rios sensoriais":"Escenarios sensoriales",Experimental:"Experimental","Sua cerveja":"Tu cerveza","Estimativa por simula\xE7\xE3o":"Estimaci\xF3n por simulaci\xF3n","Perfil sensorial":"Perfil sensorial","Por qu\xEA?":"\xBFPor qu\xE9?","Simular altera\xE7\xE3o":"Simular un cambio","Leituras da previs\xE3o":"Vistas de la previsi\xF3n","Car\xE1ter dominante":"Car\xE1cter dominante","Car\xE1ter secund\xE1rio":"Car\xE1cter secundario","Sem destaque":"Sin nota dominante","Nenhuma nota pr\xF3xima":"Sin una nota secundaria cercana","{intensity} \xB7 {family}":"{intensity} \xB7 {family}",Perfil:"Perfil","Receita ainda sem leitura":"La receta todav\xEDa no permite una lectura","Final {finish}":"Final {finish}","Confian\xE7a da faixa":"Confianza del rango","Consist\xEAncia dos cen\xE1rios":"Consistencia de los escenarios","Poucos sinais dispon\xEDveis":"Pocas se\xF1ales disponibles","Cen\xE1rios pr\xF3ximos entre si":"Los escenarios coinciden entre s\xED","H\xE1 alguma varia\xE7\xE3o esperada":"Se espera alguna variaci\xF3n","A faixa ainda \xE9 ampla":"El rango todav\xEDa es amplio","Previs\xE3o est\xE1vel":"Previsi\xF3n estable","Alguma varia\xE7\xE3o":"Alguna variaci\xF3n","Varia\xE7\xE3o maior":"Mayor variaci\xF3n","Varia\xE7\xE3o estreita":"Variaci\xF3n estrecha","Varia\xE7\xE3o moderada":"Variaci\xF3n moderada","Varia\xE7\xE3o ampla":"Variaci\xF3n amplia","Muito alta":"Muy alta","Muito alto":"Muy alto","sem car\xE1ter dominante":"sin car\xE1cter dominante","Leitura r\xE1pida:":"Lectura r\xE1pida:","{character} como principal; {secondary} em apoio. Corpo {body} e final {finish}.":"{character} como principal, con apoyo de {secondary}. Cuerpo {body} y final {finish}.","{character} como principal. Corpo {body} e final {finish}.":"{character} como principal. Cuerpo {body} y final {finish}.","{character}; equil\xEDbrio {balance}, corpo {body} e final {finish}.":"{character}; equilibrio {balance}, cuerpo {body} y final {finish}.","Faixa sensorial prov\xE1vel":"Rango sensorial probable","Onde a cerveja tende a cair nas 200 simula\xE7\xF5es.":"D\xF3nde tiende a situarse la cerveza en 200 simulaciones.","Faixa esperada, com margem para varia\xE7\xF5es que a receita n\xE3o informa.":"Rango esperado, con margen para variaciones que la receta no especifica.","Descritores por fam\xEDlia":"Descriptores por familia","Ver descritores por:":"Explora descriptores por:","Intensidade prevista: 0\u20138":"Intensidad prevista: 0\u20138",Centro:"Centro","Ainda n\xE3o h\xE1 sinais suficientes para montar o perfil.":"Todav\xEDa no hay suficientes se\xF1ales para construir el perfil.","A faixa mostra a varia\xE7\xE3o do modelo; o copo real tamb\xE9m depende da execu\xE7\xE3o e do envase.":"El rango muestra la variaci\xF3n del modelo; la cerveza real tambi\xE9n depende de la elaboraci\xF3n y el envasado.","Estimativa para uma cerveja fresca, com fermenta\xE7\xE3o e envase dentro do esperado.":"Estimaci\xF3n para una cerveza fresca, con fermentaci\xF3n y envasado dentro de lo esperado.","Maior vari\xE1vel":"Mayor variable","Frescor e envase":"Frescura y envasado","Podem reduzir o aroma de l\xFApulo":"Pueden reducir el aroma de l\xFApulo","Rampa e fermenta\xE7\xE3o":"Escal\xF3n de maceraci\xF3n y fermentaci\xF3n","Mudam a rela\xE7\xE3o entre cravo e banana":"Cambian la relaci\xF3n entre clavo y banana","Temperatura e condu\xE7\xE3o mudam o perfil":"La temperatura y la conducci\xF3n cambian el perfil",Processo:"Proceso","Extra\xE7\xE3o e mat\xE9ria-prima mudam a intensidade":"La extracci\xF3n y las materias primas cambian la intensidad",Execu\u00E7\u00E3o:"Ejecuci\xF3n","O processo ainda pode mudar o resultado":"La ejecuci\xF3n todav\xEDa puede cambiar el resultado","O que sustenta esta leitura":"Qu\xE9 sustenta esta lectura","A resposta curta sobre de onde veio a previs\xE3o.":"La respuesta breve sobre el origen de la previsi\xF3n.","Receita informada":"Datos de la receta","Ingredientes e processo considerados":"Ingredientes y proceso considerados","Varia\xE7\xE3o realista":"Variaci\xF3n realista","Varia\xE7\xE3o simulada":"Variaci\xF3n simulada","{n} cen\xE1rios":"{n} escenarios","Pequenas diferen\xE7as de brassagem":"Peque\xF1as diferencias entre elaboraciones","Diferen\xE7as consideradas pelo modelo":"Diferencias consideradas por el modelo","Refer\xEAncia de estilo":"Referencia de estilo","Usada como contexto, n\xE3o como resposta":"Usada como contexto, no como respuesta","De onde v\xEAm os aromas":"De d\xF3nde vienen los aromas","O que ainda pode mudar":"Qu\xE9 todav\xEDa puede cambiar","Sem lacunas importantes nos dados usados por esta leitura.":"Sin lagunas importantes en los datos usados para esta lectura.","Ver an\xE1lise t\xE9cnica":"Ver an\xE1lisis t\xE9cnico","{name}: {delta}% de ferment\xE1vel":"{name}: {delta}% de fermentable","{name}: {delta}% de l\xFApulo":"{name}: {delta}% de l\xFApulo","Mostura: {delta} \xB0C":"Maceraci\xF3n: {delta} \xB0C","Fermenta\xE7\xE3o: {delta} \xB0C":"Fermentaci\xF3n: {delta} \xB0C","Uma mudan\xE7a":"Un cambio","Mudan\xE7a pequena nesta leitura.":"Cambio peque\xF1o en esta lectura.","Sinais que mudam":"Se\xF1ales que cambian","S\xF3 essa vari\xE1vel muda.":"Solo cambia esta variable.","Teste uma mudan\xE7a por vez":"Prueba un cambio cada vez","Veja a dire\xE7\xE3o prov\xE1vel sem alterar a receita original.":"Observa la direcci\xF3n probable sin cambiar la receta original.","N\xE3o h\xE1 mudan\xE7as guiadas dispon\xEDveis para esta receita.":"No hay cambios guiados disponibles para esta receta.","Somente cen\xE1rios do modelo":"Solo escenarios del modelo","Cen\xE1rios do modelo e percep\xE7\xE3o calibrada":"Escenarios del modelo y percepci\xF3n calibrada","Ainda n\xE3o h\xE1 dados humanos calibrados para transformar estes cen\xE1rios em probabilidade de percep\xE7\xE3o.":"A\xFAn no hay datos humanos calibrados para convertir estos escenarios en probabilidad de percepci\xF3n.","Probabilidade humana aparece somente nos descritores que passaram pela calibra\xE7\xE3o.":"La probabilidad humana aparece solo en los descriptores que superaron la calibraci\xF3n.","Comparar hip\xF3teses":"Comparar hip\xF3tesis","Tr\xEAs mudan\xE7as pequenas, simuladas isoladamente com a mesma semente. N\xE3o s\xE3o recomenda\xE7\xF5es.":"Tres cambios peque\xF1os, simulados por separado con la misma semilla. No son recomendaciones.","Hip\xF3tese alterada":"Hip\xF3tesis modificada","{name}: ferment\xE1vel +10%":"{name}: fermentable +10%","Ferment\xE1vel principal":"Fermentable principal","{name}: l\xFApulo +10%":"{name}: l\xFApulo +10%","Adi\xE7\xE3o arom\xE1tica":"Adici\xF3n arom\xE1tica","Mostura +1 \xB0C":"Maceraci\xF3n +1 \xB0C","Fermenta\xE7\xE3o +1 \xB0C":"Fermentaci\xF3n +1 \xB0C","Cen\xE1rio neutro":"Escenario neutro","{pct} dos cen\xE1rios mudaram de faixa":"El {pct} de los escenarios cambi\xF3 de categor\xEDa","Dentro da banda: {delta}":"Dentro de la banda del estilo: {delta}","Descritores que mudam":"Descriptores que cambian",surge:"aparece",desaparece:"desaparece","muda de categoria":"cambia de categor\xEDa","Sem deslocamento relevante nos controles.":"Sin desplazamientos relevantes en los controles sensoriales.","Nenhuma mudan\xE7a categ\xF3rica nos descritores.":"Sin cambios categ\xF3ricos en los descriptores.","Somente este fator muda. A receita original n\xE3o \xE9 alterada.":"Solo cambia este factor. La receta original no se modifica.","Completude dos dados":"Completitud de los datos","Lacunas: {list}":"Lagunas: {list}","Os dados informados cobrem todas as entradas usadas por esta leitura.":"Los datos informados cubren todas las entradas utilizadas por esta lectura.","Controles sensoriais":"Controles sensoriales","Cada barra distribui os {n} cen\xE1rios nas categorias espec\xEDficas deste controle.":"Cada barra distribuye los {n} escenarios entre las categor\xEDas espec\xEDficas de este control.","Moda: {mode}":"Moda: {mode}","Faixa de 80%: {range}":"Rango del 80%: {range}","Abaixo da banda":"Debajo de la banda","Dentro da banda":"Dentro de la banda","Acima da banda":"Por encima de la banda","A escala terminou em {pct} dos cen\xE1rios \u2014 o valor real pode ser maior.":"La escala termin\xF3 en {pct} de los escenarios \u2014 el valor real puede ser mayor.","O valor atingiu o piso da escala em {pct} dos cen\xE1rios \u2014 o valor real pode ser menor.":"El valor alcanz\xF3 el m\xEDnimo de la escala en {pct} de los escenarios \u2014 el valor real puede ser menor.","N\xE3o previsto \u2014 depende do envase":"No previsto \u2014 depende del envasado",Descritores:"Descriptores","Distribui\xE7\xE3o dos cen\xE1rios":"Distribuci\xF3n de los escenarios","Presente em {n} de {runs} cen\xE1rios":"Presente en {n} de {runs} escenarios","Grupo: {group}":"Grupo: {group}","Qualidade do suporte: {support}":"Calidad del respaldo: {support}","Fontes: {sources}":"Fuentes: {sources}","T\xEDpico do estilo":"T\xEDpico del estilo","N\xE3o calibrado":"No calibrado",Piloto:"Piloto",Calibrado:"Calibrado","Distribui\xE7\xE3o perceptiva":"Distribuci\xF3n perceptiva","Probabilidade de percep\xE7\xE3o: {pct}":"Probabilidad de percepci\xF3n: {pct}","Sem percentual humano at\xE9 haver calibra\xE7\xE3o.":"Sin porcentaje humano hasta que exista calibraci\xF3n.","Dados piloto \u2014 ainda sem probabilidade humana.":"Datos piloto \u2014 todav\xEDa sin probabilidad humana.","Fora do modelo":"Fuera del modelo","N\xE3o apareceu nos cen\xE1rios":"No apareci\xF3 en los escenarios","N\xE3o mapeado":"No mapeado","T\xEDpicos do estilo fora da previs\xE3o":"Descriptores t\xEDpicos del estilo fuera de la previsi\xF3n","Distribui\xE7\xE3o dos cen\xE1rios usa a receita; distribui\xE7\xE3o perceptiva s\xF3 aparece ap\xF3s calibra\xE7\xE3o humana.":"La distribuci\xF3n de los escenarios usa la receta; la distribuci\xF3n perceptiva solo aparece tras la calibraci\xF3n humana.","Nenhum descritor apareceu nos cen\xE1rios desta receita.":"Ning\xFAn descriptor apareci\xF3 en los escenarios de esta receta.","{label}: {pct}":"{label}: {pct}",Ausente:"Ausente",T\u00EAnue:"Tenue",Discreto:"Discreto",N\u00EDtido:"N\xEDtido",Evidente:"Evidente",Dominante:"Dominante",Mascavo:"Az\xFAcar moreno","Frutas de caro\xE7o":"Frutas de hueso","Frutas vermelhas":"Frutas rojas",Limpo:"Limpio",Frutado:"Afrutado","Ma\xE7\xE3/pera":"Manzana/pera",Banana:"Banana",Goma:"Chicle",Cravo:"Clavo",Pimenta:"Pimienta",Especiarias:"Especias",Defumado:"Ahumado",Medicinal:"Medicinal",Pl\u00E1stico:"Pl\xE1stico",Diacetil:"Diacetilo",Acetalde\u00EDdo:"Acetaldeh\xEDdo",Enxofre:"Azufre",\u00C1lcool:"Alcohol",Solvente:"Solvente",Oxidado:"Oxidado","Light-struck":"Defecto de luz",DMS:"DMS",L\u00E1tico:"L\xE1ctico",Vinagre:"Vinagre",Funky:"Funky",Brett:"Brett",Base:"Base",Kilned:"Horneado",Cl\u00E1ssico:"Cl\xE1sico","C\xEDtrico / resinoso":"C\xEDtrico / resinoso","Verde / defeitos":"Verde / defectos",\u00C9steres:"\xC9steres",Fen\u00F3lico:"Fen\xF3lico",Falhas:"Defectos","\xC1cida / selvagem":"\xC1cida / salvaje","Edi\xE7\xE3o comemorativa":"Edici\xF3n conmemorativa","11 anos Beermother":"11 a\xF1os de Beermother","Uma receita especial para celebrar essa hist\xF3ria.":"Una receta especial para celebrar esta historia.","Abrir receita especial":"Abrir receta especial"};
+export default {
+  "test.hello": "Hola",
+  "test.greet": "\xA1Hola, {name}!",
+  "Sua sess\xE3o expirou. Recarregue a p\xE1gina para entrar novamente.":
+    "Tu sesi\xF3n caduc\xF3. Recarga la p\xE1gina para volver a entrar.",
+  "N\xE3o foi poss\xEDvel analisar esta receita.":
+    "No se pudo analizar esta receta.",
+  "Tentar novamente": "Intentar de nuevo",
+  "A an\xE1lise ainda n\xE3o foi executada.":
+    "El an\xE1lisis a\xFAn no se ha ejecutado.",
+  Copiar: "Copiar",
+  Copiado: "Copiado",
+  "Abrir menu": "Abrir men\xFA",
+  "Anotar algo agora": "Anotar algo ahora",
+  "Alternar tema claro/escuro": "Cambiar tema claro/oscuro",
+  "Recolher menu": "Contraer men\xFA",
+  "Criar nova receita": "Crear receta nueva",
+  "Nova receita": "Receta nueva",
+  Receitas: "Recetas",
+  Brassagens: "Cocciones",
+  Caderno: "Cuaderno",
+  Equipamentos: "Equipos",
+  Importar: "Importar",
+  Anotar: "Anotar",
+  Configurações: "Ajustes",
+  Backup: "Copia de seguridad",
+  Retomar: "Retomar",
+  "Brassagem retomada de onde parou.": "Cocci\xF3n retomada donde la dejaste.",
+  Descartar: "Descartar",
+  "Brassagem anterior descartada.": "Cocci\xF3n anterior descartada.",
+  "Brassagem em andamento: {recipe}": "Cocci\xF3n en curso: {recipe}",
+  "Salva automaticamente em {when}": "Guardado autom\xE1ticamente a las {when}",
+  "Salva automaticamente": "Guardado autom\xE1ticamente",
+  Mostura: "Maceraci\xF3n",
+  Hopstand: "Hopstand",
+  Fervura: "Hervido",
+  "{stage} restante {clock}": "{stage} restante {clock}",
+  "Etapa anterior": "Paso anterior",
+  "Pr\xF3xima etapa": "Paso siguiente",
+  "Iniciar contagem": "Iniciar cuenta",
+  "Iniciar fervura": "Iniciar hervido",
+  Feito: "Hecho",
+  "Abrir leitura": "Abrir lectura",
+  "Ver ajuste": "Ver ajuste",
+  Guia: "Gu\xEDa",
+  "Reabrir o painel do guia": "Reabrir el panel de la gu\xEDa",
+  "Mostura finalizada.": "Maceraci\xF3n finalizada.",
+  "Hopstand finalizado.": "Hopstand finalizado.",
+  "Fervura finalizada.": "Hervido finalizado.",
+  "In\xEDcio da etapa": "Inicio del paso",
+  "In\xEDcio da mostura": "Inicio de la maceraci\xF3n",
+  "In\xEDcio da fervura": "Inicio del hervido",
+  "In\xEDcio do hopstand": "Inicio del hopstand",
+  "Fim da mostura": "Fin de la maceraci\xF3n",
+  "Mostura finalizada": "Maceraci\xF3n finalizada",
+  "Adi\xE7\xE3o confirmada": "Adici\xF3n confirmada",
+  "Fim da fervura": "Fin del hervido",
+  "Fervura finalizada": "Hervido finalizado",
+  "Fim do hopstand": "Fin del hopstand",
+  "Hopstand finalizado": "Hopstand finalizado",
+  Insumo: "Insumo",
+  "Fim da": "Fin del",
+  fervura: "hervido",
+  "Fim do": "Fin del",
+  hopstand: "hopstand",
+  "Pr\xF3xima adi\xE7\xE3o": "Pr\xF3xima adici\xF3n",
+  "Iniciar mostura": "Iniciar maceraci\xF3n",
+  Finalizar: "Finalizar",
+  mostura: "maceraci\xF3n",
+  agora: "ahora",
+  Iniciar: "Iniciar",
+  "Confirmar adi\xE7\xE3o": "Confirmar adici\xF3n",
+  "Confirmar etapa": "Confirmar paso",
+  "Confirmar adi\xE7\xE3o de hopstand {x}":
+    "Confirmar adici\xF3n de hopstand {x}",
+  "Confirmar adi\xE7\xE3o de {x}": "Confirmar adici\xF3n de {x}",
+  "Confirmar in\xEDcio: {x}": "Confirmar inicio: {x}",
+  "Confirmar {x}": "Confirmar {x}",
+  "Aquecer at\xE9 {x}": "Calentar hasta {x}",
+  "Adi\xE7\xE3o de hopstand {x}": "Adici\xF3n de hopstand {x}",
+  "adi\xE7\xE3o de hopstand {x}": "adici\xF3n de hopstand {x}",
+  "Adi\xE7\xE3o de {x}": "Adici\xF3n de {x}",
+  "adi\xE7\xE3o de {x}": "adici\xF3n de {x}",
+  "Pr\xF3x. {x}": "Pr\xF3x. {x}",
+  "Leitura {x}": "Lectura {x}",
+  "{x} adi\xE7\xF5es": "{x} adiciones",
+  "{x} adi\xE7\xE3o": "{x} adici\xF3n",
+  "Come\xE7ar {x}": "Comenzar {x}",
+  "Aquecendo para {x}": "Calentando hacia {x}",
+  Aquecimento: "Calentamiento",
+  "Finalizar mostura": "Finalizar maceraci\xF3n",
+  "Finalizar fervura": "Finalizar hervido",
+  "Finalizar hopstand": "Finalizar hopstand",
+  "Iniciar hopstand": "Iniciar hopstand",
+  "Fazer a leitura p\xF3s-fervura": "Hacer la lectura posthervido",
+  "Leitura p\xF3s-fervura": "Lectura posthervido",
+  "leia volume e WRI ainda fervendo": "lee volumen y WRI a\xFAn hirviendo",
+  "fim da fervura": "fin del hervido",
+  "fim do hopstand": "fin del hopstand",
+  Fim: "Fin",
+  "Fim hopstand": "Fin hopstand",
+  etapa: "paso",
+  "Minimizar o painel": "Minimizar el panel",
+  "pr\xF3xima etapa": "siguiente etapa",
+  "dia de brassagem": "d\xEDa de cocci\xF3n",
+  "A levedura assume agora.": "La levadura toma el mando ahora.",
+  "Brassagem conclu\xEDda \u2014 bom trabalho.":
+    "Cocci\xF3n concluida \u2014 buen trabajo.",
+  "Iniciar fermenta\xE7\xE3o": "Iniciar fermentaci\xF3n",
+  "Ver an\xE1lise": "Ver an\xE1lisis",
+  "Adicione {list}": "A\xF1ade {list}",
+  "e a leitura p\xF3s-fervura": "y la lectura posthervido",
+  "Come\xE7ar {step}": "Comenzar {step}",
+  "Aquecendo para {step}": "Calentando hacia {step}",
+  "o pr\xF3ximo patamar": "el pr\xF3ximo escal\xF3n",
+  restante: "restante",
+  "pr\xF3ximo:": "siguiente:",
+  "Mostrar na tela": "Mostrar en pantalla",
+  "Voltar etapa do contador": "Contador: paso anterior",
+  "Pular etapa do contador": "Contador: saltar paso",
+  Confirmar: "Confirmar",
+  Pausar: "Pausar",
+  "Espiar a a\xE7\xE3o anterior": "Ver la acci\xF3n anterior",
+  "Espiar a pr\xF3xima a\xE7\xE3o": "Ver la pr\xF3xima acci\xF3n",
+  feito: "hecho",
+  pulada: "omitida",
+  "a seguir": "a continuaci\xF3n",
+  "{i} de {n}": "{i} de {n}",
+  "voltar ao agora": "volver al ahora",
+  "marcar {n} anteriores": "marcar {n} anteriores",
+  "marcar {n} anterior": "marcar {n} anterior",
+  Desfazer: "Deshacer",
+  "feito \u2713": "hecho \u2713",
+  "Abra uma receita para anotar.": "Abre una receta para anotar.",
+  "Ex.: esqueci o Whirlfloc aos 10 min":
+    "Ej.: olvid\xE9 el Whirlfloc a los 10 min",
+  "Adicionar nota": "A\xF1adir nota",
+  "Nota adicionada com hor\xE1rio.": "Nota a\xF1adida con hora.",
+  Fechar: "Cerrar",
+  "Nota r\xE1pida": "Nota r\xE1pida",
+  "Par\xE2metros aplicados.": "Par\xE1metros aplicados.",
+  "N\xE3o encontrei um c\xF3digo completo de par\xE2metros.":
+    "No encontr\xE9 un c\xF3digo completo de par\xE1metros.",
+  "N\xE3o foi poss\xEDvel carregar a receita do link.":
+    "No se pudo cargar la receta del enlace.",
+  "N\xE3o foi poss\xEDvel carregar a receita incorporada no link.":
+    "No se pudo cargar la receta incorporada en el enlace.",
+  "N\xE3o foi poss\xEDvel salvar os par\xE2metros neste navegador.":
+    "No se pudieron guardar los par\xE1metros en este navegador.",
+  "Par\xE2metros importados": "Par\xE1metros importados",
+  Aplicado: "Aplicado",
+  "Par\xE2metros importados da receita aplicados.":
+    "Par\xE1metros de la receta importados y aplicados.",
+  "Brassagem de calibra\xE7\xE3o": "Cocci\xF3n de calibraci\xF3n",
+  "Calibra\xE7\xE3o aplicada: os erros do dia ser\xE3o f\xE1ceis de corrigir. Anote seus par\xE2metros reais na An\xE1lise.":
+    "Calibraci\xF3n aplicada: los errores del d\xEDa ser\xE1n f\xE1ciles de corregir. Anota tus par\xE1metros reales en An\xE1lisis.",
+  "Clipboard bloqueado": "Portapapeles bloqueado",
+  "N\xE3o consegui ler o clipboard neste navegador.":
+    "No se pudo leer el portapapeles en este navegador.",
+  "Nada copiado": "Nada copiado",
+  "N\xE3o h\xE1 par\xE2metros copiados.": "No hay par\xE1metros copiados.",
+  "Formato inv\xE1lido": "Formato inv\xE1lido",
+  "O navegador bloqueou a leitura do clipboard.":
+    "El navegador bloque\xF3 la lectura del portapapeles.",
+  Salvo: "Guardado",
+  "Sess\xE3o salva em arquivo.": "Sesi\xF3n guardada en archivo.",
+  Falhou: "Fall\xF3",
+  "N\xE3o foi poss\xEDvel salvar a sess\xE3o.":
+    "No se pudo guardar la sesi\xF3n.",
+  Abrindo: "Abriendo",
+  Aberta: "Abierta",
+  "N\xE3o abriu": "No abri\xF3",
+  "Sess\xE3o aberta.": "Sesi\xF3n abierta.",
+  "Arquivo de brassagem inv\xE1lido.": "Archivo de cocci\xF3n inv\xE1lido.",
+  "Receita carregada.": "Receta cargada.",
+  "N\xE3o foi poss\xEDvel abrir o BeerXML.": "No se pudo abrir el BeerXML.",
+  "PDF aberto": "PDF abierto",
+  "Confira data e hora e clique em Inserir.":
+    "Revisa fecha y hora y pulsa Insertar.",
+  "Leitura de fermenta\xE7\xE3o inserida.":
+    "Lectura de fermentaci\xF3n a\xF1adida.",
+  "Leitura de fermenta\xE7\xE3o removida.":
+    "Lectura de fermentaci\xF3n eliminada.",
+  "Alguns par\xE2metros s\xE3o conservadores de prop\xF3sito. Me\xE7a pr\xE9-fervura, p\xF3s-fervura e frio e corrija com \xE1gua quando o app pedir \u2014 no fim, esta leva vira o seu equipamento real.":
+    "Algunos par\xE1metros son conservadores a prop\xF3sito. Mide prehervido, posthervido y en fr\xEDo, y corrige con agua cuando la app lo pida \u2014 al final, este lote se convierte en tu equipo real.",
+  "Preparo conferido": "Preparaci\xF3n revisada",
+  "Mostura conclu\xEDda": "Maceraci\xF3n concluida",
+  "Fervura conclu\xEDda": "Hervido concluido",
+  "An\xE1lise conferida": "An\xE1lisis revisado",
+  "Fermenta\xE7\xE3o registrada": "Fermentaci\xF3n registrada",
+  Concluir: "Concluir",
+  "Abrir sess\xE3o salva": "Abrir sesi\xF3n guardada",
+  "Abrir BeerXML do computador": "Abrir BeerXML del ordenador",
+  "Escolha uma receita para brassar": "Elige una receta para cocinar",
+  "Entre na \xE1rea de Receitas da Beermother Academy e abra a receita que deseja produzir \u2014 ou continue uma brassagem salva.":
+    "Entra en el \xE1rea de Recetas de Beermother Academy y abre la receta que quieres producir \u2014 o contin\xFAa una cocci\xF3n guardada.",
+  "Ver receitas na BSA": "Ver recetas en BSA",
+  "Iniciar receita din\xE2mica": "Iniciar receta din\xE1mica",
+  "Receita pronta para brassar": "Receta lista para cocinar",
+  "Lista de compras": "Lista de la compra",
+  Receita: "Receta",
+  "sem autor": "sin autor",
+  "Volume no fermentador": "Volumen en el fermentador",
+  "Efici\xEAncia do equipamento": "Eficiencia del equipo",
+  Evaporação: "Evaporaci\xF3n",
+  "Perda Trub": "P\xE9rdida de trub",
+  "Absor\xE7\xE3o dos gr\xE3os": "Absorci\xF3n de los granos",
+  "Rela\xE7\xE3o \xC1gua/Malte": "Relaci\xF3n agua/grano",
+  "Volume morto recuper\xE1vel": "Volumen muerto recuperable",
+  "\xC1gua sob o fundo falso da tina: precisa ser preenchida na mostura, mas volta pelo dreno. Muda a divis\xE3o mostura/lavagem sem alterar o total (padr\xE3o 0).":
+    "Agua bajo el fondo falso de la olla: debe llenarse en la maceraci\xF3n, pero vuelve por el desag\xFCe. Cambia el reparto maceraci\xF3n/lavado sin alterar el total (predeterminado 0).",
+  "Fator WRI do refrat\xF4metro": "Factor WRI del refract\xF3metro",
+  "Fator de corre\xE7\xE3o do refrat\xF4metro para mosto (padr\xE3o 1,04).":
+    "Factor de correcci\xF3n del refract\xF3metro para mosto (predeterminado 1,04).",
+  "Taxa de aquecimento": "Tasa de calentamiento",
+  "Velocidade de subida entre as rampas \u2014 gera as etapas estimadas de aquecimento no rel\xF3gio (0 desliga; padr\xE3o 1,5).":
+    "Velocidad de subida entre escalones \u2014 genera los pasos estimados de calentamiento en el temporizador (0 lo desactiva; predeterminado 1,5).",
+  "Efici\xEAncia de mostura": "Eficiencia de maceraci\xF3n",
+  "Perda Trub calculada": "P\xE9rdida de trub calculada",
+  "Evapora\xE7\xE3o calculada": "Evaporaci\xF3n calculada",
+  "Selecionar equipamento": "Seleccionar equipo",
+  "Equipamento em observa\xE7\xE3o \u2014 \xE9 o que esta brassagem vai medir.":
+    "Equipo en observaci\xF3n \u2014 es lo que esta cocci\xF3n va a medir.",
+  "Aplica um perfil de equipamento salvo a esta brassagem.":
+    "Aplica un perfil de equipo guardado a esta cocci\xF3n.",
+  "Par\xE2metros de produ\xE7\xE3o": "Par\xE1metros de producci\xF3n",
+  Essencial: "Esencial",
+  "Mostra apenas volume e efici\xEAncia de mostura.":
+    "Muestra solo volumen y eficiencia de maceraci\xF3n.",
+  Completo: "Completo",
+  "Mostra todos os par\xE2metros de produ\xE7\xE3o.":
+    "Muestra todos los par\xE1metros de producci\xF3n.",
+  "\xC1gua base": "Agua base",
+  Cor: "Color",
+  "Desmarcar {name}": "Desmarcar {name}",
+  "Marcar {name} como adicionado": "Marcar {name} como a\xF1adido",
+  "Marcar {name} como feito": "Marcar {name} como hecho",
+  "Ocultar sais": "Ocultar sales",
+  "Mostrar sais": "Mostrar sales",
+  Calculado: "Calculado",
+  Usado: "Usado",
+  "\xC1gua desta brassagem": "Agua de esta cocci\xF3n",
+  "\xC1gua ajustada": "Agua ajustada",
+  "Pulado \u2014 o dia segue normal.": "Omitido \u2014 el d\xEDa sigue normal.",
+  opcional: "opcional",
+  "Toque na dose para corrigir o que voc\xEA realmente adicionou.":
+    "Toca la dosis para corregir lo que realmente a\xF1adiste.",
+  "Mesma \xE1gua de hoje: a dose j\xE1 vem calculada. Registre uma leitura, aplique e fa\xE7a o ajuste fino.":
+    "Misma agua de hoy: la dosis ya viene calculada. Registra una lectura, apl\xEDcala y haz el ajuste fino.",
+  "Me\xE7a o pH da \xE1gua de lavagem \u2014 se for a mesma \xE1gua da mostura, a dose vem quase pronta.":
+    "Mide el pH del agua de lavado \u2014 si es la misma agua de la maceraci\xF3n, la dosis viene casi lista.",
+  "10\u201315 min ap\xF3s o dough-in, tire uma amostra do mosto, esfrie a ~20 \xB0C e leia.":
+    "10\u201315 min tras el dough-in, toma una muestra del mosto, enfr\xEDala a ~20 \xB0C y mide.",
+  "Me\xE7a o pH da \xE1gua antes do dough-in \u2014 o tratamento come\xE7a aqui.":
+    "Mide el pH del agua antes del dough-in \u2014 el tratamiento empieza aqu\xED.",
+  "Registrar leitura": "Registrar lectura",
+  "Esfrie a amostra a ~20 \xB0C antes de ler \u2014 pH cai com a temperatura e os alvos s\xE3o a frio.":
+    "Enfr\xEDa la muestra a ~20 \xB0C antes de medir \u2014 el pH baja con la temperatura y los objetivos son en fr\xEDo.",
+  "Calibrou o pHmetro? Buffers 4,0 e 7,0 \u2014 dois minutos que mudam tudo.":
+    "\xBFCalibraste el pHmetro? Buffers 4,0 y 7,0 \u2014 dos minutos que lo cambian todo.",
+  Pular: "Omitir",
+  "pH do dia": "pH del d\xEDa",
+  pulado: "omitido",
+  "Checklist do dia": "Checklist del d\xEDa",
+  "Iniciar brassagem": "Iniciar cocci\xF3n",
+  Maltes: "Maltas",
+  "Rampas de mostura": "Escalones de maceraci\xF3n",
+  "Adi\xE7\xF5es de mostura": "Adiciones de maceraci\xF3n",
+  "Leitura pr\xE9-fervura": "Lectura prehervido",
+  "Leitura p\xF3s-fervura": "Lectura posthervido",
+  Esperado: "Esperado",
+  "Sua leitura": "Tu lectura",
+  "No flameout": "En el flameout",
+  Real: "Real",
+  "Informe volume e WRI": "Introduce volumen y WRI",
+  "Me\xE7a o volume e o WRI no fim da fervura (flameout), com o mosto ainda quente \u2014 o esperado j\xE1 considera a temperatura.":
+    "Mide el volumen y el WRI al final del hervido (flameout), con el mosto a\xFAn caliente \u2014 el esperado ya considera la temperatura.",
+  "Me\xE7a o volume quente e o WRI no refrat\xF4metro \u2014 o esperado j\xE1 considera a temperatura.":
+    "Mide el volumen caliente y el WRI en el refract\xF3metro \u2014 el esperado ya considera la temperatura.",
+  "Aqui nasce a sua evapora\xE7\xE3o real. Se o mosto vier curto e forte, o app pede \xE1gua no flameout \u2014 e o dia fecha certo.":
+    "Aqu\xED nace tu evaporaci\xF3n real. Si el mosto sale corto y fuerte, la app pide agua en el flameout \u2014 y el d\xEDa cierra bien.",
+  "Aqui nasce a sua efici\xEAncia real. Se a densidade vier alta, o app pede \xE1gua antes de ferver \u2014 era o esperado.":
+    "Aqu\xED nace tu eficiencia real. Si la densidad sale alta, la app pide agua antes de hervir \u2014 era lo esperado.",
+  "Me\xE7a de novo para conferir a corre\xE7\xE3o.":
+    "Mide de nuevo para comprobar la correcci\xF3n.",
+  "Anotado \u2014 seguimos com a leitura como est\xE1.":
+    "Anotado \u2014 seguimos con la lectura tal como est\xE1.",
+  "Maltes e ferment\xE1veis": "Maltas y fermentables",
+  "Sais de \xE1gua": "Sales de agua",
+  "Outros insumos": "Otros insumos",
+  ocultar: "ocultar",
+  ajustar: "ajustar",
+  "N\xE3o copiou": "No copi\xF3",
+  "Pedir insumos": "Pedir insumos",
+  "Toque no valor para ajustar \xE0 m\xE3o.":
+    "Toca el valor para ajustar a mano.",
+  "Corre\xE7\xE3o pr\xE9-fervura": "Correcci\xF3n prehervido",
+  "Corre\xE7\xE3o p\xF3s-fervura": "Correcci\xF3n posthervido",
+  "Apliquei a corre\xE7\xE3o": "Apliqu\xE9 la correcci\xF3n",
+  "Seguir sem corrigir": "Seguir sin corregir",
+  "Me\xE7a de novo (WRI)": "Mide de nuevo (WRI)",
+  "WRI ap\xF3s corre\xE7\xE3o": "WRI tras correcci\xF3n",
+  "Apliquei o ajuste": "Apliqu\xE9 el ajuste",
+  "Ajuste fino": "Ajuste fino",
+  "Concluir corre\xE7\xE3o": "Concluir correcci\xF3n",
+  "Corre\xE7\xE3o conferida \u2014 dentro da margem.":
+    "Correcci\xF3n comprobada \u2014 dentro del margen.",
+  "Est\xE1 bom assim": "Est\xE1 bien as\xED",
+  "Outras adi\xE7\xF5es de fervura": "Otras adiciones de hervido",
+  "L\xFApulos e fervura": "L\xFApulos y hervido",
+  "Adi\xE7\xF5es p\xF3s-fervura": "Adiciones posthervido",
+  "\xC1gua de lavagem": "Agua de lavado",
+  "Aguardando leitura": "Esperando lectura",
+  "Voc\xEA escolheu seguir com a leitura como est\xE1. Fica no log da brassagem.":
+    "Elegiste seguir con la lectura tal como est\xE1. Queda en el registro de la cocci\xF3n.",
+  "Preencha a leitura acima para calcular a corre\xE7\xE3o.":
+    "Rellena la lectura de arriba para calcular la correcci\xF3n.",
+  "voltar a corrigir": "volver a corregir",
+  "Alvo ": "Objetivo ",
+  "Hopstand / whirlpool": "Hopstand / whirlpool",
+  "Toque para ajustar \xE0 m\xE3o": "Toca para ajustar a mano",
+  "pH \xB7 {title}": "pH \xB7 {title}",
+  "Dose ap\xF3s a leitura {n}": "Dosis tras la lectura {n}",
+  "Desfazer esta leitura": "Deshacer esta lectura",
+  "Registrado: pH {ph}. Vai para o resumo da leva.":
+    "Registrado: pH {ph}. Va al resumen del lote.",
+  "pH {ph} \u2014 abaixo da faixa. N\xE3o h\xE1 corre\xE7\xE3o para cima; anote e siga (o malte manda).":
+    "pH {ph} \u2014 por debajo del rango. No hay correcci\xF3n hacia arriba; an\xF3talo y sigue (manda la malta).",
+  "Adicione ~{dose} mL de {acid}": "A\xF1ade ~{dose} mL de {acid}",
+  " no mosto, misture bem (~1 min) e leia de novo.":
+    " al mosto, mezcla bien (~1 min) y mide de nuevo.",
+  " nos {vol} L, misture bem (~1 min) e leia de novo.":
+    " a los {vol} L, mezcla bien (~1 min) y mide de nuevo.",
+  "\u2713 pH {ph} \u2014 na faixa ({min}\u2013{max}). Siga o dia.":
+    "\u2713 pH {ph} \u2014 en rango ({min}\u2013{max}). Sigue el d\xEDa.",
+  "\u2713 pH {ph} \u2014 no alvo. Siga o dia.":
+    "\u2713 pH {ph} \u2014 en el objetivo. Sigue el d\xEDa.",
+  "ex.: 7,2": "ej.: 7,2",
+  ácido: "\xE1cido",
+  "alvo 5,5": "objetivo 5,5",
+  "faixa 5,2\u20135,6": "rango 5,2\u20135,6",
+  "s\xF3 registro": "solo registro",
+  "pela sua \xE1gua de hoje": "por tu agua de hoy",
+  "pela mem\xF3ria da casa": "por la memoria de la casa",
+  "chute inicial conservador \u2014 a pr\xF3xima leitura ensina":
+    "estimaci\xF3n inicial conservadora \u2014 la pr\xF3xima lectura ense\xF1a",
+  "{ion} \xE1gua base": "{ion} agua base",
+  "\xE1gua da mostura": "agua de maceraci\xF3n",
+  " \xB7 {ml} mL de \xE1cido": " \xB7 {ml} mL de \xE1cido",
+  "Desmarcar: {title}": "Desmarcar: {title}",
+  "Marcar feito: {title}": "Marcar hecho: {title}",
+  "ver a lista \u2192": "ver la lista \u2192",
+  "Durante: ": "Durante: ",
+  Total: "Total",
+  "Resfrie o mosto at\xE9 ~{t} \xB0C": "Enfr\xEDa el mosto a ~{t} \xB0C",
+  "Resfrie o mosto at\xE9 a temperatura de inocula\xE7\xE3o":
+    "Enfr\xEDa el mosto a la temperatura de inoculaci\xF3n",
+  Volume: "Volumen",
+  Extrato: "Extracto",
+  "Leitura do refrat\xF4metro (escala WRI/Brix)":
+    "Lectura del refract\xF3metro (escala WRI/Brix)",
+  "{count} pacote": "{count} paquete",
+  "{count} pacotes": "{count} paquetes",
+  "receita pede {x} g": "la receta pide {x} g",
+  Lúpulos: "L\xFApulos",
+  Levedura: "Levadura",
+  "Cloreto de c\xE1lcio (CaCl2)": "Cloruro de calcio (CaCl2)",
+  "Sulfato de c\xE1lcio (CaSO4)": "Sulfato de calcio (CaSO4)",
+  "Sulfato de magn\xE9sio (MgSO4)": "Sulfato de magnesio (MgSO4)",
+  "receita pede {x} pacote": "la receta pide {x} paquete",
+  "receita pede {x}": "la receta pide {x}",
+  brassagem: "cocci\xF3n",
+  "Ol\xE1! Gostaria de encomendar os insumos para *{name}*:":
+    "\xA1Hola! Quisiera pedir los insumos para *{name}*:",
+  "Pedido \u2014 {name}": "Pedido \u2014 {name}",
+  "Fracionamento de {label} em gramas": "Fraccionamiento de {label} en gramos",
+  "{n} adi\xE7\xF5es": "{n} adiciones",
+  "Margem em %": "Margen en %",
+  " \xB7 margem de {pct}% no p\xF3s-fervura":
+    " \xB7 margen de {pct}% en posthervido",
+  "Arredondada pelo fracionamento do seu brewshop{tail} \u2014 ":
+    "Redondeada por el fraccionamiento de tu brewshop{tail} \u2014 ",
+  Margem: "Margen",
+  Malte: "Malta",
+  Lúpulo: "L\xFApulo",
+  Sais: "Sales",
+  Outros: "Otros",
+  "{n} item": "{n} \xEDtem",
+  "{n} itens": "{n} \xEDtems",
+  " \xB7 {n} fora": " \xB7 {n} fuera",
+  "Brassagem de calibra\xE7\xE3o: os itens que escalam com a corre\xE7\xE3o (l\xFApulo, levedura) v\xEAm refor\xE7ados em {pct}% por garantia. O malte j\xE1 est\xE1 dimensionado com folga.":
+    "Cocci\xF3n de calibraci\xF3n: los insumos que escalan con la correcci\xF3n (l\xFApulo, levadura) vienen reforzados en {pct}% por garant\xEDa. La malta ya est\xE1 dimensionada con holgura.",
+  "por {shop}": "por {shop}",
+  "Incluir {name} no pedido": "Incluir {name} en el pedido",
+  "Quantidade de {name} (apague para voltar \xE0 sugest\xE3o)":
+    "Cantidad de {name} (borra para volver a la sugerencia)",
+  Lavagem: "Lavado",
+  dia: "d\xEDa",
+  dias: "d\xEDas",
+  Águas: "Aguas",
+  Fermentação: "Fermentaci\xF3n",
+  resfriamento: "enfriamiento",
+  "Desvio aceito \u2014 seguir para {stage}":
+    "Desviaci\xF3n aceptada \u2014 seguir a {stage}",
+  "Dentro da margem \u2014 seguir para {stage}":
+    "Dentro del margen \u2014 seguir a {stage}",
+  "Sem corre\xE7\xE3o \u2014 seguir para {stage}":
+    "Sin correcci\xF3n \u2014 seguir a {stage}",
+  "Desvio de {vol} \u2014 menor que o erro de medi\xE7\xE3o.":
+    "Desviaci\xF3n de {vol} \u2014 menor que el error de medici\xF3n.",
+  "Volume para atingir o extrato: {vol}":
+    "Volumen para alcanzar el extracto: {vol}",
+  "{n}\xAA corre\xE7\xE3o": "correcci\xF3n n.\xBA {n}",
+  "A \xE1gua resfria o mosto: \u2248 ": "El agua enfr\xEDa el mosto: \u2248 ",
+  " ap\xF3s adicionar (\xE1gua a 25 \xB0C)":
+    " tras a\xF1adir (agua a 25 \xB0C)",
+  " \xB7 alvo do hopstand: {t} \xB0C": " \xB7 objetivo del hopstand: {t} \xB0C",
+  "Fervura extra estimada: ": "Hervido extra estimado: ",
+  "Somar ao contador": "Sumar al temporizador",
+  "Inicia um contador com o tempo extra de fervura recomendado.":
+    "Inicia un temporizador con el tiempo extra de hervido recomendado.",
+  "Aceita a leitura como est\xE1 e segue a brassagem \u2014 a decis\xE3o fica no log.":
+    "Acepta la lectura tal como est\xE1 y sigue \u2014 la decisi\xF3n queda en el registro.",
+  "Informe WRI ap\xF3s corrigir": "Introduce WRI tras corregir",
+  "Encerra a corre\xE7\xE3o com a leitura atual \u2014 a decis\xE3o fica no log.":
+    "Cierra la correcci\xF3n con la lectura actual \u2014 la decisi\xF3n queda en el registro.",
+  "Alfa \xE1cido real de {name}": "Alfa \xE1cido real de {name}",
+  "Hopstand / whirlpool \xB7 {t} \xB0C": "Hopstand / whirlpool \xB7 {t} \xB0C",
+  "{min} min de repouso": "{min} min de reposo",
+  "Dry hop \xB7 na fermenta\xE7\xE3o": "Dry hop \xB7 en fermentaci\xF3n",
+  "durante a fermenta\xE7\xE3o": "durante la fermentaci\xF3n",
+  "Lave com {vol} de \xE1gua a ~76\u201378 \xB0C, ao fim das rampas.":
+    "Lava con {vol} de agua a ~76\u201378 \xB0C, al final de los escalones.",
+  "\xE1gua de lavagem": "agua de lavado",
+  "mosto resfriado": "mosto enfriado",
+  "Leitura fria": "Lectura en fr\xEDo",
+  "Volume trub": "Volumen de trub",
+  Fermentador: "Fermentador",
+  "Leituras esperadas (beta) ativado.": "Lecturas esperadas (beta) activado.",
+  Ativado: "Activado",
+  Desativado: "Desactivado",
+  "Leituras esperadas \xB7 beta": "Lecturas esperadas \xB7 beta",
+  "Ative para ver o corredor esperado de extrato no gr\xE1fico e a leitura classificada.":
+    "Act\xEDvalo para ver el corredor esperado de extracto en el gr\xE1fico y la lectura clasificada.",
+  "Fam\xEDlia da levedura para o modelo de fermenta\xE7\xE3o":
+    "Familia de la levadura para el modelo de fermentaci\xF3n",
+  "Autom\xE1tico \u2014 {family}": "Autom\xE1tico \u2014 {family}",
+  "Atenua\xE7\xE3o aparente esperada": "Atenuaci\xF3n aparente esperada",
+  "50% da atenua\xE7\xE3o": "50% de la atenuaci\xF3n",
+  "90% da atenua\xE7\xE3o": "90% de la atenuaci\xF3n",
+  "Plat\xF4 prov\xE1vel": "Meseta probable",
+  "Informe OG e FG para gerar o corredor.":
+    "Introduce OG y FG para generar el corredor.",
+  "{family} n\xE3o gera curva autom\xE1tica.":
+    "{family} no genera curva autom\xE1tica.",
+  "Esta levedura": "Esta levadura",
+  "Fam\xEDlia da levedura": "Familia de la levadura",
+  "Atenua\xE7\xE3o esperada": "Atenuaci\xF3n esperada",
+  "Refer\xEAncia beta \u2014 para pegar desvios grandes, n\xE3o como garantia de t\xE9rmino ou qualidade. Confirme estabilidade de extrato antes de envasar.":
+    "Referencia beta \u2014 para detectar desviaciones grandes, no como garant\xEDa de terminaci\xF3n o calidad. Confirma la estabilidad del extracto antes de envasar.",
+  "Rampas de fermenta\xE7\xE3o": "Escalones de fermentaci\xF3n",
+  "Sem levedura no XML.": "Sin levadura en el XML.",
+  "Sem perfil de fermenta\xE7\xE3o no XML.":
+    "Sin perfil de fermentaci\xF3n en el XML.",
+  "Adicionar leitura de fermenta\xE7\xE3o":
+    "A\xF1adir lectura de fermentaci\xF3n",
+  Dia: "D\xEDa",
+  "Data/hora": "Fecha/hora",
+  "Temp.": "Temp.",
+  "Real corrigido": "Real corregido",
+  "Leitura do refrat\xF4metro na fermenta\xE7\xE3o":
+    "Lectura del refract\xF3metro en la fermentaci\xF3n",
+  "Remover leitura": "Eliminar lectura",
+  "Nova leitura do refrat\xF4metro na fermenta\xE7\xE3o":
+    "Nueva lectura del refract\xF3metro en la fermentaci\xF3n",
+  "Cancelar nova leitura": "Cancelar nueva lectura",
+  Esperada: "Esperada",
+  "Acompanhamento da fermenta\xE7\xE3o": "Seguimiento de la fermentaci\xF3n",
+  "Temperatura lida na fermenta\xE7\xE3o":
+    "Temperatura le\xEDda en la fermentaci\xF3n",
+  "Data da leitura de fermenta\xE7\xE3o":
+    "Fecha de la lectura de fermentaci\xF3n",
+  "Hora da leitura de fermenta\xE7\xE3o":
+    "Hora de la lectura de fermentaci\xF3n",
+  "Data e hora da leitura": "Fecha y hora de la lectura",
+  Data: "Fecha",
+  Hora: "Hora",
+  "Dia {n} de fermenta\xE7\xE3o": "D\xEDa {n} de fermentaci\xF3n",
+  Cancelar: "Cancelar",
+  Inserir: "Insertar",
+  Aplicar: "Aplicar",
+  "Dia {n} \xB7 {date} {time}": "D\xEDa {n} \xB7 {date} {time}",
+  "Gr\xE1fico da fermenta\xE7\xE3o": "Gr\xE1fico de la fermentaci\xF3n",
+  "Temp. planejada": "Temp. planeada",
+  "Temp. lida": "Temp. medida",
+  "Esperado (beta)": "Esperado (beta)",
+  "Adicione leituras para acompanhar a curva de extrato.":
+    "A\xF1ade lecturas para seguir la curva de extracto.",
+  "An\xE1lise da brassagem": "An\xE1lisis de la cocci\xF3n",
+  "Efici\xEAncia equipamento": "Eficiencia del equipo",
+  "Absor\xE7\xE3o gr\xE3os": "Absorci\xF3n de granos",
+  "Perda trub": "P\xE9rdida de trub",
+  "Par\xE2metros para a pr\xF3xima brassagem":
+    "Par\xE1metros para la pr\xF3xima cocci\xF3n",
+  "Log de brassagem": "Registro de la cocci\xF3n",
+  "Abrir log completo": "Abrir registro completo",
+  "Pr\xF3xima etapa: fermenta\xE7\xE3o": "Siguiente etapa: fermentaci\xF3n",
+  "O dia de brassagem termina aqui \u2014 agora a levedura assume. Registre as leituras ao longo dos dias.":
+    "El d\xEDa de cocci\xF3n termina aqu\xED \u2014 ahora la levadura toma el mando. Registra las lecturas a lo largo de los d\xEDas.",
+  "Encerrar a leva": "Cerrar el lote",
+  "Concluir move esta brassagem para o Caderno, com o log completo guardado. D\xE1 para reabrir por l\xE1.":
+    "Concluir mueve esta cocci\xF3n al Cuaderno, con el registro completo guardado. Puedes reabrirla desde all\xED.",
+  "Concluir brassagem": "Concluir cocci\xF3n",
+  "Brassagem conclu\xEDda \u2014 a ficha dela mora no Caderno.":
+    "Cocci\xF3n concluida \u2014 su ficha vive en el Cuaderno.",
+  "Anota\xE7\xF5es livres da brassagem": "Notas libres de la cocci\xF3n",
+  Anotações: "Notas",
+  'Aque\xE7a a \xE1gua de lavagem a ~76\u201378 \xB0C. Ajuste "Usado" na mostura se mudar algo na hora.':
+    'Calienta el agua de lavado a ~76\u201378 \xB0C. Ajusta "Usado" en la maceraci\xF3n si cambias algo sobre la marcha.',
+  'A \xE1gua de mostura prevista \xE9 {vol}, mas coloque o quanto for preciso para cobrir o gr\xE3o. Em equipamentos com fundo falso grande, boa parte da \xE1gua fica embaixo, sem contato com os gr\xE3os \u2014 isso \xE9 o volume morto do seu sistema. Ajuste "Usado" com o que voc\xEA realmente usou.':
+    'El agua de maceraci\xF3n prevista es {vol}, pero pon la que haga falta para cubrir el grano. En equipos con fondo falso grande, buena parte del agua queda debajo, sin contacto con el grano \u2014 ese es el volumen muerto de tu sistema. Ajusta "Usado" con lo que realmente usaste.',
+  "Sem corre\xE7\xE3o": "Sin correcci\xF3n",
+  "Adicionar \xE1gua": "A\xF1adir agua",
+  "Fervura extra": "Hervido extra",
+  "Finalizar fervura extra": "Finalizar hervido extra",
+  "\xC1gua da mostura \xB7 {vol}": "Agua de maceraci\xF3n \xB7 {vol}",
+  "confira o usado (e os sais)": "revisa lo usado (y las sales)",
+  "Adicione os maltes (dough-in)": "A\xF1ade las maltas (dough-in)",
+  "{mass} de gr\xE3os": "{mass} de granos",
+  "Adicione {name} na mostura": "A\xF1ade {name} a la maceraci\xF3n",
+  "Aquecer para {step}": "Calentar a {step}",
+  "~{min} min (estimado)": "~{min} min (estimado)",
+  "Lave com {vol}": "Lava con {vol}",
+  "\xE1gua a ~76\u201378 \xB0C": "agua a ~76\u201378 \xB0C",
+  "Ajuste a pr\xE9-fervura": "Ajusta el prehervido",
+  "Adicione {names}": "A\xF1ade {names}",
+  "first wort \u2014 antes de ferver": "first wort \u2014 antes de hervir",
+  "Leve o mosto \xE0 fervura": "Lleva el mosto a hervir",
+  "{min} min de fervura": "{min} min de hervido",
+  "no fim da fervura (flameout)": "al final del hervido (flameout)",
+  "Ajuste a p\xF3s-fervura": "Ajusta el posthervido",
+  "hopstand {time}": "hopstand {time}",
+  " a {t}\xB0C": " a {t}\xB0C",
+  "Resfrie o mosto": "Enfr\xEDa el mosto",
+  "at\xE9 a temperatura de inocula\xE7\xE3o":
+    "hasta la temperatura de inoculaci\xF3n",
+  "volume no fermentador e trub": "volumen en el fermentador y trub",
+  "Moa {mass} de malte (se em gr\xE3o)":
+    "Muele {mass} de malta (si es en grano)",
+  "Aque\xE7a {vol} a ~{t} \xB0C para a mostura":
+    "Calienta {vol} a ~{t} \xB0C para la maceraci\xF3n",
+  "Aque\xE7a {vol} para a mostura": "Calienta {vol} para la maceraci\xF3n",
+  "Aque\xE7a {vol} a 76\u201378 \xB0C para a lavagem":
+    "Calienta {vol} a 76\u201378 \xB0C para el lavado",
+  "Aproveite para aquecer a \xE1gua de lavagem enquanto faz a mostura \u2014 {vol} a 76\u201378 \xB0C":
+    "Aprovecha para calentar el agua de lavado mientras maceras \u2014 {vol} a 76\u201378 \xB0C",
+  "Transfira o mosto para a panela \u2014 alvo {vol}":
+    "Transfiere el mosto a la olla \u2014 objetivo {vol}",
+  "Adicione a levedura \u2014 {yeast}": "Inocula la levadura \u2014 {yeast}",
+  "Adicione a levedura": "Inocula la levadura",
+  "Leve \xE0 geladeira \u2014 fermenta\xE7\xE3o a {t} \xB0C":
+    "Lleva a la nevera \u2014 fermentaci\xF3n a {t} \xB0C",
+  "Leve \xE0 geladeira na temperatura de fermenta\xE7\xE3o":
+    "Lleva a la nevera a la temperatura de fermentaci\xF3n",
+  "desvio aceito \u2014 seguindo como est\xE1":
+    "desviaci\xF3n aceptada \u2014 siguiendo tal cual",
+  "aplicada \u2014 confira ou conclua": "aplicada \u2014 revisa o concluye",
+  "aguardando a leitura": "esperando la lectura",
+  "sem corre\xE7\xE3o necess\xE1ria": "sin correcci\xF3n necesaria",
+  "no alvo \u2014 sem corre\xE7\xE3o \u2713":
+    "en el objetivo \u2014 sin correcci\xF3n \u2713",
+  "fora do alvo \u2014 veja o ajuste":
+    "fuera del objetivo \u2014 mira el ajuste",
+  "Revise a receita e o plano do dia": "Revisa la receta y el plan del d\xEDa",
+  "Confira se tem todos os ingredientes":
+    "Comprueba que tienes todos los insumos",
+  "Limpe os equipamentos de brassagem": "Limpia el equipo de cocci\xF3n",
+  "Feche as v\xE1lvulas dos equipamentos": "Cierra las v\xE1lvulas del equipo",
+  "Com a chama ligada, mantenha agita\xE7\xE3o":
+    "Con la llama encendida, mant\xE9n la agitaci\xF3n",
+  "Recircule o mosto at\xE9 clarificar":
+    "Recircula el mosto hasta que clarifique",
+  "Hotbreak no in\xEDcio: controle o fogo e agite":
+    "Hotbreak al inicio: controla el fuego y agita",
+  "Aos ~5 min do fim, mergulhe o chiller":
+    "A ~5 min del final, sumerge el chiller",
+  "Aproveite para deixar o chiller \xE0 m\xE3o \u2014 ele entra na panela aos ~5 min do fim":
+    "Ten el chiller a mano \u2014 entra en la olla a ~5 min del final",
+  "Fa\xE7a o whirlpool (redemoinho)": "Haz el whirlpool (remolino)",
+  "Sanitize tudo que vai tocar o mosto frio":
+    "Sanitiza todo lo que tocar\xE1 el mosto fr\xEDo",
+  "Fermentador, torneira, mangueiras e airlock sanitizados":
+    "Fermentador, grifo, mangueras y airlock sanitizados",
+  "Aere o mosto": "Airea el mosto",
+  "Feche o fermentador e ponha o airlock":
+    "Cierra el fermentador y coloca el airlock",
+  "Limpe os equipamentos da brassagem": "Limpia el equipo de la cocci\xF3n",
+  "Alfa \xE1cido": "Alfa \xE1cido",
+  Atenuação: "Atenuaci\xF3n",
+  "S\xF3 nesta receita": "Solo en esta receta",
+  Concluídas: "Concluidas",
+  "Fa\xE7a a brassagem de calibra\xE7\xE3o \u2014 uma Cream Ale simples que revela sua efici\xEAncia, evapora\xE7\xE3o e perdas reais.":
+    "Haz la cocci\xF3n de calibraci\xF3n \u2014 una Cream Ale simple que revela tu eficiencia, evaporaci\xF3n y p\xE9rdidas reales.",
+  "Come\xE7ar calibra\xE7\xE3o": "Empezar calibraci\xF3n",
+  "1 leva medida pronta para ajustar seu equipamento pelos n\xFAmeros reais.":
+    "1 lote medido listo para ajustar tu equipo con los n\xFAmeros reales.",
+  "Crie do zero ou traga do Brewfather \u2014 receita e equipamento v\xEAm no mesmo arquivo BeerXML.":
+    "Crea desde cero o tr\xE1ela de Brewfather \u2014 receta y equipo vienen en el mismo archivo BeerXML.",
+  "Lan\xE7ar leitura": "Registrar lectura",
+  "Voltar \xE0 brassagem": "Volver a la cocci\xF3n",
+  "A\xE7\xF5es da leva": "Acciones del lote",
+  "Sess\xE3o exportada \u2014 d\xE1 para abrir em qualquer dispositivo.":
+    "Sesi\xF3n exportada \u2014 se puede abrir en cualquier dispositivo.",
+  "Receita salva \u2014 d\xE1 para editar e adaptar.":
+    "Receta guardada \u2014 se puede editar y adaptar.",
+  "N\xE3o foi poss\xEDvel salvar a receita.": "No se pudo guardar la receta.",
+  "Brassagem conclu\xEDda \u2014 ela mora no Caderno.":
+    "Cocci\xF3n concluida \u2014 vive en el Cuaderno.",
+  "O registro e o log desta leva ser\xE3o apagados. Essa a\xE7\xE3o n\xE3o pode ser desfeita.":
+    "El registro y el log de este lote se borrar\xE1n. Esta acci\xF3n no se puede deshacer.",
+  "Leva exclu\xEDda.": "Lote eliminado.",
+  "N\xE3o foi poss\xEDvel abrir a vers\xE3o para imprimir.":
+    "No se pudo abrir la versi\xF3n para imprimir.",
+  "ver r\xE1pido como foi": "vistazo r\xE1pido de c\xF3mo fue",
+  "conclu\xEDda {date}": "concluida {date}",
+  "N\xE3o foi poss\xEDvel ler esta leva \u2014 o arquivo pode estar corrompido. A vers\xE3o para imprimir e o backup ainda podem ajudar.":
+    "No se pudo leer este lote \u2014 el archivo puede estar da\xF1ado. La versi\xF3n para imprimir y la copia de seguridad a\xFAn pueden ayudar.",
+  "Pr\xE9-fervura": "Prehervido",
+  "P\xF3s-fervura": "Posthervido",
+  "Par\xE2metros pr\xF3xima brassagem":
+    "Par\xE1metros de la pr\xF3xima cocci\xF3n",
+  "Entra nos n\xFAmeros do equipamento.":
+    "Cuenta para los n\xFAmeros del equipo.",
+  "Fora dos n\xFAmeros \u2014 n\xE3o calibra o equipamento.":
+    "Fuera de los n\xFAmeros \u2014 no calibra el equipo.",
+  "Excluir dos n\xFAmeros": "Excluir de los n\xFAmeros",
+  "Incluir nos n\xFAmeros": "Incluir en los n\xFAmeros",
+  "Leva fora dos n\xFAmeros.": "Lote fuera de los n\xFAmeros.",
+  "Leva de volta aos n\xFAmeros.": "Lote de vuelta a los n\xFAmeros.",
+  "Sem leituras neste dia \u2014 os valores acima s\xE3o os planejados, e a leva n\xE3o entra nos n\xFAmeros.":
+    "Sin lecturas ese d\xEDa \u2014 los valores de arriba son los planeados, y el lote no cuenta para los n\xFAmeros.",
+  "Sem anota\xE7\xF5es ainda \u2014 d\xE1 para acrescentar quando quiser, mesmo agora.":
+    "Sin notas todav\xEDa \u2014 puedes a\xF1adirlas cuando quieras, incluso ahora.",
+  "Vers\xE3o para imprimir": "Versi\xF3n para imprimir",
+  "Estilo pr\xF3prio": "Estilo propio",
+  "Essa a\xE7\xE3o n\xE3o pode ser desfeita.":
+    "Esta acci\xF3n no se puede deshacer.",
+  "{name} (c\xF3pia)": "{name} (copia)",
+  "Receita exclu\xEDda.": "Receta eliminada.",
+  "os \xFAltimos par\xE2metros usados": "los \xFAltimos par\xE1metros usados",
+  "o padr\xE3o Beermother": "el est\xE1ndar Beermother",
+  "Ex.: Jamal": "Ej.: Jamal",
+  "Seu nome": "Tu nombre",
+  "Cards opcionais no dia: trate as \xE1guas, confira a mostura, registre a fervura. O app aprende quanto \xE1cido a SUA \xE1gua pede \u2014 sem f\xF3rmula.":
+    "Tarjetas opcionales en el d\xEDa: trata las aguas, revisa la maceraci\xF3n, registra el hervido. La app aprende cu\xE1nto \xE1cido pide TU agua \u2014 sin f\xF3rmula.",
+  "Entra autom\xE1tico como autor nas receitas novas.":
+    "Entra autom\xE1tico como autor en las recetas nuevas.",
+  "Portugu\xEAs \xE9 o idioma de refer\xEAncia; English e Espa\xF1ol em tradu\xE7\xE3o.":
+    "El portugu\xE9s es el idioma de referencia; English y Espa\xF1ol en traducci\xF3n.",
+  Aparência: "Apariencia",
+  "\xC1gua e pH": "Agua y pH",
+  "Medi\xE7\xE3o de pH no dia de brassagem, com dose de \xE1cido sugerida.":
+    "Medici\xF3n de pH el d\xEDa de cocci\xF3n, con dosis de \xE1cido sugerida.",
+  "Previs\xE3o de fermenta\xE7\xE3o": "Previsi\xF3n de fermentaci\xF3n",
+  "A curva esperada e as faixas durante a fermenta\xE7\xE3o.":
+    "La curva esperada y los rangos durante la fermentaci\xF3n.",
+  "Beermother \xB7 Fable \u2014 v{v} (beta)":
+    "Beermother \xB7 Fable \u2014 v{v} (beta)",
+  Eficiência: "Eficiencia",
+  Absorção: "Absorci\xF3n",
+  "\xC1gua/malte": "Agua/grano",
+  "Quanto tempo o mosto fica quente ap\xF3s o flameout \u2014 as adi\xE7\xF5es tardias de fervura seguem isomerizando nesse per\xEDodo.":
+    "Cu\xE1nto tiempo el mosto queda caliente tras el flameout \u2014 las adiciones tard\xEDas de hervido siguen isomerizando en ese periodo.",
+  "Velocidade de subida entre patamares \u2014 o rel\xF3gio da mostura conta uma etapa estimada de aquecimento. 0 desliga.":
+    "Velocidad de subida entre escalones \u2014 el temporizador de maceraci\xF3n cuenta un paso estimado de calentamiento. 0 lo desactiva.",
+  "{ion} da \xE1gua base": "{ion} del agua base",
+  "A \xE1gua da SUA fonte. Nos valores padr\xE3o, vale a \xE1gua de cada receita; mudou, receitas novas e o Preparo usam a sua.":
+    "El agua de TU fuente. En los valores por defecto, vale el agua de cada receta; si cambia, las recetas nuevas y la Preparaci\xF3n usan la tuya.",
+  "Perfil exclu\xEDdo.": "Perfil eliminado.",
+  "s\xF3 fechar": "solo cerrar",
+  Criado: "Creado",
+  Atualizado: "Actualizado",
+  " e definido como seu equipamento principal":
+    " y definido como tu equipo principal",
+  ". J\xE1 vale para receitas novas e para o Preparo.":
+    ". Ya vale para recetas nuevas y para la Preparaci\xF3n.",
+  "Seu caderno est\xE1 em branco": "Tu cuaderno est\xE1 en blanco",
+  "Cada brassagem conclu\xEDda entra aqui com o log completo \u2014 e as que voc\xEA mediu calibram seu equipamento sozinhas.":
+    "Cada cocci\xF3n concluida entra aqu\xED con el log completo \u2014 y las que mediste calibran tu equipo solas.",
+  "{n} leva": "{n} lote",
+  "{n} levas": "{n} lotes",
+  "{n} entra nos n\xFAmeros": "{n} cuenta en los n\xFAmeros",
+  "{n} entram nos n\xFAmeros": "{n} cuentan en los n\xFAmeros",
+  "nenhuma inclu\xEDda": "ninguna incluida",
+  "nenhuma medida ainda": "ninguna medida todav\xEDa",
+  "{n} de fora": "{n} fuera",
+  "Absor\xE7\xE3o do gr\xE3o": "Absorci\xF3n del grano",
+  "Efici\xEAncia, evapora\xE7\xE3o, absor\xE7\xE3o, trub e \xE1gua/malte passam a valer os n\xFAmeros da sua leva medida. O volume e o resto do perfil ficam como est\xE3o.":
+    "Eficiencia, evaporaci\xF3n, absorci\xF3n, trub y agua/grano pasan a valer los n\xFAmeros de tu lote medido. El volumen y el resto del perfil quedan como est\xE1n.",
+  "Efici\xEAncia, evapora\xE7\xE3o, absor\xE7\xE3o, trub e \xE1gua/malte passam a valer a mediana das suas levas medidas. O volume e o resto do perfil ficam como est\xE3o.":
+    "Eficiencia, evaporaci\xF3n, absorci\xF3n, trub y agua/grano pasan a valer la mediana de tus lotes medidos. El volumen y el resto del perfil quedan como est\xE1n.",
+  "Calibra\xE7\xE3o \xB7 {date}": "Calibraci\xF3n \xB7 {date}",
+  "1 leva medida (leitura \xFAnica)": "1 lote medido (lectura \xFAnica)",
+  "mediana de {n} leva no c\xE1lculo": "mediana de {n} lote en el c\xE1lculo",
+  "mediana de {n} levas no c\xE1lculo": "mediana de {n} lotes en el c\xE1lculo",
+  "Uma leva s\xF3 \u2014 pode ter sido um dia at\xEDpico. Com mais levas medidas a mediana ignora o dia fora da curva e fica robusta.":
+    "Un solo lote \u2014 pudo ser un d\xEDa at\xEDpico. Con m\xE1s lotes medidos, la mediana ignora el d\xEDa fuera de la curva y se vuelve robusta.",
+  "A mediana ignora um dia fora da curva (lavagem travada, transbordo) \u2014 por isso ela calibra o perfil, n\xE3o a m\xE9dia.":
+    "La mediana ignora un d\xEDa fuera de la curva (lavado atascado, rebose) \u2014 por eso calibra el perfil, no el promedio.",
+  "Seu equipamento em n\xFAmeros": "Tu equipo en n\xFAmeros",
+  "sem leituras \u2014 fora dos n\xFAmeros":
+    "sin lecturas \u2014 fuera de los n\xFAmeros",
+  "efic. {pct}% \xB7 fora dos n\xFAmeros (voc\xEA excluiu)":
+    "efic. {pct}% \xB7 fuera de los n\xFAmeros (lo excluiste)",
+  "efic. {pct}% \xB7 fermenta\xE7\xE3o acompanhada":
+    "efic. {pct}% \xB7 fermentaci\xF3n seguida",
+  "efic. {pct}% \xB7 sem fermenta\xE7\xE3o \u2014 vale para o equipamento":
+    "efic. {pct}% \xB7 sin fermentaci\xF3n \u2014 vale para el equipo",
+  "Entra nos n\xFAmeros \u2014 tocar para excluir":
+    "En los n\xFAmeros \u2014 toca para excluir",
+  "Fora dos n\xFAmeros \u2014 tocar para incluir":
+    "Fuera de los n\xFAmeros \u2014 toca para incluir",
+  "Levas conclu\xEDdas": "Lotes concluidos",
+  "Backup vazio ou inv\xE1lido.": "Copia de seguridad vac\xEDa o inv\xE1lida.",
+  "Receitas, perfis, hist\xF3rico e biblioteca atuais ser\xE3o substitu\xEDdos pelos do arquivo.":
+    "Las recetas, perfiles, historial y biblioteca actuales se reemplazar\xE1n por los del archivo.",
+  "N\xE3o foi poss\xEDvel ler o arquivo.": "No se pudo leer el archivo.",
+  "Receita salva \u2014 d\xE1 para editar e brassar quando quiser.":
+    "Receta guardada \u2014 se puede editar y cocinar cuando quieras.",
+  "N\xE3o foi poss\xEDvel salvar o perfil.": "No se pudo guardar el perfil.",
+  "FG muito baixa \u2014 confira a toler\xE2ncia alco\xF3lica da sua levedura; ela pode travar antes de fermentar tudo.":
+    "FG muy baja \u2014 revisa la tolerancia al alcohol de tu levadura; puede atascarse antes de fermentar todo.",
+  "FG fixada \xE0 m\xE3o \u2014 sobrescreve a calculada.":
+    "FG fijada a mano \u2014 sobrescribe la calculada.",
+  "Sem levedura: atenua\xE7\xE3o assumida de 78%.":
+    "Sin levadura: atenuaci\xF3n asumida del 78%.",
+  "Defina as quantidades primeiro \u2014 os maltes est\xE3o em 0 kg.":
+    "Define las cantidades primero \u2014 las maltas est\xE1n en 0 kg.",
+  "Os maltes ser\xE3o escalados proporcionalmente para atingir a densidade.":
+    "Las maltas se escalar\xE1n proporcionalmente para alcanzar la densidad.",
+  "Equipamento padr\xE3o": "Equipo por defecto",
+  "Escolha um perfil salvo (volume, efici\xEAncia e fervura entram na receita) ou crie um novo.":
+    "Elige un perfil guardado (volumen, eficiencia y hervido entran en la receta) o crea uno nuevo.",
+  "Escolha um perfil salvo \u2014 volume, efici\xEAncia e os par\xE2metros de produ\xE7\xE3o entram nesta brassagem.":
+    "Elige un perfil guardado \u2014 volumen, eficiencia y los par\xE1metros de producci\xF3n entran en esta cocci\xF3n.",
+  "Quanto voc\xEA costuma produzir? (volume no fermentador)":
+    "\xBFCu\xE1nto sueles producir? (volumen en el fermentador)",
+  "Use o volume do seu dia t\xEDpico \u2014 a calibra\xE7\xE3o vale para o padr\xE3o. Evapora\xE7\xE3o e volume morto s\xE3o absolutos, n\xE3o escalam com o lote.":
+    "Usa el volumen de tu d\xEDa t\xEDpico \u2014 la calibraci\xF3n vale para el est\xE1ndar. Evaporaci\xF3n y volumen muerto son absolutos, no escalan con el lote.",
+  "Alguns par\xE2metros v\xE3o ser conservadores de prop\xF3sito (efici\xEAncia e evapora\xE7\xE3o).":
+    "Algunos par\xE1metros ser\xE1n conservadores a prop\xF3sito (eficiencia y evaporaci\xF3n).",
+  "Durante o dia voc\xEA mede e corrige com \xC1GUA \u2014 e a brassagem termina certa.":
+    "Durante el d\xEDa mides y corriges con AGUA \u2014 y la cocci\xF3n termina bien.",
+  "Pe\xE7a alguns insumos a mais por garantia: haver\xE1 corre\xE7\xF5es, ent\xE3o a lista j\xE1 vem refor\xE7ada.":
+    "Pide algunos insumos de m\xE1s por garant\xEDa: habr\xE1 correcciones, as\xED que la lista viene reforzada.",
+  "Me\xE7a o volume e a densidade no pr\xE9-fervura e no p\xF3s-fervura. Sem essas leituras, os n\xFAmeros acima ainda s\xE3o a partida conservadora \u2014 n\xE3o o seu sistema.":
+    "Mide el volumen y la densidad en el prehervido y el posthervido. Sin esas lecturas, los n\xFAmeros de arriba siguen siendo el punto de partida conservador \u2014 no tu sistema.",
+  "e a\xED, deu certo?": "\xBFy qu\xE9, sali\xF3 bien?",
+  "Perfil criado e definido como principal.":
+    "Perfil creado y definido como principal.",
+  "Equipamento salvo e definido como principal.":
+    "Equipo guardado y definido como principal.",
+  "Calibra\xE7\xE3o conclu\xEDda \u2014 seu equipamento real":
+    "Calibraci\xF3n concluida \u2014 tu equipo real",
+  "Medimos o seu sistema nesta brassagem. Salve como seu equipamento e as pr\xF3ximas receitas j\xE1 nascem no ponto \u2014 a partida conservadora era s\xF3 para o dia terminar certo.":
+    "Medimos tu sistema en esta cocci\xF3n. Gu\xE1rdalo como tu equipo y las pr\xF3ximas recetas nacen en su punto \u2014 el arranque conservador era solo para que el d\xEDa terminara bien.",
+  base: "base",
+  "Tornar {name} o malte-base (absorve a diferen\xE7a).":
+    "Hacer de {name} la malta base (absorbe la diferencia).",
+  "O malte-base absorve a diferen\xE7a \u2014 a soma \xE9 sempre 100% e a OG n\xE3o muda.":
+    "La malta base absorbe la diferencia \u2014 la suma es siempre 100% y la OG no cambia.",
+  "Percentuais aplicados \u2014 a OG n\xE3o muda.":
+    "Porcentajes aplicados \u2014 la OG no cambia.",
+  "N\xE3o deu para aplicar: os percentuais est\xE3o todos zerados.":
+    "No se pudo aplicar: los porcentajes est\xE1n todos en cero.",
+  "Adicione o primeiro malte.": "A\xF1ade la primera malta.",
+  "Adicionar malte": "A\xF1adir malta",
+  "Malte adicionado.": "Malta a\xF1adida.",
+  "Tipo do ferment\xE1vel": "Tipo de fermentable",
+  "Momento do ferment\xE1vel": "Momento del fermentable",
+  "Entra na fermenta\xE7\xE3o: conta no OG e no ABV, mas n\xE3o entra na leitura p\xF3s-fervura.":
+    "Entra en la fermentaci\xF3n: cuenta en OG y ABV, pero no en la lectura posthervido.",
+  "Toque para editar alfa \xE1cido, momento e temperatura.":
+    "Toca para editar alfa \xE1cido, momento y temperatura.",
+  "Momento do l\xFApulo": "Momento del l\xFApulo",
+  "Contribui\xE7\xE3o desta adi\xE7\xE3o no IBU total.":
+    "Contribuci\xF3n de esta adici\xF3n al IBU total.",
+  "Duplicar (mesmo l\xFApulo, outro momento)":
+    "Duplicar (mismo l\xFApulo, otro momento)",
+  "Ocultar IBU por adi\xE7\xE3o": "Ocultar IBU por adici\xF3n",
+  "Mostrar IBU por adi\xE7\xE3o": "Mostrar IBU por adici\xF3n",
+  "Ordenar por tempo de adi\xE7\xE3o": "Ordenar por tiempo de adici\xF3n",
+  "Adicione um l\xFApulo de amargor antes de definir o IBU.":
+    "A\xF1ade un l\xFApulo de amargor antes de definir el IBU.",
+  "Definir o IBU desejado e escalar os l\xFApulos proporcionalmente.":
+    "Define el IBU deseado y escala los l\xFApulos proporcionalmente.",
+  "Adicione o primeiro l\xFApulo.": "A\xF1ade el primer l\xFApulo.",
+  "Adicionar l\xFApulo": "A\xF1adir l\xFApulo",
+  "Buscar l\xFApulo\u2026": "Buscar l\xFApulo\u2026",
+  "{n} l\xFApulos adicionados.": "{n} l\xFApulos a\xF1adidos.",
+  "L\xFApulo adicionado.": "L\xFApulo a\xF1adido.",
+  "S\xF3 os l\xFApulos de amargor (fervura com 30+ min) s\xE3o escalados \u2014 aroma tardio, hopstand e dry hop ficam como est\xE3o.":
+    "Solo los l\xFApulos de amargor (hervido con 30+ min) se escalan \u2014 aroma tard\xEDo, hopstand y dry hop quedan como est\xE1n.",
+  "Escalar l\xFApulos": "Escalar l\xFApulos",
+  "Nenhum l\xFApulo de amargor (fervura com 30+ min) para escalar \u2014 as adi\xE7\xF5es tardias somam {ibu} IBU.":
+    "Ning\xFAn l\xFApulo de amargor (hervido con 30+ min) para escalar \u2014 las adiciones tard\xEDas suman {ibu} IBU.",
+  "As adi\xE7\xF5es tardias sozinhas j\xE1 passam do alvo ({ibu} IBU) \u2014 amargor zerado. Ctrl+Z desfaz.":
+    "Las adiciones tard\xEDas por s\xED solas ya superan el objetivo ({ibu} IBU) \u2014 amargor en cero. Ctrl+Z lo deshace.",
+  "L\xFApulos de amargor escalados para {ibu} IBU.":
+    "L\xFApulos de amargor escalados a {ibu} IBU.",
+  "Alfa \xE1cido do lote": "Alfa \xE1cido del lote",
+  "S\xF3 esta adi\xE7\xE3o": "Solo esta adici\xF3n",
+  "Alfa de {pct}% aplicado a {count} adi\xE7\xE3o(\xF5es) e salvo para as pr\xF3ximas.":
+    "Alfa de {pct}% aplicado a {count} adici\xF3n(es) y guardado para las pr\xF3ximas.",
+  "Toque para editar a atenua\xE7\xE3o.": "Toca para editar la atenuaci\xF3n.",
+  "In\xF3culo estimado ~{rate} M c\xE9ls/mL/\xB0P \u2014 ":
+    "In\xF3culo estimado ~{rate} M c\xE9l/mL/\xB0P \u2014 ",
+  " \xB7 {cells} bi c\xE9lulas (estimativa)":
+    " \xB7 {cells} mil millones de c\xE9lulas (estimaci\xF3n)",
+  "Sem levedura: a FG* assume atenua\xE7\xE3o de 78%.":
+    "Sin levadura: la FG* asume 78% de atenuaci\xF3n.",
+  "A atenua\xE7\xE3o da levedura define a FG.":
+    "La atenuaci\xF3n de la levadura define la FG.",
+  "Adicionar levedura": "A\xF1adir levadura",
+  "Buscar levedura\u2026": "Buscar levadura\u2026",
+  "pouco (sub-in\xF3culo)": "poco (sub-in\xF3culo)",
+  "Lembrar esta atenua\xE7\xE3o para novas adi\xE7\xF5es":
+    "Recordar esta atenuaci\xF3n para nuevas adiciones",
+  "Atenua\xE7\xE3o de {name} salva na sua biblioteca.":
+    "Atenuaci\xF3n de {name} guardada en tu biblioteca.",
+  "Toque para fixar a FG \xE0 m\xE3o.": "Toca para fijar la FG a mano.",
+  "Calculada: {fg} \u2014 da OG e da atenua\xE7\xE3o da levedura. Fixe uma FG \xE0 m\xE3o para sobrescrever: ela entra no ABV e no BeerXML.":
+    "Calculada: {fg} \u2014 de la OG y la atenuaci\xF3n de la levadura. Fija una FG a mano para sobrescribir: entra en el ABV y en el BeerXML.",
+  "\xC1gua e sais": "Agua y sales",
+  Água: "Agua",
+  "refer\xEAncia \xB7 L": "referencia \xB7 L",
+  '"{name}" agora \xE9 o principal.': '"{name}" ahora es el principal.',
+  'Perfil "{name}" criado e definido como principal.':
+    'Perfil "{name}" creado y definido como principal.',
+  'Salvo como "{name}" e definido como principal. Suas pr\xF3ximas receitas j\xE1 nascem calibradas pelo seu sistema \u2014 siga para a fermenta\xE7\xE3o; ao concluir, a leva fica no Caderno.':
+    'Guardado como "{name}" y definido como principal. Tus pr\xF3ximas recetas nacen calibradas a tu sistema \u2014 sigue a la fermentaci\xF3n; al concluir, el lote queda en el Cuaderno.',
+  Automático: "Autom\xE1tico",
+  Claro: "Claro",
+  Escuro: "Oscuro",
+  Copiloto: "Copiloto",
+  "Cor padr\xE3o": "Color por defecto",
+  "S\xF3 as leituras e corre\xE7\xF5es \u2014 o app aparece onde \xE9 mais esperto que voc\xEA.":
+    "Solo las lecturas y correcciones \u2014 la app aparece donde es m\xE1s lista que t\xFA.",
+  "Acompanha o dia da brassagem pela receita (o padr\xE3o).":
+    "Acompa\xF1a el d\xEDa de cocci\xF3n por la receta (el est\xE1ndar).",
+  "Passo a passo, do preparo ao envase \u2014 com o porqu\xEA de cada passo.":
+    "Paso a paso, de la preparaci\xF3n al envasado \u2014 con el porqu\xE9 de cada paso.",
+  pacote: "paquete",
+  sachê: "sobre",
+  "un.": "u.",
+  "\xC1gua de mostura": "Agua de maceraci\xF3n",
+  "\xC1cido l\xE1tico 85%": "\xC1cido l\xE1ctico 85%",
+  "\xC1cido fosf\xF3rico 10%": "\xC1cido fosf\xF3rico 10%",
+  Simples: "Simple",
+  Completa: "Completa",
+  "Abra uma receita pela comunidade antes de iniciar.":
+    "Abre una receta de la comunidad antes de empezar.",
+  "Receita inv\xE1lida. Confira o arquivo publicado.":
+    "Receta inv\xE1lida. Revisa el archivo publicado.",
+  "Nenhuma receita encontrada.": "No se encontr\xF3 ninguna receta.",
+  "Gr\xE1fico de fermenta\xE7\xE3o com temperatura e extrato":
+    "Gr\xE1fico de fermentaci\xF3n con temperatura y extracto",
+  "{label}: ajustado para {value} (faixa {min}\u2013{max}).":
+    "{label}: ajustado a {value} (rango {min}\u2013{max}).",
+  Adicionar: "A\xF1adir",
+  Nome: "Nombre",
+  Rendimento: "Rendimiento",
+  "Salvar na biblioteca": "Guardar en la biblioteca",
+  "Abrir receita do curso": "Abrir receta del curso",
+  "Receitas do curso": "Recetas del curso",
+  "Nenhuma brassagem em andamento": "Ninguna cocci\xF3n en curso",
+  "Escolha uma receita na prateleira e comece \u2014 a leva fica aqui enquanto brassa e fermenta. Ao concluir, ela vai para o Caderno.":
+    "Elige una receta del estante y empieza \u2014 el lote se queda aqu\xED mientras cuece y fermenta. Al terminar, pasa al Cuaderno.",
+  "Ver receitas": "Ver recetas",
+  "Nunca mediu seu equipamento?": "\xBFNunca mediste tu equipo?",
+  "Calibrar com minhas levas": "Calibrar con mis lotes",
+  "Abrir no Caderno": "Abrir en el Cuaderno",
+  "Sua primeira receita": "Tu primera receta",
+  "Criar receita": "Crear receta",
+  "Importar BeerXML": "Importar BeerXML",
+  "Em andamento": "En curso",
+  "Abrir a ficha": "Abrir la ficha",
+  "Exportar arquivo": "Exportar archivo",
+  "Salvar receita em Minhas receitas": "Guardar receta en Mis recetas",
+  "Reabrir leva": "Reabrir lote",
+  Excluir: "Eliminar",
+  "\u2039 Caderno": "\u2039 Cuaderno",
+  "Como foi": "C\xF3mo fue",
+  "O equipamento no dia": "El equipo en el d\xEDa",
+  "Ex.: carbonatou perfeito, amargor limpo":
+    "Ej.: carbonat\xF3 perfecto, amargor limpio",
+  "Adicionar nota com hora": "A\xF1adir nota con hora",
+  "Buscar receita\u2026": "Buscar receta\u2026",
+  "Descartar rascunho": "Descartar borrador",
+  "Minhas receitas": "Mis recetas",
+  "Nenhuma receita bate com a busca.":
+    "Ninguna receta coincide con la b\xFAsqueda.",
+  "Brassar esta receita": "Cocer esta receta",
+  Editar: "Editar",
+  Duplicar: "Duplicar",
+  "Exportar BeerXML": "Exportar BeerXML",
+  "Receita importada": "Receta importada",
+  "Seu equipamento": "Tu equipo",
+  "Novo perfil": "Nuevo perfil",
+  "Editar perfil": "Editar perfil",
+  "Meus equipamentos": "Mis equipos",
+  "Seus dados ficam neste navegador. O backup gera um arquivo .json com tudo (receitas, brassagens, perfis) \u2014 restaure aqui ou em outro dispositivo.":
+    "Tus datos quedan en este navegador. La copia genera un archivo .json con todo (recetas, cocciones, perfiles) \u2014 rest\xE1uralo aqu\xED o en otro dispositivo.",
+  "Fazer backup": "Hacer copia",
+  "Restaurar backup": "Restaurar copia",
+  "Ferramentas em desenvolvimento": "Herramientas en desarrollo",
+  "Nome do perfil": "Nombre del perfil",
+  "Panela 30 L": "Olla 30 L",
+  "Tempo de whirlpool": "Tiempo de whirlpool",
+  "Temperatura do whirlpool": "Temperatura del whirlpool",
+  "Efic. mostura": "Efic. maceraci\xF3n",
+  Trub: "Trub",
+  Salvar: "Guardar",
+  "Meu equipamento": "Mi equipo",
+  "Ver brassagens": "Ver cocciones",
+  "Criar novo perfil": "Crear nuevo perfil",
+  "sem perfil": "sin perfil",
+  "Abrir a ficha da leva": "Abrir la ficha del lote",
+  "Restaurar backup?": "\xBFRestaurar copia?",
+  "Salva em Minhas receitas \u2713": "Guardada en Mis recetas \u2713",
+  "Salvar em Minhas receitas": "Guardar en Mis recetas",
+  "Brassar agora": "Cocer ahora",
+  Equipamento: "Equipo",
+  "Importar como perfil de equipamento": "Importar como perfil de equipo",
+  "Importar do BeerXML": "Importar desde BeerXML",
+  "\u2190 Voltar": "\u2190 Volver",
+  "Desfazer (Ctrl+Z)": "Deshacer (Ctrl+Z)",
+  "Refazer (Ctrl+Y)": "Rehacer (Ctrl+Y)",
+  "Definir OG": "Definir OG",
+  "OG desejada": "OG deseada",
+  "Escalar maltes": "Escalar maltas",
+  "Arrastar para reordenar": "Arrastrar para reordenar",
+  "sem nome": "sin nombre",
+  "Escolher estilo\u2026": "Elegir estilo\u2026",
+  Estilo: "Estilo",
+  "Buscar estilo\u2026": "Buscar estilo\u2026",
+  "Estilos BJCP mostram as faixas abaixo dos alvos.":
+    "Los estilos BJCP muestran los rangos debajo de los objetivos.",
+  "Nome da receita": "Nombre de la receta",
+  "APA da casa": "APA de la casa",
+  Cervejeiro: "Cervecero",
+  Autor: "Autor",
+  "Escolher ou editar o perfil de equipamento.":
+    "Elegir o editar el perfil de equipo.",
+  "Editar este perfil": "Editar este perfil",
+  "Nenhum perfil salvo ainda.": "Ning\xFAn perfil guardado a\xFAn.",
+  "Novo perfil\u2026": "Nuevo perfil\u2026",
+  "Nenhum perfil salvo ainda \u2014 crie um na aba Equipamentos.":
+    "Ning\xFAn perfil guardado a\xFAn \u2014 crea uno en la pesta\xF1a Equipos.",
+  "Uma Cream Ale simples e barata para medir o SEU equipamento. No fim, ela vira o seu perfil real.":
+    "Una Cream Ale simple y barata para medir TU equipo. Al final, se convierte en tu perfil real.",
+  "Como funciona": "C\xF3mo funciona",
+  "Falta medir para revelar seu equipamento":
+    "Falta medir para revelar tu equipo",
+  "seu equipamento": "tu equipo",
+  "Renomear ou editar": "Renombrar o editar",
+  "Equipamento salvo": "Equipo guardado",
+  "Salvar como meu equipamento": "Guardar como mi equipo",
+  "0 kg": "0 kg",
+  "Definir a OG desejada e escalar os maltes proporcionalmente.":
+    "Definir la OG deseada y escalar las maltas proporcionalmente.",
+  "Ordenar por quantidade": "Ordenar por cantidad",
+  "Buscar malte\u2026": "Buscar malta\u2026",
+  Tipo: "Tipo",
+  Momento: "Momento",
+  "Definir IBU": "Definir IBU",
+  "IBU desejado": "IBU deseado",
+  "Temperatura do hopstand": "Temperatura del hopstand",
+  "presets:": "presets:",
+  "{a} a {b}": "{a} a {b}",
+  Nenhum: "Ninguno",
+  "Muito baixo": "Muy bajo",
+  Baixo: "Bajo",
+  "M\xE9dio baixo": "Medio bajo",
+  Médio: "Medio",
+  "M\xE9dio alto": "Medio alto",
+  Alto: "Alto",
+  Nenhuma: "Ninguna",
+  "Muito baixa": "Muy baja",
+  Baixa: "Baja",
+  "M\xE9dia baixa": "Media baja",
+  Média: "Media",
+  "M\xE9dia alta": "Media alta",
+  Alta: "Alta",
+  Limpa: "Limpia",
+  Palha: "Paja",
+  Dourada: "Dorada",
+  Âmbar: "\xC1mbar",
+  Cobre: "Cobre",
+  Marrom: "Marr\xF3n",
+  Preto: "Negro",
+  Brilhante: "Brillante",
+  "Leve turbidez": "Ligera turbidez",
+  Turva: "Turbia",
+  Opaca: "Opaca",
+  Rápida: "R\xE1pida",
+  "M\xE9dia curta": "Media corta",
+  Persistente: "Persistente",
+  Lupulado: "Lupulado",
+  "Leve l\xFApulo": "Ligero l\xFApulo",
+  Equilibrado: "Equilibrado",
+  "Leve malte": "Ligera malta",
+  Maltado: "Maltoso",
+  Seco: "Seco",
+  "M\xE9dio seco": "Medio seco",
+  "M\xE9dio doce": "Medio dulce",
+  Doce: "Dulce",
+  Ralo: "Aguado",
+  Leve: "Ligero",
+  Cheio: "Lleno",
+  Picante: "Picante",
+  Amadeirado: "Amaderado",
+  Herbal: "Herbal",
+  "Raz\xE3o \xE1gua:malte de {ratio} L/kg dilui a \u03B2-amilase: a FG pode sair at\xE9 ~{pts} pontos acima da prevista, deixando mais dul\xE7or e corpo do que o n\xFAmero diz.":
+    "Una relaci\xF3n agua:malta de {ratio} L/kg diluye la beta-amilasa: la FG puede quedar hasta ~{pts} puntos por encima de la prevista, dejando m\xE1s dulzor y cuerpo de lo que el n\xFAmero dice.",
+  "No whirlpool a quente sobram linalol e geraniol (oxigenados): qualidade mais fina, pot\xEAncia menor que o dry hop \u2014 e este geraniol a levedura ainda alcan\xE7a.":
+    "En el whirlpool caliente quedan linalol y geraniol (oxigenados): calidad m\xE1s fina, menos potencia que el dry hop \u2014 y a este geraniol la levadura todav\xEDa llega.",
+  "{t}\xB0C est\xE1 ABAIXO da faixa da cepa ({lo}\u2013{hi}\xB0C): o \xE9ster \xE9 contido, mas n\xE3o some \u2014 fica um frutado discreto.":
+    "{t}\xB0C est\xE1 POR DEBAJO del rango de la cepa ({lo}\u2013{hi}\xB0C): el \xE9ster se contiene, pero no desaparece \u2014 queda un frutado discreto.",
+  "{t}\xB0C est\xE1 ACIMA da faixa da cepa ({lo}\u2013{hi}\xB0C): \xE9ster e \xE1lcool superior sobem bastante.":
+    "{t}\xB0C est\xE1 POR ENCIMA del rango de la cepa ({lo}\u2013{hi}\xB0C): \xE9ster y alcohol superior suben bastante.",
+  "{t}\xB0C cai na faixa da cepa ({lo}\u2013{hi}\xB0C) \u2014 o \xE9ster fica no meio do potencial dela.":
+    "{t}\xB0C cae en el rango de la cepa ({lo}\u2013{hi}\xB0C) \u2014 el \xE9ster queda a media potencia.",
+  "In\xF3culo de {rate} M c\xE9ls/mL/\xB0P \xE9 baixo para esta densidade \u2014 levedura estressada produz MAIS \xE9ster e \xE1lcool superior.":
+    "Un in\xF3culo de {rate} M c\xE9l/mL/\xB0P es bajo para esta densidad \u2014 la levadura estresada produce M\xC1S \xE9ster y alcohol superior.",
+  "Fermenta\xE7\xE3o a {atm} atm inibe a forma\xE7\xE3o de \xE9ster (aqui, cerca de {pct}% a menos) \u2014 o perfil fica mais limpo.":
+    "Fermentar a {atm} atm inhibe la formaci\xF3n de \xE9ster (aqu\xED, cerca de {pct}% menos) \u2014 el perfil queda m\xE1s limpio.",
+  "A levedura reduz o geraniol da parte quente a citronelol (c\xEDtrico/floral) \u2014 nota que o l\xFApulo sozinho n\xE3o daria, e que o dry hop tardio n\xE3o produz.":
+    "La levadura reduce el geraniol de la parte caliente a citronelol (c\xEDtrico/floral) \u2014 una nota que el l\xFApulo solo no dar\xEDa, y que el dry hop tard\xEDo no produce.",
+  "A levedura tem \u03B2-liase e libera os ti\xF3is que vieram ligados no l\xFApulo (maracuj\xE1, goiaba, groselha-preta).":
+    "La levadura tiene beta-liasa y libera los tioles que llegaron ligados en el l\xFApulo (maracuy\xE1, guayaba, grosella negra).",
+  "Esta cepa tem baixa atividade de \u03B2-liase: pode liberar tra\xE7os de tiol, mas n\xE3o foi selecionada para essa biotransforma\xE7\xE3o.":
+    "Esta cepa tiene baja actividad de beta-liasa: puede liberar trazas de tioles, pero no fue seleccionada para esta biotransformaci\xF3n.",
+  "O l\xFApulo trouxe precursores de tiol, mas esta cepa tem pouca \u03B2-liase \u2014 a maior parte fica ligada e n\xE3o vira aroma.":
+    "El l\xFApulo trajo precursores de tiol, pero esta cepa tiene poca beta-liasa \u2014 la mayor\xEDa queda ligada y no se vuelve aroma.",
+  "A cepa tem \u03B2-glicosidase e solta o terpeno que veio LIGADO a a\xE7\xFAcar no l\xFApulo \u2014 aroma que n\xE3o estava livre no cone.":
+    "La cepa tiene beta-glucosidasa y suelta el terpeno que lleg\xF3 LIGADO a az\xFAcar en el l\xFApulo \u2014 aroma que no estaba libre en el cono.",
+  "Cepa frutada + tiol do l\xFApulo: os dois se somam na percep\xE7\xE3o e o tropical fica mais alto do que qualquer um dos dois entregaria sozinho.":
+    "Cepa frutada + tiol del l\xFApulo: los dos se suman en la percepci\xF3n y el tropical queda m\xE1s alto de lo que cualquiera dar\xEDa solo.",
+  "{hop} na mostura: as proteases do mosto liberam os precursores de tiol \u2014 esta variedade rende cerca de 3\xD7 mais precursor por essa via que pela fervura ou pelo dry hop.":
+    "{hop} en la maceraci\xF3n: las proteasas del mosto liberan los precursores de tiol \u2014 esta variedad rinde cerca de 3x m\xE1s precursor por esta v\xEDa que por el hervor o el dry hop.",
+  "Fervura longa: o \xF3leo vol\xE1til evapora, mas humuleno e cariofileno OXIDAM \u2014 sobra um aroma condimentado e amadeirado, o car\xE1ter 'lager'.":
+    "Hervor largo: el aceite vol\xE1til se evapora, pero humuleno y cariofileno se OXIDAN \u2014 queda un aroma especiado y amaderado, el car\xE1cter 'lager'.",
+  "Adi\xE7\xE3o de fervura: parte do \xF3leo evapora; o que fica \xE9 o car\xE1ter condimentado dos oxigenados.":
+    "Adici\xF3n de hervor: parte del aceite se evapora; lo que queda es el car\xE1cter especiado de los oxigenados.",
+  "Adi\xE7\xE3o a {min} min: tempo curto no quente preserva parte do linalol e do geraniol.":
+    "Adici\xF3n a {min} min: poco tiempo en caliente preserva parte del linalol y del geraniol.",
+  "Dry hop preserva mirceno e todo o \xF3leo \u2014 m\xE1ximo de pot\xEAncia arom\xE1tica, mas tarde demais para a levedura converter geraniol em citronelol.":
+    "El dry hop preserva mirceno y todo el aceite \u2014 m\xE1xima potencia arom\xE1tica, pero demasiado tarde para que la levadura convierta geraniol en citronelol.",
+  Tropical: "Tropical",
+  Cítrico: "C\xEDtrico",
+  Floral: "Floral",
+  Terroso: "Terroso",
+  Condimentado: "Especiado",
+  Pinho: "Pino",
+  Resinoso: "Resinoso",
+  Dank: "Dank",
+  "F. de caro\xE7o": "F. de hueso",
+  "F. vermelha": "F. roja",
+  "Frutas claras": "Frutas claras",
+  "Uva branca": "Uva blanca",
+  Melão: "Mel\xF3n",
+  Gramíneo: "Herb\xE1ceo",
+  Vegetal: "Vegetal",
+  "Cebola/alho": "Cebolla/ajo",
+  Queijo: "Queso",
+  "A levedura acetila parte do 3MH (grapefruit) em 3MHA (maracuj\xE1, goiaba) \u2014 o mesmo tiol muda de cheiro ao fermentar, e o 3MHA \xE9 percept\xEDvel em concentra\xE7\xE3o muito menor.":
+    "La levadura acetila parte del 3MH (pomelo) en 3MHA (maracuy\xE1, guayaba) \u2014 el mismo tiol cambia de olor al fermentar, y el 3MHA es perceptible en concentraci\xF3n mucho menor.",
+  "Dry hop de {gl} g/L passa do ponto em que o aroma ainda cresce: daqui em diante sobe mais o lado verde e o polifenol (adstring\xEAncia) do que a fruta.":
+    "Un dry hop de {gl} g/L pasa del punto en que el aroma a\xFAn crece: de aqu\xED en adelante sube m\xE1s el lado verde y el polifenol (astringencia) que la fruta.",
+  "Cepa fen\xF3lica com l\xFApulo frutado: cravo e tropical n\xE3o se somam \u2014 brigam. A cerveja n\xE3o fica 'condimentada e tropical', fica confusa, e as duas notas se derrubam.":
+    "Cepa fen\xF3lica con l\xFApulo frutado: clavo y tropical no se suman \u2014 pelean. La cerveza no queda 'especiada y tropical', queda confusa, y las dos notas se derriban.",
+  "Whirlpool a {t}\xB0C: sobra cerca de {pct}% do \xF3leo arom\xE1tico \u2014 quanto mais perto da fervura, menos sobra. E este geraniol a levedura ainda alcan\xE7a.":
+    "Whirlpool a {t}\xB0C: queda cerca del {pct}% del aceite arom\xE1tico \u2014 cuanto m\xE1s cerca del hervor, menos queda. Y a este geraniol la levadura todav\xEDa llega.",
+  "Adi\xE7\xE3o a {min} min de fervura: sobra cerca de {pct}% do \xF3leo \u2014 pouco, mas n\xE3o zero.":
+    "Adici\xF3n a {min} min de hervor: queda cerca del {pct}% del aceite \u2014 poco, pero no cero.",
+  "Nome da etapa": "Nombre del paso",
+  Pressurizada: "Presurizada",
+  "Press\xE3o (atm)": "Presi\xF3n (atm)",
+  Pressão: "Presi\xF3n",
+  "{atm} atm": "{atm} atm",
+  Sim: "S\xED",
+  Não: "No",
+  "Adicione a primeira rampa.": "A\xF1ade la primera rampa.",
+  "Adicionar rampa": "A\xF1adir rampa",
+  "FG (densidade final)": "FG (densidad final)",
+  "FG manual": "FG manual",
+  "Usar calculada": "Usar calculada",
+  "Adicione a primeira etapa.": "A\xF1ade el primer paso.",
+  "Adicionar etapa": "A\xF1adir paso",
+  "Whirlfloc, especiarias, clarificantes \u2014 opcional.":
+    "Whirlfloc, especias, clarificantes \u2014 opcional.",
+  "Adicionar insumo": "A\xF1adir insumo",
+  "Buscar insumo\u2026": "Buscar insumo\u2026",
+  Unidade: "Unidad",
+  Uso: "Uso",
+  Tempo: "Tiempo",
+  "Exportar .xml": "Exportar .xml",
+  "Brassar esta receita \u2192": "Cocer esta receta \u2192",
+  "Remover linha": "Quitar fila",
+  Beermother: "Beermother",
+  Beermother: "Beermother",
+  "Receita incorporada": "Receta incorporada",
+  "Volume alvo": "Volumen objetivo",
+  "Volume original": "Volumen original",
+  Fonte: "Fuente",
+  "Perda de trub": "P\xE9rdida de trub",
+  "Rela\xE7\xE3o \xE1gua/malte": "Relaci\xF3n agua/malta",
+  "Malte total": "Malta total",
+  "Volume final da receita": "Volumen final de la receta",
+  "Fria / Trub": "Fr\xEDa / Trub",
+  fermentador: "fermentador",
+  "Registro final": "Registro final",
+  "Fator WRI": "Factor WRI",
+  "Pr\xF3xima brassagem": "Pr\xF3xima cocci\xF3n",
+  "Tempo de fervura": "Tiempo de hervido",
+  Inoculação: "Inoculaci\xF3n",
+  "Perfil de fermenta\xE7\xE3o - {name}": "Perfil de fermentaci\xF3n - {name}",
+  "Perfil de fermenta\xE7\xE3o": "Perfil de fermentaci\xF3n",
+  "Sem perfil no XML": "Sin perfil en el XML",
+  "{round}\xAA": "{round}\xAA",
+  trub: "trub",
+  "Fervura extra {min} min \xB7 IBU estimado {ibu}":
+    "Hervido extra {min} min \xB7 IBU estimado {ibu}",
+  "Relat\xF3rio de Brassagem": "Informe de cocci\xF3n",
+  "Gerado em": "Generado el",
+  Resumo: "Resumen",
+  Item: "\xCDtem",
+  Valor: "Valor",
+  "Receita usada": "Receta usada",
+  "Leituras e corre\xE7\xF5es": "Lecturas y correcciones",
+  Etapa: "Etapa",
+  Leitura: "Lectura",
+  Correção: "Correcci\xF3n",
+  Parâmetros: "Par\xE1metros",
+  Parâmetro: "Par\xE1metro",
+  "Rodadas de corre\xE7\xE3o": "Rondas de correcci\xF3n",
+  Rodada: "Ronda",
+  "A\xE7\xE3o executada": "Acci\xF3n ejecutada",
+  "Leitura seguinte": "Lectura siguiente",
+  Horário: "Hora",
+  "Confer\xEAncia das corre\xE7\xF5es": "Verificaci\xF3n de correcciones",
+  Alvo: "Objetivo",
+  "Leitura ap\xF3s corre\xE7\xE3o": "Lectura tras correcci\xF3n",
+  Resultado: "Resultado",
+  "pH final": "pH final",
+  "\xC1cido total": "\xC1cido total",
+  "Adi\xE7\xF5es registradas": "Adiciones registradas",
+  Dose: "Dosis",
+  "Eventos do contador": "Eventos del temporizador",
+  Evento: "Evento",
+  Detalhe: "Detalle",
+  "Salvar em PDF": "Guardar en PDF",
+  "Relat\xF3rio de brassagem din\xE2mica": "Informe de cocci\xF3n din\xE1mica",
+  "a.a.": "a.a.",
+  "~20 \xB0C": "~20 \xB0C",
+  "N\xE3o foi poss\xEDvel carregar a receita ({status}).":
+    "No se pudo cargar la receta ({status}).",
+  "Link de receita inv\xE1lido.": "Enlace de receta inv\xE1lido.",
+  "Formato de receita n\xE3o suportado.": "Formato de receta no soportado.",
+  "Receita incorporada inv\xE1lida.": "Receta incorporada inv\xE1lida.",
+  "Receita incorporada sem conte\xFAdo.": "Receta incorporada sin contenido.",
+  "Este navegador n\xE3o consegue abrir receita compactada.":
+    "Este navegador no puede abrir una receta comprimida.",
+  "N\xE3o foi poss\xEDvel descompactar a receita incorporada.":
+    "No se pudo descomprimir la receta incorporada.",
+  "Nenhuma sess\xE3o aberta.": "Ninguna sesi\xF3n abierta.",
+  "Vers\xE3o de sess\xE3o incompat\xEDvel.":
+    "Versi\xF3n de sesi\xF3n incompatible.",
+  "Abrir sess\xE3o salva? A brassagem atual ser\xE1 substitu\xEDda.":
+    "\xBFAbrir sesi\xF3n guardada? La cocci\xF3n actual ser\xE1 reemplazada.",
+  Grão: "Grano",
+  Adjunto: "Adjunto",
+  Açúcar: "Az\xFAcar",
+  "A\xE7\xFAcar n\xE3o ferment\xE1vel": "Az\xFAcar no fermentable",
+  "First wort": "First wort",
+  Whirlpool: "Whirlpool",
+  "Dry hop": "Dry hop",
+  Maturação: "Maduraci\xF3n",
+  "Ale comum / neutra": "Ale com\xFAn / neutra",
+  "Ale inglesa / alta flocula\xE7\xE3o": "Ale inglesa / alta floculaci\xF3n",
+  "Ale frutada / NEIPA": "Ale afrutada / NEIPA",
+  "Lager fria": "Lager fr\xEDa",
+  "Lager com pitch/arranque quente": "Lager con pitch/arranque caliente",
+  "Saison / diastaticus": "Saison / diastaticus",
+  Kveik: "Kveik",
+  "Fermenta\xE7\xE3o mista / sour": "Fermentaci\xF3n mixta / sour",
+  "Atenua\xE7\xE3o acima do previsto \u2014 pode ser receita mais ferment\xE1vel, FG prevista otimista, erro de medi\xE7\xE3o ou levedura mais atenuante. N\xE3o conclua por uma leitura isolada.":
+    "Atenuaci\xF3n por encima de lo previsto \u2014 puede ser una receta m\xE1s fermentable, una FG prevista optimista, un error de medici\xF3n o una levadura m\xE1s atenuante. No concluyas por una sola lectura.",
+  "Dentro do esperado.": "Dentro de lo esperado.",
+  "Um pouco mais lenta que o esperado.": "Un poco m\xE1s lenta de lo esperado.",
+  "Um pouco mais r\xE1pida que o esperado.":
+    "Un poco m\xE1s r\xE1pida de lo esperado.",
+  "Fora da faixa esperada (mais lenta) \u2014 investigar temperatura, pitch, vitalidade e medi\xE7\xE3o.":
+    "Fuera del rango esperado (m\xE1s lenta) \u2014 revisar temperatura, pitch, vitalidad y medici\xF3n.",
+  "Fora da faixa esperada (mais r\xE1pida) \u2014 conferir medi\xE7\xE3o e temperatura.":
+    "Fuera del rango esperado (m\xE1s r\xE1pida) \u2014 revisar medici\xF3n y temperatura.",
+  Dias: "D\xEDas",
+  Gramas: "Gramos",
+  Quantidade: "Cantidad",
+  Temperatura: "Temperatura",
+  "Volume morto": "Volumen muerto",
+  Preparo: "Preparaci\xF3n",
+  Análise: "An\xE1lisis",
+  "no esperado": "en lo esperado",
+  rápida: "r\xE1pida",
+  "muito lenta": "muy lenta",
+  "muito r\xE1pida": "muy r\xE1pida",
+  "atenuou +": "atenu\xF3 +",
+  pacotes: "paquetes",
+  sachês: "sobres",
+  "Estilo importado": "Estilo importado",
+  "{n} na prateleira": "{n} en el estante",
+  "{n} em andamento": "{n} en curso",
+  "{n} perfil": "{n} perfil",
+  "{n} perfis": "{n} perfiles",
+  "{count} levas medidas prontas para ajustar seu equipamento pela mediana real.":
+    "{count} lotes medidos listos para ajustar tu equipo por la mediana real.",
+  "OG / FG": "OG / FG",
+  "ABV / IBU": "ABV / IBU",
+  "Nota adicionada com data e hora.": "Nota a\xF1adida con fecha y hora.",
+  "Buscar receita": "Buscar receta",
+  "Continuar editando": "Seguir editando",
+  "Toque para continuar editando": "Toca para seguir editando",
+  "Rascunho descartado.": "Borrador descartado.",
+  "Receita duplicada.": "Receta duplicada.",
+  "BeerXML exportado.": "BeerXML exportado.",
+  "Perfil principal": "Perfil principal",
+  "Tornar principal": "Hacer principal",
+  "Tema e cor do app \u2014 valem no claro e no escuro.":
+    "Tema y color de la app \u2014 valen en claro y oscuro.",
+  "Quanta companhia durante a brassagem.":
+    "Cu\xE1nta compa\xF1\xEDa durante la cocci\xF3n.",
+  "Editar: {name}": "Editar: {name}",
+  "Novo perfil de equipamento": "Nuevo perfil de equipo",
+  "a leva medida": "el lote medido",
+  "a mediana": "la mediana",
+  "Perda no trub": "P\xE9rdida en trub",
+  " \xB7 perfil: {name}": " \xB7 perfil: {name}",
+  " \xB7 sem perfil principal": " \xB7 sin perfil principal",
+  "Backup exportado \u2014 guarde o arquivo em lugar seguro.":
+    "Copia exportada \u2014 guarda el archivo en un lugar seguro.",
+  "Backup restaurado.": "Copia restaurada.",
+  "Rascunho guardado em Receitas.": "Borrador guardado en Recetas.",
+  "Nada para desfazer.": "Nada que deshacer.",
+  "Nada para refazer.": "Nada que rehacer.",
+  "Adicione maltes antes de definir a OG.":
+    "A\xF1ade maltas antes de definir la OG.",
+  "Usar estilo livre": "Usar estilo libre",
+  "Toque para editar tipo, rendimento e cor.":
+    "Toca para editar tipo, rendimiento y color.",
+  "Defina os percentuais primeiro.": "Define los porcentajes primero.",
+  "Normalizar e aplicar": "Normalizar y aplicar",
+  "Sair do modo percentual": "Salir del modo porcentaje",
+  "Editar percentuais do grist": "Editar porcentajes del grist",
+  "Adicione ao menos dois maltes para editar percentuais.":
+    "A\xF1ade al menos dos maltas para editar porcentajes.",
+  "Tempo em minutos": "Tiempo en minutos",
+  "adequado p/ ale": "adecuado p/ ale",
+  "ale de alta densidade": "ale de alta densidad",
+  "lager de alta densidade / muito": "lager de alta densidad / muy",
+  "Remover etapa": "Quitar paso",
+  "Toque para renomear a rampa.": "Toca para renombrar la rampa.",
+  "Toque para renomear a etapa.": "Toca para renombrar el paso.",
+  "Toque para renomear a etapa ou definir a press\xE3o.":
+    "Toca para renombrar el paso o definir la presi\xF3n.",
+  "Toque para editar uso e momento.": "Toca para editar uso y momento.",
+  "Receita salva em Minhas receitas.": "Receta guardada en Mis recetas.",
+  "Adicione ao menos um ingrediente para a lista.":
+    "A\xF1ade al menos un insumo a la lista.",
+  "Adicione ao menos um malte antes de brassar.":
+    "A\xF1ade al menos una malta antes de cocer.",
+  'Importado de "{name}" \u2014 confira os valores e salve.':
+    'Importado de "{name}" \u2014 revisa los valores y guarda.',
+  'Perfil "{name}" criado': 'Perfil "{name}" creado',
+  'Perfil "{name}" salvo': 'Perfil "{name}" guardado',
+  'Atualizar "{name}"': 'Actualizar "{name}"',
+  'Calibrar "{name}" com {source}?': '\xBFCalibrar "{name}" con {source}?',
+  'Igual ao perfil "{name}" \u2014 nada novo a importar.':
+    'Igual al perfil "{name}" \u2014 nada nuevo que importar.',
+  'Perfil "{name}" salvo \u2713': 'Perfil "{name}" guardado \u2713',
+  'Perfil "{name}" salvo em Equipamentos.':
+    'Perfil "{name}" guardado en Equipos.',
+  "Receita sem nome": "Receta sin nombre",
+  "Dia de brassagem": "D\xEDa de cocci\xF3n",
+  Sacarificação: "Sacarificaci\xF3n",
+  Primária: "Primaria",
+  "Descanso de diacetil": "Reposo de diacetilo",
+  "Cold crash": "Cold crash",
+  Rampa: "Rampa",
+  Idioma: "Idioma",
+  Ativada: "Activada",
+  Desativada: "Desactivada",
+  "An\xE1lise da receita (beta)": "An\xE1lisis de la receta (beta)",
+  "Simula tend\xEAncias de aroma e sabor. O bot\xE3o s\xF3 aparece no editor quando este modo est\xE1 ativo.":
+    "Simula tendencias de aroma y sabor. El bot\xF3n solo aparece en el editor mientras este modo est\xE1 activo.",
+  "Ativar an\xE1lise da receita em modo beta?":
+    "\xBFActivar el an\xE1lisis de la receta en modo beta?",
+  "Este recurso est\xE1 em fase de testes e pode errar. Ingredientes ainda n\xE3o cadastrados, diferen\xE7as entre lotes, t\xE9cnicas e condi\xE7\xF5es de cada produ\xE7\xE3o podem alterar bastante o resultado.":
+    "Esta funci\xF3n est\xE1 en fase de pruebas y puede equivocarse. Los ingredientes a\xFAn no registrados, las diferencias entre lotes, las t\xE9cnicas y las condiciones de cada elaboraci\xF3n pueden cambiar mucho el resultado.",
+  "Ativar mesmo assim": "Activar de todos modos",
+  "Analisar receita \xB7 Beta": "Analizar receta \xB7 Beta",
+  "Modo beta": "Modo beta",
+  "Realizando simula\xE7\xF5es\u2026": "Realizando simulaciones\u2026",
+  "Estimando a faixa sensorial prov\xE1vel desta receita.":
+    "Estimando el rango sensorial probable de esta receta.",
+  "Por enquanto vale {current}. Crie um perfil \u2014 ou traga um BeerXML do Brewfather pelo Importar da sidebar. Receitas novas e o Preparo passam a usar o seu.":
+    "Por ahora vale {current}. Crea un perfil \u2014 o trae un BeerXML de Brewfather con Importar de la barra lateral. Las recetas nuevas y la Preparaci\xF3n pasan a usar el tuyo.",
+  "Maltes escalados para OG {og}.": "Maltas escaladas a OG {og}.",
+  "O malte-base completa o grist ({pct}%) \xB7 defina a OG e o app calcula as quantidades.":
+    "La malta base completa el grist ({pct}%) \xB7 define la OG y la app calcula las cantidades.",
+  "Soma {pct}% \xB7 defina a OG e o app calcula as quantidades.":
+    "Suma {pct}% \xB7 define la OG y la app calcula las cantidades.",
+  "Quantidades calculadas para OG {og}.": "Cantidades calculadas para OG {og}.",
+  "Todas de {name} + lembrar": "Todas de {name} + recordar",
+  "FG manual \u2014 calculada seria {fg}. Toque para editar.":
+    "FG manual \u2014 la calculada ser\xEDa {fg}. Toca para editar.",
+  '"{name}" salvo na sua biblioteca.': '"{name}" guardado en tu biblioteca.',
+  '"{name}" voltou para Em andamento.': '"{name}" volvi\xF3 a En curso.',
+  'Excluir a leva de "{name}"?': '\xBFEliminar el lote de "{name}"?',
+  'Descartar o rascunho "{name}"?': '\xBFDescartar el borrador "{name}"?',
+  'Brassagem de "{name}" iniciada.': 'Cocci\xF3n de "{name}" iniciada.',
+  '"{name}" calibrado com {source}.': '"{name}" calibrado con {source}.',
+  'Equipamento "{name}" aplicado a esta brassagem.':
+    'Equipo "{name}" aplicado a esta cocci\xF3n.',
+  '"{name}" calibrado com esta brassagem.':
+    '"{name}" calibrado con esta cocci\xF3n.',
+  "Contador de fervura extra iniciado: {time}.":
+    "Temporizador de hervido extra iniciado: {time}.",
+  "OG planejada": "OG planificada",
+  "OG real": "OG real",
+  "OG real \xB7 confer\xEAncia p\xF3s-corre\xE7\xE3o":
+    "OG real \xB7 verificaci\xF3n tras correcci\xF3n",
+  "OG real \xB7 leitura p\xF3s-fervura": "OG real \xB7 lectura tras hervido",
+  "Adicionar mais \xE1gua": "A\xF1adir m\xE1s agua",
+  "Fa\xE7a a leitura principal antes de conferir":
+    "Haz la lectura principal antes de verificar",
+  "Aguardando confer\xEAncia": "Esperando verificaci\xF3n",
+  "Informe WRI ap\xF3s corrigir para confirmar":
+    "Introduce el WRI tras corregir para confirmar",
+  "Corre\xE7\xE3o confirmada": "Correcci\xF3n confirmada",
+  "Desvio pequeno: seguir se a leitura estiver confi\xE1vel":
+    "Desviaci\xF3n peque\xF1a: sigue si la lectura es fiable",
+  "o Equipamento padr\xE3o (20 L \xB7 efici\xEAncia 65% \xB7 absor\xE7\xE3o 1,0 L/kg)":
+    "el Equipo est\xE1ndar (20 L \xB7 eficiencia 65% \xB7 absorci\xF3n 1,0 L/kg)",
+  "{vol} \xB7 efic. {pct}%": "{vol} \xB7 efic. {pct}%",
+  " \xB7 principal": " \xB7 principal",
+  "Sem um perfil principal, vale o Equipamento padr\xE3o: 20 L \xB7 efici\xEAncia 65% \xB7 absor\xE7\xE3o 1,0 L/kg.":
+    "Sin un perfil principal, vale el Equipo est\xE1ndar: 20 L \xB7 eficiencia 65% \xB7 absorci\xF3n 1,0 L/kg.",
+  "Beermother \xB7 Fable \u2014 v{v}": "Beermother \xB7 Fable \u2014 v{v}",
+  "Escalar a receita para o novo equipamento?":
+    "\xBFEscalar la receta al nuevo equipo?",
+  'Malte, l\xFApulo, levedura, sais e insumos escalam para manter a OG e o IBU de antes no volume novo \u2014 a cor pode variar com a efici\xEAncia. "Manter" s\xF3 troca o equipamento e deixa as quantidades como est\xE3o.':
+    'Malta, l\xFApulo, levadura, sales e insumos escalan para mantener la OG y el IBU de antes en el volumen nuevo \u2014 el color puede variar con la eficiencia. "Mantener" solo cambia el equipo y deja las cantidades como est\xE1n.',
+  "Escalar receita": "Escalar receta",
+  "Manter como est\xE1": "Mantener como est\xE1",
+  "Receita escalada para {vol}: OG {og} e {ibu} IBU preservados. Ctrl+Z desfaz.":
+    "Receta escalada a {vol}: OG {og} y {ibu} IBU preservados. Ctrl+Z deshace.",
+  "Escolha um perfil (volume, efici\xEAncia e fervura entram na receita) ou crie um novo. Se a receita j\xE1 tem ingredientes, o app pergunta se escala as quantidades.":
+    "Elige un perfil (volumen, eficiencia y hervido entran en la receta) o crea uno nuevo. Si la receta ya tiene insumos, la app pregunta si escala las cantidades.",
+  'Equipamento "{name}" aplicado.': 'Equipo "{name}" aplicado.',
+  "Rendimento baixo potencializa a maltosidade, o perfil sensorial do malte e a cor.":
+    "Un rendimiento bajo potencia la maltosidad, el perfil sensorial de la malta y el color.",
+  "Mostura fina dilui a \u03B2-amilase e limita seu efeito \u2014 tende a atenuar menos que o previsto.":
+    "Una maceraci\xF3n fina diluye la \u03B2-amilasa y limita su efecto \u2014 tiende a atenuar menos de lo previsto.",
+  "Mostura grossa favorece a \u03B2-amilase e a fermentabilidade.":
+    "Una maceraci\xF3n espesa favorece la \u03B2-amilasa y la fermentabilidad.",
+  "Cloreto alto acentua o corpo e a maciez, arredondando a cerveja.":
+    "El cloruro alto acent\xFAa el cuerpo y la suavidad, redondeando la cerveza.",
+  "Sulfato alto seca o final e real\xE7a o amargor.":
+    "El sulfato alto seca el final y realza el amargor.",
+  "Malte Pilsen: p\xE3o leve e cereal cru leve \u2014 base limpa.":
+    "Malta Pilsen: pan ligero y cereal crudo ligero \u2014 base limpia.",
+  "\u03B2-glucanos: maciez e sensa\xE7\xE3o de corpo, mas turbidez e efeito negativo na espuma.":
+    "\u03B2-glucanos: suavidad y sensaci\xF3n de cuerpo, pero turbidez y efecto negativo en la espuma.",
+  "Malte base p\xE1lido: dul\xE7or de malte leve e limpo.":
+    "Malta base p\xE1lida: dulzor de malta ligero y limpio.",
+  "Malte muito torrado traz potencial de adstring\xEAncia e nota tostada/torrada.":
+    "La malta muy tostada aporta astringencia potencial y una nota tostada/torrefacta.",
+  "Descanso \xE1cido/proteico baixo: pouca a\xE7\xE3o enzim\xE1tica, leve ajuste de pH.":
+    "Reposo \xE1cido/proteico bajo: poca acci\xF3n enzim\xE1tica, leve ajuste de pH.",
+  "\u03B2-glucanase quebra os \u03B2-glucanos \u2014 reduz espessura e turbidez.":
+    "La \u03B2-glucanasa rompe los \u03B2-glucanos \u2014 reduce el espesor y la turbidez.",
+  "Libera \xE1cido fer\xFAlico dos maltes \u2014 precursor de 4-VG na fermenta\xE7\xE3o.":
+    "Libera \xE1cido fer\xFAlico de las maltas \u2014 precursor de 4-VG en la fermentaci\xF3n.",
+  "Descanso proteico: mexe em espuma e clareza; use com parcim\xF4nia.":
+    "Reposo proteico: afecta a la espuma y la claridad; \xFAsalo con moderaci\xF3n.",
+  "Sacarifica\xE7\xE3o baixa favorece a \u03B2-amilase \u2014 mosto mais ferment\xE1vel, corpo mais seco.":
+    "Sacarificaci\xF3n baja favorece la \u03B2-amilasa \u2014 mosto m\xE1s fermentable, cuerpo m\xE1s seco.",
+  "Sacarifica\xE7\xE3o alta favorece a \u03B1-amilase \u2014 mais dextrinas, corpo e menos atenua\xE7\xE3o.":
+    "Sacarificaci\xF3n alta favorece la \u03B1-amilasa \u2014 m\xE1s dextrinas, cuerpo y menos atenuaci\xF3n.",
+  "Fora das bandas enzim\xE1ticas mapeadas \u2014 sem efeito modelado.":
+    "Fuera de las bandas enzim\xE1ticas mapeadas \u2014 sin efecto modelado.",
+  "No whirlpool a quente sobram linalol e geraniol (oxigenados): qualidade mais fina, pot\xEAncia menor que o dry hop.":
+    "En el whirlpool caliente sobreviven linalol y geraniol (oxigenados): calidad m\xE1s fina, menos potencia que el dry hop.",
+  "Dry hop preserva mirceno e todo o \xF3leo \u2014 m\xE1ximo de pot\xEAncia arom\xE1tica.":
+    "El dry hop preserva el mirceno y todo el aceite \u2014 m\xE1xima potencia arom\xE1tica.",
+  "Adi\xE7\xE3o de fervura: aroma vol\xE1til evapora, contribui mais para amargor/sabor.":
+    "Adici\xF3n de hervido: el aroma vol\xE1til se evapora, aporta m\xE1s al amargor/sabor.",
+  "Fermenta\xE7\xE3o frutada e intensa \u2014 a densidade alta puxa ainda mais \xE9ster.":
+    "Fermentaci\xF3n afrutada e intensa \u2014 la densidad alta empuja a\xFAn m\xE1s \xE9ster.",
+  "Fermenta\xE7\xE3o com \xE9steres frutados.":
+    "Fermentaci\xF3n con \xE9steres afrutados.",
+  "Levedura POF+ encontra o \xE1cido fer\xFAlico e produz 4-VG (cravo, condimentado).":
+    "La levadura POF+ encuentra el \xE1cido fer\xFAlico y produce 4-VG (clavo, especiado).",
+  "Levedura POF+, mas sem \xE1cido fer\xFAlico dispon\xEDvel \u2014 pouco 4-VG (falta o descanso ~43\xB0C).":
+    "Levadura POF+, pero sin \xE1cido fer\xFAlico disponible \u2014 poco 4-VG (falta el reposo ~43\xB0C).",
+  "A levedura biotransforma o geraniol em citronelol (c\xEDtrico/floral) \u2014 nota que o l\xFApulo sozinho n\xE3o daria.":
+    "La levadura biotransforma el geraniol en citronelol (c\xEDtrico/floral) \u2014 una nota que el l\xFApulo por s\xED solo no dar\xEDa.",
+  "p\xE3o leve, cereal": "pan ligero, cereal",
+  "malte, biscoito leve": "malta, galleta ligera",
+  "torrado / caf\xE9": "tostado / caf\xE9",
+  "banana e frutas passadas": "pl\xE1tano y fruta madura",
+  "banana e cravo (weizen)": "pl\xE1tano y clavo (weizen)",
+  "laranja e frutas tropicais": "naranja y frutas tropicales",
+  "apimentado e frutado": "especiado y afrutado",
+  "4-VG (cravo)": "4-VG (clavo)",
+  "citronelol (c\xEDtrico/floral)": "citronelol (c\xEDtrico/floral)",
+  Corpo: "Cuerpo",
+  Turbidez: "Turbidez",
+  Espuma: "Espuma",
+  Aroma: "Aroma",
+  Sabor: "Sabor",
+  alto: "alto",
+  "m\xE9dio-alto": "medio-alto",
+  médio: "medio",
+  "m\xE9dio-baixo": "medio-bajo",
+  baixo: "bajo",
+  alta: "alta",
+  média: "media",
+  baixa: "baja",
+  "Sem notas marcantes previstas.": "Sin notas destacadas previstas.",
+  "Perfil previsto": "Perfil previsto",
+  "Voltar \xE0 receita": "Volver a la receta",
+  "An\xE1lise da receita": "An\xE1lisis de la receta",
+  "Adicione ao menos um malte para analisar a receita.":
+    "A\xF1ade al menos una malta para analizar la receta.",
+  "Simula\xE7\xE3o do efeito de cada adi\xE7\xE3o, na ordem da brassagem \u2014 tend\xEAncias, n\xE3o veredito. N\xE3o conclua por uma leitura s\xF3.":
+    "Simulaci\xF3n del efecto de cada adici\xF3n, en el orden de la cocci\xF3n \u2014 tendencias, no un veredicto. No concluyas por una sola lectura.",
+  "Di\xE1rio da an\xE1lise": "Diario del an\xE1lisis",
+  "Perfil de fermenta\xE7\xE3o limpo \u2014 poucos \xE9steres e fen\xF3is; deixa o malte e o l\xFApulo falarem.":
+    "Perfil de fermentaci\xF3n limpio \u2014 pocos \xE9steres y fenoles; deja hablar a la malta y el l\xFApulo.",
+  levedura: "levadura",
+  Configuração: "Configuraci\xF3n",
+  "Caramelo em dose baixa: leve toque de toffee e cor dourada.":
+    "Malta caramelo en dosis baja: un toque ligero de toffee y color dorado.",
+  "toffee leve": "toffee ligero",
+  "Caramelo em dose m\xE9dia: caramelo e toffee pronunciados, corpo redondo.":
+    "Malta caramelo en dosis media: caramelo y toffee pronunciados, cuerpo redondo.",
+  "caramelo, toffee": "caramelo, toffee",
+  "Caramelo em dose alta: caramelo intenso, uva passa e mais corpo \u2014 tende a atenuar menos.":
+    "Malta caramelo en dosis alta: caramelo intenso, pasa y m\xE1s cuerpo \u2014 tiende a atenuar menos.",
+  "caramelo intenso, uva passa": "caramelo intenso, pasa",
+  "Chocolate em dose baixa: cor e um toque de cacau / chocolate ao leite.":
+    "Malta chocolate en dosis baja: color y un toque de cacao / chocolate con leche.",
+  "cacau leve": "cacao ligero",
+  "Chocolate em dose m\xE9dia: chocolate escuro e cacau n\xEDtidos.":
+    "Malta chocolate en dosis media: chocolate negro y cacao n\xEDtidos.",
+  "chocolate escuro, cacau": "chocolate negro, cacao",
+  "Chocolate em dose alta: chocolate amargo e caf\xE9, com risco de adstring\xEAncia torrada.":
+    "Malta chocolate en dosis alta: chocolate amargo y caf\xE9, con riesgo de astringencia tostada.",
+  "chocolate amargo, caf\xE9": "chocolate amargo, caf\xE9",
+  provável: "probable",
+  possível: "posible",
+  "pouco prov\xE1vel": "poco probable",
+  improvável: "improbable",
+  "varia {a}\u2013{b}": "var\xEDa {a}\u2013{b}",
+  "De {n} simula\xE7\xF5es com pesos variando dentro da incerteza \u2014 a barra \xE9 qu\xE3o prov\xE1vel a nota aparece.":
+    "De {n} simulaciones con pesos variando dentro de la incertidumbre \u2014 la barra es qu\xE9 tan probable es que la nota aparezca.",
+  "Semente: {seed}": "Semilla: {seed}",
+  "Re-simular": "Re-simular",
+  "Barra escura = faixa prevista (p10\u2013p90) de {n} simula\xE7\xF5es; ponto = prov\xE1vel. \xC1rea clara = o que {s} espera; risco = ideal.":
+    "Barra oscura = rango previsto (p10\u2013p90) de {n} simulaciones; punto = probable. \xC1rea clara = lo que {s} espera; marca = ideal.",
+  "Barra = faixa prevista (p10\u2013p90) de {n} simula\xE7\xF5es. Escolha um estilo para ver a faixa esperada ao lado.":
+    "Barra = rango previsto (p10\u2013p90) de {n} simulaciones. Elige un estilo para ver el rango esperado al lado.",
+  "Barra escura = faixa prov\xE1vel de {n} simula\xE7\xF5es com margem m\xEDnima; ponto = centro. \xC1rea clara = o que {s} espera; risco = ideal.":
+    "Barra oscura = rango probable de {n} simulaciones con un margen m\xEDnimo; punto = centro. \xC1rea clara = lo que {s} espera; marca = ideal.",
+  "Barra = faixa prov\xE1vel de {n} simula\xE7\xF5es com margem m\xEDnima. Escolha um estilo para ver a faixa esperada ao lado.":
+    "Barra = rango probable de {n} simulaciones con un margen m\xEDnimo. Elige un estilo para ver el rango esperado al lado.",
+  "Sem estilo de refer\xEAncia": "Sin estilo de referencia",
+  "Comparar com o estilo:": "Comparar con el estilo:",
+  "Notas marcantes": "Notas marcadas",
+  "Aroma de malte": "Aroma de malta",
+  "Aroma de l\xFApulo": "Aroma de l\xFApulo",
+  "Aroma de fermenta\xE7\xE3o": "Aroma de fermentaci\xF3n",
+  Limpidez: "Limpidez",
+  "Forma\xE7\xE3o de espuma": "Formaci\xF3n de espuma",
+  "Reten\xE7\xE3o de espuma": "Retenci\xF3n de espuma",
+  "Sabor de malte": "Sabor de malta",
+  "Sabor de l\xFApulo": "Sabor de l\xFApulo",
+  "Sabor de fermenta\xE7\xE3o": "Sabor de fermentaci\xF3n",
+  Amargor: "Amargor",
+  Equilíbrio: "Equilibrio",
+  Final: "Final",
+  Carbonatação: "Carbonataci\xF3n",
+  "Aquecimento alco\xF3lico": "Calidez alcoh\xF3lica",
+  Cremosidade: "Cremosidad",
+  Adstringência: "Astringencia",
+  "Sensa\xE7\xE3o de boca": "Sensaci\xF3n en boca",
+  "Cepa STA1+ (diastaticus): atenua al\xE9m do previsto \u2014 final bem seco e mais fenol/apimentado.":
+    "Cepa STA1+ (diastaticus): aten\xFAa m\xE1s de lo previsto \u2014 final muy seco y m\xE1s fenol/especiado.",
+  "banana e cravo": "pl\xE1tano y clavo",
+  "frutado intenso": "afrutado intenso",
+  frutado: "afrutado",
+  "levemente frutado": "ligeramente afrutado",
+  "perfil limpo": "perfil limpio",
+  "frutado (ma\xE7\xE3, pera)": "afrutado (manzana, pera)",
+  cereal: "cereal",
+  Farinha: "Harina",
+  Mel: "Miel",
+  "Casca de p\xE3o": "Corteza de pan",
+  Biscoito: "Galleta",
+  cracker: "cracker",
+  Nozes: "Nueces",
+  Toffee: "Toffee",
+  "A\xE7\xFAcar mascavo": "Az\xFAcar moreno",
+  Melaço: "Melaza",
+  "Frutas secas": "Frutos secos",
+  "Ameixa/passa": "Ciruela/pasa",
+  Chocolate: "Chocolate",
+  Café: "Caf\xE9",
+  Torrado: "Tostado",
+  Queimado: "Quemado",
+  "Tom vermelho": "Tono rojo",
+  Cereal: "Cereal",
+  Pão: "Pan",
+  Tostado: "Tostado",
+  Cracker: "Cracker",
+  Caramelo: "Caramelo",
+  neutro: "neutro",
+  leve: "ligero",
+  acentuado: "acentuado",
+  "Perfil e bandas": "Perfil y rangos",
+  "Vis\xE3o sensorial": "Vista sensorial",
+  "Assinatura prov\xE1vel": "Firma probable",
+  "{d} {w}": "{d} {w}",
+  "final {w}": "final {w}",
+  "Sem descritor acima do limiar de percep\xE7\xE3o.":
+    "Ning\xFAn descriptor supera el umbral de percepci\xF3n.",
+  "Menos frequente, mas forte quando acontece: {d}.":
+    "Menos frecuente, pero fuerte cuando ocurre: {d}.",
+  Cobertura: "Cobertura",
+  "Assumido: {list}": "Asumido: {list}",
+  "maltes reconhecidos": "maltas reconocidas",
+  "variedades de l\xFApulo": "variedades de l\xFApulo",
+  "tempo/temperatura do l\xFApulo": "tiempo/temperatura del l\xFApulo",
+  "cepa de levedura": "cepa de levadura",
+  "temperatura de fermenta\xE7\xE3o": "temperatura de fermentaci\xF3n",
+  "perfil de \xE1gua": "perfil de agua",
+  carbonatação: "carbonataci\xF3n",
+  dominante: "dominante",
+  evidente: "evidente",
+  nítido: "n\xEDtido",
+  discreto: "discreto",
+  tênue: "tenue",
+  Descritor: "Descriptor",
+  Chance: "Probabilidad",
+  Intensidade: "Intensidad",
+  Suporte: "Respaldo",
+  "Distribui\xE7\xE3o da intensidade em {n} simula\xE7\xF5es":
+    "Distribuci\xF3n de la intensidad en {n} simulaciones",
+  "0 = ausente": "0 = ausente",
+  "3 = n\xEDtido": "3 = n\xEDtido",
+  "5 = dominante": "5 = dominante",
+  "Selecione um descritor para ver de onde ele vem.":
+    "Elige un descriptor para ver de d\xF3nde viene.",
+  "Vem de:": "Viene de:",
+  "Segurado por:": "Contenido por:",
+  "Incerteza:": "Incertidumbre:",
+  "entre {a} e {b} conforme a simula\xE7\xE3o":
+    "entre {a} y {b} seg\xFAn la simulaci\xF3n",
+  "Suporte do dado:": "Respaldo del dato:",
+  "{n}% de chance": "{n}% de probabilidad",
+  "{v} de 5 se percebido": "{v} de 5 si se percibe",
+  "{label} {w}": "{label} {w}",
+  "Est\xE1 na receita, mas n\xE3o se sente":
+    "Est\xE1 en la receta, pero no se siente",
+  "dose baixa demais para falar \u2014 nenhum aroma passa do limiar":
+    "dosis demasiado baja para hablar \u2014 ning\xFAn aroma supera el umbral",
+  "sob {d}": "bajo {d}",
+  "Nenhum descritor previsto para esta receita.":
+    "Ning\xFAn descriptor previsto para esta receta.",
+  "Mostrar s\xF3 os relevantes": "Mostrar solo los relevantes",
+  "Ver perfil completo": "Ver perfil completo",
+  "Chance = quantas simula\xE7\xF5es passam do limiar de percep\xE7\xE3o \xB7 intensidade = for\xE7a quando passa \xB7 suporte = qualidade do dado por tr\xE1s da leitura.":
+    "Probabilidad = cu\xE1ntas simulaciones superan el umbral de percepci\xF3n \xB7 intensidad = fuerza cuando lo supera \xB7 respaldo = calidad del dato tras la lectura.",
+  "presente, mas abaixo do n\xEDvel em que nomear descritores significa algo":
+    "presente, pero por debajo del nivel en que nombrar descriptores significa algo",
+  "Estourou a escala: a leitura para aqui, o valor n\xE3o.":
+    "Se sale de la escala: la lectura para aqu\xED, el valor no.",
+  "O modelo bruto atingiu o limite; a faixa inclui a incerteza m\xEDnima.":
+    "El modelo bruto alcanz\xF3 el l\xEDmite; el rango incluye la incertidumbre m\xEDnima.",
+  "Cen\xE1rios sensoriais": "Escenarios sensoriales",
+  Experimental: "Experimental",
+  "Sua cerveja": "Tu cerveza",
+  "Estimativa por simula\xE7\xE3o": "Estimaci\xF3n por simulaci\xF3n",
+  "Perfil sensorial": "Perfil sensorial",
+  "Por qu\xEA?": "\xBFPor qu\xE9?",
+  "Simular altera\xE7\xE3o": "Simular un cambio",
+  "Leituras da previs\xE3o": "Vistas de la previsi\xF3n",
+  "Car\xE1ter dominante": "Car\xE1cter dominante",
+  "Car\xE1ter secund\xE1rio": "Car\xE1cter secundario",
+  "Sem destaque": "Sin nota dominante",
+  "Nenhuma nota pr\xF3xima": "Sin una nota secundaria cercana",
+  "{intensity} \xB7 {family}": "{intensity} \xB7 {family}",
+  Perfil: "Perfil",
+  "Receita ainda sem leitura": "La receta todav\xEDa no permite una lectura",
+  "Final {finish}": "Final {finish}",
+  "Confian\xE7a da faixa": "Confianza del rango",
+  "Consist\xEAncia dos cen\xE1rios": "Consistencia de los escenarios",
+  "Poucos sinais dispon\xEDveis": "Pocas se\xF1ales disponibles",
+  "Cen\xE1rios pr\xF3ximos entre si": "Los escenarios coinciden entre s\xED",
+  "H\xE1 alguma varia\xE7\xE3o esperada": "Se espera alguna variaci\xF3n",
+  "A faixa ainda \xE9 ampla": "El rango todav\xEDa es amplio",
+  "Previs\xE3o est\xE1vel": "Previsi\xF3n estable",
+  "Alguma varia\xE7\xE3o": "Alguna variaci\xF3n",
+  "Varia\xE7\xE3o maior": "Mayor variaci\xF3n",
+  "Varia\xE7\xE3o estreita": "Variaci\xF3n estrecha",
+  "Varia\xE7\xE3o moderada": "Variaci\xF3n moderada",
+  "Varia\xE7\xE3o ampla": "Variaci\xF3n amplia",
+  "Muito alta": "Muy alta",
+  "Muito alto": "Muy alto",
+  "sem car\xE1ter dominante": "sin car\xE1cter dominante",
+  "Leitura r\xE1pida:": "Lectura r\xE1pida:",
+  "{character} como principal; {secondary} em apoio. Corpo {body} e final {finish}.":
+    "{character} como principal, con apoyo de {secondary}. Cuerpo {body} y final {finish}.",
+  "{character} como principal. Corpo {body} e final {finish}.":
+    "{character} como principal. Cuerpo {body} y final {finish}.",
+  "{character}; equil\xEDbrio {balance}, corpo {body} e final {finish}.":
+    "{character}; equilibrio {balance}, cuerpo {body} y final {finish}.",
+  "Faixa sensorial prov\xE1vel": "Rango sensorial probable",
+  "Onde a cerveja tende a cair nas 200 simula\xE7\xF5es.":
+    "D\xF3nde tiende a situarse la cerveza en 200 simulaciones.",
+  "Faixa esperada, com margem para varia\xE7\xF5es que a receita n\xE3o informa.":
+    "Rango esperado, con margen para variaciones que la receta no especifica.",
+  "Descritores por fam\xEDlia": "Descriptores por familia",
+  "Ver descritores por:": "Explora descriptores por:",
+  "Intensidade prevista: 0\u20138": "Intensidad prevista: 0\u20138",
+  Centro: "Centro",
+  "Ainda n\xE3o h\xE1 sinais suficientes para montar o perfil.":
+    "Todav\xEDa no hay suficientes se\xF1ales para construir el perfil.",
+  "A faixa mostra a varia\xE7\xE3o do modelo; o copo real tamb\xE9m depende da execu\xE7\xE3o e do envase.":
+    "El rango muestra la variaci\xF3n del modelo; la cerveza real tambi\xE9n depende de la elaboraci\xF3n y el envasado.",
+  "Estimativa para uma cerveja fresca, com fermenta\xE7\xE3o e envase dentro do esperado.":
+    "Estimaci\xF3n para una cerveza fresca, con fermentaci\xF3n y envasado dentro de lo esperado.",
+  "Maior vari\xE1vel": "Mayor variable",
+  "Frescor e envase": "Frescura y envasado",
+  "Podem reduzir o aroma de l\xFApulo": "Pueden reducir el aroma de l\xFApulo",
+  "Rampa e fermenta\xE7\xE3o": "Escal\xF3n de maceraci\xF3n y fermentaci\xF3n",
+  "Mudam a rela\xE7\xE3o entre cravo e banana":
+    "Cambian la relaci\xF3n entre clavo y banana",
+  "Temperatura e condu\xE7\xE3o mudam o perfil":
+    "La temperatura y la conducci\xF3n cambian el perfil",
+  Processo: "Proceso",
+  "Extra\xE7\xE3o e mat\xE9ria-prima mudam a intensidade":
+    "La extracci\xF3n y las materias primas cambian la intensidad",
+  Execução: "Ejecuci\xF3n",
+  "O processo ainda pode mudar o resultado":
+    "La ejecuci\xF3n todav\xEDa puede cambiar el resultado",
+  "O que sustenta esta leitura": "Qu\xE9 sustenta esta lectura",
+  "A resposta curta sobre de onde veio a previs\xE3o.":
+    "La respuesta breve sobre el origen de la previsi\xF3n.",
+  "Receita informada": "Datos de la receta",
+  "Ingredientes e processo considerados": "Ingredientes y proceso considerados",
+  "Varia\xE7\xE3o realista": "Variaci\xF3n realista",
+  "Varia\xE7\xE3o simulada": "Variaci\xF3n simulada",
+  "{n} cen\xE1rios": "{n} escenarios",
+  "Pequenas diferen\xE7as de brassagem":
+    "Peque\xF1as diferencias entre elaboraciones",
+  "Diferen\xE7as consideradas pelo modelo":
+    "Diferencias consideradas por el modelo",
+  "Refer\xEAncia de estilo": "Referencia de estilo",
+  "Usada como contexto, n\xE3o como resposta":
+    "Usada como contexto, no como respuesta",
+  "De onde v\xEAm os aromas": "De d\xF3nde vienen los aromas",
+  "O que ainda pode mudar": "Qu\xE9 todav\xEDa puede cambiar",
+  "Sem lacunas importantes nos dados usados por esta leitura.":
+    "Sin lagunas importantes en los datos usados para esta lectura.",
+  "Ver an\xE1lise t\xE9cnica": "Ver an\xE1lisis t\xE9cnico",
+  "{name}: {delta}% de ferment\xE1vel": "{name}: {delta}% de fermentable",
+  "{name}: {delta}% de l\xFApulo": "{name}: {delta}% de l\xFApulo",
+  "Mostura: {delta} \xB0C": "Maceraci\xF3n: {delta} \xB0C",
+  "Fermenta\xE7\xE3o: {delta} \xB0C": "Fermentaci\xF3n: {delta} \xB0C",
+  "Uma mudan\xE7a": "Un cambio",
+  "Mudan\xE7a pequena nesta leitura.": "Cambio peque\xF1o en esta lectura.",
+  "Sinais que mudam": "Se\xF1ales que cambian",
+  "S\xF3 essa vari\xE1vel muda.": "Solo cambia esta variable.",
+  "Teste uma mudan\xE7a por vez": "Prueba un cambio cada vez",
+  "Veja a dire\xE7\xE3o prov\xE1vel sem alterar a receita original.":
+    "Observa la direcci\xF3n probable sin cambiar la receta original.",
+  "N\xE3o h\xE1 mudan\xE7as guiadas dispon\xEDveis para esta receita.":
+    "No hay cambios guiados disponibles para esta receta.",
+  "Somente cen\xE1rios do modelo": "Solo escenarios del modelo",
+  "Cen\xE1rios do modelo e percep\xE7\xE3o calibrada":
+    "Escenarios del modelo y percepci\xF3n calibrada",
+  "Ainda n\xE3o h\xE1 dados humanos calibrados para transformar estes cen\xE1rios em probabilidade de percep\xE7\xE3o.":
+    "A\xFAn no hay datos humanos calibrados para convertir estos escenarios en probabilidad de percepci\xF3n.",
+  "Probabilidade humana aparece somente nos descritores que passaram pela calibra\xE7\xE3o.":
+    "La probabilidad humana aparece solo en los descriptores que superaron la calibraci\xF3n.",
+  "Comparar hip\xF3teses": "Comparar hip\xF3tesis",
+  "Tr\xEAs mudan\xE7as pequenas, simuladas isoladamente com a mesma semente. N\xE3o s\xE3o recomenda\xE7\xF5es.":
+    "Tres cambios peque\xF1os, simulados por separado con la misma semilla. No son recomendaciones.",
+  "Hip\xF3tese alterada": "Hip\xF3tesis modificada",
+  "{name}: ferment\xE1vel +10%": "{name}: fermentable +10%",
+  "Ferment\xE1vel principal": "Fermentable principal",
+  "{name}: l\xFApulo +10%": "{name}: l\xFApulo +10%",
+  "Adi\xE7\xE3o arom\xE1tica": "Adici\xF3n arom\xE1tica",
+  "Mostura +1 \xB0C": "Maceraci\xF3n +1 \xB0C",
+  "Fermenta\xE7\xE3o +1 \xB0C": "Fermentaci\xF3n +1 \xB0C",
+  "Cen\xE1rio neutro": "Escenario neutro",
+  "{pct} dos cen\xE1rios mudaram de faixa":
+    "El {pct} de los escenarios cambi\xF3 de categor\xEDa",
+  "Dentro da banda: {delta}": "Dentro de la banda del estilo: {delta}",
+  "Descritores que mudam": "Descriptores que cambian",
+  surge: "aparece",
+  desaparece: "desaparece",
+  "muda de categoria": "cambia de categor\xEDa",
+  "Sem deslocamento relevante nos controles.":
+    "Sin desplazamientos relevantes en los controles sensoriales.",
+  "Nenhuma mudan\xE7a categ\xF3rica nos descritores.":
+    "Sin cambios categ\xF3ricos en los descriptores.",
+  "Somente este fator muda. A receita original n\xE3o \xE9 alterada.":
+    "Solo cambia este factor. La receta original no se modifica.",
+  "Completude dos dados": "Completitud de los datos",
+  "Lacunas: {list}": "Lagunas: {list}",
+  "Os dados informados cobrem todas as entradas usadas por esta leitura.":
+    "Los datos informados cubren todas las entradas utilizadas por esta lectura.",
+  "Controles sensoriais": "Controles sensoriales",
+  "Cada barra distribui os {n} cen\xE1rios nas categorias espec\xEDficas deste controle.":
+    "Cada barra distribuye los {n} escenarios entre las categor\xEDas espec\xEDficas de este control.",
+  "Moda: {mode}": "Moda: {mode}",
+  "Faixa de 80%: {range}": "Rango del 80%: {range}",
+  "Abaixo da banda": "Debajo de la banda",
+  "Dentro da banda": "Dentro de la banda",
+  "Acima da banda": "Por encima de la banda",
+  "A escala terminou em {pct} dos cen\xE1rios \u2014 o valor real pode ser maior.":
+    "La escala termin\xF3 en {pct} de los escenarios \u2014 el valor real puede ser mayor.",
+  "O valor atingiu o piso da escala em {pct} dos cen\xE1rios \u2014 o valor real pode ser menor.":
+    "El valor alcanz\xF3 el m\xEDnimo de la escala en {pct} de los escenarios \u2014 el valor real puede ser menor.",
+  "N\xE3o previsto \u2014 depende do envase":
+    "No previsto \u2014 depende del envasado",
+  Descritores: "Descriptores",
+  "Distribui\xE7\xE3o dos cen\xE1rios": "Distribuci\xF3n de los escenarios",
+  "Presente em {n} de {runs} cen\xE1rios":
+    "Presente en {n} de {runs} escenarios",
+  "Grupo: {group}": "Grupo: {group}",
+  "Qualidade do suporte: {support}": "Calidad del respaldo: {support}",
+  "Fontes: {sources}": "Fuentes: {sources}",
+  "T\xEDpico do estilo": "T\xEDpico del estilo",
+  "N\xE3o calibrado": "No calibrado",
+  Piloto: "Piloto",
+  Calibrado: "Calibrado",
+  "Distribui\xE7\xE3o perceptiva": "Distribuci\xF3n perceptiva",
+  "Probabilidade de percep\xE7\xE3o: {pct}":
+    "Probabilidad de percepci\xF3n: {pct}",
+  "Sem percentual humano at\xE9 haver calibra\xE7\xE3o.":
+    "Sin porcentaje humano hasta que exista calibraci\xF3n.",
+  "Dados piloto \u2014 ainda sem probabilidade humana.":
+    "Datos piloto \u2014 todav\xEDa sin probabilidad humana.",
+  "Fora do modelo": "Fuera del modelo",
+  "N\xE3o apareceu nos cen\xE1rios": "No apareci\xF3 en los escenarios",
+  "N\xE3o mapeado": "No mapeado",
+  "T\xEDpicos do estilo fora da previs\xE3o":
+    "Descriptores t\xEDpicos del estilo fuera de la previsi\xF3n",
+  "Distribui\xE7\xE3o dos cen\xE1rios usa a receita; distribui\xE7\xE3o perceptiva s\xF3 aparece ap\xF3s calibra\xE7\xE3o humana.":
+    "La distribuci\xF3n de los escenarios usa la receta; la distribuci\xF3n perceptiva solo aparece tras la calibraci\xF3n humana.",
+  "Nenhum descritor apareceu nos cen\xE1rios desta receita.":
+    "Ning\xFAn descriptor apareci\xF3 en los escenarios de esta receta.",
+  "{label}: {pct}": "{label}: {pct}",
+  Ausente: "Ausente",
+  Tênue: "Tenue",
+  Discreto: "Discreto",
+  Nítido: "N\xEDtido",
+  Evidente: "Evidente",
+  Dominante: "Dominante",
+  Mascavo: "Az\xFAcar moreno",
+  "Frutas de caro\xE7o": "Frutas de hueso",
+  "Frutas vermelhas": "Frutas rojas",
+  Limpo: "Limpio",
+  Frutado: "Afrutado",
+  "Ma\xE7\xE3/pera": "Manzana/pera",
+  Banana: "Banana",
+  Goma: "Chicle",
+  Cravo: "Clavo",
+  Pimenta: "Pimienta",
+  Especiarias: "Especias",
+  Defumado: "Ahumado",
+  Medicinal: "Medicinal",
+  Plástico: "Pl\xE1stico",
+  Diacetil: "Diacetilo",
+  Acetaldeído: "Acetaldeh\xEDdo",
+  Enxofre: "Azufre",
+  Álcool: "Alcohol",
+  Solvente: "Solvente",
+  Oxidado: "Oxidado",
+  "Light-struck": "Defecto de luz",
+  DMS: "DMS",
+  Lático: "L\xE1ctico",
+  Vinagre: "Vinagre",
+  Funky: "Funky",
+  Brett: "Brett",
+  Base: "Base",
+  Kilned: "Horneado",
+  Clássico: "Cl\xE1sico",
+  "C\xEDtrico / resinoso": "C\xEDtrico / resinoso",
+  "Verde / defeitos": "Verde / defectos",
+  Ésteres: "\xC9steres",
+  Fenólico: "Fen\xF3lico",
+  Falhas: "Defectos",
+  "\xC1cida / selvagem": "\xC1cida / salvaje",
+  "Edi\xE7\xE3o comemorativa": "Edici\xF3n conmemorativa",
+  "11 anos Beermother": "11 a\xF1os de Beermother",
+  "Uma receita especial para celebrar essa hist\xF3ria.":
+    "Una receta especial para celebrar esta historia.",
+  "Abrir receita especial": "Abrir receta especial",
+};

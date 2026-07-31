@@ -1,7 +1,488 @@
-import{n as d,normalizeReading as R,correctionSummary as h,correctionCheckResult as W,additionScheduleLabel as $,finalParameterCode as v,waterProfileSummary as j,scaledWaterSalts as I,originalWaterPlan as H,fermentationChartModel as z,effectiveWriFactor as k,abvBrewfather as L,WRI_FACTOR as y}from"./engine.js";import{fermentationChartSvg as G}from"./chart.js";import{BRAND_LOGO as N,FONT_CSS as U,assetUrl as P}from"./ui.js";import{phLogSummary as O}from"./ph.js";import{t as e,tEngine as m,getLanguage as E,fmt as n,formatVolume as c,formatVolumeRate as w,formatMaltMass as A,formatIngredientAmount as g,formatYeastAmount as C}from"./i18n.js";const D={pt:"pt-BR",en:"en-US",es:"es-ES"},V=()=>D[E()]||"pt-BR";function K(a){return Number.isFinite(Number(a))?`${n(a,1)} \xB0C`:"-"}function Y(a){return Number.isFinite(Number(a))?`${n(a,0)} ${e("dias")}`:"-"}export function htmlEscape(a){return String(a??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}export function buildBrewReport(a,o){const r=o.props,i=d(r.mashWaterUsedL,o.volumes.mashWater),l=Math.max(0,o.volumes.totalWater-i),s=d(r.targetVolumeL,20)?d(r.trubLossL)/d(r.targetVolumeL,20)*100:0,p=H(o.recipe),u=o.scaledFermentables.filter(t=>t.use==="Mostura").reduce((t,M)=>t+d(M.amountKg),0),F=I(r,o.volumes).filter(t=>d(t.totalG)).map(t=>[t.name,`${n(t.mashG,1)} g`,`${n(t.spargeG,1)} g`,`${n(t.totalG,1)} g`]),f=k(r),b=readingLogRow(e("Pr\xE9-fervura"),o.volumes.preBoil,o.preBoilPlato,a.measurements.preBoil,f),x=readingLogRow(e("P\xF3s-fervura"),o.expected.hotPostBoil,o.postBoilPlato,a.measurements.postBoil,f),T=brewCorrectionCheckRows(a,o),S=O(a.phLog).map(t=>[m(t.title),t.skipped&&!t.readings?e("pulado"):`pH ${n(t.finalPh,2)}`,t.totalMl>0?`${n(t.totalMl,1)} mL`:"-"]);return{title:o.recipe.name||e("Receita"),generatedAt:new Date().toLocaleString(V()),notes:String(a.notes||"").trim(),summaryRows:[[e("Volume alvo"),c(r.targetVolumeL,2)],["OG / FG",`${o.og.toFixed(3)} / ${o.fg.toFixed(3)}`],["ABV / IBU",`${n(L(o.og,o.fg),1)}% / ${o.ibu}`],[e("Fervura"),`${n(o.recipe.boilTimeMin,0)} min`],[e("Pr\xE9-fervura"),h(o.preCorrection)],[e("P\xF3s-fervura"),h(o.postCorrection)]],recipeRows:[[e("Receita"),o.recipe.name||"-"],[e("Estilo"),o.recipe.styleName||o.recipe.style||"-"],[e("Cervejeiro"),o.recipe.brewer||"-"],["OG",o.og.toFixed(3)],["FG",o.fg.toFixed(3)],["ABV",`${n(L(o.og,o.fg),1)}%`],["IBU",o.ibu],...d(o.ebc)>0?[[e("Cor"),`${n(o.ebc,1)} EBC`]]:[],[e("Volume original"),c(o.recipe.batchVolumeL,2)],[e("Volume alvo"),c(r.targetVolumeL,2)],[e("Fervura"),`${n(o.recipe.boilTimeMin,0)} min`],[e("Fonte"),o.recipe.sourceUrl||"-"]],conditionRows:[[e("Efici\xEAncia de mostura"),`${n(r.mashEfficiencyPct,1)}%`],[e("Evapora\xE7\xE3o"),`${n(r.evaporationPct,1)}%/h \xB7 ${w(r.evaporationLh,2)}`],[e("Perda de trub"),`${c(r.trubLossL,2)} \xB7 ${n(s,1)}%`],[e("Absor\xE7\xE3o dos gr\xE3os"),`${n(r.grainAbsorptionLkg,2)} L/kg`],[e("Rela\xE7\xE3o \xE1gua/malte"),`${n(r.waterToGrainRatioLkg,2)} L/kg`],[e("Malte total"),A(o.volumes.grainKg)]],maltRows:o.scaledFermentables.map(t=>[t.name,m(t.use),A(t.amountKg),t.use==="Mostura"&&u?`${n(t.amountKg/u*100,1)}%`:"-"]),mashAdditionRows:o.mashAdditions.map(t=>[t.name,m(t.type),g(t.amount,t.unit),m(t.moment||t.use)]),originalWaterRows:[[e("Mostura"),c(p.mashWaterL,1)],[e("Lavagem"),c(p.spargeWaterL,1)],[e("Total"),c(p.totalWaterL,1)],[e("Volume final da receita"),c(o.recipe.batchVolumeL,1)]],waterRows:[[e("Mostura"),c(o.volumes.mashWater,1),c(i,1)],[e("Lavagem"),c(o.volumes.sparge,1),c(l,1)],[e("Total"),c(o.volumes.totalWater,1),c(i+l,1)]],saltRows:F,readingRows:[b,x,[e("Fria / Trub"),`${c(o.expected.fermenterVolume,2)} ${e("fermentador")}`,coldReadingLog(a),"-"]],decisionRows:[[e("Pr\xE9-fervura"),b[1],b[2],h(o.preCorrection)],[e("P\xF3s-fervura"),x[1],x[2],h(o.postCorrection)],[e("Fria / Trub"),`${c(o.expected.fermenterVolume,2)} ${e("fermentador")}`,coldReadingLog(a),e("Registro final")]],correctionRows:[correctionLogRow(e("Pr\xE9-fervura"),o.preCorrection),correctionLogRow(e("P\xF3s-fervura"),o.postCorrection)],correctionCheckRows:T,phRows:S,correctionRoundRows:correctionRoundRows(a),parameterRows:[[e("Volume alvo"),c(r.targetVolumeL,2)],[e("Efici\xEAncia de mostura"),`${n(r.mashEfficiencyPct,1)}%`],[e("Evapora\xE7\xE3o"),`${n(r.evaporationPct,1)}%/h \xB7 ${w(r.evaporationLh,2)}`],[e("Perda de trub"),`${c(r.trubLossL,2)} \xB7 ${n(s,1)}%`],[e("Absor\xE7\xE3o dos gr\xE3os"),`${n(r.grainAbsorptionLkg,2)} L/kg`],[e("Rela\xE7\xE3o \xE1gua/malte"),`${n(r.waterToGrainRatioLkg,2)} L/kg`],...Math.abs(f-y)>1e-4?[[e("Fator WRI"),n(f,2)]]:[],...d(r.mashTunDeadSpaceL)>0?[[e("Volume morto recuper\xE1vel"),c(r.mashTunDeadSpaceL,2)]]:[],[e("\xC1gua ajustada"),j(o.waterProfile)],[e("Pr\xF3xima brassagem"),v(o)]],boilRows:[[e("Tempo de fervura"),`${n(o.recipe.boilTimeMin,0)} min`]],hopRows:o.boilAdditions.filter(t=>t.kind==="hop").map(t=>[t.name,g(t.amount,t.unit),`${n(t.plannedAlphaAcidPct,2)}%`,t.actualAlphaAcidPct===""?"-":`${n(t.actualAlphaAcidPct,2)}%`,$(t)]),otherBoilAdditionRows:o.boilAdditions.filter(t=>t.kind!=="hop").map(t=>[t.name,m(t.type),g(t.amount,t.unit),$(t)]),additionRows:[...o.mashAdditions.map(t=>[e("Mostura"),t.name,g(t.amount,t.unit),B(a,t,m(t.moment||t.use))]),...o.boilAdditions.map(t=>[e("Fervura"),t.name,g(t.amount,t.unit),B(a,t,$(t))]),...(o.scaledYeasts||[]).map(t=>[e("Fermenta\xE7\xE3o"),t.name,C(t.amount,t.unit),e("Inocula\xE7\xE3o")])],timerEventRows:timerEventRows(a),yeastRows:(o.scaledYeasts||[]).length?o.scaledYeasts.map(t=>[t.name,C(t.amount,t.unit)]):[["-","-"]],fermentationTitle:o.recipe.fermentationProfileName?e("Perfil de fermenta\xE7\xE3o - {name}",{name:o.recipe.fermentationProfileName}):e("Perfil de fermenta\xE7\xE3o"),fermentationRows:(o.recipe.fermentation||[]).length?o.recipe.fermentation.map(t=>[t.name,K(t.temperatureC),Y(t.days)]):[[e("Sem perfil no XML"),"-","-"]],fermentationChartHtml:`<div class="report-chart"><div class="chart-legend"><span class="chart-temp">${e("Temp. planejada")}</span><span class="chart-temp-real">${e("Temp. lida")}</span><span class="chart-extract">${e("Extrato")}</span></div>${G(z(a,o))}</div>`,analysisRows:[[e("Efici\xEAncia de mostura"),`${n(o.analysis.mashEfficiencyPct,1)}%`],[e("Absor\xE7\xE3o dos gr\xE3os"),`${n(o.analysis.grainAbsorptionLkg,2)} L/kg`],[e("Evapora\xE7\xE3o"),`${n(o.analysis.evaporationPct,1)}%/h \xB7 ${w(o.analysis.evaporationLh,2)}`],[e("Perda de trub"),c(o.analysis.trubLossL,2)],[e("Par\xE2metros pr\xF3xima brassagem"),v(o)]]}}function B(a,o,r){const i=a?.additionChecks||{},l=`${o.kind||"misc"}:${o.id||o.name||""}`,s=i[l];return s?`${r} \xB7 \u2713 ${formatTimerEventTime(s)}`:r}export function correctionRoundRows(a){const o=a?.correctionRounds||{},r=(i,l)=>(Array.isArray(o[i])?o[i]:[]).map(s=>[l,e("{round}\xAA",{round:s.round}),m(s.action)||"-",s.checkWri===""||s.checkWri===void 0?"-":`${n(s.checkWri,1)} WRI`,formatTimerEventTime(s.at)]);return[...r("pre",e("Pr\xE9-fervura")),...r("post",e("P\xF3s-fervura"))]}export function brewCorrectionCheckRows(a,o){return[{label:e("Pr\xE9-fervura"),stage:"pre",correction:o.preCorrection,expectedPlato:o.preBoilPlato,kind:"pre"},{label:e("P\xF3s-fervura"),stage:"post",correction:o.postCorrection,expectedPlato:o.postBoilPlato,kind:"post"}].flatMap(r=>{const i=a?.correctionChecks?.[r.stage];if(!i||!i.wri||r.correction.status!=="ready"||r.correction.action==="Sem corre\xE7\xE3o")return[];const l=k(o.props),s=W(r.correction,i,r.expectedPlato,r.kind,o.props.evaporationLh,l),p=R({volumeL:r.correction.targetVolumeL,wri:i.wri},l),u=`${n(i.wri,1)} WRI \xB7 ${n(p.realPlato,1)} \xB0P \xB7 ${p.sg.toFixed(3)}`;return[[r.label,`${n(r.expectedPlato,1)} \xB0P`,u||"-",[s.summary||s.title,s.detail].filter(Boolean).join(" \xB7 ")]]})}export function timerEventRows(a){return(a?.timerEvents||[]).map(o=>[formatTimerEventTime(o.at),o.stage||"-",o.event||"-",o.detail||"-"])}export function formatTimerEventTime(a){const o=new Date(a);return Number.isNaN(o.getTime())?"-":o.toLocaleTimeString(V(),{hour:"2-digit",minute:"2-digit",second:"2-digit"})}export function readingLogRow(a,o,r,i,l=y){const s=R(i,l),p=s.volumeL||s.wri?`${s.volumeL?c(s.volumeL,2):"-"} \xB7 ${s.wri?`${n(s.wri,1)} WRI`:"-"}`:"-",u=s.realPlato?`${n(s.realPlato,1)} \xB0P \xB7 ${s.sg.toFixed(3)}`:"-";return[a,`${c(o,2)} \xB7 ${n(r,1)} \xB0P`,p,u]}export function coldReadingLog(a){const o=a.measurements.cold||{},r=o.trubVolumeL?`${c(o.trubVolumeL,2)} ${e("trub")}`:"-",i=o.fermenterVolumeL?`${c(o.fermenterVolumeL,2)} ${e("fermentador")}`:"-";return`${r} \xB7 ${i}`}export function correctionLogRow(a,o){const r=o.status==="pending"||o.action==="Sem corre\xE7\xE3o"?"-":c(Math.abs(o.deltaL),2),i=o.extraBoilMin?e("Fervura extra {min} min \xB7 IBU estimado {ibu}",{min:n(o.extraBoilMin,1),ibu:o.estimatedIbu}):r;return[a,o.status==="pending"?e("Aguardando leitura"):m(o.action),c(o.targetVolumeL,2),i]}export function markdownTable(a,o){const r=a.map(markdownCell),i=o.map(l=>`| ${l.map(markdownCell).join(" | ")} |`);return[`| ${r.join(" | ")} |`,`| ${r.map(()=>"---").join(" | ")} |`,...i].join(`
-`)}export function markdownCell(a){return String(a??"-").replace(/\|/g,"\\|").replace(/\n/g,"<br>")}export function generateBrewLog(a,o){const r=buildBrewReport(a,o),i=[`# ${e("Relat\xF3rio de Brassagem")} - ${r.title}`,`${e("Gerado em")}: ${r.generatedAt}`,"",`## ${e("Resumo")}`,markdownTable([e("Item"),e("Valor")],r.summaryRows),"",`## ${e("Receita usada")}`,markdownTable([e("Item"),e("Valor")],r.recipeRows),"",`## ${e("Leituras e corre\xE7\xF5es")}`,markdownTable([e("Etapa"),e("Esperado"),e("Leitura"),e("Corre\xE7\xE3o")],r.decisionRows),"",`## ${e("Par\xE2metros")}`,markdownTable([e("Par\xE2metro"),e("Valor")],r.parameterRows)];return r.correctionRoundRows.length&&i.push("",`## ${e("Rodadas de corre\xE7\xE3o")}`,markdownTable([e("Etapa"),e("Rodada"),e("A\xE7\xE3o executada"),e("Leitura seguinte"),e("Hor\xE1rio")],r.correctionRoundRows)),r.correctionCheckRows.length&&i.push("",`## ${e("Confer\xEAncia das corre\xE7\xF5es")}`,markdownTable([e("Etapa"),e("Alvo"),e("Leitura ap\xF3s corre\xE7\xE3o"),e("Resultado")],r.correctionCheckRows)),r.phRows.length&&i.push("",`## ${e("pH do dia")}`,markdownTable([e("Etapa"),e("pH final"),e("\xC1cido total")],r.phRows)),r.additionRows.length&&i.push("",`## ${e("Adi\xE7\xF5es registradas")}`,markdownTable([e("Etapa"),e("Insumo"),e("Dose"),e("Momento")],r.additionRows)),r.timerEventRows.length&&i.push("",`## ${e("Eventos do contador")}`,markdownTable([e("Hor\xE1rio"),e("Etapa"),e("Evento"),e("Detalhe")],r.timerEventRows)),i.push("",`## ${e("Anota\xE7\xF5es")}`,r.notes||"-"),`${i.join(`
+import {
+  n as d,
+  normalizeReading as R,
+  correctionSummary as h,
+  correctionCheckResult as W,
+  additionScheduleLabel as $,
+  finalParameterCode as v,
+  waterProfileSummary as j,
+  scaledWaterSalts as I,
+  originalWaterPlan as H,
+  fermentationChartModel as z,
+  effectiveWriFactor as k,
+  abvBrewfather as L,
+  WRI_FACTOR as y,
+} from "./engine.js";
+import { fermentationChartSvg as G } from "./chart.js";
+import { BRAND_LOGO as N, FONT_CSS as U, assetUrl as P } from "./ui.js";
+import { phLogSummary as O } from "./ph.js";
+import {
+  t as e,
+  tEngine as m,
+  getLanguage as E,
+  fmt as n,
+  formatVolume as c,
+  formatVolumeRate as w,
+  formatMaltMass as A,
+  formatIngredientAmount as g,
+  formatYeastAmount as C,
+} from "./i18n.js";
+const D = { pt: "pt-BR", en: "en-US", es: "es-ES" },
+  V = () => D[E()] || "pt-BR";
+function K(a) {
+  return Number.isFinite(Number(a)) ? `${n(a, 1)} \xB0C` : "-";
+}
+function Y(a) {
+  return Number.isFinite(Number(a)) ? `${n(a, 0)} ${e("dias")}` : "-";
+}
+export function htmlEscape(a) {
+  return String(a ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+export function buildBrewReport(a, o) {
+  const r = o.props,
+    i = d(r.mashWaterUsedL, o.volumes.mashWater),
+    l = Math.max(0, o.volumes.totalWater - i),
+    s = d(r.targetVolumeL, 20)
+      ? (d(r.trubLossL) / d(r.targetVolumeL, 20)) * 100
+      : 0,
+    p = H(o.recipe),
+    u = o.scaledFermentables
+      .filter((t) => t.use === "Mostura")
+      .reduce((t, M) => t + d(M.amountKg), 0),
+    F = I(r, o.volumes)
+      .filter((t) => d(t.totalG))
+      .map((t) => [
+        t.name,
+        `${n(t.mashG, 1)} g`,
+        `${n(t.spargeG, 1)} g`,
+        `${n(t.totalG, 1)} g`,
+      ]),
+    f = k(r),
+    b = readingLogRow(
+      e("Pr\xE9-fervura"),
+      o.volumes.preBoil,
+      o.preBoilPlato,
+      a.measurements.preBoil,
+      f,
+    ),
+    x = readingLogRow(
+      e("P\xF3s-fervura"),
+      o.expected.hotPostBoil,
+      o.postBoilPlato,
+      a.measurements.postBoil,
+      f,
+    ),
+    T = brewCorrectionCheckRows(a, o),
+    S = O(a.phLog).map((t) => [
+      m(t.title),
+      t.skipped && !t.readings ? e("pulado") : `pH ${n(t.finalPh, 2)}`,
+      t.totalMl > 0 ? `${n(t.totalMl, 1)} mL` : "-",
+    ]);
+  return {
+    title: o.recipe.name || e("Receita"),
+    generatedAt: new Date().toLocaleString(V()),
+    notes: String(a.notes || "").trim(),
+    summaryRows: [
+      [e("Volume alvo"), c(r.targetVolumeL, 2)],
+      ["OG / FG", `${o.og.toFixed(3)} / ${o.fg.toFixed(3)}`],
+      ["ABV / IBU", `${n(L(o.og, o.fg), 1)}% / ${o.ibu}`],
+      [e("Fervura"), `${n(o.recipe.boilTimeMin, 0)} min`],
+      [e("Pr\xE9-fervura"), h(o.preCorrection)],
+      [e("P\xF3s-fervura"), h(o.postCorrection)],
+    ],
+    recipeRows: [
+      [e("Receita"), o.recipe.name || "-"],
+      [e("Estilo"), o.recipe.styleName || o.recipe.style || "-"],
+      [e("Cervejeiro"), o.recipe.brewer || "-"],
+      ["OG", o.og.toFixed(3)],
+      ["FG", o.fg.toFixed(3)],
+      ["ABV", `${n(L(o.og, o.fg), 1)}%`],
+      ["IBU", o.ibu],
+      ...(d(o.ebc) > 0 ? [[e("Cor"), `${n(o.ebc, 1)} EBC`]] : []),
+      [e("Volume original"), c(o.recipe.batchVolumeL, 2)],
+      [e("Volume alvo"), c(r.targetVolumeL, 2)],
+      [e("Fervura"), `${n(o.recipe.boilTimeMin, 0)} min`],
+      [e("Fonte"), o.recipe.sourceUrl || "-"],
+    ],
+    conditionRows: [
+      [e("Efici\xEAncia de mostura"), `${n(r.mashEfficiencyPct, 1)}%`],
+      [
+        e("Evapora\xE7\xE3o"),
+        `${n(r.evaporationPct, 1)}%/h \xB7 ${w(r.evaporationLh, 2)}`,
+      ],
+      [e("Perda de trub"), `${c(r.trubLossL, 2)} \xB7 ${n(s, 1)}%`],
+      [e("Absor\xE7\xE3o dos gr\xE3os"), `${n(r.grainAbsorptionLkg, 2)} L/kg`],
+      [
+        e("Rela\xE7\xE3o \xE1gua/malte"),
+        `${n(r.waterToGrainRatioLkg, 2)} L/kg`,
+      ],
+      [e("Malte total"), A(o.volumes.grainKg)],
+    ],
+    maltRows: o.scaledFermentables.map((t) => [
+      t.name,
+      m(t.use),
+      A(t.amountKg),
+      t.use === "Mostura" && u ? `${n((t.amountKg / u) * 100, 1)}%` : "-",
+    ]),
+    mashAdditionRows: o.mashAdditions.map((t) => [
+      t.name,
+      m(t.type),
+      g(t.amount, t.unit),
+      m(t.moment || t.use),
+    ]),
+    originalWaterRows: [
+      [e("Mostura"), c(p.mashWaterL, 1)],
+      [e("Lavagem"), c(p.spargeWaterL, 1)],
+      [e("Total"), c(p.totalWaterL, 1)],
+      [e("Volume final da receita"), c(o.recipe.batchVolumeL, 1)],
+    ],
+    waterRows: [
+      [e("Mostura"), c(o.volumes.mashWater, 1), c(i, 1)],
+      [e("Lavagem"), c(o.volumes.sparge, 1), c(l, 1)],
+      [e("Total"), c(o.volumes.totalWater, 1), c(i + l, 1)],
+    ],
+    saltRows: F,
+    readingRows: [
+      b,
+      x,
+      [
+        e("Fria / Trub"),
+        `${c(o.expected.fermenterVolume, 2)} ${e("fermentador")}`,
+        coldReadingLog(a),
+        "-",
+      ],
+    ],
+    decisionRows: [
+      [e("Pr\xE9-fervura"), b[1], b[2], h(o.preCorrection)],
+      [e("P\xF3s-fervura"), x[1], x[2], h(o.postCorrection)],
+      [
+        e("Fria / Trub"),
+        `${c(o.expected.fermenterVolume, 2)} ${e("fermentador")}`,
+        coldReadingLog(a),
+        e("Registro final"),
+      ],
+    ],
+    correctionRows: [
+      correctionLogRow(e("Pr\xE9-fervura"), o.preCorrection),
+      correctionLogRow(e("P\xF3s-fervura"), o.postCorrection),
+    ],
+    correctionCheckRows: T,
+    phRows: S,
+    correctionRoundRows: correctionRoundRows(a),
+    parameterRows: [
+      [e("Volume alvo"), c(r.targetVolumeL, 2)],
+      [e("Efici\xEAncia de mostura"), `${n(r.mashEfficiencyPct, 1)}%`],
+      [
+        e("Evapora\xE7\xE3o"),
+        `${n(r.evaporationPct, 1)}%/h \xB7 ${w(r.evaporationLh, 2)}`,
+      ],
+      [e("Perda de trub"), `${c(r.trubLossL, 2)} \xB7 ${n(s, 1)}%`],
+      [e("Absor\xE7\xE3o dos gr\xE3os"), `${n(r.grainAbsorptionLkg, 2)} L/kg`],
+      [
+        e("Rela\xE7\xE3o \xE1gua/malte"),
+        `${n(r.waterToGrainRatioLkg, 2)} L/kg`,
+      ],
+      ...(Math.abs(f - y) > 1e-4 ? [[e("Fator WRI"), n(f, 2)]] : []),
+      ...(d(r.mashTunDeadSpaceL) > 0
+        ? [[e("Volume morto recuper\xE1vel"), c(r.mashTunDeadSpaceL, 2)]]
+        : []),
+      [e("\xC1gua ajustada"), j(o.waterProfile)],
+      [e("Pr\xF3xima brassagem"), v(o)],
+    ],
+    boilRows: [[e("Tempo de fervura"), `${n(o.recipe.boilTimeMin, 0)} min`]],
+    hopRows: o.boilAdditions
+      .filter((t) => t.kind === "hop")
+      .map((t) => [
+        t.name,
+        g(t.amount, t.unit),
+        `${n(t.plannedAlphaAcidPct, 2)}%`,
+        t.actualAlphaAcidPct === "" ? "-" : `${n(t.actualAlphaAcidPct, 2)}%`,
+        $(t),
+      ]),
+    otherBoilAdditionRows: o.boilAdditions
+      .filter((t) => t.kind !== "hop")
+      .map((t) => [t.name, m(t.type), g(t.amount, t.unit), $(t)]),
+    additionRows: [
+      ...o.mashAdditions.map((t) => [
+        e("Mostura"),
+        t.name,
+        g(t.amount, t.unit),
+        B(a, t, m(t.moment || t.use)),
+      ]),
+      ...o.boilAdditions.map((t) => [
+        e("Fervura"),
+        t.name,
+        g(t.amount, t.unit),
+        B(a, t, $(t)),
+      ]),
+      ...(o.scaledYeasts || []).map((t) => [
+        e("Fermenta\xE7\xE3o"),
+        t.name,
+        C(t.amount, t.unit),
+        e("Inocula\xE7\xE3o"),
+      ]),
+    ],
+    timerEventRows: timerEventRows(a),
+    yeastRows: (o.scaledYeasts || []).length
+      ? o.scaledYeasts.map((t) => [t.name, C(t.amount, t.unit)])
+      : [["-", "-"]],
+    fermentationTitle: o.recipe.fermentationProfileName
+      ? e("Perfil de fermenta\xE7\xE3o - {name}", {
+          name: o.recipe.fermentationProfileName,
+        })
+      : e("Perfil de fermenta\xE7\xE3o"),
+    fermentationRows: (o.recipe.fermentation || []).length
+      ? o.recipe.fermentation.map((t) => [t.name, K(t.temperatureC), Y(t.days)])
+      : [[e("Sem perfil no XML"), "-", "-"]],
+    fermentationChartHtml: `<div class="report-chart"><div class="chart-legend"><span class="chart-temp">${e("Temp. planejada")}</span><span class="chart-temp-real">${e("Temp. lida")}</span><span class="chart-extract">${e("Extrato")}</span></div>${G(z(a, o))}</div>`,
+    analysisRows: [
+      [e("Efici\xEAncia de mostura"), `${n(o.analysis.mashEfficiencyPct, 1)}%`],
+      [
+        e("Absor\xE7\xE3o dos gr\xE3os"),
+        `${n(o.analysis.grainAbsorptionLkg, 2)} L/kg`,
+      ],
+      [
+        e("Evapora\xE7\xE3o"),
+        `${n(o.analysis.evaporationPct, 1)}%/h \xB7 ${w(o.analysis.evaporationLh, 2)}`,
+      ],
+      [e("Perda de trub"), c(o.analysis.trubLossL, 2)],
+      [e("Par\xE2metros pr\xF3xima brassagem"), v(o)],
+    ],
+  };
+}
+function B(a, o, r) {
+  const i = a?.additionChecks || {},
+    l = `${o.kind || "misc"}:${o.id || o.name || ""}`,
+    s = i[l];
+  return s ? `${r} \xB7 \u2713 ${formatTimerEventTime(s)}` : r;
+}
+export function correctionRoundRows(a) {
+  const o = a?.correctionRounds || {},
+    r = (i, l) =>
+      (Array.isArray(o[i]) ? o[i] : []).map((s) => [
+        l,
+        e("{round}\xAA", { round: s.round }),
+        m(s.action) || "-",
+        s.checkWri === "" || s.checkWri === void 0
+          ? "-"
+          : `${n(s.checkWri, 1)} WRI`,
+        formatTimerEventTime(s.at),
+      ]);
+  return [...r("pre", e("Pr\xE9-fervura")), ...r("post", e("P\xF3s-fervura"))];
+}
+export function brewCorrectionCheckRows(a, o) {
+  return [
+    {
+      label: e("Pr\xE9-fervura"),
+      stage: "pre",
+      correction: o.preCorrection,
+      expectedPlato: o.preBoilPlato,
+      kind: "pre",
+    },
+    {
+      label: e("P\xF3s-fervura"),
+      stage: "post",
+      correction: o.postCorrection,
+      expectedPlato: o.postBoilPlato,
+      kind: "post",
+    },
+  ].flatMap((r) => {
+    const i = a?.correctionChecks?.[r.stage];
+    if (
+      !i ||
+      !i.wri ||
+      r.correction.status !== "ready" ||
+      r.correction.action === "Sem corre\xE7\xE3o"
+    )
+      return [];
+    const l = k(o.props),
+      s = W(r.correction, i, r.expectedPlato, r.kind, o.props.evaporationLh, l),
+      p = R({ volumeL: r.correction.targetVolumeL, wri: i.wri }, l),
+      u = `${n(i.wri, 1)} WRI \xB7 ${n(p.realPlato, 1)} \xB0P \xB7 ${p.sg.toFixed(3)}`;
+    return [
+      [
+        r.label,
+        `${n(r.expectedPlato, 1)} \xB0P`,
+        u || "-",
+        [s.summary || s.title, s.detail].filter(Boolean).join(" \xB7 "),
+      ],
+    ];
+  });
+}
+export function timerEventRows(a) {
+  return (a?.timerEvents || []).map((o) => [
+    formatTimerEventTime(o.at),
+    o.stage || "-",
+    o.event || "-",
+    o.detail || "-",
+  ]);
+}
+export function formatTimerEventTime(a) {
+  const o = new Date(a);
+  return Number.isNaN(o.getTime())
+    ? "-"
+    : o.toLocaleTimeString(V(), {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+}
+export function readingLogRow(a, o, r, i, l = y) {
+  const s = R(i, l),
+    p =
+      s.volumeL || s.wri
+        ? `${s.volumeL ? c(s.volumeL, 2) : "-"} \xB7 ${s.wri ? `${n(s.wri, 1)} WRI` : "-"}`
+        : "-",
+    u = s.realPlato
+      ? `${n(s.realPlato, 1)} \xB0P \xB7 ${s.sg.toFixed(3)}`
+      : "-";
+  return [a, `${c(o, 2)} \xB7 ${n(r, 1)} \xB0P`, p, u];
+}
+export function coldReadingLog(a) {
+  const o = a.measurements.cold || {},
+    r = o.trubVolumeL ? `${c(o.trubVolumeL, 2)} ${e("trub")}` : "-",
+    i = o.fermenterVolumeL
+      ? `${c(o.fermenterVolumeL, 2)} ${e("fermentador")}`
+      : "-";
+  return `${r} \xB7 ${i}`;
+}
+export function correctionLogRow(a, o) {
+  const r =
+      o.status === "pending" || o.action === "Sem corre\xE7\xE3o"
+        ? "-"
+        : c(Math.abs(o.deltaL), 2),
+    i = o.extraBoilMin
+      ? e("Fervura extra {min} min \xB7 IBU estimado {ibu}", {
+          min: n(o.extraBoilMin, 1),
+          ibu: o.estimatedIbu,
+        })
+      : r;
+  return [
+    a,
+    o.status === "pending" ? e("Aguardando leitura") : m(o.action),
+    c(o.targetVolumeL, 2),
+    i,
+  ];
+}
+export function markdownTable(a, o) {
+  const r = a.map(markdownCell),
+    i = o.map((l) => `| ${l.map(markdownCell).join(" | ")} |`);
+  return [`| ${r.join(" | ")} |`, `| ${r.map(() => "---").join(" | ")} |`, ...i]
+    .join(`
+`);
+}
+export function markdownCell(a) {
+  return String(a ?? "-")
+    .replace(/\|/g, "\\|")
+    .replace(/\n/g, "<br>");
+}
+export function generateBrewLog(a, o) {
+  const r = buildBrewReport(a, o),
+    i = [
+      `# ${e("Relat\xF3rio de Brassagem")} - ${r.title}`,
+      `${e("Gerado em")}: ${r.generatedAt}`,
+      "",
+      `## ${e("Resumo")}`,
+      markdownTable([e("Item"), e("Valor")], r.summaryRows),
+      "",
+      `## ${e("Receita usada")}`,
+      markdownTable([e("Item"), e("Valor")], r.recipeRows),
+      "",
+      `## ${e("Leituras e corre\xE7\xF5es")}`,
+      markdownTable(
+        [e("Etapa"), e("Esperado"), e("Leitura"), e("Corre\xE7\xE3o")],
+        r.decisionRows,
+      ),
+      "",
+      `## ${e("Par\xE2metros")}`,
+      markdownTable([e("Par\xE2metro"), e("Valor")], r.parameterRows),
+    ];
+  return (
+    r.correctionRoundRows.length &&
+      i.push(
+        "",
+        `## ${e("Rodadas de corre\xE7\xE3o")}`,
+        markdownTable(
+          [
+            e("Etapa"),
+            e("Rodada"),
+            e("A\xE7\xE3o executada"),
+            e("Leitura seguinte"),
+            e("Hor\xE1rio"),
+          ],
+          r.correctionRoundRows,
+        ),
+      ),
+    r.correctionCheckRows.length &&
+      i.push(
+        "",
+        `## ${e("Confer\xEAncia das corre\xE7\xF5es")}`,
+        markdownTable(
+          [
+            e("Etapa"),
+            e("Alvo"),
+            e("Leitura ap\xF3s corre\xE7\xE3o"),
+            e("Resultado"),
+          ],
+          r.correctionCheckRows,
+        ),
+      ),
+    r.phRows.length &&
+      i.push(
+        "",
+        `## ${e("pH do dia")}`,
+        markdownTable(
+          [e("Etapa"), e("pH final"), e("\xC1cido total")],
+          r.phRows,
+        ),
+      ),
+    r.additionRows.length &&
+      i.push(
+        "",
+        `## ${e("Adi\xE7\xF5es registradas")}`,
+        markdownTable(
+          [e("Etapa"), e("Insumo"), e("Dose"), e("Momento")],
+          r.additionRows,
+        ),
+      ),
+    r.timerEventRows.length &&
+      i.push(
+        "",
+        `## ${e("Eventos do contador")}`,
+        markdownTable(
+          [e("Hor\xE1rio"), e("Etapa"), e("Evento"), e("Detalhe")],
+          r.timerEventRows,
+        ),
+      ),
+    i.push("", `## ${e("Anota\xE7\xF5es")}`, r.notes || "-"),
+    `${i.join(`
 `)}
-`}export function reportCardsHtml(a){return`<div class="cards">${a.slice(0,6).map(([o,r])=>`<div class="card"><span>${htmlEscape(o)}</span><b>${htmlEscape(r)}</b></div>`).join("")}</div>`}export function reportSectionHtml(a,o){return`<section><h2>${htmlEscape(a)}</h2><div class="body">${o}</div></section>`}export function reportTableHtml(a,o){return`<table><thead><tr>${a.map(r=>`<th>${htmlEscape(r)}</th>`).join("")}</tr></thead><tbody>${o.map(r=>`<tr>${r.map(i=>`<td>${htmlEscape(i)}</td>`).join("")}</tr>`).join("")}</tbody></table>`}export function generateBrewReportHtml(a,o){const r=buildBrewReport(a,o);return`<!doctype html>
+`
+  );
+}
+export function reportCardsHtml(a) {
+  return `<div class="cards">${a
+    .slice(0, 6)
+    .map(
+      ([o, r]) =>
+        `<div class="card"><span>${htmlEscape(o)}</span><b>${htmlEscape(r)}</b></div>`,
+    )
+    .join("")}</div>`;
+}
+export function reportSectionHtml(a, o) {
+  return `<section><h2>${htmlEscape(a)}</h2><div class="body">${o}</div></section>`;
+}
+export function reportTableHtml(a, o) {
+  return `<table><thead><tr>${a.map((r) => `<th>${htmlEscape(r)}</th>`).join("")}</tr></thead><tbody>${o.map((r) => `<tr>${r.map((i) => `<td>${htmlEscape(i)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+export function generateBrewReportHtml(a, o) {
+  const r = buildBrewReport(a, o);
+  return `<!doctype html>
 <html lang="${E()}">
 <head>
   <meta charset="utf-8">
@@ -66,20 +547,21 @@ import{n as d,normalizeReading as R,correctionSummary as h,correctionCheckResult
       </div>
       <div>
         <h1>${htmlEscape(r.title)}</h1>
-        <p class="style">${htmlEscape(o.recipe.styleName||e("Relat\xF3rio de brassagem din\xE2mica"))}</p>
+        <p class="style">${htmlEscape(o.recipe.styleName || e("Relat\xF3rio de brassagem din\xE2mica"))}</p>
       </div>
       ${reportCardsHtml(r.summaryRows)}
     </header>
-    ${reportSectionHtml(e("Receita usada"),reportTableHtml([e("Item"),e("Valor")],r.recipeRows))}
-    ${reportSectionHtml(e("Leituras e corre\xE7\xF5es"),reportTableHtml([e("Etapa"),e("Esperado"),e("Leitura"),e("Corre\xE7\xE3o")],r.decisionRows))}
-    ${reportSectionHtml(e("Par\xE2metros"),reportTableHtml([e("Par\xE2metro"),e("Valor")],r.parameterRows))}
-    ${reportSectionHtml(e("Gr\xE1fico da fermenta\xE7\xE3o"),r.fermentationChartHtml)}
-    ${r.correctionRoundRows.length?reportSectionHtml(e("Rodadas de corre\xE7\xE3o"),reportTableHtml([e("Etapa"),e("Rodada"),e("A\xE7\xE3o executada"),e("Leitura seguinte"),e("Hor\xE1rio")],r.correctionRoundRows)):""}
-    ${r.correctionCheckRows.length?reportSectionHtml(e("Confer\xEAncia das corre\xE7\xF5es"),reportTableHtml([e("Etapa"),e("Alvo"),e("Leitura ap\xF3s corre\xE7\xE3o"),e("Resultado")],r.correctionCheckRows)):""}
-    ${r.phRows.length?reportSectionHtml(e("pH do dia"),reportTableHtml([e("Etapa"),e("pH final"),e("\xC1cido total")],r.phRows)):""}
-    ${r.additionRows.length?reportSectionHtml(e("Adi\xE7\xF5es registradas"),reportTableHtml([e("Etapa"),e("Insumo"),e("Dose"),e("Momento")],r.additionRows)):""}
-    ${r.timerEventRows.length?reportSectionHtml(e("Eventos do contador"),reportTableHtml([e("Hor\xE1rio"),e("Etapa"),e("Evento"),e("Detalhe")],r.timerEventRows)):""}
-    ${reportSectionHtml(e("Anota\xE7\xF5es"),`<div class="notes">${htmlEscape(r.notes||"-")}</div>`)}
+    ${reportSectionHtml(e("Receita usada"), reportTableHtml([e("Item"), e("Valor")], r.recipeRows))}
+    ${reportSectionHtml(e("Leituras e corre\xE7\xF5es"), reportTableHtml([e("Etapa"), e("Esperado"), e("Leitura"), e("Corre\xE7\xE3o")], r.decisionRows))}
+    ${reportSectionHtml(e("Par\xE2metros"), reportTableHtml([e("Par\xE2metro"), e("Valor")], r.parameterRows))}
+    ${reportSectionHtml(e("Gr\xE1fico da fermenta\xE7\xE3o"), r.fermentationChartHtml)}
+    ${r.correctionRoundRows.length ? reportSectionHtml(e("Rodadas de corre\xE7\xE3o"), reportTableHtml([e("Etapa"), e("Rodada"), e("A\xE7\xE3o executada"), e("Leitura seguinte"), e("Hor\xE1rio")], r.correctionRoundRows)) : ""}
+    ${r.correctionCheckRows.length ? reportSectionHtml(e("Confer\xEAncia das corre\xE7\xF5es"), reportTableHtml([e("Etapa"), e("Alvo"), e("Leitura ap\xF3s corre\xE7\xE3o"), e("Resultado")], r.correctionCheckRows)) : ""}
+    ${r.phRows.length ? reportSectionHtml(e("pH do dia"), reportTableHtml([e("Etapa"), e("pH final"), e("\xC1cido total")], r.phRows)) : ""}
+    ${r.additionRows.length ? reportSectionHtml(e("Adi\xE7\xF5es registradas"), reportTableHtml([e("Etapa"), e("Insumo"), e("Dose"), e("Momento")], r.additionRows)) : ""}
+    ${r.timerEventRows.length ? reportSectionHtml(e("Eventos do contador"), reportTableHtml([e("Hor\xE1rio"), e("Etapa"), e("Evento"), e("Detalhe")], r.timerEventRows)) : ""}
+    ${reportSectionHtml(e("Anota\xE7\xF5es"), `<div class="notes">${htmlEscape(r.notes || "-")}</div>`)}
   </main>
 </body>
-</html>`}
+</html>`;
+}
