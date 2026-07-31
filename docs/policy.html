@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Política de Privacidade — Beermother</title>
+    <link href="assets/fonts/inter.css" rel="stylesheet" />
+    <link href="css/tokens.css" rel="stylesheet" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 40px 24px 80px;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        font-size: var(--text-md);
+        line-height: 1.7;
+      }
+      .page {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: var(--text-sm);
+        color: var(--ink-soft);
+        text-decoration: none;
+        margin-bottom: 32px;
+      }
+      .back:hover {
+        color: var(--accent);
+      }
+      h1 {
+        font-size: var(--text-xl);
+        margin: 0 0 4px;
+      }
+      .meta {
+        font-size: var(--text-sm);
+        color: var(--ink-muted);
+        margin: 0 0 40px;
+      }
+      h2 {
+        font-size: var(--text-lg);
+        margin: 36px 0 8px;
+      }
+      p {
+        margin: 0 0 16px;
+        color: var(--ink-soft);
+      }
+      ul {
+        margin: 0 0 16px;
+        padding-left: 20px;
+        color: var(--ink-soft);
+      }
+      li {
+        margin-bottom: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <a class="back" href="index.html">&#8592; Voltar ao Beermother</a>
+
+      <h1>Política de Privacidade</h1>
+      <p class="meta">Última atualização: julho de 2026</p>
+
+      <p>
+        Esta Política de Privacidade descreve como o <strong>Beermother</strong>
+        coleta, usa e protege as informações dos seus usuários. Ao utilizar o
+        aplicativo, você concorda com as práticas descritas neste documento.
+      </p>
+
+      <h2>1. Informações que coletamos</h2>
+      <p>O Beermother coleta apenas as informações estritamente necessárias para o funcionamento do aplicativo:</p>
+      <ul>
+        <li>
+          <strong>Endereço de e-mail:</strong> obtido via autenticação Google
+          (Google Sign-In). Utilizado exclusivamente para verificar se a conta
+          está autorizada a acessar o aplicativo.
+        </li>
+        <li>
+          <strong>Dados de receitas e brassagens:</strong> armazenados
+          localmente no seu navegador (localStorage). Esses dados nunca são
+          enviados a servidores do Beermother.
+        </li>
+      </ul>
+
+      <h2>2. Uso das informações</h2>
+      <p>As informações coletadas são utilizadas para:</p>
+      <ul>
+        <li>Verificar o acesso autorizado ao aplicativo.</li>
+        <li>Manter suas receitas e sessões de brassagem salvas localmente.</li>
+        <li>
+          Sincronizar receitas com o Google Drive, caso você ative essa
+          funcionalidade voluntariamente.
+        </li>
+      </ul>
+
+      <h2>3. Google Drive (opcional)</h2>
+      <p>
+        Se você optar por ativar a integração com o Google Drive, o Beermother
+        solicita permissão de acesso limitado (escopo
+        <code>drive.file</code>) para criar e atualizar arquivos de receita
+        exclusivamente na pasta que você configurar. O aplicativo não acessa
+        nenhum outro arquivo do seu Drive.
+      </p>
+      <p>
+        O token de acesso ao Google Drive é mantido apenas na memória do
+        navegador durante a sessão ativa e não é persistido em nenhum
+        armazenamento.
+      </p>
+
+      <h2>4. Compartilhamento de dados</h2>
+      <p>
+        O Beermother <strong>não vende, não aluga e não compartilha</strong>
+        seus dados pessoais com terceiros. Os únicos serviços externos
+        utilizados são os da própria Google (autenticação e, opcionalmente,
+        Google Drive), sujeitos à
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidade da Google</a>.
+      </p>
+
+      <h2>5. Armazenamento e segurança</h2>
+      <p>
+        Todos os dados de receitas e configurações ficam armazenados no
+        <code>localStorage</code> do seu próprio navegador. O Beermother não
+        opera servidores próprios de armazenamento de dados de usuários. A
+        segurança dos dados locais é responsabilidade do dispositivo e
+        navegador que você utiliza.
+      </p>
+
+      <h2>6. Seus direitos</h2>
+      <p>Você pode, a qualquer momento:</p>
+      <ul>
+        <li>
+          Excluir todos os seus dados limpando o armazenamento local do
+          navegador (localStorage) para este site.
+        </li>
+        <li>
+          Revogar o acesso do Beermother ao Google Drive nas configurações da
+          sua conta Google.
+        </li>
+        <li>Solicitar a remoção da sua conta da lista de usuários autorizados entrando em contato conosco.</li>
+      </ul>
+
+      <h2>7. Alterações nesta política</h2>
+      <p>
+        Esta política pode ser atualizada periodicamente. Alterações
+        significativas serão comunicadas dentro do próprio aplicativo. O uso
+        continuado do Beermother após as alterações implica a aceitação da
+        versão atualizada.
+      </p>
+
+      <h2>8. Contato</h2>
+      <p>
+        Para dúvidas ou solicitações relacionadas à privacidade, entre em
+        contato pelo e-mail disponível na página do aplicativo.
+      </p>
+    </div>
+  </body>
+</html>
