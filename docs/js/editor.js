@@ -45,14 +45,14 @@ import {
   loadAnalysisBetaMode as va,
   saveAnalysisBetaMode as wa,
   APP_VERSION as bt,
-  loadDriveEnabled as xa,
-  saveDriveEnabled as _a,
-  loadDriveFolderName as Qa2,
-  saveDriveFolderName as Ra2,
+  loadDriveEnabled as drvEnabled,
+  saveDriveEnabled as drvSetEnabled,
+  loadDriveFolderName as drvFolder,
+  saveDriveFolderName as drvSetFolder,
 } from "./state.js";
 import {
-  saveRecipeToDrive as _driveUpload,
-  requestDriveAccess as _driveAuth,
+  saveRecipeToDrive as drvUpload,
+  requestDriveAccess as drvAuth,
 } from "./gdrive.js";
 import { PH_ACIDS as ht } from "./ph.js";
 import {
@@ -1572,19 +1572,19 @@ function ie(e, o, n) {
     n,
   ]);
 }
-function Ia() {
-  const e = xa(),
-    o = Qa2();
+function driveSettingsBlock() {
+  const e = drvEnabled(),
+    o = drvFolder();
   let r = o;
   const n = d(
     e ? t("Ativado") : t("Desativado"),
     async () => {
       if (e) {
-        (_a(!1), c.requestRender());
+        (drvSetEnabled(!1), c.requestRender());
         return;
       }
       try {
-        await _driveAuth();
+        await drvAuth();
       } catch (s) {
         b(
           s.message || t("N\xE3o foi poss\xEDvel conectar ao Google Drive."),
@@ -1592,7 +1592,7 @@ function Ia() {
         );
         return;
       }
-      (_a(!0), c.requestRender());
+      (drvSetEnabled(!0), c.requestRender());
     },
     `btn small ${e ? "primary" : "ghost"}`,
     { "aria-pressed": e ? "true" : "false" },
@@ -1606,7 +1606,7 @@ function Ia() {
     i.setAttribute("aria-label", t("Nome da pasta no Google Drive")),
     i.addEventListener("blur", () => {
       const s = i.value.trim();
-      s && s !== r && ((r = s), Ra2(s));
+      s && s !== r && ((r = s), drvSetFolder(s));
     }),
     i.addEventListener("keydown", (s) => {
       s.key === "Enter" && i.blur();
@@ -1831,7 +1831,7 @@ export function openSettingsSheet() {
           t(
             "Salva cada receita individualmente como um .xml em uma pasta no seu Google Drive.",
           ),
-          Ia(),
+          driveSettingsBlock(),
         ),
         a(
           "p",
@@ -2742,7 +2742,7 @@ function zn(e) {
     d(
       t("\u2190 Voltar"),
       () => {
-        (xa(),
+        (drvEnabled(),
           Ea(e.id)?.isDraft && b(t("Rascunho guardado em Receitas.")),
           openHome("recipes"));
       },
@@ -2977,7 +2977,7 @@ function Qn(e, o) {
   );
 }
 function S(e) {
-  (e(), xa(), c.requestRender());
+  (e(), drvEnabled(), c.requestRender());
 }
 function xa() {
   const e = c.editorDraft;
@@ -5092,14 +5092,14 @@ function vo(e) {
       },
       "btn",
     ),
-    xa()
+    drvEnabled()
       ? d(
           t("Salvar no Drive"),
           async (o) => {
             const n = o.currentTarget;
             n.disabled = !0;
             try {
-              (await _driveUpload(Pa(e), Aa(e)),
+              (await drvUpload(Pa(e), Aa(e)),
                 b(
                   t('"{name}" salvo no Google Drive.', {
                     name: e.name || t("Receita"),
