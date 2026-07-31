@@ -77,11 +77,16 @@ async function findOrCreateFolder(name) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  if (!searchRes.ok)
-    throw new Error(t("Erro ao buscar pasta no Google Drive."));
 
-  const data = await searchRes.json();
-  if (data.files?.length > 0) return data.files[0].id;
+  // 403 means the folder exists but was not created by this app (drive.file scope
+  // only grants access to files/folders the app itself created). Treat as not found
+  // and let the app create its own folder below.
+  if (searchRes.ok) {
+    const data = await searchRes.json();
+    if (data.files?.length > 0) return data.files[0].id;
+  } else if (searchRes.status !== 403) {
+    throw new Error(t("Erro ao buscar pasta no Google Drive."));
+  }
 
   const createRes = await fetch(`${API}/files`, {
     method: "POST",
@@ -109,10 +114,10 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  if (!searchRes.ok)
+  if (!searchRes.ok && searchRes.status !== 403)
     throw new Error(t("Erro ao verificar arquivo no Google Drive."));
 
-  const searchData = await searchRes.json();
+  const searchData = searchRes.ok ? await searchRes.json() : { files: [] };
   const existing = searchData.files?.[0];
 
   const metadata = existing
