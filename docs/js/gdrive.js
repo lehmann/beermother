@@ -98,9 +98,22 @@ function requestTokenInteractive() {
   });
 }
 
+function waitForGsi(timeout = 10000) {
+  if (window.google?.accounts?.oauth2) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    const check = () => {
+      if (window.google?.accounts?.oauth2) return resolve();
+      if (Date.now() - start >= timeout)
+        return reject(new Error(t("Google Identity Services não disponível.")));
+      setTimeout(check, 100);
+    };
+    check();
+  });
+}
+
 export async function requestDriveAccess() {
-  if (!window.google?.accounts?.oauth2)
-    throw new Error(t("Google Identity Services não disponível."));
+  await waitForGsi();
 
   // 1. In-memory token still valid.
   if (hasValidToken()) return _token;

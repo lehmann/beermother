@@ -153,14 +153,8 @@ function renderGate() {
   document.body.appendChild(gate);
 }
 
-(async function () {
-  // Resume a previously verified session without showing the gate.
-  if (loadSession()) {
-    await boot();
-    return;
-  }
-
-  await new Promise((resolve, reject) => {
+function loadGsi() {
+  return new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = "https://accounts.google.com/gsi/client";
     s.async = true;
@@ -169,6 +163,18 @@ function renderGate() {
     s.onerror = reject;
     document.head.appendChild(s);
   });
+}
+
+(async function () {
+  // Resume a previously verified session without showing the gate.
+  // GSI still loads in the background so the Drive OAuth flow is available.
+  if (loadSession()) {
+    loadGsi(); // fire-and-forget — Drive will wait for it via requestDriveAccess
+    await boot();
+    return;
+  }
+
+  await loadGsi();
 
   renderGate();
 
