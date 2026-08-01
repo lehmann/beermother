@@ -53,6 +53,8 @@ import {
 import {
   saveRecipeToDrive as drvUpload,
   requestDriveAccess as drvAuth,
+  listRecipesFromDrive as drvList,
+  hasDriveToken as drvHasToken,
 } from "./gdrive.js";
 import { PH_ACIDS as ht } from "./ph.js";
 import {
@@ -74,11 +76,11 @@ import {
 } from "./ui.js";
 import {
   newDraft as Pt,
-  draftFromRecipe as Xe,
-  computeTargets as Qe,
+  draftFromRecipe,
+  computeTargets,
   recipeFromDraft as Le,
-  listMyRecipes as La,
-  saveMyRecipe as me,
+  listMyRecipes,
+  saveMyRecipe,
   deleteMyRecipe as ya,
   getMyRecipe as Ea,
   touchMyRecipe as At,
@@ -105,7 +107,7 @@ import {
   saveUserIngredient as Ye,
   MAX_FERMENTATION_PRESSURE_ATM as $t,
 } from "./recipes.js";
-import { parseBeerXml as Ze, sanitizeXmlText as It } from "./beerxml.js";
+import { parseBeerXml, sanitizeXmlText as It } from "./beerxml.js";
 import {
   MALT_LIBRARY as xt,
   HOP_LIBRARY as Dt,
@@ -146,10 +148,90 @@ import { requestRecipeAnalysis as an } from "./analysis-screen.js";
 function j(e) {
   return 1 + Math.min(0.5, Math.max(0, m(e, O.trubLossPct)));
 }
-let aa = "",
-  Pe = 10,
-  C = null,
-  Ae = !1;
+let recipeSearchQuery = "",
+  recipeListLimit = 10,
+  fermentablePercentEdit = null,
+  showIbuPerAddition = !1;
+let driveRows = [],
+  driveLoadState = "idle";
+function driveKey(e) {
+  return String(e || "")
+    .trim()
+    .toLowerCase();
+}
+function driveFileToRow(e) {
+  try {
+    const o = parseBeerXml(e.content),
+      n = draftFromRecipe(o),
+      r = computeTargets(n);
+    return {
+      id: `drive:${e.id}`,
+      driveFileId: e.id,
+      name: n.name || e.name.replace(/\.xml$/i, ""),
+      styleName: n.styleName || "",
+      abv: r.abv,
+      ebc: r.ebc,
+      ibu: r.ibu,
+      og: r.og,
+      isDraft: !1,
+      fromDrive: !0,
+      draft: n,
+    };
+  } catch {
+    return null;
+  }
+}
+async function loadDriveRecipes(e) {
+  ((driveLoadState = "loading"), e && c.requestRender());
+  try {
+    const o = await drvList();
+    ((driveRows = o.map(driveFileToRow).filter(Boolean)),
+      (driveLoadState = "done"));
+  } catch (o) {
+    ((driveLoadState = "error"),
+      e && b(o.message || t("Erro ao carregar receitas do Drive."), "error"));
+  }
+  c.requestRender();
+}
+function maybeAutoLoadDrive() {
+  drvEnabled() &&
+    driveLoadState === "idle" &&
+    drvHasToken() &&
+    loadDriveRecipes(!1);
+}
+function mergeDriveRecipes(e) {
+  if (!driveRows.length) return e;
+  const o = new Set(e.map((n) => driveKey(n.name)));
+  return e.concat(driveRows.filter((n) => !o.has(driveKey(n.name))));
+}
+function driveStatusRow() {
+  if (!drvEnabled()) return null;
+  if (driveLoadState === "loading")
+    return a(
+      "p",
+      "muted drive-sync-status",
+      t("Carregando receitas do Drive…"),
+    );
+  const e =
+    driveLoadState === "done"
+      ? t("Atualizar do Drive")
+      : t("Carregar do Drive");
+  return a("div", "drive-sync-row", [
+    d(e, () => loadDriveRecipes(!0), "btn ghost small"),
+    driveLoadState === "error"
+      ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
+      : null,
+  ]);
+}
+function openDraftInEditor(e) {
+  ((c.editorDraft = JSON.parse(JSON.stringify(e))),
+    (fermentablePercentEdit = null),
+    ta(c.editorDraft),
+    ia(),
+    (c.view = "editor"),
+    c.requestRender(),
+    window.scrollTo({ top: 0, behavior: "instant" }));
+}
 typeof document < "u" &&
   document.addEventListener &&
   document.addEventListener("keydown", (e) => {
@@ -181,7 +263,7 @@ export function openEditorNew() {
     Object.keys(n).length && sa(e, n, "");
   }
   ((c.editorDraft = e),
-    (C = null),
+    (fermentablePercentEdit = null),
     ta(e),
     ia(),
     (c.view = "editor"),
@@ -193,7 +275,7 @@ export function openEditorEntry(e) {
   const o = Ea(e);
   o &&
     ((c.editorDraft = JSON.parse(JSON.stringify(o.draft))),
-    (C = null),
+    (fermentablePercentEdit = null),
     ta(c.editorDraft),
     ia(),
     (c.view = "editor"),
@@ -285,7 +367,7 @@ export function editorUndo() {
   return (
     (c.editorDraft = JSON.parse(e)),
     (Y = e),
-    (C = null),
+    (fermentablePercentEdit = null),
     c.requestRender(),
     !0
   );
@@ -297,7 +379,7 @@ export function editorRedo() {
   return (
     (c.editorDraft = JSON.parse(e)),
     (Y = e),
-    (C = null),
+    (fermentablePercentEdit = null),
     c.requestRender(),
     !0
   );
@@ -597,14 +679,14 @@ function un() {
 export function workspaceScreen() {
   const e = c.workspaceSection || "recipes";
   return e === "brews"
-    ? bn()
+    ? brewsScreen()
     : e === "notebook"
-      ? $n()
+      ? notebookScreen()
       : e === "equipment"
-        ? hn()
-        : mn();
+        ? equipmentScreen()
+        : recipesScreen();
 }
-function Re(e, o, n = []) {
+function pageHead(e, o, n = []) {
   return a("div", "page-head", [
     a("div", "page-head-text", [
       a("h1", "page-title", e),
@@ -613,20 +695,25 @@ function Re(e, o, n = []) {
     n.length ? a("div", "page-actions", n) : null,
   ]);
 }
-function mn() {
-  const e = La();
+function recipesScreen() {
+  maybeAutoLoadDrive();
+  const e = mergeDriveRecipes(listMyRecipes());
   return [
-    Re(t("Receitas"), e.length ? t("{n} na prateleira", { n: e.length }) : ""),
-    pn(),
-    e.length ? An(e) : wn(),
-    fn(),
+    pageHead(
+      t("Receitas"),
+      e.length ? t("{n} na prateleira", { n: e.length }) : "",
+    ),
+    anniversaryRecipeCard(),
+    driveStatusRow(),
+    e.length ? myRecipesCard(e) : emptyRecipesState(),
+    courseRecipesCard(),
   ];
 }
-function pn() {
+function anniversaryRecipeCard() {
   const e = Yt,
     o = d(
       t("Abrir receita especial"),
-      () => Na(e),
+      () => openCommunityRecipe(e),
       "btn primary anniversary-recipe-button",
     );
   return a("section", "card anniversary-recipe-card", [
@@ -651,10 +738,10 @@ function pn() {
     ]),
   ]);
 }
-function fn() {
+function courseRecipesCard() {
   if (!ea.length) return null;
   const e = ea.map((o) => {
-    const n = d("", () => Na(o), "recipe-row", {
+    const n = d("", () => openCommunityRecipe(o), "recipe-row", {
       title: t("Abrir receita do curso"),
     });
     return (
@@ -678,16 +765,16 @@ function fn() {
     a("div", "recipe-list", e),
   ]);
 }
-function Na(e) {
-  ((c.editorDraft = Xe(Ze(e.xml))),
-    (C = null),
+function openCommunityRecipe(e) {
+  ((c.editorDraft = draftFromRecipe(parseBeerXml(e.xml))),
+    (fermentablePercentEdit = null),
     ta(c.editorDraft),
     ia(),
     (c.view = "editor"),
     c.requestRender(),
     window.scrollTo({ top: 0, behavior: "instant" }));
 }
-function bn() {
+function brewsScreen() {
   const e = Fe().filter((r) => r.status === "active"),
     o = e.length ? t("{n} em andamento", { n: e.length }) : "",
     n = e.length
@@ -713,12 +800,12 @@ function bn() {
             ]),
           ]),
         ]);
-  return [Re(t("Brassagens"), o), n, Ln()];
+  return [pageHead(t("Brassagens"), o), n, Ln()];
 }
-function hn() {
+function equipmentScreen() {
   const e = X();
   return [
-    Re(
+    pageHead(
       t("Equipamentos"),
       e.length
         ? e.length === 1
@@ -798,7 +885,7 @@ function vn() {
         ]),
       ]);
 }
-function wn() {
+function emptyRecipesState() {
   return a("section", "card home-card welcome-card", [
     a("div", "card-body", [
       a("h2", "welcome-title", t("Sua primeira receita")),
@@ -927,7 +1014,7 @@ function oa(e) {
         d(
           t("Salvar receita em Minhas receitas"),
           () => {
-            const r = me(Xe(e.payload.recipe));
+            const r = saveMyRecipe(draftFromRecipe(e.payload.recipe));
             (b(
               r
                 ? t("Receita salva \u2014 d\xE1 para editar e adaptar.")
@@ -1205,12 +1292,12 @@ function Pn(e) {
     ]),
   ]);
 }
-function An(e = La()) {
-  const o = aa.trim().toLowerCase(),
+function myRecipesCard(e = listMyRecipes()) {
+  const o = recipeSearchQuery.trim().toLowerCase(),
     n = o
       ? e.filter((l) => `${l.name} ${l.styleName}`.toLowerCase().includes(o))
       : e,
-    r = n.slice(0, Pe),
+    r = n.slice(0, recipeListLimit),
     i =
       e.length >= 5
         ? (() => {
@@ -1218,12 +1305,12 @@ function An(e = La()) {
             return (
               (l.type = "text"),
               (l.placeholder = t("Buscar receita\u2026")),
-              (l.value = aa),
+              (l.value = recipeSearchQuery),
               l.setAttribute("aria-label", t("Buscar receita")),
               l.setAttribute("data-fkey", "home-search"),
               l.addEventListener("input", () => {
-                ((aa = l.value),
-                  (Pe = 10),
+                ((recipeSearchQuery = l.value),
+                  (recipeListLimit = 10),
                   (c.pendingFocusKey = "home-search"),
                   c.requestRender());
               }),
@@ -1236,7 +1323,7 @@ function An(e = La()) {
       u.style.background = fe(l.ebc);
       const p = d(
         "",
-        () => (l.isDraft ? openEditorEntry(l.id) : Sn(l)),
+        () => (l.isDraft ? openEditorEntry(l.id) : recipeActionsSheet(l)),
         "recipe-row",
         { title: l.isDraft ? t("Continuar editando") : "" },
       );
@@ -1291,11 +1378,11 @@ function An(e = La()) {
       ...(s.length
         ? s
         : [a("p", "muted", t("Nenhuma receita bate com a busca."))]),
-      n.length > Pe
+      n.length > recipeListLimit
         ? d(
-            `Ver mais (${n.length - Pe})`,
+            `Ver mais (${n.length - recipeListLimit})`,
             () => {
-              ((Pe += 20), c.requestRender());
+              ((recipeListLimit += 20), c.requestRender());
             },
             "btn ghost small",
           )
@@ -1303,7 +1390,7 @@ function An(e = La()) {
     ]),
   ]);
 }
-function Sn(e) {
+function recipeActionsSheet(e) {
   const o = a("span", "ebc-swatch");
   ((o.style.background = fe(e.ebc)),
     I(
@@ -1323,14 +1410,17 @@ function Sn(e) {
           d(
             t("Brassar esta receita"),
             () => {
-              (h(), qn(e));
+              (h(), startBrewFromRecipe(e));
             },
             "btn primary",
           ),
           d(
             t("Editar"),
             () => {
-              (h(), openEditorEntry(e.id));
+              (h(),
+                e.fromDrive
+                  ? openDraftInEditor(e.draft)
+                  : openEditorEntry(e.id));
             },
             "btn",
           ),
@@ -1340,7 +1430,8 @@ function Sn(e) {
               const n = JSON.parse(JSON.stringify(e.draft));
               ((n.id = `recipe-copy-${Date.now().toString(36)}`),
                 (n.name = t("{name} (c\xF3pia)", { name: e.name })),
-                me(n) && (h(), b(t("Receita duplicada.")), c.requestRender()));
+                saveMyRecipe(n) &&
+                  (h(), b(t("Receita duplicada.")), c.requestRender()));
             },
             "btn",
           ),
@@ -1352,27 +1443,42 @@ function Sn(e) {
             },
             "btn",
           ),
-          d(
-            t("Excluir"),
-            async () => {
-              (h(),
-                (await confirmDialog({
-                  title: `Excluir "${e.name}"?`,
-                  message: t("Essa a\xE7\xE3o n\xE3o pode ser desfeita."),
-                  confirmLabel: "Excluir",
-                  danger: !0,
-                })) &&
-                  (ya(e.id), b(t("Receita exclu\xEDda.")), c.requestRender()));
-            },
-            "btn ghost sheet-danger",
-          ),
+          e.fromDrive
+            ? d(
+                t("Salvar em Minhas receitas"),
+                () => {
+                  const n = JSON.parse(JSON.stringify(e.draft));
+                  ((n.id = `recipe-drive-${Date.now().toString(36)}`),
+                    saveMyRecipe(n) &&
+                      (h(),
+                      b(t("Receita salva em Minhas receitas.")),
+                      c.requestRender()));
+                },
+                "btn",
+              )
+            : d(
+                t("Excluir"),
+                async () => {
+                  (h(),
+                    (await confirmDialog({
+                      title: `Excluir "${e.name}"?`,
+                      message: t("Essa a\xE7\xE3o n\xE3o pode ser desfeita."),
+                      confirmLabel: "Excluir",
+                      danger: !0,
+                    })) &&
+                      (ya(e.id),
+                      b(t("Receita exclu\xEDda.")),
+                      c.requestRender()));
+                },
+                "btn ghost sheet-danger",
+              ),
         ]),
         a("div", "sheet-actions", [d(t("Fechar"), () => h(), "btn ghost")]),
       ],
       "recipe-sheet",
     ));
 }
-async function qn(e) {
+async function startBrewFromRecipe(e) {
   Be();
   const o = Le(e.draft);
   (At(e.id),
@@ -1388,7 +1494,7 @@ function re(e) {
   (we(e.baseWaterProfile) || delete o.baseWaterProfile, fa(o));
 }
 function Rn(e) {
-  const o = Ze(e);
+  const o = parseBeerXml(e);
   let n = "",
     r = null,
     i = !1;
@@ -2191,7 +2297,7 @@ function Fn(e) {
     return null;
   }
 }
-function $n() {
+function notebookScreen() {
   const e = Fe()
     .filter((s) => s.status === "done")
     .map(Fn)
@@ -2202,7 +2308,7 @@ function $n() {
     );
   if (!e.length)
     return [
-      Re(t("Caderno"), ""),
+      pageHead(t("Caderno"), ""),
       a("section", "card home-card welcome-card", [
         a("div", "card-body", [
           a("h2", "welcome-title", t("Seu caderno est\xE1 em branco")),
@@ -2243,7 +2349,7 @@ function $n() {
     ]
       .filter(Boolean)
       .join(" \xB7 ");
-  return [Re(t("Caderno"), i), In(n), Dn(e)];
+  return [pageHead(t("Caderno"), i), In(n), Dn(e)];
 }
 function In(e) {
   const o = xn(e);
@@ -2585,7 +2691,7 @@ async function Vn(e, o) {
     await zt(n);
     return;
   }
-  const r = Ze(e),
+  const r = parseBeerXml(e),
     i = Rn(e);
   _n(r, i, o);
 }
@@ -2620,7 +2726,7 @@ function _n(e, o, n) {
               : d(
                   t("Salvar em Minhas receitas"),
                   () => {
-                    me(Xe(e))
+                    saveMyRecipe(draftFromRecipe(e))
                       ? ((r.recipeSaved = !0),
                         b(
                           t(
@@ -2722,7 +2828,7 @@ export function editorScreen() {
   const e = c.editorDraft;
   if (!e) return homeScreen();
   nn(e);
-  const o = Qe(e);
+  const o = computeTargets(e);
   return [
     zn(e),
     a("div", "editor-sticky", [Xn(o)]),
@@ -2989,7 +3095,7 @@ function xa() {
       (e.yeasts || []).length > 0 ||
       (e.miscs || []).length > 0
     ) ||
-    me(e, { isDraft: !0 });
+    saveMyRecipe(e, { isDraft: !0 });
 }
 function W(e, o, n = {}) {
   const r = document.createElement("input");
@@ -3229,7 +3335,7 @@ function sa(e, o = {}, n) {
     n !== void 0 && (e.equipmentProfileName = n));
 }
 async function Oa(e, o, n) {
-  const r = Qe(e),
+  const r = computeTargets(e),
     i = m(e.batchVolumeL, 20),
     s =
       (e.fermentables || []).some((f) => m(f.amountKg) > 0) ||
@@ -3713,8 +3819,11 @@ function no(e, o) {
   const n = (e.fermentables || []).reduce((w, L) => w + m(L.amountKg), 0),
     r = !(n > 0),
     i = e.fermentables.length > 1,
-    s = !!C && i,
-    l = s && C.baseIndex !== null && !!e.fermentables[C.baseIndex],
+    s = !!fermentablePercentEdit && i,
+    l =
+      s &&
+      fermentablePercentEdit.baseIndex !== null &&
+      !!e.fermentables[fermentablePercentEdit.baseIndex],
     u = l && !r,
     p = l && r,
     f = () => {
@@ -3723,19 +3832,25 @@ function no(e, o) {
       return e.fermentables.map(() => T(100 / w, 1));
     },
     E = p
-      ? C.values.reduce(
-          (w, L, x) => (x === C.baseIndex ? w : w + Math.max(0, m(L))),
+      ? fermentablePercentEdit.values.reduce(
+          (w, L, x) =>
+            x === fermentablePercentEdit.baseIndex ? w : w + Math.max(0, m(L)),
           0,
         )
       : 0,
     y = p ? Math.max(0, T(100 - E, 1)) : 0,
     g = (w) => {
-      if (!r && !u && Array.isArray(C.values)) {
+      if (!r && !u && Array.isArray(fermentablePercentEdit.values)) {
         const L = f();
-        JSON.stringify(C.values) !== JSON.stringify(L) && Sa(e, C.values);
+        JSON.stringify(fermentablePercentEdit.values) !== JSON.stringify(L) &&
+          Sa(e, fermentablePercentEdit.values);
       }
-      ((C = r
-        ? { baseIndex: w, values: C.values || f(), ogAnchor: C.ogAnchor }
+      ((fermentablePercentEdit = r
+        ? {
+            baseIndex: w,
+            values: fermentablePercentEdit.values || f(),
+            ogAnchor: fermentablePercentEdit.ogAnchor,
+          }
         : { baseIndex: w, values: null }),
         c.requestRender());
     },
@@ -3743,7 +3858,7 @@ function no(e, o) {
       const x = n ? (m(w.amountKg) / n) * 100 : 0,
         ae = !(m(w.amountKg) > 0);
       if (s) {
-        const k = l && L === C.baseIndex;
+        const k = l && L === fermentablePercentEdit.baseIndex;
         return a("div", "editor-row", [
           ce(
             w.name,
@@ -3753,13 +3868,14 @@ function no(e, o) {
           k
             ? a("b", "base-tag", "base")
             : rn(
-                u ? T(x, 1) : C.values[L],
+                u ? T(x, 1) : fermentablePercentEdit.values[L],
                 (B) => {
                   u
                     ? S(() => {
-                        Tt(e, L, B, C.baseIndex);
+                        Tt(e, L, B, fermentablePercentEdit.baseIndex);
                       })
-                    : ((C.values[L] = Math.max(0, m(B))), c.requestRender());
+                    : ((fermentablePercentEdit.values[L] = Math.max(0, m(B))),
+                      c.requestRender());
                 },
                 {
                   class: "w-md",
@@ -3809,7 +3925,13 @@ function no(e, o) {
         ),
       ]);
     }),
-    N = s && !u ? C.values.reduce((w, L) => w + Math.max(0, m(L)), 0) : 0;
+    N =
+      s && !u
+        ? fermentablePercentEdit.values.reduce(
+            (w, L) => w + Math.max(0, m(L)),
+            0,
+          )
+        : 0;
   let v = null;
   if (s && u)
     v = a("div", "percent-footer", [
@@ -3824,7 +3946,7 @@ function no(e, o) {
         d(
           t("Aplicar"),
           () => {
-            ((C = null),
+            ((fermentablePercentEdit = null),
               b(t("Percentuais aplicados \u2014 a OG n\xE3o muda.")),
               c.requestRender());
           },
@@ -3833,9 +3955,12 @@ function no(e, o) {
       ]),
     ]);
   else if (s && r) {
-    Number.isFinite(Number(C.ogAnchor)) || (C.ogAnchor = 1.05);
+    Number.isFinite(Number(fermentablePercentEdit.ogAnchor)) ||
+      (fermentablePercentEdit.ogAnchor = 1.05);
     const w = () =>
-      C.values.map((L, x) => (p && x === C.baseIndex ? y : Math.max(0, m(L))));
+      fermentablePercentEdit.values.map((L, x) =>
+        p && x === fermentablePercentEdit.baseIndex ? y : Math.max(0, m(L)),
+      );
     v = a("div", "percent-footer", [
       a(
         "span",
@@ -3853,9 +3978,9 @@ function no(e, o) {
         a("div", "field-line", [
           H(
             U(
-              C.ogAnchor.toFixed(3),
+              fermentablePercentEdit.ogAnchor.toFixed(3),
               (L) => {
-                C.ogAnchor = m(L, 1.05);
+                fermentablePercentEdit.ogAnchor = m(L, 1.05);
               },
               { "aria-label": "OG desejada" },
             ),
@@ -3866,9 +3991,9 @@ function no(e, o) {
         d(
           t("Aplicar"),
           () => {
-            const L = A(C.ogAnchor, 1.02, 1.15, "OG");
+            const L = A(fermentablePercentEdit.ogAnchor, 1.02, 1.15, "OG");
             (Nt(e, w(), L)
-              ? ((C = null),
+              ? ((fermentablePercentEdit = null),
                 b(
                   t("Quantidades calculadas para OG {og}.", {
                     og: L.toFixed(3),
@@ -3893,8 +4018,8 @@ function no(e, o) {
           d(
             Math.abs(N - 100) <= 0.5 ? "Aplicar" : t("Normalizar e aplicar"),
             () => {
-              (Sa(e, C.values)
-                ? ((C = null),
+              (Sa(e, fermentablePercentEdit.values)
+                ? ((fermentablePercentEdit = null),
                   b(t("Percentuais aplicados \u2014 a OG n\xE3o muda.")))
                 : b(
                     t(
@@ -3919,7 +4044,8 @@ function no(e, o) {
           );
           return;
         }
-        ((C = s ? null : { baseIndex: null, values: f() }), c.requestRender());
+        ((fermentablePercentEdit = s ? null : { baseIndex: null, values: f() }),
+          c.requestRender());
       },
       `icon-btn small-btn ${s ? "active" : ""}`,
     ),
@@ -4099,7 +4225,7 @@ function oo(e, o) {
           "row-share num muted hop-alpha-tag",
           `${P(l.alphaAcidPct, 1)}%`,
         ),
-        Ae && !p
+        showIbuPerAddition && !p
           ? a("span", "row-share num muted hop-ibu-tag", `${P(y, 1)} IBU`, {
               title: t("Contribui\xE7\xE3o desta adi\xE7\xE3o no IBU total."),
             })
@@ -4167,13 +4293,13 @@ function oo(e, o) {
     }),
     r = D(
       "summary",
-      Ae
+      showIbuPerAddition
         ? t("Ocultar IBU por adi\xE7\xE3o")
         : t("Mostrar IBU por adi\xE7\xE3o"),
       () => {
-        ((Ae = !Ae), c.requestRender());
+        ((showIbuPerAddition = !showIbuPerAddition), c.requestRender());
       },
-      `icon-btn small-btn ${Ae ? "active" : ""}`,
+      `icon-btn small-btn ${showIbuPerAddition ? "active" : ""}`,
     ),
     i =
       (e.hops || []).length > 1
@@ -4763,7 +4889,7 @@ function mo(e, o) {
   );
 }
 function po(e) {
-  const o = Qe(e);
+  const o = computeTargets(e);
   I(
     [
       a("b", "sheet-title", t("FG (densidade final)")),
@@ -5078,7 +5204,7 @@ function vo(e) {
     d(
       t("Salvar"),
       (o) => {
-        const n = me(e);
+        const n = saveMyRecipe(e);
         (Lt(o.currentTarget, "Salvar", n ? "Salva" : "Falhou", !n),
           n && b(t("Receita salva em Minhas receitas.")));
       },
@@ -5156,7 +5282,7 @@ function vo(e) {
           b(t("Adicione ao menos um malte antes de brassar."), "error");
           return;
         }
-        (Be(), me(e));
+        (Be(), saveMyRecipe(e));
         const o = Le(e);
         (Me(o, "Minhas receitas"),
           (c.view = "brew"),

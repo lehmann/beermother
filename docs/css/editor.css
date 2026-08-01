@@ -1835,3 +1835,17 @@ select {
   opacity: 0.5;
   cursor: wait;
 }
+.drive-sync-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.drive-sync-status {
+  margin: 0 0 12px;
+  font-size: var(--text-sm);
+}
+.drive-sync-row .drive-sync-status {
+  margin: 0;
+}

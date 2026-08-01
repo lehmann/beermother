@@ -1796,4 +1796,11 @@ export default {
   "Uma receita especial para celebrar essa hist\xF3ria.":
     "A special recipe to celebrate this story.",
   "Abrir receita especial": "Open special recipe",
+  "Carregar do Drive": "Load from Drive",
+  "Atualizar do Drive": "Refresh from Drive",
+  "Carregando receitas do Drive…": "Loading recipes from Drive…",
+  "Falha ao carregar do Drive.": "Failed to load from Drive.",
+  "Erro ao carregar receitas do Drive.": "Error loading recipes from Drive.",
+  "Salvar em Minhas receitas": "Save to My recipes",
+  "Receita salva em Minhas receitas.": "Recipe saved to My recipes.",
 };
