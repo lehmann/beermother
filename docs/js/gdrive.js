@@ -10,7 +10,6 @@ const UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
 let _tokenClient = null;
 let _token = null;
 let _tokenExpiry = 0;
-let _scopeGranted = false; // true only after user explicitly consented to drive.file this session
 let _pendingResolve = null;
 let _pendingReject = null;
 
@@ -18,28 +17,27 @@ function hasValidToken() {
   return !!(_token && Date.now() < _tokenExpiry - 30000);
 }
 
-// Clears the local token so the next requestDriveAccess call forces a new consent screen.
 function revokeLocalToken() {
   _token = null;
   _tokenExpiry = 0;
-  _scopeGranted = false;
+  // Force a new token client on the next request so the prompt is shown fresh.
+  _tokenClient = null;
 }
 
-function getTokenClient() {
-  if (_tokenClient) return _tokenClient;
-  _tokenClient = window.google.accounts.oauth2.initTokenClient({
+function buildTokenClient(prompt) {
+  return window.google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
     scope: SCOPE,
+    prompt,
     callback: (resp) => {
       if (resp.error) {
         const err = new Error(
-          resp.error_description || t("Acesso ao Google Drive negado."),
+          resp.error_description || resp.error || t("Acesso ao Google Drive negado."),
         );
         _pendingReject?.(err);
       } else {
         _token = resp;
         _tokenExpiry = Date.now() + (Number(resp.expires_in) || 3600) * 1000;
-        _scopeGranted = true;
         _pendingResolve?.(_token);
       }
       _pendingResolve = null;
@@ -53,7 +51,6 @@ function getTokenClient() {
       _pendingReject = null;
     },
   });
-  return _tokenClient;
 }
 
 export function requestDriveAccess() {
@@ -68,13 +65,12 @@ export function requestDriveAccess() {
     }
     _pendingResolve = resolve;
     _pendingReject = reject;
-    // Use "consent" until the user has explicitly granted drive.file this session.
-    // This is necessary because the app reuses the same CLIENT_ID for the sign-in
-    // gate: without "consent", Google silently returns a token that lacks the
-    // drive.file scope, causing 403 on all Drive API calls.
-    getTokenClient().requestAccessToken({
-      prompt: _scopeGranted ? "" : "consent",
-    });
+    // Always use "select_account" so the user explicitly picks the account and
+    // consents to the drive.file scope. Using "" or "consent" with FedCM active
+    // (gate.js sets use_fedcm_for_prompt: true) causes the token flow to fail
+    // silently or return access_denied.
+    if (!_tokenClient) _tokenClient = buildTokenClient("select_account");
+    _tokenClient.requestAccessToken({});
   });
 }
 
