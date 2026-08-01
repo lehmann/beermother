@@ -64,7 +64,6 @@ function buildTokenClient(prompt) {
           new Error(resp.error_description || resp.error || t("Acesso ao Google Drive negado.")),
         );
       } else {
-        console.log("[gdrive] token granted, scope:", resp.scope);
         persistToken(resp);
         _pendingResolve?.(_token);
       }
@@ -85,11 +84,7 @@ function requestTokenInteractive() {
   return new Promise((resolve, reject) => {
     _pendingResolve = resolve;
     _pendingReject = reject;
-    // "consent" (not "select_account") forces Google to re-show the consent
-    // screen so a newly-added scope is actually granted. With a prior grant for
-    // this client, "select_account" would silently reissue a token carrying only
-    // the previously-consented scope, causing 403 on drive-scope API calls.
-    _tokenClient = buildTokenClient("consent");
+    _tokenClient = buildTokenClient("select_account");
     _tokenClient.requestAccessToken({});
   });
 }
@@ -127,18 +122,7 @@ async function authHeaders() {
 }
 
 async function apiFetch(url, options = {}) {
-  const res = await fetch(url, options);
-  if (!res.ok) {
-    const body = await res
-      .clone()
-      .json()
-      .catch(() => null);
-    console.error(
-      `[gdrive] ${options.method || "GET"} ${url} → ${res.status}`,
-      body?.error || body,
-    );
-  }
-  return res;
+  return fetch(url, options);
 }
 
 async function findOrCreateFolder(name) {
