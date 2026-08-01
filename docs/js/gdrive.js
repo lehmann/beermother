@@ -3,7 +3,7 @@ import { loadDriveFolderName } from "./state.js";
 
 const CLIENT_ID =
   "737027827720-hvm2q49b9cnojoe0voo8nlfu2ehhtdsd.apps.googleusercontent.com";
-const SCOPE = "https://www.googleapis.com/auth/drive.file";
+const SCOPE = "https://www.googleapis.com/auth/drive";
 const API = "https://www.googleapis.com/drive/v3";
 const UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
 
@@ -92,14 +92,9 @@ async function findOrCreateFolder(name) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  // 403 here means the folder was not created by this app (drive.file scope only
-  // sees files/folders the app itself created). Treat as not found and create below.
-  if (searchRes.ok) {
-    const data = await searchRes.json();
-    if (data.files?.length > 0) return data.files[0].id;
-  } else if (searchRes.status !== 403) {
-    throw new Error(t("Erro ao buscar pasta no Google Drive."));
-  }
+  if (!searchRes.ok) throw new Error(t("Erro ao buscar pasta no Google Drive."));
+  const data = await searchRes.json();
+  if (data.files?.length > 0) return data.files[0].id;
 
   const createRes = await apiFetch(`${API}/files`, {
     method: "POST",
@@ -109,10 +104,7 @@ async function findOrCreateFolder(name) {
       mimeType: "application/vnd.google-apps.folder",
     }),
   });
-  if (!createRes.ok) {
-    if (createRes.status === 403) revokeLocalToken();
-    throw new Error(t("Erro ao criar pasta no Google Drive."));
-  }
+  if (!createRes.ok) throw new Error(t("Erro ao criar pasta no Google Drive."));
 
   const folder = await createRes.json();
   return folder.id;
@@ -130,12 +122,8 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  // 403 on the file search is unexpected at this point (folder was just created/found
-  // by the app), but treat it as not found rather than aborting.
-  if (!searchRes.ok && searchRes.status !== 403)
-    throw new Error(t("Erro ao verificar arquivo no Google Drive."));
-
-  const searchData = searchRes.ok ? await searchRes.json() : { files: [] };
+  if (!searchRes.ok) throw new Error(t("Erro ao verificar arquivo no Google Drive."));
+  const searchData = await searchRes.json();
   const existing = searchData.files?.[0];
 
   const metadata = existing
