@@ -134,9 +134,12 @@ async function findOrCreateFolder(name) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  if (!searchRes.ok) throw new Error(t("Erro ao buscar pasta no Google Drive."));
-  const data = await searchRes.json();
-  if (data.files?.length > 0) return data.files[0].id;
+  if (searchRes.ok) {
+    const data = await searchRes.json();
+    if (data.files?.length > 0) return data.files[0].id;
+  } else if (searchRes.status !== 403) {
+    throw new Error(t("Erro ao buscar pasta no Google Drive."));
+  }
 
   const createRes = await apiFetch(`${API}/files`, {
     method: "POST",
