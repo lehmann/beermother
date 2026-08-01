@@ -64,6 +64,7 @@ function buildTokenClient(prompt) {
           new Error(resp.error_description || resp.error || t("Acesso ao Google Drive negado.")),
         );
       } else {
+        console.log("[gdrive] token granted, scope:", resp.scope);
         persistToken(resp);
         _pendingResolve?.(_token);
       }
@@ -126,7 +127,18 @@ async function authHeaders() {
 }
 
 async function apiFetch(url, options = {}) {
-  return fetch(url, options);
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    const body = await res
+      .clone()
+      .json()
+      .catch(() => null);
+    console.error(
+      `[gdrive] ${options.method || "GET"} ${url} → ${res.status}`,
+      body?.error || body,
+    );
+  }
+  return res;
 }
 
 async function findOrCreateFolder(name) {
