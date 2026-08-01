@@ -1,3 +1,3461 @@
-import{WATER_IONS as De,PROFILE_KEYS as gt,CALIBRATION_PROFILE as ve,n as h,round as T,normalizeReading as Be,equipmentEfficiencyPct as bt,mashEfficiencyFromEquipment as vt,effectiveWriFactor as xe,evaporationLhFromPct as xt,hotPostBoilVolume as yt,ensureBaseWaterProfile as qe,scaledWaterSalts as Ie,waterSaltsFromRecipe as wt,importedProductionProfile as Lt,parseParameterText as kt,applyProductionParameterValues as Ct,finalParameterCode as St,correctionCheckResult as Et,negligibleCorrection as Rt,effectiveHeatingRateCMin as Pt,POST_READING_OFFSET_MIN as We,totalMashTimeMin as Mt,mashStepName as Ve,groupBySchedule as At,sanitizeFermentationTracking as $t,fermentationTrackingState as ye,expectedFermentationTemperature as Ft,firstFermentationReadingDate as Ne,fermentationDayFromDatetime as Oe,fermentedRefractometerPlato as Tt,fermentationChartModel as Dt,paddedRange as Bt,platoToSg as qt,abvBrewfather as Ge,calculate as _e}from"./engine.js";import{app as i,saveProductionProfile as Q,saveViewMode as It,exportBrewSessionPayload as Wt,restoreBrewSessionPayload as Vt,brewSessionFileName as Nt,localDatetimeValue as j,scheduleAutosave as He,ensureSessionExtras as R,sanitizeFermentationExpected as Ot,loadShoppingSettings as Gt,saveShoppingSettings as _t,DEFAULT_FRACTIONING as we,concludeCurrentBrew as Ht,loadPhMode as ie,loadPhAcid as se,loadPhMemory as Ue,savePhMemory as Ut}from"./state.js";import{PH_TARGETS as je,PH_ACIDS as jt,PH_STAGE_TITLES as Kt,phDoseSuggestion as Yt,phSlopeFromReadings as Ke,spargeDoseFromWaterSlope as zt,updatePhMemory as Xt,phLogSummary as Jt}from"./ph.js";import{el as a,button as w,iconButton as _,icon as M,field as N,cellInput as H,volumeCellInput as le,decimalInput as ce,card as k,stat as ue,listRow as $,copyCodeLine as Qt,toast as S,setButtonFeedback as F,writeClipboardText as Zt,downloadTextFile as en,showSheetBackdrop as tn,hideSheetBackdrop as nn}from"./ui.js";import{generateBrewReportHtml as an}from"./report.js";import{openSessionEquipmentSheet as on,calibrationPayoffCard as rn}from"./editor.js";import{mashStepStates as sn,brewGuideSteps as Ye,copilotoCompanions as ln}from"./guide.js";import{fermentationChartSvg as cn}from"./chart.js";import{generateExpectedFermentationProfile as un,yeastFamilyFromName as ze,fermentationMilestones as pn,classifyExtractReading as dn,tempStepsFromFermentation as mn,FAMILY_PRESETS as Le,isFamilySupported as fn}from"./fermentation-model.js";import{parseBeerXml as hn}from"./beerxml.js";import{startRecipe as gn}from"./state.js";import{startTimer as bn}from"./timer.js";import{t as n,tEngine as A,fmt as b,formatVolume as E,formatVolumeRate as Xe,formatMaltMass as K,formatIngredientAmount as Y,formatYeastAmount as ke,formatIonPpm as vn,formatPlatoSg as pe,formatWriValue as xn,localeTag as yn}from"./i18n.js";export function setProp(e,t){const o=i.session;if(e==="equipmentEfficiencyPct"){const r=vt(t,o.properties.targetVolumeL,o.properties.trubLossL);setProp("mashEfficiencyPct",r);return}e==="heatingRateCMin"&&(t=Math.min(10,Math.max(0,h(t))),o.recipe.heatingRateCMin=t),o.properties[e]=t,e==="targetVolumeL"&&!o.properties.trubLossEdited&&(o.properties.trubLossL=T(h(t,0)*h(o.properties.trubLossPct,.15),2)),e==="trubLossPct"&&(o.properties.trubLossEdited=!1,o.properties.trubLossL=T(h(o.properties.targetVolumeL,0)*h(t,.15),2)),e==="trubLossL"&&(o.properties.trubLossEdited=!0,o.properties.trubLossPct=h(o.properties.targetVolumeL,0)?T(h(t)/h(o.properties.targetVolumeL),4):h(o.properties.trubLossPct,.15)),gt.includes(e)&&(Q(o.properties)||S(n("N\xE3o foi poss\xEDvel salvar os par\xE2metros neste navegador."),"error")),i.requestRender()}export function setMeasurement(e,t,o){i.session.measurements[e][t]=o,i.requestRender()}export function remainingBoilEvapL(e){return T(Math.max(0,h(e?.evaporationLh))*We/60,2)}export function setPostBoilReading(e,t,o){R(i.session);const r=i.session.measurements.postBoil;r.rawVolumeL===void 0&&r.volumeL!==void 0&&r.volumeL!==""&&(r.rawVolumeL=r.volumeL),r.rawWri===void 0&&r.wri!==void 0&&r.wri!==""&&(r.rawWri=r.wri),t==="volumeL"&&(r.rawVolumeL=o),t==="wri"&&(r.rawWri=o);const l=h(r.rawVolumeL),u=remainingBoilEvapL(e.props);if(l>u){const s=T(l-u,2);r.readOffsetMin=We,r.volumeL=s,r.wri=r.rawWri===""||r.rawWri===void 0?r.rawWri:T(h(r.rawWri)*l/s,1)}else delete r.readOffsetMin,r.volumeL=r.rawVolumeL,r.wri=r.rawWri;i.requestRender()}export function ensureCorrectionCheck(e){const t=i.session;return t.correctionChecks=t.correctionChecks||{},t.correctionChecks[e]=t.correctionChecks[e]||{volumeL:"",wri:""},t.correctionChecks[e]}export function setCorrectionCheck(e,t,o){const r=ensureCorrectionCheck(e);r[t]=o,i.requestRender()}export function setCold(e,t){i.session.measurements.cold[e]=t,i.requestRender()}export function setHopLot(e,t){const o=i.session.hopLots.find(r=>r.id===e);o&&(o.actualAlpha=t),i.requestRender()}export function setBaseWaterIon(e,t){const o=qe(i.session.properties);o[e]=t===""?0:Math.max(0,h(t)),Q(i.session.properties),i.requestRender()}export function setWaterSaltsVisible(e){i.session.properties.showWaterSalts=!!e,i.requestRender()}export function additionCheckKey(e={}){return`${e.kind||"misc"}:${e.id||e.name||""}`}export function toggleAdditionCheck(e){R(i.session);const t=i.session.additionChecks;t[e]?delete t[e]:t[e]=new Date().toISOString(),i.requestRender()}export function isAdditionChecked(e){return R(i.session),!!i.session.additionChecks[additionCheckKey(e)]}export function startGuide(){i.session&&(R(i.session),i.session.guideEnabled=!0,i.session.phasesDone.prepare=!0,i.phase="mash",i.requestRender(),window.scrollTo({top:0,behavior:"instant"}))}export function stopGuide(){i.session&&(R(i.session),i.session.guideEnabled=!1,i.requestRender())}export function isGuideEnabled(){return!!(i.session&&i.session.guideEnabled)}export function toggleGuideCheck(e){R(i.session);const t=i.session.guideChecks;t[e]?delete t[e]:t[e]=new Date().toISOString(),i.requestRender()}export function setGuideAdditionsDone(e=[],t=!0){R(i.session);const o=i.session.additionChecks;e.forEach(r=>{t?o[r]=o[r]||new Date().toISOString():delete o[r]}),i.requestRender()}function de(e){const t=isAdditionChecked(e),o=_("check",t?n("Desmarcar {name}",{name:e.name}):n("Marcar {name} como adicionado",{name:e.name}),()=>{toggleAdditionCheck(additionCheckKey(e))},`check-btn ${t?"checked":""}`);return o.setAttribute("aria-pressed",t?"true":"false"),o}function O(e,t){return e&&e.setAttribute("data-guide-anchor",t),e}function me(e,t){if(!isGuideEnabled())return null;const o=!!i.session.guideChecks?.[e],r=_("check",o?n("Desmarcar {name}",{name:t}):n("Marcar {name} como feito",{name:t}),()=>{toggleGuideCheck(e)},`check-btn ${o?"checked":""}`);return r.setAttribute("aria-pressed",o?"true":"false"),r}export function applyParameterText(e){const t=kt(e);if(!t)return!1;const o={...i.session.properties||{}};return Ct(o,t),Q(o),i.session.properties=o,i.requestRender(),!0}export function applyImportedProfile(e){const t=i.session;if(!t||!t.recipe)return;const o={...t.properties,...Lt(t.recipe),mashWaterUsedL:"",showWaterSalts:t.properties.showWaterSalts,waterSalts:wt(t.recipe)};Q(o),t.properties=o,F(e,n("Par\xE2metros importados"),n("Aplicado")),S(n("Par\xE2metros importados da receita aplicados.")),i.requestRender()}export function applyCalibrationProfile(e){const t=i.session;if(!t||!t.recipe)return;const o=h(t.properties.targetVolumeL,20),r=T(o*ve.trubLossPct,2),l={...t.properties,...ve,targetVolumeL:o,trubLossL:r,trubLossEdited:!1,evaporationLh:T(xt(ve.evaporationPct,yt(o,r),t.recipe.boilTimeMin),2)};Q(l),t.properties=l,F(e,n("Brassagem de calibra\xE7\xE3o"),n("Aplicado")),S(n("Calibra\xE7\xE3o aplicada: os erros do dia ser\xE3o f\xE1ceis de corrigir. Anote seus par\xE2metros reais na An\xE1lise.")),i.requestRender()}export async function pasteParametersFromClipboard(e){const t=e.textContent;try{if(!navigator.clipboard||!navigator.clipboard.readText){F(e,t,n("Clipboard bloqueado"),!0),S(n("N\xE3o consegui ler o clipboard neste navegador."),"error");return}const o=await navigator.clipboard.readText();if(!o||!o.trim()){F(e,t,n("Nada copiado"),!0),S(n("N\xE3o h\xE1 par\xE2metros copiados."),"error");return}applyParameterText(o)?S(n("Par\xE2metros aplicados.")):(F(e,t,n("Formato inv\xE1lido"),!0),S(n("N\xE3o encontrei um c\xF3digo completo de par\xE2metros."),"error"))}catch{F(e,t,n("Clipboard bloqueado"),!0),S(n("O navegador bloqueou a leitura do clipboard."),"error")}}let D=null,Ce=null,B=null;export function saveBrewSession(e){const t=e.textContent;try{const o=Wt();en(JSON.stringify(o,null,2),Nt(o),"application/json;charset=utf-8"),F(e,t,n("Salvo")),S(n("Sess\xE3o salva em arquivo."))}catch(o){console.error(o),F(e,t,n("Falhou"),!0),S(n("N\xE3o foi poss\xEDvel salvar a sess\xE3o."),"error")}}export function openBrewSessionPicker(e){Ce=e||null;const t=wn();t.value="",t.click()}function wn(){return D||(D=document.createElement("input"),D.type="file",D.accept=".bsa-brassagem.json,.json,application/json",D.hidden=!0,D.addEventListener("change",async()=>{const e=D.files&&D.files[0];if(!e)return;const t=Ce,o=t&&t.textContent;try{t&&(t.textContent=n("Abrindo"));const r=await openBrewSessionText(await e.text());t&&F(t,o,r?n("Aberta"):n("N\xE3o abriu"),!r)}finally{Ce=null,D.value=""}}),document.body.append(D),D)}export async function openBrewSessionText(e,t={}){try{const o=Vt(JSON.parse(String(e||"")),t);return o&&(i.requestRender(),S(n("Sess\xE3o aberta."))),o}catch(o){const r=o&&/incompatível/i.test(o.message||"")?o.message:n("Arquivo de brassagem inv\xE1lido.");return S(r,"error"),!1}}export function openRecipeFilePicker(){B||(B=document.createElement("input"),B.type="file",B.accept=".xml,.beerxml,text/xml,application/xml",B.hidden=!0,B.addEventListener("change",async()=>{const e=B.files&&B.files[0];if(e)try{const t=hn(await e.text());gn(t,e.name),i.phase="prepare",i.requestRender(),S(n("Receita carregada."))}catch(t){S(t.message||n("N\xE3o foi poss\xEDvel abrir o BeerXML."),"error")}finally{B.value=""}}),document.body.append(B)),B.value="",B.click()}export function openPdfReport(e){const t=e.textContent;try{const o=_e(i.session),r=window.open("","_blank");if(!r)throw new Error("popup blocked");r.document.open(),r.document.write(an(i.session,o)),r.document.close(),F(e,t,n("PDF aberto"))}catch{F(e,t,n("Falhou"),!0)}}export function ensureFermentationTracking(){const e=i.session;return e.fermentationTracking=$t(e.fermentationTracking),e.fermentationTracking}export function nextFermentationDay(e=ensureFermentationTracking()){const t=(e.readings||[]).map(o=>h(o.day,0)).filter(o=>Number.isFinite(o));return Math.max(0,...t)+1}export function fermentationReadingId(){return`fermentation-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,7)}`}export function addFermentationReading(){i.fermentationDraftReading={id:fermentationReadingId(),day:ensureFermentationTracking().readings.length?nextFermentationDay():0,datetime:j(),temperatureC:"",wri:""},i.openFermentationDateEditor=`draft:${i.fermentationDraftReading.id}`,i.fermentationDateEditorValue=dateTimeParts(i.fermentationDraftReading.datetime),i.requestRender(),S(n("Confira data e hora e clique em Inserir."))}export function insertFermentationDraftReading(){if(!i.fermentationDraftReading)return;const e=ensureFermentationTracking();e.readings.push({id:i.fermentationDraftReading.id||fermentationReadingId(),day:i.fermentationDraftReading.day===""?nextFermentationDay(e):Math.max(0,h(i.fermentationDraftReading.day)),datetime:String(i.fermentationDraftReading.datetime||""),temperatureC:i.fermentationDraftReading.temperatureC===""?"":Math.max(0,h(i.fermentationDraftReading.temperatureC)),wri:i.fermentationDraftReading.wri===""?"":Math.max(0,h(i.fermentationDraftReading.wri))}),i.fermentationDraftReading=null,i.openFermentationDateEditor="",i.fermentationDateEditorValue=null,i.requestRender(),S(n("Leitura de fermenta\xE7\xE3o inserida."))}export function cancelFermentationDraftReading(){i.fermentationDraftReading=null,i.openFermentationDateEditor="",i.fermentationDateEditorValue=null,i.requestRender()}export function setFermentationDraftReading(e,t,o=!0){i.fermentationDraftReading&&(e==="datetime"&&(i.fermentationDraftReading.datetime=String(t||""),i.fermentationDateEditorValue=dateTimeParts(i.fermentationDraftReading.datetime)),e==="temperatureC"&&(i.fermentationDraftReading.temperatureC=t===""?"":Math.max(0,h(t))),e==="wri"&&(i.fermentationDraftReading.wri=t===""?"":Math.max(0,h(t))),o&&i.requestRender())}export function setFermentationReading(e,t,o){const l=ensureFermentationTracking().readings.find(u=>u.id===e);l&&(t==="day"&&(l.day=o===""?"":Math.max(0,h(o))),t==="datetime"&&(l.datetime=String(o||"")),t==="temperatureC"&&(l.temperatureC=o===""?"":Math.max(0,h(o))),t==="wri"&&(l.wri=o===""?"":Math.max(0,h(o))),i.requestRender())}export function startFermentationFromSummary(){i.phase="ferment",i.requestRender(),window.scrollTo({top:0,behavior:"instant"})}export function removeFermentationReading(e){const t=ensureFermentationTracking(),o=t.readings.length;t.readings=t.readings.filter(r=>r.id!==e),i.openFermentationDateEditor===`saved:${e}`&&(i.openFermentationDateEditor="",i.fermentationDateEditorValue=null),t.readings.length!==o&&(i.requestRender(),S(n("Leitura de fermenta\xE7\xE3o removida.")))}export function dateTimeParts(e=j()){const[t=j().slice(0,10),o="00:00"]=String(e||j()).split("T");return{date:t,time:o.slice(0,5)||"00:00"}}export function partsToDatetime(e=dateTimeParts()){return`${e.date||j().slice(0,10)}T${(e.time||"00:00").slice(0,5)}`}function Je(e,t){i.fermentationDateEditorValue={...dateTimeParts(),...i.fermentationDateEditorValue||{},[e]:t},i.requestRender()}function Ln(e,t){const o=partsToDatetime(i.fermentationDateEditorValue||dateTimeParts());e==="draft"?(setFermentationDraftReading("datetime",o,!1),insertFermentationDraftReading()):(i.openFermentationDateEditor="",i.fermentationDateEditorValue=null,setFermentationReading(t,"datetime",o))}function kn(e,t){i.openFermentationDateEditor=i.openFermentationDateEditor===e?"":e,i.fermentationDateEditorValue=i.openFermentationDateEditor?dateTimeParts(t||j()):null,i.requestRender()}function Qe(){if(String(i.openFermentationDateEditor||"").startsWith("draft:")){cancelFermentationDraftReading();return}i.openFermentationDateEditor="",i.fermentationDateEditorValue=null,i.requestRender()}export const PHASES=[{id:"prepare",label:"Preparo",icon:"prepare"},{id:"mash",label:"Mostura",icon:"mash"},{id:"boil",label:"Fervura",icon:"boil"},{id:"summary",label:"An\xE1lise",icon:"summary"},{id:"ferment",label:"Fermenta\xE7\xE3o",icon:"ferment"}];export function renderPhase(e){const t=(()=>{switch(i.phase){case"mash":return jn(e);case"boil":return Kn(e);case"ferment":return fa(e);case"summary":return Ca(e);default:return Rn(e)}})();return[Cn(),t,En(i.phase)]}function Cn(){return i.session?.calibration?a("section","card calib-banner",[M("scale","icon calib-banner-icon"),a("div","calib-banner-text",[a("b","",n("Brassagem de calibra\xE7\xE3o")),a("span","",n("Alguns par\xE2metros s\xE3o conservadores de prop\xF3sito. Me\xE7a pr\xE9-fervura, p\xF3s-fervura e frio e corrija com \xE1gua quando o app pedir \u2014 no fim, esta leva vira o seu equipamento real."))])]):null}const Sn={prepare:"Preparo conferido",mash:"Mostura conclu\xEDda",boil:"Fervura conclu\xEDda",summary:"An\xE1lise conferida",ferment:"Fermenta\xE7\xE3o registrada"};function En(e){if(isGuideEnabled())return null;const t=PHASES.findIndex(u=>u.id===e),o=PHASES[t+1];if(!o)return null;const r=n(Sn[e]||"Concluir"),l=w([`${r}`,a("span","next-phase-arrow",`\u2192 ${n(o.label)}`)],()=>{R(i.session),i.session.phasesDone[e]=!0,i.phase=o.id,i.requestRender(),window.scrollTo({top:0,behavior:"instant"})},"btn primary next-phase");return a("div","next-phase-wrap",[l])}export function isPhaseDone(e){return i.session?(R(i.session),!!i.session.phasesDone[e]):!1}export function emptyScreen(){const e=w(n("Abrir sess\xE3o salva"),o=>openBrewSessionPicker(o.currentTarget),"btn ghost"),t=w(n("Abrir BeerXML do computador"),()=>openRecipeFilePicker(),"btn ghost");return a("div","empty-state",[M("prepare","icon empty-icon"),a("h2","",n("Escolha uma receita para brassar")),a("p","",n("Entre na \xE1rea de Receitas da Beer School Academy e abra a receita que deseja produzir \u2014 ou continue uma brassagem salva.")),a("div","empty-actions",[a("a","btn primary",n("Ver receitas na BSA"),{href:"https://beerschool.circle.so/c/receitas/"}),e,t])])}function Ze(){return R(i.session),isPhaseDone("prepare")||Object.keys(i.session.guideChecks||{}).filter(e=>!e.startsWith("op-")).length>0||Object.keys(i.session.additionChecks||{}).length>0||(i.session.timerEvents||[]).length>0}function Rn(e){const t=Ze(),o=isGuideEnabled()&&!t&&i.guideLevel!=="copiloto"?a("div","next-phase-wrap",[w([n("Iniciar receita din\xE2mica"),a("span","next-phase-arrow",`\u2192 ${n("Mostura")}`)],()=>startGuide(),"btn primary next-phase")]):null;return[Pn(e),Mn(e),Un(e,"prepare"),o]}function Pn(e){const t=T(Ge(e.og,e.fg),1);return a("section","card hero-card",[a("div","hero-head",[a("div","hero-identity",[a("span","hero-kicker",n("Receita pronta para brassar")),a("h1","hero-title",e.recipe.name),a("p","hero-sub",`${e.recipe.styleName} \xB7 ${e.recipe.brewer||n("sem autor")}`)]),a("div","hero-actions",[w(n("Lista de compras"),()=>openShoppingListSheet("list"),"btn ghost small"),w(n("Receita"),()=>openShoppingListSheet("recipe"),"btn ghost small")])]),a("div","hero-stats",[ue("OG",e.og.toFixed(3)),ue("FG",e.fg.toFixed(3)),ue("ABV",`${b(t,1)}%`),ue("IBU",String(e.ibu)),$n(e.ebc)])])}function Mn(e){const t=e.props,o=i.viewMode==="essential",r=[N(n("Volume no fermentador"),t.targetVolumeL,"L",p=>setProp("targetVolumeL",p),{step:".1",min:".1"}),N(n("Efici\xEAncia do equipamento"),bt(t),"%",p=>setProp("equipmentEfficiencyPct",p),{step:".1",min:"1"})];o||r.push(N(n("Evapora\xE7\xE3o"),t.evaporationPct,"%/h",p=>setProp("evaporationPct",p),{step:".1",min:"0"}),N(n("Perda Trub"),h(t.trubLossPct,.15)*100,"%",p=>setProp("trubLossPct",p/100),{step:".1",min:"0"}),N(n("Absor\xE7\xE3o dos gr\xE3os"),t.grainAbsorptionLkg,"L/kg",p=>setProp("grainAbsorptionLkg",p),{step:".01",min:"0"}),N(n("Rela\xE7\xE3o \xC1gua/Malte"),t.waterToGrainRatioLkg,"L/kg",p=>setProp("waterToGrainRatioLkg",p),{step:".1",min:"0"}),N(n("Volume morto recuper\xE1vel"),t.mashTunDeadSpaceL,"L",p=>setProp("mashTunDeadSpaceL",p),{step:".1",min:"0",title:n("\xC1gua sob o fundo falso da tina: precisa ser preenchida na mostura, mas volta pelo dreno. Muda a divis\xE3o mostura/lavagem sem alterar o total (padr\xE3o 0).")}),N(n("Fator WRI do refrat\xF4metro"),t.wriFactor,"\xD7",p=>setProp("wriFactor",p),{step:".01",min:".8",title:n("Fator de corre\xE7\xE3o do refrat\xF4metro para mosto (padr\xE3o 1,04).")}),N(n("Taxa de aquecimento"),Pt(t,i.session.recipe),"\xB0C/min",p=>setProp("heatingRateCMin",p),{step:".1",min:"0",title:n("Velocidade de subida entre as rampas \u2014 gera as etapas estimadas de aquecimento no rel\xF3gio (0 desliga; padr\xE3o 1,5).")}));const l=o?null:a("div","derived-row",[Se(n("Efici\xEAncia de mostura"),`${b(t.mashEfficiencyPct,1)}%`),Se(n("Perda Trub calculada"),E(t.trubLossL,2)),Se(n("Evapora\xE7\xE3o calculada"),Xe(t.evaporationLh,2))]),u=i.session.equipmentProfileName?`Equipamento: ${i.session.equipmentProfileName}`:n("Selecionar equipamento"),s=i.session.calibration?a("span","muted calib-equip-note",n("Equipamento em observa\xE7\xE3o \u2014 \xE9 o que esta brassagem vai medir.")):w([M("scale","icon"),a("span","",u)],()=>on(),"btn small equip-select-btn",{title:n("Aplica um perfil de equipamento salvo a esta brassagem.")}),c=a("div","param-tools",[Fn(),a("div","param-buttons",[s])]);return k(n("Par\xE2metros de produ\xE7\xE3o"),"scale",[c,a("div","form-grid",r),l,o?null:Tn(t)])}function Se(e,t){return a("span","derived-chip",[a("span","",e),a("b","",t)])}const An=[[4,"#F8F4B4"],[6,"#F6E96C"],[8,"#F1D250"],[12,"#E8B845"],[16,"#D98A37"],[20,"#BE6D2E"],[26,"#A85C28"],[33,"#8E4A22"],[39,"#6B3A1E"],[47,"#57301A"],[57,"#432818"],[69,"#2E1B12"],[79,"#1F120C"],[1/0,"#120A06"]];export function ebcToHex(e){const t=Math.max(0,h(e)),o=An.find(([r])=>t<=r);return o?o[1]:"#120A06"}function $n(e){const t=h(e)>0,o=a("span","ebc-swatch");return t&&(o.style.background=ebcToHex(e)),a("div","stat",[a("span","stat-label",n("Cor")),a("b","stat-value num ebc-value",t?[o,`${b(e,1)} EBC`]:"-")])}function Fn(){const e=(t,o,r)=>w(t,()=>{It(o),i.requestRender()},"seg-btn",{title:r,"aria-pressed":i.viewMode===o?"true":"false"});return a("div","seg-switch",[e(n("Essencial"),"essential",n("Mostra apenas volume e efici\xEAncia de mostura.")),e(n("Completo"),"complete",n("Mostra todos os par\xE2metros de produ\xE7\xE3o."))])}function Tn(e){const t=qe(e);return a("div","base-water",[a("div","base-water-head",[a("b","",n("\xC1gua base")),a("span","","ppm")]),a("div","ion-grid",De.map(o=>{const r=ce(t[o.key],l=>setBaseWaterIon(o.key,l),{"aria-label":n("{ion} \xE1gua base",{ion:o.plainLabel}),min:"0",step:"1"});return a("label","ion-field",[a("span","",o.label),r])}))])}function Dn(e){const t=e.props,o=h(t.mashWaterUsedL,e.volumes.mashWater),r=t.mashWaterUsedL===""?T(e.volumes.mashWater,1):t.mashWaterUsedL,l=Math.max(0,e.volumes.totalWater-o),u=!!t.showWaterSalts,s=Ie(t,e.volumes),c=_("salt",u?n("Ocultar sais"):n("Mostrar sais"),()=>setWaterSaltsVisible(!u),`icon-btn ${u?"active":""}`);c.setAttribute("aria-pressed",u?"true":"false");const p=a("div","water-table",[$([a("span","",""),a("b","",n("Calculado")),a("b","",n("Usado"))],"head three"),$([a("span","row-label",n("Mostura")),a("span","num",E(e.volumes.mashWater,1)),le(r,f=>setProp("mashWaterUsedL",f),{},e.volumes.mashWater)],"three"),$([a("span","row-label",n("Lavagem")),a("span","num",E(e.volumes.sparge,1)),a("span","num",E(l,1))],"three"),$([a("span","row-label",n("Total")),a("span","num",E(e.volumes.totalWater,1)),a("span","num",E(e.volumes.totalWater,1))],"three total")]),d=u?a("div","salts-block",[a("div","salts-grid",[$([a("span","",""),...s.map(f=>a("b","",f.formula))],"head salts"),$([a("span","row-label",n("Mostura")),...s.map(f=>a("span","num",Ee(f.mashG)))],"salts"),$([a("span","row-label",n("Lavagem")),...s.map(f=>a("span","num",Ee(f.spargeG)))],"salts"),$([a("span","row-label",n("Total")),...s.map(f=>a("span","num",Ee(f.totalG)))],"salts total")]),Bn(e.waterProfile)]):null;return O(k(n("\xC1gua desta brassagem"),"water",[p,a("p","reading-hint",n('Aque\xE7a a \xE1gua de lavagem a ~76\u201378 \xB0C. Ajuste "Usado" na mostura se mudar algo na hora.')),i.session?.calibration?a("p","reading-hint calib-hint",n('A \xE1gua de mostura prevista \xE9 {vol}, mas coloque o quanto for preciso para cobrir o gr\xE3o. Em equipamentos com fundo falso grande, boa parte da \xE1gua fica embaixo, sem contato com os gr\xE3os \u2014 isso \xE9 o volume morto do seu sistema. Ajuste "Usado" com o que voc\xEA realmente usou.',{vol:E(e.volumes.mashWater,1)})):null,d],[me("mash-water",n("\xE1gua da mostura")),c]),"water")}function Ee(e){return h(e)?`${b(e,1)} g`:"-"}function Bn(e={}){return a("div","ion-strip",[a("span","ion-strip-label",n("\xC1gua ajustada")),...De.map(t=>a("span","ion-chip",[a("b","",t.label),a("em","",vn(e.adjusted?.[t.key]))]))])}const qn={"mash-water":"alvo 5,5",mash:"faixa 5,2\u20135,6","sparge-water":"alvo 5,5","pre-boil":"s\xF3 registro","post-boil":"s\xF3 registro"},In=e=>Kt[e]||e;function Wn(){const e=jt.find(t=>t.id===se());return e?A(e.label).toLowerCase():n("\xE1cido")}function Z(e,t){const o=h(e.props.mashWaterUsedL,e.volumes.mashWater);return t==="sparge-water"?Math.max(0,e.volumes.totalWater-o):o}function z(e){return R(i.session),i.session.phLog[e]}function Re(e){const t=z("mash-water").readings;return Ke(t,Z(e,"mash-water"))}function Vn(e,t){if(t==="sparge-water"){const o=Re(e);if(o)return{acidId:se(),water:{slope:o,samples:1,spreadPct:0}}}return Ue()}function Nn(e,t){const o=z(t);if(o.learnedAt||t==="pre-boil"||t==="post-boil")return;const r=Ke(o.readings,Z(e,t));if(!r)return;const l=t==="mash"?"mash":"water";Ut(Xt(Ue(),{kind:l,slope:r,acidId:se()})),o.learnedAt=new Date().toISOString()}function On(e,t,o){const r=h(o);if(!(r>0&&r<14))return;const l=z(t);l.readings.push({ph:r,doseMl:0,at:new Date().toISOString()});const u=et(e,t);u&&u.doseMl>0?l.readings[l.readings.length-1].doseMl=u.doseMl:Nn(e,t),i.requestRender()}function Gn(e){const t=z(e);t.readings.length&&(t.readings.pop(),i.requestRender())}function et(e,t){const o=je[t];if(!o)return null;const r=z(t),l=r.readings[r.readings.length-1];if(!l)return null;if(t==="mash"&&l.ph<=o.max)return{doseMl:0,inRange:l.ph>=o.min,low:l.ph<o.min};const u=r.readings.slice(0,-1);if(t==="sparge-water"&&u.length===0){const c=Re(e);if(c)return{doseMl:zt({slope:c,volumeL:Z(e,t),currentPh:l.ph,targetPh:o.target}).doseMl,slope:c,source:"leitura"}}return Yt({stage:t,volumeL:Z(e,t),currentPh:l.ph,readings:u,memory:Vn(e,t),acidId:se()})}const _n={leitura:"pela sua \xE1gua de hoje",memoria:"pela mem\xF3ria da casa",prior:"chute inicial conservador \u2014 a pr\xF3xima leitura ensina"};function ee(e,t){if(!ie()||!i.session)return null;const o=In(t),r=z(t),l=je[t],u=!l;if(r.skipped)return k(n("pH \xB7 {title}",{title:n(o)}),"flask",[a("div","ph-skipped-row",[a("span","muted",n("Pulado \u2014 o dia segue normal.")),w(n("Retomar"),()=>{r.skipped=!1,i.requestRender()},"btn small ghost")])],[a("span","head-meta",n("opcional"))]);const s=[];r.readings.length&&(s.push(a("div","ph-history",r.readings.map((m,g)=>{const L=g===r.readings.length-1;return a("div","ph-history-row",[a("span","ph-history-ph num",`pH ${b(m.ph,2)}`),L&&!(m.doseMl>0)?a("span","ph-history-dose"):a("span","ph-history-dose",[a("span","","+"),H(m.doseMl||"",C=>{m.doseMl=Math.max(0,h(C)),i.requestRender()},"mL",{"aria-label":n("Dose ap\xF3s a leitura {n}",{n:g+1})})]),L?_("undo",n("Desfazer esta leitura"),()=>Gn(t),"icon-btn ph-undo"):null])}))),s.push(a("p","ph-edit-hint",n("Toque na dose para corrigir o que voc\xEA realmente adicionou."))));const c=r.readings[r.readings.length-1];if(u)c&&s.push(a("p","ph-status done",n("Registrado: pH {ph}. Vai para o resumo da leva.",{ph:b(c.ph,2)})));else if(c){const m=et(e,t);t==="mash"&&m&&m.low?s.push(a("p","ph-status",n("pH {ph} \u2014 abaixo da faixa. N\xE3o h\xE1 corre\xE7\xE3o para cima; anote e siga (o malte manda).",{ph:b(c.ph,2)}))):m&&m.doseMl>0?s.push(a("p","ph-status act",[a("b","",n("Adicione ~{dose} mL de {acid}",{dose:b(m.doseMl,1),acid:Wn()})),a("span","",t==="mash"?n(" no mosto, misture bem (~1 min) e leia de novo."):n(" nos {vol} L, misture bem (~1 min) e leia de novo.",{vol:b(Z(e,t),1)})),m.source?a("span","ph-source",` ${n(_n[m.source]||"")}`):null])):s.push(a("p","ph-status done",t==="mash"?n("\u2713 pH {ph} \u2014 na faixa ({min}\u2013{max}). Siga o dia.",{ph:b(c.ph,2),min:b(l.min,1),max:b(l.max,1)}):n("\u2713 pH {ph} \u2014 no alvo. Siga o dia.",{ph:b(c.ph,2)})))}else t==="sparge-water"?s.push(a("p","ph-status",Re(e)?n("Mesma \xE1gua de hoje: a dose j\xE1 vem calculada. Registre uma leitura, aplique e fa\xE7a o ajuste fino."):n("Me\xE7a o pH da \xE1gua de lavagem \u2014 se for a mesma \xE1gua da mostura, a dose vem quase pronta."))):t==="mash"?s.push(a("p","ph-status",n("10\u201315 min ap\xF3s o dough-in, tire uma amostra do mosto, esfrie a ~20 \xB0C e leia."))):s.push(a("p","ph-status",n("Me\xE7a o pH da \xE1gua antes do dough-in \u2014 o tratamento come\xE7a aqui.")));let p="";const d=ce("",m=>{p=m},{placeholder:n("ex.: 7,2"),"aria-label":`pH ${n(o)}`}),f=w(n("Registrar leitura"),()=>{On(e,t,p)},"btn small primary");return s.push(a("div","ph-input-row",[a("span","cell-edit ph-cell",[d]),f])),u||s.push(a("p","reading-hint",n("Esfrie a amostra a ~20 \xB0C antes de ler \u2014 pH cai com a temperatura e os alvos s\xE3o a frio."))),t==="mash-water"&&!r.readings.length&&s.push(a("p","reading-hint",n("Calibrou o pHmetro? Buffers 4,0 e 7,0 \u2014 dois minutos que mudam tudo."))),k(n("pH \xB7 {title}",{title:n(o)}),"flask",s,[a("span","head-meta",n(qn[t]||"")),r.readings.length?null:w(n("Pular"),()=>{r.skipped=!0,i.requestRender()},"btn small ghost")])}function Hn(){if(!ie()||!i.session)return null;const e=Jt(i.session.phLog);return e.length?k(n("pH do dia"),"flask",[a("div","ph-summary",e.map(t=>a("div","ph-summary-row",[a("span","ph-summary-stage",n(t.title)),t.skipped&&!t.readings?a("span","ph-summary-val muted",n("pulado")):a("span","ph-summary-val",[a("b","num",`pH ${b(t.finalPh,2)}`),t.totalMl>0?a("span","ph-summary-acid",n(" \xB7 {ml} mL de \xE1cido",{ml:b(t.totalMl,1)})):null])])))]):null}let Pe=!1;function Un(e,t){if(R(i.session),i.guideLevel!=="copiloto"||!isGuideEnabled())return null;const o=Ye(e,i.session,"copiloto",{phMode:ie()}).filter(g=>g.phase===t);if(!o.length)return null;const r=o.map(g=>{const L=g.type==="check",C=Array.isArray(g.checks)&&g.checks.length>0,P=()=>{C?setGuideAdditionsDone(g.checks,!g.done):toggleGuideCheck(g.id)},v=L?w(g.done?M("check","icon"):"",P,`calib-check ${g.done?"on":"off"}`,{"aria-label":g.done?n("Desmarcar: {title}",{title:g.title}):n("Marcar feito: {title}",{title:g.title}),"aria-pressed":g.done?"true":"false"}):a("span",`checklist-auto ${g.done?"on":""}`,g.done?"\u2713":"\xB7"),x=[a("span","checklist-title",g.title)];let y;return g.id==="op-ingredients"?y=w([a("span","checklist-title",[g.title,a("span","checklist-link",` \xB7 ${n("ver a lista \u2192")}`)])],()=>openShoppingListSheet("recipe"),"checklist-main checklist-main-btn"):L?y=w(x,P,"checklist-main checklist-main-btn"):y=a("div","checklist-main",x),a("div",`checklist-row ${g.done?"is-done":""} ${g.status==="current"?"is-current":""}`,[v,y])}),l=o.filter(g=>g.done).length,u=t==="prepare"&&!Ze()?a("div","checklist-cta",[w([n("Iniciar brassagem"),a("span","next-phase-arrow",` \u2192 ${n("Mostura")}`)],()=>startGuide(),"btn primary next-phase")]):null,s=t!=="prepare",c=!s||Pe,p=a("span","head-meta num",`${l}/${o.length}`),d=a("header",`card-head checklist-head ${s?"is-toggle":""}`,[M("summary","icon card-icon"),a("h2","card-title",n("Checklist do dia")),a("div","card-actions",[p,s?M("chevron",`icon checklist-chevron ${c?"is-open":""}`):null].filter(Boolean))]);if(s){d.setAttribute("role","button"),d.setAttribute("tabindex","0"),d.setAttribute("aria-expanded",c?"true":"false");const g=()=>{Pe=!Pe,i.requestRender()};d.addEventListener("click",g),d.addEventListener("keydown",L=>{(L.key==="Enter"||L.key===" ")&&(L.preventDefault(),g())})}const f=c?a("div","card-body",[a("div","checklist-list",r),u].filter(Boolean)):null,m=a("section",`card copilot-checklist ${c?"":"is-collapsed"}`,[d,f].filter(Boolean));return m.setAttribute("data-guide-anchor","copilot-checklist"),m}function tt(e,t){if(i.guideLevel!=="copiloto"||!isGuideEnabled())return{};const o={};return Ye(e,i.session,"copiloto",{phMode:ie()}).filter(r=>r.phase===t&&String(r.id).startsWith("op-")).forEach(r=>{o[r.id]=r}),o}function nt(e){const t=e.done,o=w(t?M("check","icon"):"",()=>toggleGuideCheck(e.id),`calib-check ${t?"on":"off"}`,{"aria-label":t?n("Desmarcar: {title}",{title:e.title}):n("Marcar feito: {title}",{title:e.title}),"aria-pressed":t?"true":"false"}),r=a("div","op-card-main",[a("span","op-card-title",e.title)]),l=a("section",`card op-card ${t?"is-done":""}`,[o,r]);return l.setAttribute("data-guide-anchor",e.id),l}function q(e,t){const o=e[t];return o?nt(o):null}function at(e,t){return isGuideEnabled()?ln(e,t,i.guideLevel).map(o=>a("p","card-companion",[a("b","",n("Durante: ")),`${o.title.charAt(0).toLowerCase()}${o.title.slice(1)}`])):[]}function jn(e){const t=e.scaledFermentables.filter(d=>d.use==="Mostura"),o=t.reduce((d,f)=>d+h(f.amountKg),0),r=Mt(e.recipe.mash),l=O(k(n("Maltes"),"scale",[a("div","ingredient-list",[...t.map(d=>a("div","ingredient-row",[a("div","ingredient-main",[a("b","ingredient-name",d.name),a("span","ingredient-meta",`${o?b(d.amountKg/o*100,1):"0,0"}%`)]),a("b","ingredient-amount num",K(d.amountKg))])),a("div","ingredient-row total",[a("b","ingredient-name",n("Total")),a("b","ingredient-amount num",K(o))])])],[me("mash-doughin","dough-in")]),"grist"),u=isGuideEnabled()?sn(e,i.session):[],s=O(k(n("Rampas de mostura"),"thermo",[a("div","steps-list",e.recipe.mash.map((d,f)=>{const m=u[f]||"";return a("div",`step-row ${m}`,[m==="done"?M("check","icon step-state-icon"):null,a("b","step-name",A(Ve(d.name))),m==="current"?a("span","step-chip now",n("agora")):null,a("span","step-chip temp",`${b(d.temperatureC,1)} \xB0C`),a("span","step-chip time",`${b(d.timeMin,0)} min`)])})),...at(e,"mash")],[a("span","head-meta",`${b(r,0)} min`)]),"mash-steps"),c=e.mashAdditions.length?k(n("Adi\xE7\xF5es de mostura"),"hop",[a("div","addition-list",e.mashAdditions.map(d=>a("div",`addition-row with-check ${isAdditionChecked(d)?"checked":""}`,[de(d),a("b","addition-name",d.name),a("span","addition-amount num",Y(d.amount,d.unit)),a("span","addition-when",A(d.moment||d.use))],{"data-guide-anchor":additionCheckKey(d)})))]):null,p=tt(e,"mash");return[Dn(e),ee(e,"mash-water"),l,c,s,ee(e,"mash"),q(p,"op-heat-sparge"),la(e),ee(e,"sparge-water"),q(p,"op-recirculate"),q(p,"op-transfer-kettle"),ot(e,"preBoil",n("Leitura pr\xE9-fervura"),"95 \xB0C",e.volumes.preBoil,e.preBoilPlato),ee(e,"pre-boil"),ut(e,e.preCorrection,"pre",e.preBoilPlato)]}function Kn(e){const t=tt(e,"boil"),o=h(e.recipe.fermentation?.[0]?.temperatureC),r=i.guideLevel==="copiloto"&&isGuideEnabled()?(()=>{const l=nt({id:"boil-chill",title:o?n("Resfrie o mosto at\xE9 ~{t} \xB0C",{t:b(o,0)}):n("Resfrie o mosto at\xE9 a temperatura de inocula\xE7\xE3o"),done:!!i.session.guideChecks?.["boil-chill"]});return l.setAttribute("data-guide-anchor","chill"),l})():null;return[ia(e),q(t,"op-chiller-in"),ot(e,"postBoil",n("Leitura p\xF3s-fervura"),"95 \xB0C",e.expected.hotPostBoil,e.postBoilPlato),ee(e,"post-boil"),ut(e,e.postCorrection,"post",e.postBoilPlato),sa(e),q(t,"op-whirlpool"),q(t,"op-sanitize-cold"),q(t,"op-fermenter-ready"),r,ca(e),q(t,"op-aerate"),q(t,"op-pitch"),q(t,"op-close-airlock"),q(t,"op-fridge"),q(t,"op-cleanup")]}function ot(e,t,o,r,l,u){const s=xe(e.props),c=i.session.measurements[t],p=Be(c,s),d=t==="postBoil",f=d?remainingBoilEvapL(e.props):0,m=d?l+f:l,g=d&&m>0?u*l/m:u,L=g*s,C=d?c.rawVolumeL!==void 0?c.rawVolumeL:c.volumeL:p.volumeL,P=d?c.rawWri!==void 0?c.rawWri:c.wri:p.wri,v=y=>I=>d?setPostBoilReading(e,y,I):setMeasurement(t,y,I),x=d&&c.readOffsetMin&&h(c.volumeL)>0;return O(k(o,"flask",[a("div","reading-grid",[a("div","reading-col expected",[a("span","reading-col-title",n("Esperado")),a("div","reading-line",[a("span","",n("Volume")),a("b","num",E(m,2))]),a("div","reading-line",[a("span","",n("Extrato")),a("b","num",`${b(g,1)} \xB0P`)])]),a("div","reading-col input",[a("span","reading-col-title",n("Sua leitura")),a("div","reading-line",[a("span","",n("Volume")),le(C,v("volumeL"),{placeholderL:m},m)]),a("div","reading-line",[a("span","","WRI",{title:n("Leitura do refrat\xF4metro (escala WRI/Brix)")}),H(P,v("wri"),"WRI",{placeholder:b(L,1)})]),a("div","reading-real",p.realPlato?[a("span","",x?n("No flameout"):n("Real")),a("b","num",x?`\u2248 ${E(h(c.volumeL),2)} \xB7 ${b(p.realPlato,1)} \xB0P`:`${b(p.realPlato,1)} \xB0P / ${p.sg.toFixed(3)}`)]:[a("span","muted",n("Informe volume e WRI"))])])]),a("p","reading-hint",d?n("Me\xE7a o volume e o WRI no fim da fervura (flameout), com o mosto ainda quente \u2014 o esperado j\xE1 considera a temperatura."):n("Me\xE7a o volume quente e o WRI no refrat\xF4metro \u2014 o esperado j\xE1 considera a temperatura.")),i.session?.calibration?a("p","reading-hint calib-hint",d?n("Aqui nasce a sua evapora\xE7\xE3o real. Se o mosto vier curto e forte, o app pede \xE1gua no flameout \u2014 e o dia fecha certo."):n("Aqui nasce a sua efici\xEAncia real. Se a densidade vier alta, o app pede \xE1gua antes de ferver \u2014 era o esperado.")):null],[a("span","head-meta temp-badge",r)]),t==="preBoil"?"reading-pre":"reading-post")}function rt(e,t){R(i.session);const o=i.session.correctionRounds[e],r=ensureCorrectionCheck(e);o.push({round:o.length+1,action:String(t||""),checkWri:r.wri===""?"":h(r.wri),at:new Date().toISOString()}),r.wri="",i.requestRender(),S(n("Me\xE7a de novo para conferir a corre\xE7\xE3o."))}export function acceptCorrection(e,t=n("Anotado \u2014 seguimos com a leitura como est\xE1.")){R(i.session),i.session.correctionAccepted[e]=new Date().toISOString(),i.requestRender(),S(t)}function Yn(e){R(i.session),delete i.session.correctionAccepted[e],i.requestRender()}function zn(e){return R(i.session),i.session.correctionRounds[e]}function Xn(e){const t=Math.max(.1,h(e)),o=`${b(t,0)} min`;bn("boil",{id:`extra-boil-${Date.now()}`,phase:"boil",label:"Fervura extra",detail:o,durationMin:t,stageRemainingMin:t,targetStageRemainingMin:0,boilRemainingMin:t,targetBoilRemainingMin:0,eventTimeLabel:o,eventType:"boil-end",eventCount:0,eventActionLabel:"Finalizar fervura extra",eventSummaryLabel:"Fim",additions:[]}),S(n("Contador de fervura extra iniciado: {time}.",{time:o}))}const Jn="5545991550650",Qn="Piquiri Brewshop",it=.15,Zn=20;let W=null,fe=null,V=0,X={...we},te=new Set,ne=new Map,U=null,ae=!1,he="list";function st(e){return String(e||"").trim().toLowerCase()==="mostura"}function Me(e,t){const o=Math.max(1e-6,h(t));return e>0?Math.max(o,Math.ceil(e/o-1e-9)*o):0}function Ae(e,t=it){return e>0?Math.max(1,Math.ceil(e-t-1e-9)):0}function lt(e,t,o){const r=new Map;return(e||[]).forEach(l=>{const u=t(l);if(!(u>0))return;const s=r.get(l.name)||{name:l.name,preG:0,postG:0,count:0};st(o(l))?s.preG+=u:s.postG+=u,s.count+=1,r.set(l.name,s)}),[...r.values()]}function J(e,t){return t>0&&(e-t)/t>.15}export function buildShoppingList(e,t={}){const o=Math.max(0,h(t.marginPct,0)),r=h(t.tolerance,it),l={...we,...t.fractioning||{}},u=1+o/100,s=[],c=v=>v.preG+u*v.postG,p=v=>v.postG>0&&o>0,d=v=>v===1?n("{count} pacote",{count:v}):n("{count} pacotes",{count:v}),f=lt(e.scaledFermentables,v=>h(v.amountKg)*1e3,v=>v.use).map(v=>{const x=v.preG+v.postG,y=Me(c(v),l.malteG);return{key:`malte:${v.name}`,name:v.name,hasMargin:p(v),additions:v.count,recipeText:K(x/1e3),buyText:K(y/1e3),orderText:K(y/1e3),differsNotably:J(y,x),alert:!1,alertText:""}});f.length&&s.push({title:n("Maltes e ferment\xE1veis"),items:f});const m=lt(e.hopSchedule,v=>h(v.plannedAmountG),v=>v.use).map(v=>{const x=v.preG+v.postG,y=Ae(c(v)/Math.max(1e-6,l.lupuloG),r),I=y*l.lupuloG,Te=I+1e-6<x;return{key:`lupulo:${v.name}`,name:v.name,hasMargin:p(v),additions:v.count,recipeText:`${b(x,0)} g`,buyText:`${b(I,0)} g`,orderText:`${b(I,0)} g (${d(y)})`,packages:d(y),differsNotably:J(I,x),alert:Te,alertText:Te?n("receita pede {x} g",{x:b(x,0)}):""}});m.length&&s.push({title:n("L\xFApulos"),items:m});const g=ea(e.scaledYeasts,l.leveduraG,r);g.length&&s.push({title:n("Levedura"),items:g});const L={CaCl2:n("Cloreto de c\xE1lcio (CaCl2)"),CaSO4:n("Sulfato de c\xE1lcio (CaSO4)"),MgSO4:n("Sulfato de magn\xE9sio (MgSO4)")},C=Ie(e.props,e.volumes).filter(v=>h(v.totalG)>0).map(v=>{const x=h(v.totalG),y=Me(x,l.salG);return{key:`sal:${v.name}`,name:L[v.formula]||v.name,hasMargin:!1,additions:1,recipeText:`${b(x,1)} g`,buyText:`${b(y,1)} g`,orderText:`${b(y,1)} g`,differsNotably:J(y,x),alert:!1,alertText:""}});C.length&&s.push({title:n("Sais de \xE1gua"),items:C});const P=ta(e.scaledMiscs,u,o,l.outroG,r);return P.length&&s.push({title:n("Outros insumos"),items:P}),s}function ea(e,t,o){const r=new Map;(e||[]).forEach(u=>{const s=r.get(u.name)||{name:u.name,unit:u.unit,amount:0,count:0};s.amount+=h(u.amount),s.count+=1,r.set(u.name,s)});const l=u=>u===1?n("{count} pacote",{count:u}):n("{count} pacotes",{count:u});return[...r.values()].map(u=>{const s=String(u.unit||"").toLowerCase(),p=["g","kg","mg"].includes(s)?u.amount*(s==="kg"?1e3:s==="mg"?.001:1)/Math.max(1e-6,h(t)):u.amount,d=Ae(p,o),f=d+1e-9<p;return{key:`levedura:${u.name}`,name:u.name,hasMargin:!1,additions:u.count,recipeText:ke(u.amount,u.unit),buyText:l(d),orderText:l(d),differsNotably:J(d,p),alert:f,alertText:f?n("receita pede {x} pacote",{x:b(p,1)}):""}})}function ta(e,t,o,r,l){const u=new Map;return(e||[]).forEach(s=>{const c=u.get(s.name)||{name:s.name,unit:s.unit,preAmt:0,postAmt:0,count:0},p=h(s.amount);st(s.use)?c.preAmt+=p:c.postAmt+=p,c.count+=1,u.set(s.name,c)}),[...u.values()].map(s=>{const c=String(s.unit||"").toLowerCase(),p=["g","kg","mg"].includes(c),d=s.postAmt>0&&o>0;if(p){const C=c==="kg"?1e3:c==="mg"?.001:1,P=(s.preAmt+s.postAmt)*C,v=Me((s.preAmt+t*s.postAmt)*C,r);return{key:`misc:${s.name}`,name:s.name,hasMargin:d,additions:s.count,recipeText:`${b(P,1)} g`,buyText:`${b(v,1)} g`,orderText:`${b(v,1)} g`,differsNotably:J(v,P),alert:!1,alertText:""}}const f=s.unit||"un.",m=s.preAmt+s.postAmt,g=Ae(s.preAmt+t*s.postAmt,l),L=g+1e-9<m;return{key:`misc:${s.name}`,name:s.name,hasMargin:d,additions:s.count,recipeText:Y(m,f),buyText:`${g} ${f}`,orderText:`${g} ${f}`,differsNotably:J(g,m),alert:L,alertText:L?n("receita pede {x}",{x:Y(m,f)}):""}})}export function shoppingOrderText(e,t={}){const o=s=>typeof t.selected!="function"||t.selected(s.key),r=typeof t.override=="function"?t.override:()=>null,l=t.recipeName||n("brassagem"),u=[t.greeting?n("Ol\xE1! Gostaria de encomendar os insumos para *{name}*:",{name:l}):n("Pedido \u2014 {name}",{name:l}),""];return(e||[]).forEach(s=>{s.items.filter(o).forEach(c=>{u.push(`\u2022 ${c.name} \u2014 ${r(c.key)||c.orderText}`)})}),u.join(`
-`)}export function openShoppingListSheet(e="list",t=null){if(W){if(he===e){$e();return}he=e,U=null,G();return}fe=t;const o=Gt();V=o.marginPct,(fe||i.session)?.calibration&&(V=Math.max(V,Zn)),X=o.fractioning,te=new Set,ne=new Map,U=null,ae=!1,he=e,W=a("div","shopping-sheet"),document.body.append(W),tn(()=>$e(),W),G()}function $e(){W&&(W.remove(),W=null),fe=null,nn()}function ct(){_t({marginPct:V,fractioning:X})}function oe(e,t){const o=ce(X[t],r=>{X={...X,[t]:Math.max(1,h(r,we[t]))},ct(),G()},{min:"1",step:"1","aria-label":n("Fracionamento de {label} em gramas",{label:e})});return a("label","shopping-frac-field",[a("span","",e),a("span","shopping-frac-input",[o,a("b","","g")])])}function na(e){if(e.alert)return{warn:!0,text:e.alertText};const t=[];return e.hasMargin&&t.push(`+${b(V,0)}%`),h(e.additions)>1&&t.push(n("{n} adi\xE7\xF5es",{n:e.additions})),t.length?{warn:!1,text:t.join(" \xB7 ")}:null}function G(){const e=fe||i.session;if(!W||!e)return;const t=_e(e),o=buildShoppingList(t,{marginPct:V,fractioning:X}),r=x=>!te.has(x),l=x=>ne.has(x)?ne.get(x):null,u=o.reduce((x,y)=>x+y.items.length,0),s=o.reduce((x,y)=>x+y.items.filter(I=>!r(I.key)).length,0),c=u-s,p=ce(V,x=>{V=Math.max(0,h(x,0)),ct(),G()},{min:"0",step:"5","aria-label":n("Margem em %")}),d=V>0?n(" \xB7 margem de {pct}% no p\xF3s-fervura",{pct:b(V,0)}):"",f=a("p","shopping-note",[n("Arredondada pelo fracionamento do seu brewshop{tail} \u2014 ",{tail:d}),w(ae?n("ocultar"):n("ajustar"),()=>{ae=!ae,G()},"shopping-config-link")]),m=ae?a("div","shopping-frac",[a("label","shopping-frac-field",[n("Margem"),a("span","shopping-frac-input",[p,a("b","","%")])]),oe(n("Malte"),"malteG"),oe(n("L\xFApulo"),"lupuloG"),oe(n("Levedura"),"leveduraG"),oe(n("Sais"),"salG"),oe(n("Outros"),"outroG")]):null,g=o.flatMap(x=>x.items).map(x=>aa(x,r(x.key),l(x.key))),L=w(n("Copiar"),async x=>{const y=x.currentTarget;try{await Zt(shoppingOrderText(o,{selected:r,override:l,recipeName:t.recipe.name})),F(y,n("Copiar"),n("Copiado"))}catch{F(y,n("Copiar"),n("N\xE3o copiou"),!0)}},"btn"),C=w([n("Pedir insumos"),M("open","icon")],()=>{const x=shoppingOrderText(o,{selected:r,override:l,recipeName:t.recipe.name,greeting:!0}),y=`https://wa.me/${Jn}?text=${encodeURIComponent(x)}`;window.open(y,"_blank","noopener")},"btn primary shopping-order");C.disabled=c===0;const P=_("close",n("Fechar"),()=>$e(),"icon-btn shopping-close"),v=he==="list";if(W.innerHTML="",W.append(...[a("div","shopping-head",[a("b","",v?n("Lista de compras"):n("Receita")),a("div","shopping-head-right",[v?a("span","shopping-count",(u===1?n("{n} item",{n:u}):n("{n} itens",{n:u}))+(s?n(" \xB7 {n} fora",{n:s}):"")):null,P])]),v&&i.session?.calibration?a("p","shopping-note calib-hint",n("Brassagem de calibra\xE7\xE3o: os itens que escalam com a corre\xE7\xE3o (l\xFApulo, levedura) v\xEAm refor\xE7ados em {pct}% por garantia. O malte j\xE1 est\xE1 dimensionado com folga.",{pct:b(V,0)})):null,v?f:null,v?m:null,v?a("div","shopping-groups",g):oa(t),v?a("div","shopping-foot",[a("span","shopping-foot-hint",n("Toque no valor para ajustar \xE0 m\xE3o.")),a("div","shopping-actions",[L,a("div","shopping-order-col",[C,a("span","shopping-attrib",n("por {shop}",{shop:Qn}))])])]):null].filter(Boolean)),U){const x=W.querySelector(".shopping-buy-input");x&&(x.focus(),x.select())}}function aa(e,t,o){const r=a("button",`shopping-check ${t?"checked":""}`,t?M("check","icon"):null,{type:"button",role:"checkbox","aria-checked":String(t),"aria-label":n("Incluir {name} no pedido",{name:e.name})});r.addEventListener("click",()=>{te.has(e.key)?te.delete(e.key):te.add(e.key),G()});const l=na(e),u=a("div","shopping-name-wrap",[a("span","shopping-name",e.name),l?a("span",`shopping-legend ${l.warn?"warn":""}`,l.warn?[M("review","icon"),l.text]:l.text):null]),s=o??e.buyText;let c;if(U===e.key){const f=document.createElement("input");f.type="text",f.className="shopping-buy-input num",f.value=s,f.setAttribute("aria-label",n("Quantidade de {name} (apague para voltar \xE0 sugest\xE3o)",{name:e.name}));const m=()=>{const g=f.value.trim();g===""||g===e.buyText?ne.delete(e.key):ne.set(e.key,g),U=null,G()};f.addEventListener("blur",m),f.addEventListener("keydown",g=>{g.key==="Enter"?(g.preventDefault(),m()):g.key==="Escape"&&(g.preventDefault(),U=null,G())}),c=f}else c=w(s,()=>{U=e.key,G()},`shopping-buy-btn num ${o!=null?"edited":""}`,{title:n("Toque para ajustar \xE0 m\xE3o")});const p=e.recipeText&&e.recipeText!==e.buyText&&o==null?a("span","shopping-recipe num",e.recipeText):null,d=a("div","shopping-buy",[a("span","shopping-buy-line",[p,c]),e.packages&&o==null?a("span","shopping-packs",e.packages):null]);return a("div",`shopping-row ${t?"":"off"}`,[r,u,d])}function oa(e){const t=(m,g)=>g.length?a("div","summary-sec",[a("b","summary-sec-title",m),...g.map(([L,C])=>a("div","summary-row",[a("span","summary-name",L),a("span","summary-value num",C)]))]):null,o=T(Ge(e.og,e.fg),1),r=a("div","summary-kicker num",`${E(h(e.props.targetVolumeL),0)} \xB7 OG ${e.og.toFixed(3)} \xB7 FG ${e.fg.toFixed(3)} \xB7 ${e.ibu} IBU \xB7 ${b(o,1)}% ABV`),l=[[n("Mostura"),E(e.volumes.mashWater,1)],h(e.volumes.sparge)>.05?[n("Lavagem"),E(e.volumes.sparge,1)]:null,[n("Total"),E(e.volumes.totalWater,1)]].filter(Boolean),u=(e.scaledFermentables||[]).reduce((m,g)=>m+h(g.amountKg),0),s=(e.scaledFermentables||[]).map(m=>[m.name,`${K(m.amountKg)}${u?` \xB7 ${b(h(m.amountKg)/u*100,0)}%`:""}`]),c=(e.recipe.mash||[]).map(m=>[A(Ve(m.name)),`${b(m.temperatureC,1)} \xB0C \xB7 ${b(m.timeMin,0)} min`]),p=(e.hopSchedule||[]).map(m=>[m.name,`${b(m.plannedAmountG,0)} g \xB7 ${dt(m)}`]),d=(e.scaledYeasts||[]).map(m=>[m.name,ke(m.amount,m.unit)]),f=(e.recipe.fermentation||[]).map(m=>[A(m.name),`${b(m.temperatureC,1)} \xB0C \xB7 ${b(m.days,0)} ${h(m.days)===1?n("dia"):n("dias")}`]);return a("div","shopping-summary",[r,t(n("\xC1guas"),l),t(n("Maltes"),s),t(n("Rampas de mostura"),c),t(n("L\xFApulos"),p),t(n("Levedura"),d),t(n("Fermenta\xE7\xE3o"),f)])}export function addQuickNote(e){const t=String(e||"").trim();if(!i.session||!t)return!1;const o=new Date().toLocaleTimeString(yn(),{hour:"2-digit",minute:"2-digit"});return i.session.notes=`${i.session.notes?`${i.session.notes}
-`:""}[${o}] ${t}`,He(),!0}function ut(e,t,o,r){const l=o,u=l==="post"?n("resfriamento"):n("fervura"),s=zn(o),c=s.length>0,p=!!i.session.correctionAccepted?.[o],d=!p&&Rt(t),f=p||d?"ok":t.status==="pending"?"pending":t.action==="Sem corre\xE7\xE3o"?"ok":t.action==="Adicionar \xE1gua"?"water":"boil",m=p?n("Desvio aceito \u2014 seguir para {stage}",{stage:u}):d?n("Dentro da margem \u2014 seguir para {stage}",{stage:u}):t.status==="pending"?n("Aguardando leitura"):t.action==="Sem corre\xE7\xE3o"?n("Sem corre\xE7\xE3o \u2014 seguir para {stage}",{stage:u}):`${A(t.action)} ${E(Math.abs(t.deltaL),2)}`,g=p?n("Voc\xEA escolheu seguir com a leitura como est\xE1. Fica no log da brassagem."):d?n("Desvio de {vol} \u2014 menor que o erro de medi\xE7\xE3o.",{vol:E(Math.abs(t.deltaL),2)}):t.status==="pending"?n("Preencha a leitura acima para calcular a corre\xE7\xE3o."):n("Volume para atingir o extrato: {vol}",{vol:E(t.targetVolumeL,2)}),L=!p&&!d&&t.status==="ready"&&t.action!=="Sem corre\xE7\xE3o",C=s.length>1?a("span","head-meta",n("{n}\xAA corre\xE7\xE3o",{n:s.length})):null,P=p?w(n("voltar a corrigir"),()=>Yn(o),"guide-now-link accept-undo"):null,v=l==="post"?h((e.boilAdditions||[]).find(y=>["Hopstand","Whirlpool"].includes(y.use)&&Number.isFinite(Number(y.temperatureC)))?.temperatureC):0,x=l==="post"&&L&&t.action==="Adicionar \xE1gua"&&t.deltaL>0?(()=>{const y=Math.max(.1,h(t.targetVolumeL)-h(t.deltaL)),I=(y*98+h(t.deltaL)*25)/(y+h(t.deltaL));return a("div","correction-extra",[M("thermo","icon"),a("span","",[`${n("A \xE1gua resfria o mosto: \u2248 ")}`,a("b","",`${b(I,0)} \xB0C`),n(" ap\xF3s adicionar (\xE1gua a 25 \xB0C)"),v?n(" \xB7 alvo do hopstand: {t} \xB0C",{t:b(v,0)}):""])])})():null;return O(k(o==="pre"?n("Corre\xE7\xE3o pr\xE9-fervura"):n("Corre\xE7\xE3o p\xF3s-fervura"),"swap",[a("div",`correction-banner ${f}`,[M(p||d?"check":t.status==="pending"?"review":t.action==="Sem corre\xE7\xE3o"?"check":t.action==="Adicionar \xE1gua"?"drop":"boil","icon banner-icon"),a("div","banner-text",[a("b","",m),a("span","",[g,P])])]),x,!p&&!d&&t.extraBoilMin?a("div","correction-extra",[M("timer","icon"),a("span","",[n("Fervura extra estimada: "),a("b","",`${b(t.extraBoilMin,1)} min`),` \xB7 IBU ${t.estimatedIbu}`]),w(n("Somar ao contador"),()=>Xn(t.extraBoilMin),"btn small extra-boil-btn",{title:n("Inicia um contador com o tempo extra de fervura recomendado.")})]):null,L&&!c?a("div","correction-actions",[w(n("Apliquei a corre\xE7\xE3o"),()=>rt(o,m),"btn primary apply-correction"),w(n("Seguir sem corrigir"),()=>acceptCorrection(o),"btn ghost",{title:n("Aceita a leitura como est\xE1 e segue a brassagem \u2014 a decis\xE3o fica no log.")})]):null,L&&c?ra(e,t,o,r,l):null,t.warning&&!p&&!d?a("p","warning-text",A(t.warning)):null],[C]),`correction-${o}`)}function ra(e,t,o,r,l){const u=xe(e.props),s=ensureCorrectionCheck(o),c=Et(t,s,r,l,e.props.evaporationLh,u),p=Be({volumeL:1,wri:s?.wri??""},u),d=!!p.realPlato,f=a("span",`check-status ${c?.status||"pending"}`,A(c?.summary||c?.title)||n("Informe WRI ap\xF3s corrigir"));return c?.detail&&(f.title=c.detail),a("div","check-block",[a("div","check-fields",[a("label","check-input",[a("span","",n("Me\xE7a de novo (WRI)")),H(s.wri,m=>setCorrectionCheck(o,"wri",m),"WRI",{placeholder:b(r*u,1),"aria-label":n("WRI ap\xF3s corre\xE7\xE3o")})]),a("span","check-target",[n("Alvo "),a("b","",`${b(r,1)} \xB0P`)]),d?a("span","check-real num",`${b(p.realPlato,1)} \xB0P / ${p.sg.toFixed(3)}`):null]),f,a("div","correction-actions",[c?.status==="adjust"?w(n("Apliquei o ajuste"),()=>rt(o,c.summary||n("Ajuste fino")),"btn primary apply-correction"):null,c?.status==="ok"?w(n("Concluir corre\xE7\xE3o"),()=>acceptCorrection(o,n("Corre\xE7\xE3o conferida \u2014 dentro da margem.")),"btn primary apply-correction"):w(n("Est\xE1 bom assim"),()=>acceptCorrection(o),"btn ghost",{title:n("Encerra a corre\xE7\xE3o com a leitura atual \u2014 a decis\xE3o fica no log.")})])])}const pt=["Hopstand","Whirlpool","Dry hop"];function ia(e){const t=e.boilAdditions.filter(s=>s.kind==="hop"&&!pt.includes(s.use)),o=e.boilAdditions.filter(s=>s.kind!=="hop"&&!pt.includes(s.use)),l=At(t).map(s=>a("div","hop-group",[a("div","hop-group-head",[s.timeLabel?a("b","hop-time",s.timeLabel):null,a("span","hop-use",A(s.useLabel))]),...s.items.map(c=>a("div",`hop-row ${isAdditionChecked(c)?"checked":""}`,[de(c),a("b","hop-name",c.name),a("span","hop-amount num",Y(c.amount,c.unit)),a("label","hop-alpha",[a("span","hop-alpha-label",n("a.a.")),H(c.actualAlphaAcidPct,p=>setHopLot(c.id,p),"%",{step:".1",min:"0","aria-label":n("Alfa \xE1cido real de {name}",{name:c.name})})])],{"data-guide-anchor":additionCheckKey(c)}))])),u=o.length?a("div","addition-list",[a("b","sub-title",n("Outras adi\xE7\xF5es de fervura")),...o.map(s=>a("div",`addition-row with-check ${isAdditionChecked(s)?"checked":""}`,[de(s),a("b","addition-name",s.name),a("span","addition-amount num",Y(s.amount,s.unit)),a("span","addition-when",dt(s))],{"data-guide-anchor":additionCheckKey(s)}))]):null;return O(k(n("L\xFApulos e fervura"),"hop",[a("div","hop-groups",l),u,...at(e,"boil")],[a("span","head-meta",`${b(e.recipe.boilTimeMin,0)} min`)]),"boil-hops")}function sa(e){const t=e.boilAdditions.filter(c=>["Hopstand","Whirlpool"].includes(c.use)),o=e.boilAdditions.filter(c=>/dry hop/i.test(c.use));if(!t.length&&!o.length)return null;const r=h((t.find(c=>Number.isFinite(Number(c.temperatureC)))||{}).temperatureC),l=(c,p)=>a("div",`hop-row ${isAdditionChecked(c)?"checked":""}`,[de(c),a("b","hop-name",c.name),a("span","hop-amount num",Y(c.amount,c.unit)),a("span","addition-when",p)],{"data-guide-anchor":additionCheckKey(c)}),u=t.length?a("div","addition-list",[a("b","sub-title",r?n("Hopstand / whirlpool \xB7 {t} \xB0C",{t:b(r,0)}):n("Hopstand / whirlpool")),...t.map(c=>l(c,n("{min} min de repouso",{min:b(c.timeMin,0)})))]):null,s=o.length?a("div","addition-list",[a("b","sub-title",n("Dry hop \xB7 na fermenta\xE7\xE3o")),...o.map(c=>l(c,n("durante a fermenta\xE7\xE3o")))]):null;return O(k(n("Adi\xE7\xF5es p\xF3s-fervura"),"hop",[u,s]),"post-boil-additions")}function la(e){if(h(e.volumes.sparge)<=.05)return null;const t=h(e.props.mashWaterUsedL,e.volumes.mashWater),o=Math.max(0,e.volumes.totalWater-t);return O(k(n("\xC1gua de lavagem"),"water",[a("p","reading-hint",n("Lave com {vol} de \xE1gua a ~76\u201378 \xB0C, ao fim das rampas.",{vol:E(o,1)}))],[me("mash-sparge",n("\xE1gua de lavagem"))]),"sparge")}function dt(e){return/dry hop/i.test(e.use)?"Dry hop":Number.isFinite(Number(e.timeMin))?`${b(e.timeMin,0)} min \xB7 ${A(e.use)}`:A(e.use)}function ca(e){const t=i.session.measurements.cold,o=me("boil-chill",n("mosto resfriado"));return o&&o.setAttribute("data-guide-anchor","chill"),O(k(n("Leitura fria"),"thermo",[a("div","reading-grid",[a("div","reading-col expected",[a("span","reading-col-title",n("Esperado")),a("div","reading-line",[a("span","",n("Volume trub")),a("b","num",E(e.props.trubLossL,2))]),a("div","reading-line",[a("span","",n("Fermentador")),a("b","num",E(e.expected.fermenterVolume,2))])]),a("div","reading-col input",[a("span","reading-col-title",n("Sua leitura")),a("div","reading-line",[a("span","",n("Volume trub")),le(t.trubVolumeL,r=>setCold("trubVolumeL",r),{},e.props.trubLossL)]),a("div","reading-line",[a("span","",n("Fermentador")),le(t.fermenterVolumeL,r=>setCold("fermenterVolumeL",r),{},e.expected.fermenterVolume)])])])],[o,a("span","head-meta temp-badge",n("~20 \xB0C"))]),"cold-reading")}const ge="beerSchool.receitasDinamicas.fable.expectedUnlocked.v1";let Fe=0;export function isExpectedUnlocked(){try{return localStorage.getItem(ge)==="1"}catch{return!1}}export function setExpectedUnlocked(e){try{e?localStorage.setItem(ge,"1"):localStorage.removeItem(ge)}catch{}}function ua(){if(!isExpectedUnlocked()&&(Fe+=1,!(Fe<10))){Fe=0;try{localStorage.setItem(ge,"1")}catch{}S(n("Leituras esperadas (beta) ativado.")),i.requestRender()}}export function setFermentationExpected(e,t){R(i.session),i.session.fermentationExpected=Ot({...i.session.fermentationExpected,[e]:t}),i.requestRender()}function mt(e){return e.scaledYeasts?.[0]?.name||e.recipe.yeasts?.[0]?.name||""}function pa(e,t){const o=e.fermentationExpected||{};return o.yeastFamily&&o.yeastFamily!=="auto"?o.yeastFamily:ze(mt(t))}function da(e,t){const o=e.fermentationExpected||{enabled:!0},r=pa(e,t),l=!o.yeastFamily||o.yeastFamily==="auto";if(o.enabled===!1)return{enabled:!1,supported:!1,family:r,auto:l,points:[]};const u=ye(e,t),s=u.initial.plato,c=o.attenuationPct,p=c!==""&&Number.isFinite(Number(c))&&s>0?T(s*(1-h(c)/100),2):u.expected.plato,d=(t.recipe.fermentation||[]).reduce((m,g)=>m+h(g.days),0),f=un({yeastFamily:r,p0Plato:s,pfPlato:p,tempSteps:mn(t.recipe.fermentation||[]),maxDays:Math.max(7,Math.ceil(d||14)),stepDays:.25});return{enabled:!0,family:r,auto:l,...f,milestones:f.supported?pn(f.params):null}}function ma(e,t){const o=i.session.fermentationExpected||{},r=o.enabled!==!1,l=w(r?n("Ativado"):n("Desativado"),()=>setFermentationExpected("enabled",!r),`btn small ${r?"primary":"ghost"}`,{"aria-pressed":r?"true":"false"});if(!r)return k(n("Leituras esperadas \xB7 beta"),"flask",[a("p","muted",n("Ative para ver o corredor esperado de extrato no gr\xE1fico e a leitura classificada."))],[l]);const u=ze(mt(e)),s=document.createElement("select");s.setAttribute("aria-label",n("Fam\xEDlia da levedura para o modelo de fermenta\xE7\xE3o")),[["auto",n("Autom\xE1tico \u2014 {family}",{family:n(Le[u].label)})],...Object.entries(Le).map(([g,L])=>[g,n(L.label)])].forEach(([g,L])=>{const C=document.createElement("option");C.value=g,C.textContent=L,(o.yeastFamily||"auto")===g&&(C.selected=!0),s.append(C)}),s.value=o.yeastFamily||"auto",s.addEventListener("change",()=>setFermentationExpected("yeastFamily",s.value));const c=ye(i.session,e),p=c.initial.plato>0?Math.round((c.initial.plato-c.expected.plato)/c.initial.plato*100):0,d=H(o.attenuationPct===""||o.attenuationPct===void 0?"":o.attenuationPct,g=>setFermentationExpected("attenuationPct",g),"%",{placeholder:String(p),min:"0",max:"100",step:"1","aria-label":n("Atenua\xE7\xE3o aparente esperada")}),f=t.milestones,m=t.supported&&f?a("div","expected-summary",[a("div","expected-metric",[a("span","",n("50% da atenua\xE7\xE3o")),a("b","num",`~${b(f.t50,1)} ${n("dias")}`)]),a("div","expected-metric",[a("span","",n("90% da atenua\xE7\xE3o")),a("b","num",`~${b(f.t90,1)} ${n("dias")}`)]),a("div","expected-metric",[a("span","",n("Plat\xF4 prov\xE1vel")),a("b","num",`${b(f.t90,1)}\u2013${b(f.t98,1)} ${n("dias")}`)])]):a("p","muted",fn(t.family)?n("Informe OG e FG para gerar o corredor."):n("{family} n\xE3o gera curva autom\xE1tica.",{family:n(Le[t.family]?.label||"Esta levedura")}));return k(n("Leituras esperadas \xB7 beta"),"flask",[a("div","expected-fields",[a("label","expected-field",[a("span","",n("Fam\xEDlia da levedura")),s]),a("label","expected-field narrow",[a("span","",n("Atenua\xE7\xE3o esperada")),d])]),m,a("p","reading-hint",n("Refer\xEAncia beta \u2014 para pegar desvios grandes, n\xE3o como garantia de t\xE9rmino ou qualidade. Confirme estabilidade de extrato antes de envasar."))],[l])}function fa(e){const t=e.scaledYeasts||[],o=e.recipe.fermentation||[],r=e.recipe.fermentationProfileName||n("Rampas de fermenta\xE7\xE3o"),l=isExpectedUnlocked(),u=l?da(i.session,e):{enabled:!1,supported:!1,points:[]},s=k(n("Levedura"),"ferment",[a("div","ingredient-list",t.length?t.map(p=>a("div","ingredient-row",[a("b","ingredient-name",p.name),a("b","ingredient-amount num",ke(p.amount,p.unit))])):[a("p","muted",n("Sem levedura no XML."))])]),c=k(r,"thermo",[a("div","steps-list ferment",o.length?o.map(p=>a("div","step-row",[a("b","step-name",A(p.name)),a("span","step-chip temp",Number.isFinite(Number(p.temperatureC))?`${b(p.temperatureC,1)} \xB0C`:"-"),a("span","step-chip time",Number.isFinite(Number(p.days))?`${b(p.days,0)} ${n("dias")}`:"-")])):[a("p","muted",n("Sem perfil de fermenta\xE7\xE3o no XML."))])]);if(!l){const p=c.querySelector(".card-icon");p&&p.addEventListener("click",ua)}return[s,c,l?ma(e,u):null,va(e,u),ka(e,u),Sa()]}function ha(e,t){return!e||!e.length?null:e.reduce((o,r)=>Math.abs(r.day-t)<Math.abs(o.day-t)?r:o,e[0])}const ga={ok:"no esperado",lenta:"lenta",rapida:"r\xE1pida",muito_lenta:"muito lenta",muito_rapida:"muito r\xE1pida",abaixo_do_final_esperado:"atenuou +"};function ba(e,t){if(!e||!e.enabled||!e.supported||t.realPlato==="")return null;const o=ha(e.points,t.day);if(!o)return null;const r=dn(t.realPlato,o,e.params.P0,e.params.Pf);return r.status==="sem_dado"?null:{...r,label:n(ga[r.status]||"")}}function va(e,t){const o=ye(i.session,e),r=i.fermentationDraftReading?xa(i.fermentationDraftReading,o):null,l=_("plus",n("Adicionar leitura de fermenta\xE7\xE3o"),()=>addFermentationReading(),"icon-btn accent"),u=$([a("b","",n("Dia")),a("b","",n("Data/hora")),a("b","",n("Temp.")),a("b","","WRI"),a("b","",n("Real corrigido")),a("span","","")],"head tracking"),s=$([a("span","day-chip","0"),a("span","row-label",A(o.initial.source)),a("span","num",ya(o.initial.expectedTemperatureC)),a("span","num",xn(o.initial.wri)),a("span","num",pe(o.initial.plato)),a("span","","")],"tracking fixed"),c=o.readings.map(f=>{const m=ba(t,f);return $([a("span","day-chip",be(f.day)),ht(f,"saved"),ft(f,!1),H(f.wri,g=>setFermentationReading(f.id,"wri",g),"WRI",{min:"0",step:".1","aria-label":n("Leitura do refrat\xF4metro na fermenta\xE7\xE3o")}),a("span","num real-cell",[f.realPlato===""?"-":pe(f.realPlato),m?a("span",`ferment-status ${m.severity}`,m.label,{title:n(m.message)}):null]),_("close",n("Remover leitura"),()=>removeFermentationReading(f.id),"icon-btn subtle small-btn")],"tracking")}),p=r?$([a("span","day-chip draft",be(r.day)),ht(r,"draft"),ft(r,!0),H(r.wri,f=>setFermentationDraftReading("wri",f),"WRI",{min:"0",step:".1","aria-label":n("Nova leitura do refrat\xF4metro na fermenta\xE7\xE3o")}),a("span","num",r.realPlato===""?"-":pe(r.realPlato)),_("close",n("Cancelar nova leitura"),()=>cancelFermentationDraftReading(),"icon-btn subtle small-btn")],"tracking draft"):null,d=$([a("span","day-chip fg","FG"),a("span","row-label",n("Esperada")),a("span","num","-"),a("span","num","-"),a("span","num",pe(o.expected.plato)),a("span","","")],"tracking target");return k(n("Acompanhamento da fermenta\xE7\xE3o"),"flask",[a("div","tracking-table",[u,s,...c,p,d])],[l])}function xa(e,t){const o=e.wri===""?"":h(e.wri),r=o===""?"":Tt(t.initial.plato,o,xe(i.session.properties||{})),l=Ne(ensureFermentationTracking().readings),u=Oe(e,l,0);return{id:e.id,day:u,datetime:e.datetime||"",expectedTemperatureC:Ft(i.session.recipe.fermentation,u),temperatureC:e.temperatureC===""?"":h(e.temperatureC),wri:o,realPlato:r,sg:r===""?"":qt(r)}}function ft(e,t){const o=t?r=>setFermentationDraftReading("temperatureC",r):r=>setFermentationReading(e.id,"temperatureC",r);return H(e.temperatureC,o,"\xB0C",{min:"0",step:".1","aria-label":n("Temperatura lida na fermenta\xE7\xE3o"),placeholder:Number.isFinite(Number(e.expectedTemperatureC))?b(e.expectedTemperatureC,1):""})}function ya(e){return Number.isFinite(Number(e))?`${b(e,1)} \xB0C`:"-"}function be(e){return String(Math.floor(Math.max(0,h(e))))}function ht(e,t){const o=`${t}:${e.id}`,r=i.openFermentationDateEditor===o,l=r&&i.fermentationDateEditorValue?i.fermentationDateEditorValue:dateTimeParts(e.datetime),u=wa(l,t,e),s=a("div","date-control"),c=w(La(e.datetime,u),()=>kn(o,e.datetime),"date-trigger",{"aria-expanded":String(r)});if(s.append(c),r){const p=document.createElement("input");p.type="date",p.value=l.date,p.setAttribute("aria-label",n("Data da leitura de fermenta\xE7\xE3o")),p.addEventListener("change",()=>Je("date",p.value));const d=document.createElement("input");d.type="time",d.value=l.time,d.setAttribute("aria-label",n("Hora da leitura de fermenta\xE7\xE3o")),d.addEventListener("change",()=>Je("time",d.value));const f=a("div","date-backdrop");f.addEventListener("click",()=>Qe());const m=a("div","date-panel",[a("b","date-panel-title",n("Data e hora da leitura")),a("div","date-panel-fields",[a("label","",[n("Data"),p]),a("label","",[n("Hora"),d])]),a("span","date-preview",n("Dia {n} de fermenta\xE7\xE3o",{n:be(u)})),a("div","date-panel-actions",[w(n("Cancelar"),()=>Qe(),"btn small ghost"),w(t==="draft"?n("Inserir"):n("Aplicar"),()=>Ln(t,e.id),"btn small primary")])]);s.append(f,m)}return s}function wa(e,t,o={}){const r=partsToDatetime(e),l=ensureFermentationTracking(),u=Ne(l.readings);return!u&&t==="draft"?0:Oe({...o,datetime:r},u,0)}function La(e,t){const o=dateTimeParts(e),[r,l,u]=o.date.split("-"),s=r&&l&&u?`${u}/${l}/${r}`:"--/--/----";return n("Dia {n} \xB7 {date} {time}",{n:be(t),date:s,time:o.time})}function ka(e,t){const o=Dt(i.session,e),r=t&&t.enabled&&t.supported&&t.points.length>1;if(r){o.expected=t.points,Number.isFinite(Number(t.params?.Pf))&&(o.expectedFgPlato=t.params.Pf);const u=t.points.flatMap(s=>[s.extractP05,s.extractP95]).filter(Number.isFinite);o.extractRange=Bt([o.extractRange.min,o.extractRange.max,...u],.5,4),o.maxDay=Math.max(o.maxDay,...t.points.map(s=>s.day))}const l=a("div","chart-host");return l.innerHTML=cn(o).trim(),k(n("Gr\xE1fico da fermenta\xE7\xE3o"),"summary",[a("div","chart-legend",[a("span","chart-temp",n("Temp. planejada")),a("span","chart-temp-real",n("Temp. lida")),a("span","chart-extract",n("Extrato")),r?a("span","chart-expected",n("Esperado (beta)")):null]),l,o.extractPoints.length<=1&&!r?a("p","muted",n("Adicione leituras para acompanhar a curva de extrato.")):null])}function Ca(e){const t=h(e.props.targetVolumeL,20)?e.analysis.trubLossL/h(e.props.targetVolumeL,20)*100:0,o=A(St(e)),r=h(e.props.targetVolumeL,20),l=r+Math.max(0,h(e.analysis.trubLossL)),u=l?e.analysis.mashEfficiencyPct*r/l:e.analysis.mashEfficiencyPct,s=k(n("An\xE1lise da brassagem"),"summary",[a("div","metric-grid",[re(n("Efici\xEAncia equipamento"),`${b(u,1)}%`),re(n("Absor\xE7\xE3o gr\xE3os"),`${b(e.analysis.grainAbsorptionLkg,2)} L/kg`),re(n("Evapora\xE7\xE3o"),`${b(e.analysis.evaporationPct,1)}%/h`),re(n("Evapora\xE7\xE3o"),Xe(e.analysis.evaporationLh,2)),re(n("Perda trub"),`${E(e.analysis.trubLossL,2)} \xB7 ${b(t,1)}%`)]),a("div","param-code",[a("b","",n("Par\xE2metros para a pr\xF3xima brassagem")),Qt(o)])]),c=Ea(),p=k(n("Log de brassagem"),"save",[c,a("div","log-actions",[w(n("Abrir log completo"),f=>openPdfReport(f.currentTarget),"btn primary")])]),d=k(n("Pr\xF3xima etapa: fermenta\xE7\xE3o"),"ferment",[a("p","muted",n("O dia de brassagem termina aqui \u2014 agora a levedura assume. Registre as leituras ao longo dos dias.")),a("div","log-actions",[w(n("Iniciar fermenta\xE7\xE3o"),startFermentationFromSummary,"btn primary")])],null,"card-handoff");return[rn(e),s,Hn(),d,p]}function Sa(){return k(n("Encerrar a leva"),"check",[a("p","muted",n("Concluir move esta brassagem para o Caderno, com o log completo guardado. D\xE1 para reabrir por l\xE1.")),a("div","log-actions",[w(n("Concluir brassagem"),()=>{Ht()&&(i.workspaceSection="notebook",S(n("Brassagem conclu\xEDda \u2014 a ficha dela mora no Caderno.")),i.requestRender(),window.scrollTo({top:0,behavior:"instant"}))},"btn primary")])])}function re(e,t){return a("div","metric",[a("span","metric-label",e),a("b","metric-value num",t)])}function Ea(){const e=document.createElement("textarea");return e.value=i.session.notes||"",e.placeholder=n("Anota\xE7\xF5es livres da brassagem"),e.addEventListener("input",()=>{i.session.notes=e.value,He()}),a("label","notes-field",[a("span","",n("Anota\xE7\xF5es")),e])}
+import {
+  WATER_IONS as De,
+  PROFILE_KEYS as gt,
+  CALIBRATION_PROFILE as ve,
+  n as h,
+  round as T,
+  normalizeReading as Be,
+  equipmentEfficiencyPct as bt,
+  mashEfficiencyFromEquipment as vt,
+  effectiveWriFactor as xe,
+  evaporationLhFromPct as xt,
+  hotPostBoilVolume as yt,
+  ensureBaseWaterProfile as qe,
+  scaledWaterSalts as Ie,
+  waterSaltsFromRecipe as wt,
+  importedProductionProfile as Lt,
+  parseParameterText as kt,
+  applyProductionParameterValues as Ct,
+  finalParameterCode as St,
+  correctionCheckResult as Et,
+  negligibleCorrection as Rt,
+  effectiveHeatingRateCMin as Pt,
+  POST_READING_OFFSET_MIN as We,
+  totalMashTimeMin as Mt,
+  mashStepName as Ve,
+  groupBySchedule as At,
+  sanitizeFermentationTracking as $t,
+  fermentationTrackingState as ye,
+  expectedFermentationTemperature as Ft,
+  firstFermentationReadingDate as Ne,
+  fermentationDayFromDatetime as Oe,
+  fermentedRefractometerPlato as Tt,
+  fermentationChartModel as Dt,
+  paddedRange as Bt,
+  platoToSg as qt,
+  abvBrewfather as Ge,
+  calculate as _e,
+} from "./engine.js";
+import {
+  app as i,
+  saveProductionProfile as Q,
+  saveViewMode as It,
+  exportBrewSessionPayload as Wt,
+  restoreBrewSessionPayload as Vt,
+  brewSessionFileName as Nt,
+  localDatetimeValue as j,
+  scheduleAutosave as He,
+  ensureSessionExtras as R,
+  sanitizeFermentationExpected as Ot,
+  loadShoppingSettings as Gt,
+  saveShoppingSettings as _t,
+  DEFAULT_FRACTIONING as we,
+  concludeCurrentBrew as Ht,
+  loadPhMode as ie,
+  loadPhAcid as se,
+  loadPhMemory as Ue,
+  savePhMemory as Ut,
+} from "./state.js";
+import {
+  PH_TARGETS as je,
+  PH_ACIDS as jt,
+  PH_STAGE_TITLES as Kt,
+  phDoseSuggestion as Yt,
+  phSlopeFromReadings as Ke,
+  spargeDoseFromWaterSlope as zt,
+  updatePhMemory as Xt,
+  phLogSummary as Jt,
+} from "./ph.js";
+import {
+  el as a,
+  button as w,
+  iconButton as _,
+  icon as M,
+  field as N,
+  cellInput as H,
+  volumeCellInput as le,
+  decimalInput as ce,
+  card as k,
+  stat as ue,
+  listRow as $,
+  copyCodeLine as Qt,
+  toast as S,
+  setButtonFeedback as F,
+  writeClipboardText as Zt,
+  downloadTextFile as en,
+  showSheetBackdrop as tn,
+  hideSheetBackdrop as nn,
+} from "./ui.js";
+import { generateBrewReportHtml as an } from "./report.js";
+import {
+  openSessionEquipmentSheet as on,
+  calibrationPayoffCard as rn,
+} from "./editor.js";
+import {
+  mashStepStates as sn,
+  brewGuideSteps as Ye,
+  copilotoCompanions as ln,
+} from "./guide.js";
+import { fermentationChartSvg as cn } from "./chart.js";
+import {
+  generateExpectedFermentationProfile as un,
+  yeastFamilyFromName as ze,
+  fermentationMilestones as pn,
+  classifyExtractReading as dn,
+  tempStepsFromFermentation as mn,
+  FAMILY_PRESETS as Le,
+  isFamilySupported as fn,
+} from "./fermentation-model.js";
+import { parseBeerXml as hn } from "./beerxml.js";
+import { startRecipe as gn } from "./state.js";
+import { startTimer as bn } from "./timer.js";
+import {
+  t as n,
+  tEngine as A,
+  fmt as b,
+  formatVolume as E,
+  formatVolumeRate as Xe,
+  formatMaltMass as K,
+  formatIngredientAmount as Y,
+  formatYeastAmount as ke,
+  formatIonPpm as vn,
+  formatPlatoSg as pe,
+  formatWriValue as xn,
+  localeTag as yn,
+} from "./i18n.js";
+export function setProp(e, t) {
+  const o = i.session;
+  if (e === "equipmentEfficiencyPct") {
+    const r = vt(t, o.properties.targetVolumeL, o.properties.trubLossL);
+    setProp("mashEfficiencyPct", r);
+    return;
+  }
+  (e === "heatingRateCMin" &&
+    ((t = Math.min(10, Math.max(0, h(t)))), (o.recipe.heatingRateCMin = t)),
+    (o.properties[e] = t),
+    e === "targetVolumeL" &&
+      !o.properties.trubLossEdited &&
+      (o.properties.trubLossL = T(
+        h(t, 0) * h(o.properties.trubLossPct, 0.15),
+        2,
+      )),
+    e === "trubLossPct" &&
+      ((o.properties.trubLossEdited = !1),
+      (o.properties.trubLossL = T(
+        h(o.properties.targetVolumeL, 0) * h(t, 0.15),
+        2,
+      ))),
+    e === "trubLossL" &&
+      ((o.properties.trubLossEdited = !0),
+      (o.properties.trubLossPct = h(o.properties.targetVolumeL, 0)
+        ? T(h(t) / h(o.properties.targetVolumeL), 4)
+        : h(o.properties.trubLossPct, 0.15))),
+    gt.includes(e) &&
+      (Q(o.properties) ||
+        S(
+          n("N\xE3o foi poss\xEDvel salvar os par\xE2metros neste navegador."),
+          "error",
+        )),
+    i.requestRender());
+}
+export function setMeasurement(e, t, o) {
+  ((i.session.measurements[e][t] = o), i.requestRender());
+}
+export function remainingBoilEvapL(e) {
+  return T((Math.max(0, h(e?.evaporationLh)) * We) / 60, 2);
+}
+export function setPostBoilReading(e, t, o) {
+  R(i.session);
+  const r = i.session.measurements.postBoil;
+  (r.rawVolumeL === void 0 &&
+    r.volumeL !== void 0 &&
+    r.volumeL !== "" &&
+    (r.rawVolumeL = r.volumeL),
+    r.rawWri === void 0 &&
+      r.wri !== void 0 &&
+      r.wri !== "" &&
+      (r.rawWri = r.wri),
+    t === "volumeL" && (r.rawVolumeL = o),
+    t === "wri" && (r.rawWri = o));
+  const l = h(r.rawVolumeL),
+    u = remainingBoilEvapL(e.props);
+  if (l > u) {
+    const s = T(l - u, 2);
+    ((r.readOffsetMin = We),
+      (r.volumeL = s),
+      (r.wri =
+        r.rawWri === "" || r.rawWri === void 0
+          ? r.rawWri
+          : T((h(r.rawWri) * l) / s, 1)));
+  } else
+    (delete r.readOffsetMin, (r.volumeL = r.rawVolumeL), (r.wri = r.rawWri));
+  i.requestRender();
+}
+export function ensureCorrectionCheck(e) {
+  const t = i.session;
+  return (
+    (t.correctionChecks = t.correctionChecks || {}),
+    (t.correctionChecks[e] = t.correctionChecks[e] || { volumeL: "", wri: "" }),
+    t.correctionChecks[e]
+  );
+}
+export function setCorrectionCheck(e, t, o) {
+  const r = ensureCorrectionCheck(e);
+  ((r[t] = o), i.requestRender());
+}
+export function setCold(e, t) {
+  ((i.session.measurements.cold[e] = t), i.requestRender());
+}
+export function setHopLot(e, t) {
+  const o = i.session.hopLots.find((r) => r.id === e);
+  (o && (o.actualAlpha = t), i.requestRender());
+}
+export function setBaseWaterIon(e, t) {
+  const o = qe(i.session.properties);
+  ((o[e] = t === "" ? 0 : Math.max(0, h(t))),
+    Q(i.session.properties),
+    i.requestRender());
+}
+export function setWaterSaltsVisible(e) {
+  ((i.session.properties.showWaterSalts = !!e), i.requestRender());
+}
+export function additionCheckKey(e = {}) {
+  return `${e.kind || "misc"}:${e.id || e.name || ""}`;
+}
+export function toggleAdditionCheck(e) {
+  R(i.session);
+  const t = i.session.additionChecks;
+  (t[e] ? delete t[e] : (t[e] = new Date().toISOString()), i.requestRender());
+}
+export function isAdditionChecked(e) {
+  return (R(i.session), !!i.session.additionChecks[additionCheckKey(e)]);
+}
+export function startGuide() {
+  i.session &&
+    (R(i.session),
+    (i.session.guideEnabled = !0),
+    (i.session.phasesDone.prepare = !0),
+    (i.phase = "mash"),
+    i.requestRender(),
+    window.scrollTo({ top: 0, behavior: "instant" }));
+}
+export function stopGuide() {
+  i.session && (R(i.session), (i.session.guideEnabled = !1), i.requestRender());
+}
+export function isGuideEnabled() {
+  return !!(i.session && i.session.guideEnabled);
+}
+export function toggleGuideCheck(e) {
+  R(i.session);
+  const t = i.session.guideChecks;
+  (t[e] ? delete t[e] : (t[e] = new Date().toISOString()), i.requestRender());
+}
+export function setGuideAdditionsDone(e = [], t = !0) {
+  R(i.session);
+  const o = i.session.additionChecks;
+  (e.forEach((r) => {
+    t ? (o[r] = o[r] || new Date().toISOString()) : delete o[r];
+  }),
+    i.requestRender());
+}
+function de(e) {
+  const t = isAdditionChecked(e),
+    o = _(
+      "check",
+      t
+        ? n("Desmarcar {name}", { name: e.name })
+        : n("Marcar {name} como adicionado", { name: e.name }),
+      () => {
+        toggleAdditionCheck(additionCheckKey(e));
+      },
+      `check-btn ${t ? "checked" : ""}`,
+    );
+  return (o.setAttribute("aria-pressed", t ? "true" : "false"), o);
+}
+function O(e, t) {
+  return (e && e.setAttribute("data-guide-anchor", t), e);
+}
+function me(e, t) {
+  if (!isGuideEnabled()) return null;
+  const o = !!i.session.guideChecks?.[e],
+    r = _(
+      "check",
+      o
+        ? n("Desmarcar {name}", { name: t })
+        : n("Marcar {name} como feito", { name: t }),
+      () => {
+        toggleGuideCheck(e);
+      },
+      `check-btn ${o ? "checked" : ""}`,
+    );
+  return (r.setAttribute("aria-pressed", o ? "true" : "false"), r);
+}
+export function applyParameterText(e) {
+  const t = kt(e);
+  if (!t) return !1;
+  const o = { ...(i.session.properties || {}) };
+  return (Ct(o, t), Q(o), (i.session.properties = o), i.requestRender(), !0);
+}
+export function applyImportedProfile(e) {
+  const t = i.session;
+  if (!t || !t.recipe) return;
+  const o = {
+    ...t.properties,
+    ...Lt(t.recipe),
+    mashWaterUsedL: "",
+    showWaterSalts: t.properties.showWaterSalts,
+    waterSalts: wt(t.recipe),
+  };
+  (Q(o),
+    (t.properties = o),
+    F(e, n("Par\xE2metros importados"), n("Aplicado")),
+    S(n("Par\xE2metros importados da receita aplicados.")),
+    i.requestRender());
+}
+export function applyCalibrationProfile(e) {
+  const t = i.session;
+  if (!t || !t.recipe) return;
+  const o = h(t.properties.targetVolumeL, 20),
+    r = T(o * ve.trubLossPct, 2),
+    l = {
+      ...t.properties,
+      ...ve,
+      targetVolumeL: o,
+      trubLossL: r,
+      trubLossEdited: !1,
+      evaporationLh: T(
+        xt(ve.evaporationPct, yt(o, r), t.recipe.boilTimeMin),
+        2,
+      ),
+    };
+  (Q(l),
+    (t.properties = l),
+    F(e, n("Brassagem de calibra\xE7\xE3o"), n("Aplicado")),
+    S(
+      n(
+        "Calibra\xE7\xE3o aplicada: os erros do dia ser\xE3o f\xE1ceis de corrigir. Anote seus par\xE2metros reais na An\xE1lise.",
+      ),
+    ),
+    i.requestRender());
+}
+export async function pasteParametersFromClipboard(e) {
+  const t = e.textContent;
+  try {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      (F(e, t, n("Clipboard bloqueado"), !0),
+        S(n("N\xE3o consegui ler o clipboard neste navegador."), "error"));
+      return;
+    }
+    const o = await navigator.clipboard.readText();
+    if (!o || !o.trim()) {
+      (F(e, t, n("Nada copiado"), !0),
+        S(n("N\xE3o h\xE1 par\xE2metros copiados."), "error"));
+      return;
+    }
+    applyParameterText(o)
+      ? S(n("Par\xE2metros aplicados."))
+      : (F(e, t, n("Formato inv\xE1lido"), !0),
+        S(
+          n("N\xE3o encontrei um c\xF3digo completo de par\xE2metros."),
+          "error",
+        ));
+  } catch {
+    (F(e, t, n("Clipboard bloqueado"), !0),
+      S(n("O navegador bloqueou a leitura do clipboard."), "error"));
+  }
+}
+let D = null,
+  Ce = null,
+  B = null;
+export function saveBrewSession(e) {
+  const t = e.textContent;
+  try {
+    const o = Wt();
+    (en(JSON.stringify(o, null, 2), Nt(o), "application/json;charset=utf-8"),
+      F(e, t, n("Salvo")),
+      S(n("Sess\xE3o salva em arquivo.")));
+  } catch (o) {
+    (console.error(o),
+      F(e, t, n("Falhou"), !0),
+      S(n("N\xE3o foi poss\xEDvel salvar a sess\xE3o."), "error"));
+  }
+}
+export function openBrewSessionPicker(e) {
+  Ce = e || null;
+  const t = wn();
+  ((t.value = ""), t.click());
+}
+function wn() {
+  return (
+    D ||
+    ((D = document.createElement("input")),
+    (D.type = "file"),
+    (D.accept = ".bsa-brassagem.json,.json,application/json"),
+    (D.hidden = !0),
+    D.addEventListener("change", async () => {
+      const e = D.files && D.files[0];
+      if (!e) return;
+      const t = Ce,
+        o = t && t.textContent;
+      try {
+        t && (t.textContent = n("Abrindo"));
+        const r = await openBrewSessionText(await e.text());
+        t && F(t, o, r ? n("Aberta") : n("N\xE3o abriu"), !r);
+      } finally {
+        ((Ce = null), (D.value = ""));
+      }
+    }),
+    document.body.append(D),
+    D)
+  );
+}
+export async function openBrewSessionText(e, t = {}) {
+  try {
+    const o = Vt(JSON.parse(String(e || "")), t);
+    return (o && (i.requestRender(), S(n("Sess\xE3o aberta."))), o);
+  } catch (o) {
+    const r =
+      o && /incompatível/i.test(o.message || "")
+        ? o.message
+        : n("Arquivo de brassagem inv\xE1lido.");
+    return (S(r, "error"), !1);
+  }
+}
+export function openRecipeFilePicker() {
+  (B ||
+    ((B = document.createElement("input")),
+    (B.type = "file"),
+    (B.accept = ".xml,.beerxml,text/xml,application/xml"),
+    (B.hidden = !0),
+    B.addEventListener("change", async () => {
+      const e = B.files && B.files[0];
+      if (e)
+        try {
+          const t = hn(await e.text());
+          (gn(t, e.name),
+            (i.phase = "prepare"),
+            i.requestRender(),
+            S(n("Receita carregada.")));
+        } catch (t) {
+          S(t.message || n("N\xE3o foi poss\xEDvel abrir o BeerXML."), "error");
+        } finally {
+          B.value = "";
+        }
+    }),
+    document.body.append(B)),
+    (B.value = ""),
+    B.click());
+}
+export function openPdfReport(e) {
+  const t = e.textContent;
+  try {
+    const o = _e(i.session),
+      r = window.open("", "_blank");
+    if (!r) throw new Error("popup blocked");
+    (r.document.open(),
+      r.document.write(an(i.session, o)),
+      r.document.close(),
+      F(e, t, n("PDF aberto")));
+  } catch {
+    F(e, t, n("Falhou"), !0);
+  }
+}
+export function ensureFermentationTracking() {
+  const e = i.session;
+  return (
+    (e.fermentationTracking = $t(e.fermentationTracking)),
+    e.fermentationTracking
+  );
+}
+export function nextFermentationDay(e = ensureFermentationTracking()) {
+  const t = (e.readings || [])
+    .map((o) => h(o.day, 0))
+    .filter((o) => Number.isFinite(o));
+  return Math.max(0, ...t) + 1;
+}
+export function fermentationReadingId() {
+  return `fermentation-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+}
+export function addFermentationReading() {
+  ((i.fermentationDraftReading = {
+    id: fermentationReadingId(),
+    day: ensureFermentationTracking().readings.length
+      ? nextFermentationDay()
+      : 0,
+    datetime: j(),
+    temperatureC: "",
+    wri: "",
+  }),
+    (i.openFermentationDateEditor = `draft:${i.fermentationDraftReading.id}`),
+    (i.fermentationDateEditorValue = dateTimeParts(
+      i.fermentationDraftReading.datetime,
+    )),
+    i.requestRender(),
+    S(n("Confira data e hora e clique em Inserir.")));
+}
+export function insertFermentationDraftReading() {
+  if (!i.fermentationDraftReading) return;
+  const e = ensureFermentationTracking();
+  (e.readings.push({
+    id: i.fermentationDraftReading.id || fermentationReadingId(),
+    day:
+      i.fermentationDraftReading.day === ""
+        ? nextFermentationDay(e)
+        : Math.max(0, h(i.fermentationDraftReading.day)),
+    datetime: String(i.fermentationDraftReading.datetime || ""),
+    temperatureC:
+      i.fermentationDraftReading.temperatureC === ""
+        ? ""
+        : Math.max(0, h(i.fermentationDraftReading.temperatureC)),
+    wri:
+      i.fermentationDraftReading.wri === ""
+        ? ""
+        : Math.max(0, h(i.fermentationDraftReading.wri)),
+  }),
+    (i.fermentationDraftReading = null),
+    (i.openFermentationDateEditor = ""),
+    (i.fermentationDateEditorValue = null),
+    i.requestRender(),
+    S(n("Leitura de fermenta\xE7\xE3o inserida.")));
+}
+export function cancelFermentationDraftReading() {
+  ((i.fermentationDraftReading = null),
+    (i.openFermentationDateEditor = ""),
+    (i.fermentationDateEditorValue = null),
+    i.requestRender());
+}
+export function setFermentationDraftReading(e, t, o = !0) {
+  i.fermentationDraftReading &&
+    (e === "datetime" &&
+      ((i.fermentationDraftReading.datetime = String(t || "")),
+      (i.fermentationDateEditorValue = dateTimeParts(
+        i.fermentationDraftReading.datetime,
+      ))),
+    e === "temperatureC" &&
+      (i.fermentationDraftReading.temperatureC =
+        t === "" ? "" : Math.max(0, h(t))),
+    e === "wri" &&
+      (i.fermentationDraftReading.wri = t === "" ? "" : Math.max(0, h(t))),
+    o && i.requestRender());
+}
+export function setFermentationReading(e, t, o) {
+  const l = ensureFermentationTracking().readings.find((u) => u.id === e);
+  l &&
+    (t === "day" && (l.day = o === "" ? "" : Math.max(0, h(o))),
+    t === "datetime" && (l.datetime = String(o || "")),
+    t === "temperatureC" &&
+      (l.temperatureC = o === "" ? "" : Math.max(0, h(o))),
+    t === "wri" && (l.wri = o === "" ? "" : Math.max(0, h(o))),
+    i.requestRender());
+}
+export function startFermentationFromSummary() {
+  ((i.phase = "ferment"),
+    i.requestRender(),
+    window.scrollTo({ top: 0, behavior: "instant" }));
+}
+export function removeFermentationReading(e) {
+  const t = ensureFermentationTracking(),
+    o = t.readings.length;
+  ((t.readings = t.readings.filter((r) => r.id !== e)),
+    i.openFermentationDateEditor === `saved:${e}` &&
+      ((i.openFermentationDateEditor = ""),
+      (i.fermentationDateEditorValue = null)),
+    t.readings.length !== o &&
+      (i.requestRender(), S(n("Leitura de fermenta\xE7\xE3o removida."))));
+}
+export function dateTimeParts(e = j()) {
+  const [t = j().slice(0, 10), o = "00:00"] = String(e || j()).split("T");
+  return { date: t, time: o.slice(0, 5) || "00:00" };
+}
+export function partsToDatetime(e = dateTimeParts()) {
+  return `${e.date || j().slice(0, 10)}T${(e.time || "00:00").slice(0, 5)}`;
+}
+function Je(e, t) {
+  ((i.fermentationDateEditorValue = {
+    ...dateTimeParts(),
+    ...(i.fermentationDateEditorValue || {}),
+    [e]: t,
+  }),
+    i.requestRender());
+}
+function Ln(e, t) {
+  const o = partsToDatetime(i.fermentationDateEditorValue || dateTimeParts());
+  e === "draft"
+    ? (setFermentationDraftReading("datetime", o, !1),
+      insertFermentationDraftReading())
+    : ((i.openFermentationDateEditor = ""),
+      (i.fermentationDateEditorValue = null),
+      setFermentationReading(t, "datetime", o));
+}
+function kn(e, t) {
+  ((i.openFermentationDateEditor = i.openFermentationDateEditor === e ? "" : e),
+    (i.fermentationDateEditorValue = i.openFermentationDateEditor
+      ? dateTimeParts(t || j())
+      : null),
+    i.requestRender());
+}
+function Qe() {
+  if (String(i.openFermentationDateEditor || "").startsWith("draft:")) {
+    cancelFermentationDraftReading();
+    return;
+  }
+  ((i.openFermentationDateEditor = ""),
+    (i.fermentationDateEditorValue = null),
+    i.requestRender());
+}
+export const PHASES = [
+  { id: "prepare", label: "Preparo", icon: "prepare" },
+  { id: "mash", label: "Mostura", icon: "mash" },
+  { id: "boil", label: "Fervura", icon: "boil" },
+  { id: "summary", label: "An\xE1lise", icon: "summary" },
+  { id: "ferment", label: "Fermenta\xE7\xE3o", icon: "ferment" },
+];
+export function renderPhase(e) {
+  const t = (() => {
+    switch (i.phase) {
+      case "mash":
+        return jn(e);
+      case "boil":
+        return Kn(e);
+      case "ferment":
+        return fa(e);
+      case "summary":
+        return Ca(e);
+      default:
+        return Rn(e);
+    }
+  })();
+  return [Cn(), t, En(i.phase)];
+}
+function Cn() {
+  return i.session?.calibration
+    ? a("section", "card calib-banner", [
+        M("scale", "icon calib-banner-icon"),
+        a("div", "calib-banner-text", [
+          a("b", "", n("Brassagem de calibra\xE7\xE3o")),
+          a(
+            "span",
+            "",
+            n(
+              "Alguns par\xE2metros s\xE3o conservadores de prop\xF3sito. Me\xE7a pr\xE9-fervura, p\xF3s-fervura e frio e corrija com \xE1gua quando o app pedir \u2014 no fim, esta leva vira o seu equipamento real.",
+            ),
+          ),
+        ]),
+      ])
+    : null;
+}
+const Sn = {
+  prepare: "Preparo conferido",
+  mash: "Mostura conclu\xEDda",
+  boil: "Fervura conclu\xEDda",
+  summary: "An\xE1lise conferida",
+  ferment: "Fermenta\xE7\xE3o registrada",
+};
+function En(e) {
+  if (isGuideEnabled()) return null;
+  const t = PHASES.findIndex((u) => u.id === e),
+    o = PHASES[t + 1];
+  if (!o) return null;
+  const r = n(Sn[e] || "Concluir"),
+    l = w(
+      [`${r}`, a("span", "next-phase-arrow", `\u2192 ${n(o.label)}`)],
+      () => {
+        (R(i.session),
+          (i.session.phasesDone[e] = !0),
+          (i.phase = o.id),
+          i.requestRender(),
+          window.scrollTo({ top: 0, behavior: "instant" }));
+      },
+      "btn primary next-phase",
+    );
+  return a("div", "next-phase-wrap", [l]);
+}
+export function isPhaseDone(e) {
+  return i.session ? (R(i.session), !!i.session.phasesDone[e]) : !1;
+}
+export function emptyScreen() {
+  const e = w(
+      n("Abrir sess\xE3o salva"),
+      (o) => openBrewSessionPicker(o.currentTarget),
+      "btn ghost",
+    ),
+    t = w(
+      n("Abrir BeerXML do computador"),
+      () => openRecipeFilePicker(),
+      "btn ghost",
+    );
+  return a("div", "empty-state", [
+    M("prepare", "icon empty-icon"),
+    a("h2", "", n("Escolha uma receita para brassar")),
+    a(
+      "p",
+      "",
+      n(
+        "Entre na \xE1rea de Receitas da Beermother Academy e abra a receita que deseja produzir \u2014 ou continue uma brassagem salva.",
+      ),
+    ),
+    a("div", "empty-actions", [
+      a("a", "btn primary", n("Ver receitas na BSA"), {
+        href: "https://beermother.circle.so/c/receitas/",
+      }),
+      e,
+      t,
+    ]),
+  ]);
+}
+function Ze() {
+  return (
+    R(i.session),
+    isPhaseDone("prepare") ||
+      Object.keys(i.session.guideChecks || {}).filter(
+        (e) => !e.startsWith("op-"),
+      ).length > 0 ||
+      Object.keys(i.session.additionChecks || {}).length > 0 ||
+      (i.session.timerEvents || []).length > 0
+  );
+}
+function Rn(e) {
+  const t = Ze(),
+    o =
+      isGuideEnabled() && !t && i.guideLevel !== "copiloto"
+        ? a("div", "next-phase-wrap", [
+            w(
+              [
+                n("Iniciar receita din\xE2mica"),
+                a("span", "next-phase-arrow", `\u2192 ${n("Mostura")}`),
+              ],
+              () => startGuide(),
+              "btn primary next-phase",
+            ),
+          ])
+        : null;
+  return [Pn(e), Mn(e), Un(e, "prepare"), o];
+}
+function Pn(e) {
+  const t = T(Ge(e.og, e.fg), 1);
+  return a("section", "card hero-card", [
+    a("div", "hero-head", [
+      a("div", "hero-identity", [
+        a("span", "hero-kicker", n("Receita pronta para brassar")),
+        a("h1", "hero-title", e.recipe.name),
+        a(
+          "p",
+          "hero-sub",
+          `${e.recipe.styleName} \xB7 ${e.recipe.brewer || n("sem autor")}`,
+        ),
+      ]),
+      a("div", "hero-actions", [
+        w(
+          n("Lista de compras"),
+          () => openShoppingListSheet("list"),
+          "btn ghost small",
+        ),
+        w(
+          n("Receita"),
+          () => openShoppingListSheet("recipe"),
+          "btn ghost small",
+        ),
+      ]),
+    ]),
+    a("div", "hero-stats", [
+      ue("OG", e.og.toFixed(3)),
+      ue("FG", e.fg.toFixed(3)),
+      ue("ABV", `${b(t, 1)}%`),
+      ue("IBU", String(e.ibu)),
+      $n(e.ebc),
+    ]),
+  ]);
+}
+function Mn(e) {
+  const t = e.props,
+    o = i.viewMode === "essential",
+    r = [
+      N(
+        n("Volume no fermentador"),
+        t.targetVolumeL,
+        "L",
+        (p) => setProp("targetVolumeL", p),
+        { step: ".1", min: ".1" },
+      ),
+      N(
+        n("Efici\xEAncia do equipamento"),
+        bt(t),
+        "%",
+        (p) => setProp("equipmentEfficiencyPct", p),
+        { step: ".1", min: "1" },
+      ),
+    ];
+  o ||
+    r.push(
+      N(
+        n("Evapora\xE7\xE3o"),
+        t.evaporationPct,
+        "%/h",
+        (p) => setProp("evaporationPct", p),
+        { step: ".1", min: "0" },
+      ),
+      N(
+        n("Perda Trub"),
+        h(t.trubLossPct, 0.15) * 100,
+        "%",
+        (p) => setProp("trubLossPct", p / 100),
+        { step: ".1", min: "0" },
+      ),
+      N(
+        n("Absor\xE7\xE3o dos gr\xE3os"),
+        t.grainAbsorptionLkg,
+        "L/kg",
+        (p) => setProp("grainAbsorptionLkg", p),
+        { step: ".01", min: "0" },
+      ),
+      N(
+        n("Rela\xE7\xE3o \xC1gua/Malte"),
+        t.waterToGrainRatioLkg,
+        "L/kg",
+        (p) => setProp("waterToGrainRatioLkg", p),
+        { step: ".1", min: "0" },
+      ),
+      N(
+        n("Volume morto recuper\xE1vel"),
+        t.mashTunDeadSpaceL,
+        "L",
+        (p) => setProp("mashTunDeadSpaceL", p),
+        {
+          step: ".1",
+          min: "0",
+          title: n(
+            "\xC1gua sob o fundo falso da tina: precisa ser preenchida na mostura, mas volta pelo dreno. Muda a divis\xE3o mostura/lavagem sem alterar o total (padr\xE3o 0).",
+          ),
+        },
+      ),
+      N(
+        n("Fator WRI do refrat\xF4metro"),
+        t.wriFactor,
+        "\xD7",
+        (p) => setProp("wriFactor", p),
+        {
+          step: ".01",
+          min: ".8",
+          title: n(
+            "Fator de corre\xE7\xE3o do refrat\xF4metro para mosto (padr\xE3o 1,04).",
+          ),
+        },
+      ),
+      N(
+        n("Taxa de aquecimento"),
+        Pt(t, i.session.recipe),
+        "\xB0C/min",
+        (p) => setProp("heatingRateCMin", p),
+        {
+          step: ".1",
+          min: "0",
+          title: n(
+            "Velocidade de subida entre as rampas \u2014 gera as etapas estimadas de aquecimento no rel\xF3gio (0 desliga; padr\xE3o 1,5).",
+          ),
+        },
+      ),
+    );
+  const l = o
+      ? null
+      : a("div", "derived-row", [
+          Se(n("Efici\xEAncia de mostura"), `${b(t.mashEfficiencyPct, 1)}%`),
+          Se(n("Perda Trub calculada"), E(t.trubLossL, 2)),
+          Se(n("Evapora\xE7\xE3o calculada"), Xe(t.evaporationLh, 2)),
+        ]),
+    u = i.session.equipmentProfileName
+      ? `Equipamento: ${i.session.equipmentProfileName}`
+      : n("Selecionar equipamento"),
+    s = i.session.calibration
+      ? a(
+          "span",
+          "muted calib-equip-note",
+          n(
+            "Equipamento em observa\xE7\xE3o \u2014 \xE9 o que esta brassagem vai medir.",
+          ),
+        )
+      : w(
+          [M("scale", "icon"), a("span", "", u)],
+          () => on(),
+          "btn small equip-select-btn",
+          {
+            title: n("Aplica um perfil de equipamento salvo a esta brassagem."),
+          },
+        ),
+    c = a("div", "param-tools", [Fn(), a("div", "param-buttons", [s])]);
+  return k(n("Par\xE2metros de produ\xE7\xE3o"), "scale", [
+    c,
+    a("div", "form-grid", r),
+    l,
+    o ? null : Tn(t),
+  ]);
+}
+function Se(e, t) {
+  return a("span", "derived-chip", [a("span", "", e), a("b", "", t)]);
+}
+const An = [
+  [4, "#F8F4B4"],
+  [6, "#F6E96C"],
+  [8, "#F1D250"],
+  [12, "#E8B845"],
+  [16, "#D98A37"],
+  [20, "#BE6D2E"],
+  [26, "#A85C28"],
+  [33, "#8E4A22"],
+  [39, "#6B3A1E"],
+  [47, "#57301A"],
+  [57, "#432818"],
+  [69, "#2E1B12"],
+  [79, "#1F120C"],
+  [1 / 0, "#120A06"],
+];
+export function ebcToHex(e) {
+  const t = Math.max(0, h(e)),
+    o = An.find(([r]) => t <= r);
+  return o ? o[1] : "#120A06";
+}
+function $n(e) {
+  const t = h(e) > 0,
+    o = a("span", "ebc-swatch");
+  return (
+    t && (o.style.background = ebcToHex(e)),
+    a("div", "stat", [
+      a("span", "stat-label", n("Cor")),
+      a("b", "stat-value num ebc-value", t ? [o, `${b(e, 1)} EBC`] : "-"),
+    ])
+  );
+}
+function Fn() {
+  const e = (t, o, r) =>
+    w(
+      t,
+      () => {
+        (It(o), i.requestRender());
+      },
+      "seg-btn",
+      { title: r, "aria-pressed": i.viewMode === o ? "true" : "false" },
+    );
+  return a("div", "seg-switch", [
+    e(
+      n("Essencial"),
+      "essential",
+      n("Mostra apenas volume e efici\xEAncia de mostura."),
+    ),
+    e(
+      n("Completo"),
+      "complete",
+      n("Mostra todos os par\xE2metros de produ\xE7\xE3o."),
+    ),
+  ]);
+}
+function Tn(e) {
+  const t = qe(e);
+  return a("div", "base-water", [
+    a("div", "base-water-head", [
+      a("b", "", n("\xC1gua base")),
+      a("span", "", "ppm"),
+    ]),
+    a(
+      "div",
+      "ion-grid",
+      De.map((o) => {
+        const r = ce(t[o.key], (l) => setBaseWaterIon(o.key, l), {
+          "aria-label": n("{ion} \xE1gua base", { ion: o.plainLabel }),
+          min: "0",
+          step: "1",
+        });
+        return a("label", "ion-field", [a("span", "", o.label), r]);
+      }),
+    ),
+  ]);
+}
+function Dn(e) {
+  const t = e.props,
+    o = h(t.mashWaterUsedL, e.volumes.mashWater),
+    r = t.mashWaterUsedL === "" ? T(e.volumes.mashWater, 1) : t.mashWaterUsedL,
+    l = Math.max(0, e.volumes.totalWater - o),
+    u = !!t.showWaterSalts,
+    s = Ie(t, e.volumes),
+    c = _(
+      "salt",
+      u ? n("Ocultar sais") : n("Mostrar sais"),
+      () => setWaterSaltsVisible(!u),
+      `icon-btn ${u ? "active" : ""}`,
+    );
+  c.setAttribute("aria-pressed", u ? "true" : "false");
+  const p = a("div", "water-table", [
+      $(
+        [a("span", "", ""), a("b", "", n("Calculado")), a("b", "", n("Usado"))],
+        "head three",
+      ),
+      $(
+        [
+          a("span", "row-label", n("Mostura")),
+          a("span", "num", E(e.volumes.mashWater, 1)),
+          le(r, (f) => setProp("mashWaterUsedL", f), {}, e.volumes.mashWater),
+        ],
+        "three",
+      ),
+      $(
+        [
+          a("span", "row-label", n("Lavagem")),
+          a("span", "num", E(e.volumes.sparge, 1)),
+          a("span", "num", E(l, 1)),
+        ],
+        "three",
+      ),
+      $(
+        [
+          a("span", "row-label", n("Total")),
+          a("span", "num", E(e.volumes.totalWater, 1)),
+          a("span", "num", E(e.volumes.totalWater, 1)),
+        ],
+        "three total",
+      ),
+    ]),
+    d = u
+      ? a("div", "salts-block", [
+          a("div", "salts-grid", [
+            $(
+              [a("span", "", ""), ...s.map((f) => a("b", "", f.formula))],
+              "head salts",
+            ),
+            $(
+              [
+                a("span", "row-label", n("Mostura")),
+                ...s.map((f) => a("span", "num", Ee(f.mashG))),
+              ],
+              "salts",
+            ),
+            $(
+              [
+                a("span", "row-label", n("Lavagem")),
+                ...s.map((f) => a("span", "num", Ee(f.spargeG))),
+              ],
+              "salts",
+            ),
+            $(
+              [
+                a("span", "row-label", n("Total")),
+                ...s.map((f) => a("span", "num", Ee(f.totalG))),
+              ],
+              "salts total",
+            ),
+          ]),
+          Bn(e.waterProfile),
+        ])
+      : null;
+  return O(
+    k(
+      n("\xC1gua desta brassagem"),
+      "water",
+      [
+        p,
+        a(
+          "p",
+          "reading-hint",
+          n(
+            'Aque\xE7a a \xE1gua de lavagem a ~76\u201378 \xB0C. Ajuste "Usado" na mostura se mudar algo na hora.',
+          ),
+        ),
+        i.session?.calibration
+          ? a(
+              "p",
+              "reading-hint calib-hint",
+              n(
+                'A \xE1gua de mostura prevista \xE9 {vol}, mas coloque o quanto for preciso para cobrir o gr\xE3o. Em equipamentos com fundo falso grande, boa parte da \xE1gua fica embaixo, sem contato com os gr\xE3os \u2014 isso \xE9 o volume morto do seu sistema. Ajuste "Usado" com o que voc\xEA realmente usou.',
+                { vol: E(e.volumes.mashWater, 1) },
+              ),
+            )
+          : null,
+        d,
+      ],
+      [me("mash-water", n("\xE1gua da mostura")), c],
+    ),
+    "water",
+  );
+}
+function Ee(e) {
+  return h(e) ? `${b(e, 1)} g` : "-";
+}
+function Bn(e = {}) {
+  return a("div", "ion-strip", [
+    a("span", "ion-strip-label", n("\xC1gua ajustada")),
+    ...De.map((t) =>
+      a("span", "ion-chip", [
+        a("b", "", t.label),
+        a("em", "", vn(e.adjusted?.[t.key])),
+      ]),
+    ),
+  ]);
+}
+const qn = {
+    "mash-water": "alvo 5,5",
+    mash: "faixa 5,2\u20135,6",
+    "sparge-water": "alvo 5,5",
+    "pre-boil": "s\xF3 registro",
+    "post-boil": "s\xF3 registro",
+  },
+  In = (e) => Kt[e] || e;
+function Wn() {
+  const e = jt.find((t) => t.id === se());
+  return e ? A(e.label).toLowerCase() : n("\xE1cido");
+}
+function Z(e, t) {
+  const o = h(e.props.mashWaterUsedL, e.volumes.mashWater);
+  return t === "sparge-water" ? Math.max(0, e.volumes.totalWater - o) : o;
+}
+function z(e) {
+  return (R(i.session), i.session.phLog[e]);
+}
+function Re(e) {
+  const t = z("mash-water").readings;
+  return Ke(t, Z(e, "mash-water"));
+}
+function Vn(e, t) {
+  if (t === "sparge-water") {
+    const o = Re(e);
+    if (o)
+      return { acidId: se(), water: { slope: o, samples: 1, spreadPct: 0 } };
+  }
+  return Ue();
+}
+function Nn(e, t) {
+  const o = z(t);
+  if (o.learnedAt || t === "pre-boil" || t === "post-boil") return;
+  const r = Ke(o.readings, Z(e, t));
+  if (!r) return;
+  const l = t === "mash" ? "mash" : "water";
+  (Ut(Xt(Ue(), { kind: l, slope: r, acidId: se() })),
+    (o.learnedAt = new Date().toISOString()));
+}
+function On(e, t, o) {
+  const r = h(o);
+  if (!(r > 0 && r < 14)) return;
+  const l = z(t);
+  l.readings.push({ ph: r, doseMl: 0, at: new Date().toISOString() });
+  const u = et(e, t);
+  (u && u.doseMl > 0
+    ? (l.readings[l.readings.length - 1].doseMl = u.doseMl)
+    : Nn(e, t),
+    i.requestRender());
+}
+function Gn(e) {
+  const t = z(e);
+  t.readings.length && (t.readings.pop(), i.requestRender());
+}
+function et(e, t) {
+  const o = je[t];
+  if (!o) return null;
+  const r = z(t),
+    l = r.readings[r.readings.length - 1];
+  if (!l) return null;
+  if (t === "mash" && l.ph <= o.max)
+    return { doseMl: 0, inRange: l.ph >= o.min, low: l.ph < o.min };
+  const u = r.readings.slice(0, -1);
+  if (t === "sparge-water" && u.length === 0) {
+    const c = Re(e);
+    if (c)
+      return {
+        doseMl: zt({
+          slope: c,
+          volumeL: Z(e, t),
+          currentPh: l.ph,
+          targetPh: o.target,
+        }).doseMl,
+        slope: c,
+        source: "leitura",
+      };
+  }
+  return Yt({
+    stage: t,
+    volumeL: Z(e, t),
+    currentPh: l.ph,
+    readings: u,
+    memory: Vn(e, t),
+    acidId: se(),
+  });
+}
+const _n = {
+  leitura: "pela sua \xE1gua de hoje",
+  memoria: "pela mem\xF3ria da casa",
+  prior: "chute inicial conservador \u2014 a pr\xF3xima leitura ensina",
+};
+function ee(e, t) {
+  if (!ie() || !i.session) return null;
+  const o = In(t),
+    r = z(t),
+    l = je[t],
+    u = !l;
+  if (r.skipped)
+    return k(
+      n("pH \xB7 {title}", { title: n(o) }),
+      "flask",
+      [
+        a("div", "ph-skipped-row", [
+          a("span", "muted", n("Pulado \u2014 o dia segue normal.")),
+          w(
+            n("Retomar"),
+            () => {
+              ((r.skipped = !1), i.requestRender());
+            },
+            "btn small ghost",
+          ),
+        ]),
+      ],
+      [a("span", "head-meta", n("opcional"))],
+    );
+  const s = [];
+  r.readings.length &&
+    (s.push(
+      a(
+        "div",
+        "ph-history",
+        r.readings.map((m, g) => {
+          const L = g === r.readings.length - 1;
+          return a("div", "ph-history-row", [
+            a("span", "ph-history-ph num", `pH ${b(m.ph, 2)}`),
+            L && !(m.doseMl > 0)
+              ? a("span", "ph-history-dose")
+              : a("span", "ph-history-dose", [
+                  a("span", "", "+"),
+                  H(
+                    m.doseMl || "",
+                    (C) => {
+                      ((m.doseMl = Math.max(0, h(C))), i.requestRender());
+                    },
+                    "mL",
+                    {
+                      "aria-label": n("Dose ap\xF3s a leitura {n}", {
+                        n: g + 1,
+                      }),
+                    },
+                  ),
+                ]),
+            L
+              ? _(
+                  "undo",
+                  n("Desfazer esta leitura"),
+                  () => Gn(t),
+                  "icon-btn ph-undo",
+                )
+              : null,
+          ]);
+        }),
+      ),
+    ),
+    s.push(
+      a(
+        "p",
+        "ph-edit-hint",
+        n("Toque na dose para corrigir o que voc\xEA realmente adicionou."),
+      ),
+    ));
+  const c = r.readings[r.readings.length - 1];
+  if (u)
+    c &&
+      s.push(
+        a(
+          "p",
+          "ph-status done",
+          n("Registrado: pH {ph}. Vai para o resumo da leva.", {
+            ph: b(c.ph, 2),
+          }),
+        ),
+      );
+  else if (c) {
+    const m = et(e, t);
+    t === "mash" && m && m.low
+      ? s.push(
+          a(
+            "p",
+            "ph-status",
+            n(
+              "pH {ph} \u2014 abaixo da faixa. N\xE3o h\xE1 corre\xE7\xE3o para cima; anote e siga (o malte manda).",
+              { ph: b(c.ph, 2) },
+            ),
+          ),
+        )
+      : m && m.doseMl > 0
+        ? s.push(
+            a("p", "ph-status act", [
+              a(
+                "b",
+                "",
+                n("Adicione ~{dose} mL de {acid}", {
+                  dose: b(m.doseMl, 1),
+                  acid: Wn(),
+                }),
+              ),
+              a(
+                "span",
+                "",
+                t === "mash"
+                  ? n(" no mosto, misture bem (~1 min) e leia de novo.")
+                  : n(" nos {vol} L, misture bem (~1 min) e leia de novo.", {
+                      vol: b(Z(e, t), 1),
+                    }),
+              ),
+              m.source
+                ? a("span", "ph-source", ` ${n(_n[m.source] || "")}`)
+                : null,
+            ]),
+          )
+        : s.push(
+            a(
+              "p",
+              "ph-status done",
+              t === "mash"
+                ? n(
+                    "\u2713 pH {ph} \u2014 na faixa ({min}\u2013{max}). Siga o dia.",
+                    { ph: b(c.ph, 2), min: b(l.min, 1), max: b(l.max, 1) },
+                  )
+                : n("\u2713 pH {ph} \u2014 no alvo. Siga o dia.", {
+                    ph: b(c.ph, 2),
+                  }),
+            ),
+          );
+  } else
+    t === "sparge-water"
+      ? s.push(
+          a(
+            "p",
+            "ph-status",
+            Re(e)
+              ? n(
+                  "Mesma \xE1gua de hoje: a dose j\xE1 vem calculada. Registre uma leitura, aplique e fa\xE7a o ajuste fino.",
+                )
+              : n(
+                  "Me\xE7a o pH da \xE1gua de lavagem \u2014 se for a mesma \xE1gua da mostura, a dose vem quase pronta.",
+                ),
+          ),
+        )
+      : t === "mash"
+        ? s.push(
+            a(
+              "p",
+              "ph-status",
+              n(
+                "10\u201315 min ap\xF3s o dough-in, tire uma amostra do mosto, esfrie a ~20 \xB0C e leia.",
+              ),
+            ),
+          )
+        : s.push(
+            a(
+              "p",
+              "ph-status",
+              n(
+                "Me\xE7a o pH da \xE1gua antes do dough-in \u2014 o tratamento come\xE7a aqui.",
+              ),
+            ),
+          );
+  let p = "";
+  const d = ce(
+      "",
+      (m) => {
+        p = m;
+      },
+      { placeholder: n("ex.: 7,2"), "aria-label": `pH ${n(o)}` },
+    ),
+    f = w(
+      n("Registrar leitura"),
+      () => {
+        On(e, t, p);
+      },
+      "btn small primary",
+    );
+  return (
+    s.push(a("div", "ph-input-row", [a("span", "cell-edit ph-cell", [d]), f])),
+    u ||
+      s.push(
+        a(
+          "p",
+          "reading-hint",
+          n(
+            "Esfrie a amostra a ~20 \xB0C antes de ler \u2014 pH cai com a temperatura e os alvos s\xE3o a frio.",
+          ),
+        ),
+      ),
+    t === "mash-water" &&
+      !r.readings.length &&
+      s.push(
+        a(
+          "p",
+          "reading-hint",
+          n(
+            "Calibrou o pHmetro? Buffers 4,0 e 7,0 \u2014 dois minutos que mudam tudo.",
+          ),
+        ),
+      ),
+    k(n("pH \xB7 {title}", { title: n(o) }), "flask", s, [
+      a("span", "head-meta", n(qn[t] || "")),
+      r.readings.length
+        ? null
+        : w(
+            n("Pular"),
+            () => {
+              ((r.skipped = !0), i.requestRender());
+            },
+            "btn small ghost",
+          ),
+    ])
+  );
+}
+function Hn() {
+  if (!ie() || !i.session) return null;
+  const e = Jt(i.session.phLog);
+  return e.length
+    ? k(n("pH do dia"), "flask", [
+        a(
+          "div",
+          "ph-summary",
+          e.map((t) =>
+            a("div", "ph-summary-row", [
+              a("span", "ph-summary-stage", n(t.title)),
+              t.skipped && !t.readings
+                ? a("span", "ph-summary-val muted", n("pulado"))
+                : a("span", "ph-summary-val", [
+                    a("b", "num", `pH ${b(t.finalPh, 2)}`),
+                    t.totalMl > 0
+                      ? a(
+                          "span",
+                          "ph-summary-acid",
+                          n(" \xB7 {ml} mL de \xE1cido", {
+                            ml: b(t.totalMl, 1),
+                          }),
+                        )
+                      : null,
+                  ]),
+            ]),
+          ),
+        ),
+      ])
+    : null;
+}
+let Pe = !1;
+function Un(e, t) {
+  if ((R(i.session), i.guideLevel !== "copiloto" || !isGuideEnabled()))
+    return null;
+  const o = Ye(e, i.session, "copiloto", { phMode: ie() }).filter(
+    (g) => g.phase === t,
+  );
+  if (!o.length) return null;
+  const r = o.map((g) => {
+      const L = g.type === "check",
+        C = Array.isArray(g.checks) && g.checks.length > 0,
+        P = () => {
+          C ? setGuideAdditionsDone(g.checks, !g.done) : toggleGuideCheck(g.id);
+        },
+        v = L
+          ? w(
+              g.done ? M("check", "icon") : "",
+              P,
+              `calib-check ${g.done ? "on" : "off"}`,
+              {
+                "aria-label": g.done
+                  ? n("Desmarcar: {title}", { title: g.title })
+                  : n("Marcar feito: {title}", { title: g.title }),
+                "aria-pressed": g.done ? "true" : "false",
+              },
+            )
+          : a(
+              "span",
+              `checklist-auto ${g.done ? "on" : ""}`,
+              g.done ? "\u2713" : "\xB7",
+            ),
+        x = [a("span", "checklist-title", g.title)];
+      let y;
+      return (
+        g.id === "op-ingredients"
+          ? (y = w(
+              [
+                a("span", "checklist-title", [
+                  g.title,
+                  a(
+                    "span",
+                    "checklist-link",
+                    ` \xB7 ${n("ver a lista \u2192")}`,
+                  ),
+                ]),
+              ],
+              () => openShoppingListSheet("recipe"),
+              "checklist-main checklist-main-btn",
+            ))
+          : L
+            ? (y = w(x, P, "checklist-main checklist-main-btn"))
+            : (y = a("div", "checklist-main", x)),
+        a(
+          "div",
+          `checklist-row ${g.done ? "is-done" : ""} ${g.status === "current" ? "is-current" : ""}`,
+          [v, y],
+        )
+      );
+    }),
+    l = o.filter((g) => g.done).length,
+    u =
+      t === "prepare" && !Ze()
+        ? a("div", "checklist-cta", [
+            w(
+              [
+                n("Iniciar brassagem"),
+                a("span", "next-phase-arrow", ` \u2192 ${n("Mostura")}`),
+              ],
+              () => startGuide(),
+              "btn primary next-phase",
+            ),
+          ])
+        : null,
+    s = t !== "prepare",
+    c = !s || Pe,
+    p = a("span", "head-meta num", `${l}/${o.length}`),
+    d = a("header", `card-head checklist-head ${s ? "is-toggle" : ""}`, [
+      M("summary", "icon card-icon"),
+      a("h2", "card-title", n("Checklist do dia")),
+      a(
+        "div",
+        "card-actions",
+        [
+          p,
+          s
+            ? M("chevron", `icon checklist-chevron ${c ? "is-open" : ""}`)
+            : null,
+        ].filter(Boolean),
+      ),
+    ]);
+  if (s) {
+    (d.setAttribute("role", "button"),
+      d.setAttribute("tabindex", "0"),
+      d.setAttribute("aria-expanded", c ? "true" : "false"));
+    const g = () => {
+      ((Pe = !Pe), i.requestRender());
+    };
+    (d.addEventListener("click", g),
+      d.addEventListener("keydown", (L) => {
+        (L.key === "Enter" || L.key === " ") && (L.preventDefault(), g());
+      }));
+  }
+  const f = c
+      ? a(
+          "div",
+          "card-body",
+          [a("div", "checklist-list", r), u].filter(Boolean),
+        )
+      : null,
+    m = a(
+      "section",
+      `card copilot-checklist ${c ? "" : "is-collapsed"}`,
+      [d, f].filter(Boolean),
+    );
+  return (m.setAttribute("data-guide-anchor", "copilot-checklist"), m);
+}
+function tt(e, t) {
+  if (i.guideLevel !== "copiloto" || !isGuideEnabled()) return {};
+  const o = {};
+  return (
+    Ye(e, i.session, "copiloto", { phMode: ie() })
+      .filter((r) => r.phase === t && String(r.id).startsWith("op-"))
+      .forEach((r) => {
+        o[r.id] = r;
+      }),
+    o
+  );
+}
+function nt(e) {
+  const t = e.done,
+    o = w(
+      t ? M("check", "icon") : "",
+      () => toggleGuideCheck(e.id),
+      `calib-check ${t ? "on" : "off"}`,
+      {
+        "aria-label": t
+          ? n("Desmarcar: {title}", { title: e.title })
+          : n("Marcar feito: {title}", { title: e.title }),
+        "aria-pressed": t ? "true" : "false",
+      },
+    ),
+    r = a("div", "op-card-main", [a("span", "op-card-title", e.title)]),
+    l = a("section", `card op-card ${t ? "is-done" : ""}`, [o, r]);
+  return (l.setAttribute("data-guide-anchor", e.id), l);
+}
+function q(e, t) {
+  const o = e[t];
+  return o ? nt(o) : null;
+}
+function at(e, t) {
+  return isGuideEnabled()
+    ? ln(e, t, i.guideLevel).map((o) =>
+        a("p", "card-companion", [
+          a("b", "", n("Durante: ")),
+          `${o.title.charAt(0).toLowerCase()}${o.title.slice(1)}`,
+        ]),
+      )
+    : [];
+}
+function jn(e) {
+  const t = e.scaledFermentables.filter((d) => d.use === "Mostura"),
+    o = t.reduce((d, f) => d + h(f.amountKg), 0),
+    r = Mt(e.recipe.mash),
+    l = O(
+      k(
+        n("Maltes"),
+        "scale",
+        [
+          a("div", "ingredient-list", [
+            ...t.map((d) =>
+              a("div", "ingredient-row", [
+                a("div", "ingredient-main", [
+                  a("b", "ingredient-name", d.name),
+                  a(
+                    "span",
+                    "ingredient-meta",
+                    `${o ? b((d.amountKg / o) * 100, 1) : "0,0"}%`,
+                  ),
+                ]),
+                a("b", "ingredient-amount num", K(d.amountKg)),
+              ]),
+            ),
+            a("div", "ingredient-row total", [
+              a("b", "ingredient-name", n("Total")),
+              a("b", "ingredient-amount num", K(o)),
+            ]),
+          ]),
+        ],
+        [me("mash-doughin", "dough-in")],
+      ),
+      "grist",
+    ),
+    u = isGuideEnabled() ? sn(e, i.session) : [],
+    s = O(
+      k(
+        n("Rampas de mostura"),
+        "thermo",
+        [
+          a(
+            "div",
+            "steps-list",
+            e.recipe.mash.map((d, f) => {
+              const m = u[f] || "";
+              return a("div", `step-row ${m}`, [
+                m === "done" ? M("check", "icon step-state-icon") : null,
+                a("b", "step-name", A(Ve(d.name))),
+                m === "current" ? a("span", "step-chip now", n("agora")) : null,
+                a("span", "step-chip temp", `${b(d.temperatureC, 1)} \xB0C`),
+                a("span", "step-chip time", `${b(d.timeMin, 0)} min`),
+              ]);
+            }),
+          ),
+          ...at(e, "mash"),
+        ],
+        [a("span", "head-meta", `${b(r, 0)} min`)],
+      ),
+      "mash-steps",
+    ),
+    c = e.mashAdditions.length
+      ? k(n("Adi\xE7\xF5es de mostura"), "hop", [
+          a(
+            "div",
+            "addition-list",
+            e.mashAdditions.map((d) =>
+              a(
+                "div",
+                `addition-row with-check ${isAdditionChecked(d) ? "checked" : ""}`,
+                [
+                  de(d),
+                  a("b", "addition-name", d.name),
+                  a("span", "addition-amount num", Y(d.amount, d.unit)),
+                  a("span", "addition-when", A(d.moment || d.use)),
+                ],
+                { "data-guide-anchor": additionCheckKey(d) },
+              ),
+            ),
+          ),
+        ])
+      : null,
+    p = tt(e, "mash");
+  return [
+    Dn(e),
+    ee(e, "mash-water"),
+    l,
+    c,
+    s,
+    ee(e, "mash"),
+    q(p, "op-heat-sparge"),
+    la(e),
+    ee(e, "sparge-water"),
+    q(p, "op-recirculate"),
+    q(p, "op-transfer-kettle"),
+    ot(
+      e,
+      "preBoil",
+      n("Leitura pr\xE9-fervura"),
+      "95 \xB0C",
+      e.volumes.preBoil,
+      e.preBoilPlato,
+    ),
+    ee(e, "pre-boil"),
+    ut(e, e.preCorrection, "pre", e.preBoilPlato),
+  ];
+}
+function Kn(e) {
+  const t = tt(e, "boil"),
+    o = h(e.recipe.fermentation?.[0]?.temperatureC),
+    r =
+      i.guideLevel === "copiloto" && isGuideEnabled()
+        ? (() => {
+            const l = nt({
+              id: "boil-chill",
+              title: o
+                ? n("Resfrie o mosto at\xE9 ~{t} \xB0C", { t: b(o, 0) })
+                : n("Resfrie o mosto at\xE9 a temperatura de inocula\xE7\xE3o"),
+              done: !!i.session.guideChecks?.["boil-chill"],
+            });
+            return (l.setAttribute("data-guide-anchor", "chill"), l);
+          })()
+        : null;
+  return [
+    ia(e),
+    q(t, "op-chiller-in"),
+    ot(
+      e,
+      "postBoil",
+      n("Leitura p\xF3s-fervura"),
+      "95 \xB0C",
+      e.expected.hotPostBoil,
+      e.postBoilPlato,
+    ),
+    ee(e, "post-boil"),
+    ut(e, e.postCorrection, "post", e.postBoilPlato),
+    sa(e),
+    q(t, "op-whirlpool"),
+    q(t, "op-sanitize-cold"),
+    q(t, "op-fermenter-ready"),
+    r,
+    ca(e),
+    q(t, "op-aerate"),
+    q(t, "op-pitch"),
+    q(t, "op-close-airlock"),
+    q(t, "op-fridge"),
+    q(t, "op-cleanup"),
+  ];
+}
+function ot(e, t, o, r, l, u) {
+  const s = xe(e.props),
+    c = i.session.measurements[t],
+    p = Be(c, s),
+    d = t === "postBoil",
+    f = d ? remainingBoilEvapL(e.props) : 0,
+    m = d ? l + f : l,
+    g = d && m > 0 ? (u * l) / m : u,
+    L = g * s,
+    C = d ? (c.rawVolumeL !== void 0 ? c.rawVolumeL : c.volumeL) : p.volumeL,
+    P = d ? (c.rawWri !== void 0 ? c.rawWri : c.wri) : p.wri,
+    v = (y) => (I) =>
+      d ? setPostBoilReading(e, y, I) : setMeasurement(t, y, I),
+    x = d && c.readOffsetMin && h(c.volumeL) > 0;
+  return O(
+    k(
+      o,
+      "flask",
+      [
+        a("div", "reading-grid", [
+          a("div", "reading-col expected", [
+            a("span", "reading-col-title", n("Esperado")),
+            a("div", "reading-line", [
+              a("span", "", n("Volume")),
+              a("b", "num", E(m, 2)),
+            ]),
+            a("div", "reading-line", [
+              a("span", "", n("Extrato")),
+              a("b", "num", `${b(g, 1)} \xB0P`),
+            ]),
+          ]),
+          a("div", "reading-col input", [
+            a("span", "reading-col-title", n("Sua leitura")),
+            a("div", "reading-line", [
+              a("span", "", n("Volume")),
+              le(C, v("volumeL"), { placeholderL: m }, m),
+            ]),
+            a("div", "reading-line", [
+              a("span", "", "WRI", {
+                title: n("Leitura do refrat\xF4metro (escala WRI/Brix)"),
+              }),
+              H(P, v("wri"), "WRI", { placeholder: b(L, 1) }),
+            ]),
+            a(
+              "div",
+              "reading-real",
+              p.realPlato
+                ? [
+                    a("span", "", x ? n("No flameout") : n("Real")),
+                    a(
+                      "b",
+                      "num",
+                      x
+                        ? `\u2248 ${E(h(c.volumeL), 2)} \xB7 ${b(p.realPlato, 1)} \xB0P`
+                        : `${b(p.realPlato, 1)} \xB0P / ${p.sg.toFixed(3)}`,
+                    ),
+                  ]
+                : [a("span", "muted", n("Informe volume e WRI"))],
+            ),
+          ]),
+        ]),
+        a(
+          "p",
+          "reading-hint",
+          d
+            ? n(
+                "Me\xE7a o volume e o WRI no fim da fervura (flameout), com o mosto ainda quente \u2014 o esperado j\xE1 considera a temperatura.",
+              )
+            : n(
+                "Me\xE7a o volume quente e o WRI no refrat\xF4metro \u2014 o esperado j\xE1 considera a temperatura.",
+              ),
+        ),
+        i.session?.calibration
+          ? a(
+              "p",
+              "reading-hint calib-hint",
+              d
+                ? n(
+                    "Aqui nasce a sua evapora\xE7\xE3o real. Se o mosto vier curto e forte, o app pede \xE1gua no flameout \u2014 e o dia fecha certo.",
+                  )
+                : n(
+                    "Aqui nasce a sua efici\xEAncia real. Se a densidade vier alta, o app pede \xE1gua antes de ferver \u2014 era o esperado.",
+                  ),
+            )
+          : null,
+      ],
+      [a("span", "head-meta temp-badge", r)],
+    ),
+    t === "preBoil" ? "reading-pre" : "reading-post",
+  );
+}
+function rt(e, t) {
+  R(i.session);
+  const o = i.session.correctionRounds[e],
+    r = ensureCorrectionCheck(e);
+  (o.push({
+    round: o.length + 1,
+    action: String(t || ""),
+    checkWri: r.wri === "" ? "" : h(r.wri),
+    at: new Date().toISOString(),
+  }),
+    (r.wri = ""),
+    i.requestRender(),
+    S(n("Me\xE7a de novo para conferir a corre\xE7\xE3o.")));
+}
+export function acceptCorrection(
+  e,
+  t = n("Anotado \u2014 seguimos com a leitura como est\xE1."),
+) {
+  (R(i.session),
+    (i.session.correctionAccepted[e] = new Date().toISOString()),
+    i.requestRender(),
+    S(t));
+}
+function Yn(e) {
+  (R(i.session), delete i.session.correctionAccepted[e], i.requestRender());
+}
+function zn(e) {
+  return (R(i.session), i.session.correctionRounds[e]);
+}
+function Xn(e) {
+  const t = Math.max(0.1, h(e)),
+    o = `${b(t, 0)} min`;
+  (bn("boil", {
+    id: `extra-boil-${Date.now()}`,
+    phase: "boil",
+    label: "Fervura extra",
+    detail: o,
+    durationMin: t,
+    stageRemainingMin: t,
+    targetStageRemainingMin: 0,
+    boilRemainingMin: t,
+    targetBoilRemainingMin: 0,
+    eventTimeLabel: o,
+    eventType: "boil-end",
+    eventCount: 0,
+    eventActionLabel: "Finalizar fervura extra",
+    eventSummaryLabel: "Fim",
+    additions: [],
+  }),
+    S(n("Contador de fervura extra iniciado: {time}.", { time: o })));
+}
+const Jn = "5545991550650",
+  Qn = "Piquiri Brewshop",
+  it = 0.15,
+  Zn = 20;
+let W = null,
+  fe = null,
+  V = 0,
+  X = { ...we },
+  te = new Set(),
+  ne = new Map(),
+  U = null,
+  ae = !1,
+  he = "list";
+function st(e) {
+  return (
+    String(e || "")
+      .trim()
+      .toLowerCase() === "mostura"
+  );
+}
+function Me(e, t) {
+  const o = Math.max(1e-6, h(t));
+  return e > 0 ? Math.max(o, Math.ceil(e / o - 1e-9) * o) : 0;
+}
+function Ae(e, t = it) {
+  return e > 0 ? Math.max(1, Math.ceil(e - t - 1e-9)) : 0;
+}
+function lt(e, t, o) {
+  const r = new Map();
+  return (
+    (e || []).forEach((l) => {
+      const u = t(l);
+      if (!(u > 0)) return;
+      const s = r.get(l.name) || { name: l.name, preG: 0, postG: 0, count: 0 };
+      (st(o(l)) ? (s.preG += u) : (s.postG += u),
+        (s.count += 1),
+        r.set(l.name, s));
+    }),
+    [...r.values()]
+  );
+}
+function J(e, t) {
+  return t > 0 && (e - t) / t > 0.15;
+}
+export function buildShoppingList(e, t = {}) {
+  const o = Math.max(0, h(t.marginPct, 0)),
+    r = h(t.tolerance, it),
+    l = { ...we, ...(t.fractioning || {}) },
+    u = 1 + o / 100,
+    s = [],
+    c = (v) => v.preG + u * v.postG,
+    p = (v) => v.postG > 0 && o > 0,
+    d = (v) =>
+      v === 1
+        ? n("{count} pacote", { count: v })
+        : n("{count} pacotes", { count: v }),
+    f = lt(
+      e.scaledFermentables,
+      (v) => h(v.amountKg) * 1e3,
+      (v) => v.use,
+    ).map((v) => {
+      const x = v.preG + v.postG,
+        y = Me(c(v), l.malteG);
+      return {
+        key: `malte:${v.name}`,
+        name: v.name,
+        hasMargin: p(v),
+        additions: v.count,
+        recipeText: K(x / 1e3),
+        buyText: K(y / 1e3),
+        orderText: K(y / 1e3),
+        differsNotably: J(y, x),
+        alert: !1,
+        alertText: "",
+      };
+    });
+  f.length && s.push({ title: n("Maltes e ferment\xE1veis"), items: f });
+  const m = lt(
+    e.hopSchedule,
+    (v) => h(v.plannedAmountG),
+    (v) => v.use,
+  ).map((v) => {
+    const x = v.preG + v.postG,
+      y = Ae(c(v) / Math.max(1e-6, l.lupuloG), r),
+      I = y * l.lupuloG,
+      Te = I + 1e-6 < x;
+    return {
+      key: `lupulo:${v.name}`,
+      name: v.name,
+      hasMargin: p(v),
+      additions: v.count,
+      recipeText: `${b(x, 0)} g`,
+      buyText: `${b(I, 0)} g`,
+      orderText: `${b(I, 0)} g (${d(y)})`,
+      packages: d(y),
+      differsNotably: J(I, x),
+      alert: Te,
+      alertText: Te ? n("receita pede {x} g", { x: b(x, 0) }) : "",
+    };
+  });
+  m.length && s.push({ title: n("L\xFApulos"), items: m });
+  const g = ea(e.scaledYeasts, l.leveduraG, r);
+  g.length && s.push({ title: n("Levedura"), items: g });
+  const L = {
+      CaCl2: n("Cloreto de c\xE1lcio (CaCl2)"),
+      CaSO4: n("Sulfato de c\xE1lcio (CaSO4)"),
+      MgSO4: n("Sulfato de magn\xE9sio (MgSO4)"),
+    },
+    C = Ie(e.props, e.volumes)
+      .filter((v) => h(v.totalG) > 0)
+      .map((v) => {
+        const x = h(v.totalG),
+          y = Me(x, l.salG);
+        return {
+          key: `sal:${v.name}`,
+          name: L[v.formula] || v.name,
+          hasMargin: !1,
+          additions: 1,
+          recipeText: `${b(x, 1)} g`,
+          buyText: `${b(y, 1)} g`,
+          orderText: `${b(y, 1)} g`,
+          differsNotably: J(y, x),
+          alert: !1,
+          alertText: "",
+        };
+      });
+  C.length && s.push({ title: n("Sais de \xE1gua"), items: C });
+  const P = ta(e.scaledMiscs, u, o, l.outroG, r);
+  return (P.length && s.push({ title: n("Outros insumos"), items: P }), s);
+}
+function ea(e, t, o) {
+  const r = new Map();
+  (e || []).forEach((u) => {
+    const s = r.get(u.name) || {
+      name: u.name,
+      unit: u.unit,
+      amount: 0,
+      count: 0,
+    };
+    ((s.amount += h(u.amount)), (s.count += 1), r.set(u.name, s));
+  });
+  const l = (u) =>
+    u === 1
+      ? n("{count} pacote", { count: u })
+      : n("{count} pacotes", { count: u });
+  return [...r.values()].map((u) => {
+    const s = String(u.unit || "").toLowerCase(),
+      p = ["g", "kg", "mg"].includes(s)
+        ? (u.amount * (s === "kg" ? 1e3 : s === "mg" ? 0.001 : 1)) /
+          Math.max(1e-6, h(t))
+        : u.amount,
+      d = Ae(p, o),
+      f = d + 1e-9 < p;
+    return {
+      key: `levedura:${u.name}`,
+      name: u.name,
+      hasMargin: !1,
+      additions: u.count,
+      recipeText: ke(u.amount, u.unit),
+      buyText: l(d),
+      orderText: l(d),
+      differsNotably: J(d, p),
+      alert: f,
+      alertText: f ? n("receita pede {x} pacote", { x: b(p, 1) }) : "",
+    };
+  });
+}
+function ta(e, t, o, r, l) {
+  const u = new Map();
+  return (
+    (e || []).forEach((s) => {
+      const c = u.get(s.name) || {
+          name: s.name,
+          unit: s.unit,
+          preAmt: 0,
+          postAmt: 0,
+          count: 0,
+        },
+        p = h(s.amount);
+      (st(s.use) ? (c.preAmt += p) : (c.postAmt += p),
+        (c.count += 1),
+        u.set(s.name, c));
+    }),
+    [...u.values()].map((s) => {
+      const c = String(s.unit || "").toLowerCase(),
+        p = ["g", "kg", "mg"].includes(c),
+        d = s.postAmt > 0 && o > 0;
+      if (p) {
+        const C = c === "kg" ? 1e3 : c === "mg" ? 0.001 : 1,
+          P = (s.preAmt + s.postAmt) * C,
+          v = Me((s.preAmt + t * s.postAmt) * C, r);
+        return {
+          key: `misc:${s.name}`,
+          name: s.name,
+          hasMargin: d,
+          additions: s.count,
+          recipeText: `${b(P, 1)} g`,
+          buyText: `${b(v, 1)} g`,
+          orderText: `${b(v, 1)} g`,
+          differsNotably: J(v, P),
+          alert: !1,
+          alertText: "",
+        };
+      }
+      const f = s.unit || "un.",
+        m = s.preAmt + s.postAmt,
+        g = Ae(s.preAmt + t * s.postAmt, l),
+        L = g + 1e-9 < m;
+      return {
+        key: `misc:${s.name}`,
+        name: s.name,
+        hasMargin: d,
+        additions: s.count,
+        recipeText: Y(m, f),
+        buyText: `${g} ${f}`,
+        orderText: `${g} ${f}`,
+        differsNotably: J(g, m),
+        alert: L,
+        alertText: L ? n("receita pede {x}", { x: Y(m, f) }) : "",
+      };
+    })
+  );
+}
+export function shoppingOrderText(e, t = {}) {
+  const o = (s) => typeof t.selected != "function" || t.selected(s.key),
+    r = typeof t.override == "function" ? t.override : () => null,
+    l = t.recipeName || n("brassagem"),
+    u = [
+      t.greeting
+        ? n("Ol\xE1! Gostaria de encomendar os insumos para *{name}*:", {
+            name: l,
+          })
+        : n("Pedido \u2014 {name}", { name: l }),
+      "",
+    ];
+  return (
+    (e || []).forEach((s) => {
+      s.items.filter(o).forEach((c) => {
+        u.push(`\u2022 ${c.name} \u2014 ${r(c.key) || c.orderText}`);
+      });
+    }),
+    u.join(`
+`)
+  );
+}
+export function openShoppingListSheet(e = "list", t = null) {
+  if (W) {
+    if (he === e) {
+      $e();
+      return;
+    }
+    ((he = e), (U = null), G());
+    return;
+  }
+  fe = t;
+  const o = Gt();
+  ((V = o.marginPct),
+    (fe || i.session)?.calibration && (V = Math.max(V, Zn)),
+    (X = o.fractioning),
+    (te = new Set()),
+    (ne = new Map()),
+    (U = null),
+    (ae = !1),
+    (he = e),
+    (W = a("div", "shopping-sheet")),
+    document.body.append(W),
+    tn(() => $e(), W),
+    G());
+}
+function $e() {
+  (W && (W.remove(), (W = null)), (fe = null), nn());
+}
+function ct() {
+  _t({ marginPct: V, fractioning: X });
+}
+function oe(e, t) {
+  const o = ce(
+    X[t],
+    (r) => {
+      ((X = { ...X, [t]: Math.max(1, h(r, we[t])) }), ct(), G());
+    },
+    {
+      min: "1",
+      step: "1",
+      "aria-label": n("Fracionamento de {label} em gramas", { label: e }),
+    },
+  );
+  return a("label", "shopping-frac-field", [
+    a("span", "", e),
+    a("span", "shopping-frac-input", [o, a("b", "", "g")]),
+  ]);
+}
+function na(e) {
+  if (e.alert) return { warn: !0, text: e.alertText };
+  const t = [];
+  return (
+    e.hasMargin && t.push(`+${b(V, 0)}%`),
+    h(e.additions) > 1 && t.push(n("{n} adi\xE7\xF5es", { n: e.additions })),
+    t.length ? { warn: !1, text: t.join(" \xB7 ") } : null
+  );
+}
+function G() {
+  const e = fe || i.session;
+  if (!W || !e) return;
+  const t = _e(e),
+    o = buildShoppingList(t, { marginPct: V, fractioning: X }),
+    r = (x) => !te.has(x),
+    l = (x) => (ne.has(x) ? ne.get(x) : null),
+    u = o.reduce((x, y) => x + y.items.length, 0),
+    s = o.reduce((x, y) => x + y.items.filter((I) => !r(I.key)).length, 0),
+    c = u - s,
+    p = ce(
+      V,
+      (x) => {
+        ((V = Math.max(0, h(x, 0))), ct(), G());
+      },
+      { min: "0", step: "5", "aria-label": n("Margem em %") },
+    ),
+    d =
+      V > 0
+        ? n(" \xB7 margem de {pct}% no p\xF3s-fervura", { pct: b(V, 0) })
+        : "",
+    f = a("p", "shopping-note", [
+      n("Arredondada pelo fracionamento do seu brewshop{tail} \u2014 ", {
+        tail: d,
+      }),
+      w(
+        ae ? n("ocultar") : n("ajustar"),
+        () => {
+          ((ae = !ae), G());
+        },
+        "shopping-config-link",
+      ),
+    ]),
+    m = ae
+      ? a("div", "shopping-frac", [
+          a("label", "shopping-frac-field", [
+            n("Margem"),
+            a("span", "shopping-frac-input", [p, a("b", "", "%")]),
+          ]),
+          oe(n("Malte"), "malteG"),
+          oe(n("L\xFApulo"), "lupuloG"),
+          oe(n("Levedura"), "leveduraG"),
+          oe(n("Sais"), "salG"),
+          oe(n("Outros"), "outroG"),
+        ])
+      : null,
+    g = o.flatMap((x) => x.items).map((x) => aa(x, r(x.key), l(x.key))),
+    L = w(
+      n("Copiar"),
+      async (x) => {
+        const y = x.currentTarget;
+        try {
+          (await Zt(
+            shoppingOrderText(o, {
+              selected: r,
+              override: l,
+              recipeName: t.recipe.name,
+            }),
+          ),
+            F(y, n("Copiar"), n("Copiado")));
+        } catch {
+          F(y, n("Copiar"), n("N\xE3o copiou"), !0);
+        }
+      },
+      "btn",
+    ),
+    C = w(
+      [n("Pedir insumos"), M("open", "icon")],
+      () => {
+        const x = shoppingOrderText(o, {
+            selected: r,
+            override: l,
+            recipeName: t.recipe.name,
+            greeting: !0,
+          }),
+          y = `https://wa.me/${Jn}?text=${encodeURIComponent(x)}`;
+        window.open(y, "_blank", "noopener");
+      },
+      "btn primary shopping-order",
+    );
+  C.disabled = c === 0;
+  const P = _("close", n("Fechar"), () => $e(), "icon-btn shopping-close"),
+    v = he === "list";
+  if (
+    ((W.innerHTML = ""),
+    W.append(
+      ...[
+        a("div", "shopping-head", [
+          a("b", "", v ? n("Lista de compras") : n("Receita")),
+          a("div", "shopping-head-right", [
+            v
+              ? a(
+                  "span",
+                  "shopping-count",
+                  (u === 1
+                    ? n("{n} item", { n: u })
+                    : n("{n} itens", { n: u })) +
+                    (s ? n(" \xB7 {n} fora", { n: s }) : ""),
+                )
+              : null,
+            P,
+          ]),
+        ]),
+        v && i.session?.calibration
+          ? a(
+              "p",
+              "shopping-note calib-hint",
+              n(
+                "Brassagem de calibra\xE7\xE3o: os itens que escalam com a corre\xE7\xE3o (l\xFApulo, levedura) v\xEAm refor\xE7ados em {pct}% por garantia. O malte j\xE1 est\xE1 dimensionado com folga.",
+                { pct: b(V, 0) },
+              ),
+            )
+          : null,
+        v ? f : null,
+        v ? m : null,
+        v ? a("div", "shopping-groups", g) : oa(t),
+        v
+          ? a("div", "shopping-foot", [
+              a(
+                "span",
+                "shopping-foot-hint",
+                n("Toque no valor para ajustar \xE0 m\xE3o."),
+              ),
+              a("div", "shopping-actions", [
+                L,
+                a("div", "shopping-order-col", [
+                  C,
+                  a("span", "shopping-attrib", n("por {shop}", { shop: Qn })),
+                ]),
+              ]),
+            ])
+          : null,
+      ].filter(Boolean),
+    ),
+    U)
+  ) {
+    const x = W.querySelector(".shopping-buy-input");
+    x && (x.focus(), x.select());
+  }
+}
+function aa(e, t, o) {
+  const r = a(
+    "button",
+    `shopping-check ${t ? "checked" : ""}`,
+    t ? M("check", "icon") : null,
+    {
+      type: "button",
+      role: "checkbox",
+      "aria-checked": String(t),
+      "aria-label": n("Incluir {name} no pedido", { name: e.name }),
+    },
+  );
+  r.addEventListener("click", () => {
+    (te.has(e.key) ? te.delete(e.key) : te.add(e.key), G());
+  });
+  const l = na(e),
+    u = a("div", "shopping-name-wrap", [
+      a("span", "shopping-name", e.name),
+      l
+        ? a(
+            "span",
+            `shopping-legend ${l.warn ? "warn" : ""}`,
+            l.warn ? [M("review", "icon"), l.text] : l.text,
+          )
+        : null,
+    ]),
+    s = o ?? e.buyText;
+  let c;
+  if (U === e.key) {
+    const f = document.createElement("input");
+    ((f.type = "text"),
+      (f.className = "shopping-buy-input num"),
+      (f.value = s),
+      f.setAttribute(
+        "aria-label",
+        n("Quantidade de {name} (apague para voltar \xE0 sugest\xE3o)", {
+          name: e.name,
+        }),
+      ));
+    const m = () => {
+      const g = f.value.trim();
+      (g === "" || g === e.buyText ? ne.delete(e.key) : ne.set(e.key, g),
+        (U = null),
+        G());
+    };
+    (f.addEventListener("blur", m),
+      f.addEventListener("keydown", (g) => {
+        g.key === "Enter"
+          ? (g.preventDefault(), m())
+          : g.key === "Escape" && (g.preventDefault(), (U = null), G());
+      }),
+      (c = f));
+  } else
+    c = w(
+      s,
+      () => {
+        ((U = e.key), G());
+      },
+      `shopping-buy-btn num ${o != null ? "edited" : ""}`,
+      { title: n("Toque para ajustar \xE0 m\xE3o") },
+    );
+  const p =
+      e.recipeText && e.recipeText !== e.buyText && o == null
+        ? a("span", "shopping-recipe num", e.recipeText)
+        : null,
+    d = a("div", "shopping-buy", [
+      a("span", "shopping-buy-line", [p, c]),
+      e.packages && o == null ? a("span", "shopping-packs", e.packages) : null,
+    ]);
+  return a("div", `shopping-row ${t ? "" : "off"}`, [r, u, d]);
+}
+function oa(e) {
+  const t = (m, g) =>
+      g.length
+        ? a("div", "summary-sec", [
+            a("b", "summary-sec-title", m),
+            ...g.map(([L, C]) =>
+              a("div", "summary-row", [
+                a("span", "summary-name", L),
+                a("span", "summary-value num", C),
+              ]),
+            ),
+          ])
+        : null,
+    o = T(Ge(e.og, e.fg), 1),
+    r = a(
+      "div",
+      "summary-kicker num",
+      `${E(h(e.props.targetVolumeL), 0)} \xB7 OG ${e.og.toFixed(3)} \xB7 FG ${e.fg.toFixed(3)} \xB7 ${e.ibu} IBU \xB7 ${b(o, 1)}% ABV`,
+    ),
+    l = [
+      [n("Mostura"), E(e.volumes.mashWater, 1)],
+      h(e.volumes.sparge) > 0.05
+        ? [n("Lavagem"), E(e.volumes.sparge, 1)]
+        : null,
+      [n("Total"), E(e.volumes.totalWater, 1)],
+    ].filter(Boolean),
+    u = (e.scaledFermentables || []).reduce((m, g) => m + h(g.amountKg), 0),
+    s = (e.scaledFermentables || []).map((m) => [
+      m.name,
+      `${K(m.amountKg)}${u ? ` \xB7 ${b((h(m.amountKg) / u) * 100, 0)}%` : ""}`,
+    ]),
+    c = (e.recipe.mash || []).map((m) => [
+      A(Ve(m.name)),
+      `${b(m.temperatureC, 1)} \xB0C \xB7 ${b(m.timeMin, 0)} min`,
+    ]),
+    p = (e.hopSchedule || []).map((m) => [
+      m.name,
+      `${b(m.plannedAmountG, 0)} g \xB7 ${dt(m)}`,
+    ]),
+    d = (e.scaledYeasts || []).map((m) => [m.name, ke(m.amount, m.unit)]),
+    f = (e.recipe.fermentation || []).map((m) => [
+      A(m.name),
+      `${b(m.temperatureC, 1)} \xB0C \xB7 ${b(m.days, 0)} ${h(m.days) === 1 ? n("dia") : n("dias")}`,
+    ]);
+  return a("div", "shopping-summary", [
+    r,
+    t(n("\xC1guas"), l),
+    t(n("Maltes"), s),
+    t(n("Rampas de mostura"), c),
+    t(n("L\xFApulos"), p),
+    t(n("Levedura"), d),
+    t(n("Fermenta\xE7\xE3o"), f),
+  ]);
+}
+export function addQuickNote(e) {
+  const t = String(e || "").trim();
+  if (!i.session || !t) return !1;
+  const o = new Date().toLocaleTimeString(yn(), {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return (
+    (i.session.notes = `${
+      i.session.notes
+        ? `${i.session.notes}
+`
+        : ""
+    }[${o}] ${t}`),
+    He(),
+    !0
+  );
+}
+function ut(e, t, o, r) {
+  const l = o,
+    u = l === "post" ? n("resfriamento") : n("fervura"),
+    s = zn(o),
+    c = s.length > 0,
+    p = !!i.session.correctionAccepted?.[o],
+    d = !p && Rt(t),
+    f =
+      p || d
+        ? "ok"
+        : t.status === "pending"
+          ? "pending"
+          : t.action === "Sem corre\xE7\xE3o"
+            ? "ok"
+            : t.action === "Adicionar \xE1gua"
+              ? "water"
+              : "boil",
+    m = p
+      ? n("Desvio aceito \u2014 seguir para {stage}", { stage: u })
+      : d
+        ? n("Dentro da margem \u2014 seguir para {stage}", { stage: u })
+        : t.status === "pending"
+          ? n("Aguardando leitura")
+          : t.action === "Sem corre\xE7\xE3o"
+            ? n("Sem corre\xE7\xE3o \u2014 seguir para {stage}", { stage: u })
+            : `${A(t.action)} ${E(Math.abs(t.deltaL), 2)}`,
+    g = p
+      ? n(
+          "Voc\xEA escolheu seguir com a leitura como est\xE1. Fica no log da brassagem.",
+        )
+      : d
+        ? n("Desvio de {vol} \u2014 menor que o erro de medi\xE7\xE3o.", {
+            vol: E(Math.abs(t.deltaL), 2),
+          })
+        : t.status === "pending"
+          ? n("Preencha a leitura acima para calcular a corre\xE7\xE3o.")
+          : n("Volume para atingir o extrato: {vol}", {
+              vol: E(t.targetVolumeL, 2),
+            }),
+    L = !p && !d && t.status === "ready" && t.action !== "Sem corre\xE7\xE3o",
+    C =
+      s.length > 1
+        ? a("span", "head-meta", n("{n}\xAA corre\xE7\xE3o", { n: s.length }))
+        : null,
+    P = p
+      ? w(n("voltar a corrigir"), () => Yn(o), "guide-now-link accept-undo")
+      : null,
+    v =
+      l === "post"
+        ? h(
+            (e.boilAdditions || []).find(
+              (y) =>
+                ["Hopstand", "Whirlpool"].includes(y.use) &&
+                Number.isFinite(Number(y.temperatureC)),
+            )?.temperatureC,
+          )
+        : 0,
+    x =
+      l === "post" && L && t.action === "Adicionar \xE1gua" && t.deltaL > 0
+        ? (() => {
+            const y = Math.max(0.1, h(t.targetVolumeL) - h(t.deltaL)),
+              I = (y * 98 + h(t.deltaL) * 25) / (y + h(t.deltaL));
+            return a("div", "correction-extra", [
+              M("thermo", "icon"),
+              a("span", "", [
+                `${n("A \xE1gua resfria o mosto: \u2248 ")}`,
+                a("b", "", `${b(I, 0)} \xB0C`),
+                n(" ap\xF3s adicionar (\xE1gua a 25 \xB0C)"),
+                v ? n(" \xB7 alvo do hopstand: {t} \xB0C", { t: b(v, 0) }) : "",
+              ]),
+            ]);
+          })()
+        : null;
+  return O(
+    k(
+      o === "pre"
+        ? n("Corre\xE7\xE3o pr\xE9-fervura")
+        : n("Corre\xE7\xE3o p\xF3s-fervura"),
+      "swap",
+      [
+        a("div", `correction-banner ${f}`, [
+          M(
+            p || d
+              ? "check"
+              : t.status === "pending"
+                ? "review"
+                : t.action === "Sem corre\xE7\xE3o"
+                  ? "check"
+                  : t.action === "Adicionar \xE1gua"
+                    ? "drop"
+                    : "boil",
+            "icon banner-icon",
+          ),
+          a("div", "banner-text", [a("b", "", m), a("span", "", [g, P])]),
+        ]),
+        x,
+        !p && !d && t.extraBoilMin
+          ? a("div", "correction-extra", [
+              M("timer", "icon"),
+              a("span", "", [
+                n("Fervura extra estimada: "),
+                a("b", "", `${b(t.extraBoilMin, 1)} min`),
+                ` \xB7 IBU ${t.estimatedIbu}`,
+              ]),
+              w(
+                n("Somar ao contador"),
+                () => Xn(t.extraBoilMin),
+                "btn small extra-boil-btn",
+                {
+                  title: n(
+                    "Inicia um contador com o tempo extra de fervura recomendado.",
+                  ),
+                },
+              ),
+            ])
+          : null,
+        L && !c
+          ? a("div", "correction-actions", [
+              w(
+                n("Apliquei a corre\xE7\xE3o"),
+                () => rt(o, m),
+                "btn primary apply-correction",
+              ),
+              w(
+                n("Seguir sem corrigir"),
+                () => acceptCorrection(o),
+                "btn ghost",
+                {
+                  title: n(
+                    "Aceita a leitura como est\xE1 e segue a brassagem \u2014 a decis\xE3o fica no log.",
+                  ),
+                },
+              ),
+            ])
+          : null,
+        L && c ? ra(e, t, o, r, l) : null,
+        t.warning && !p && !d ? a("p", "warning-text", A(t.warning)) : null,
+      ],
+      [C],
+    ),
+    `correction-${o}`,
+  );
+}
+function ra(e, t, o, r, l) {
+  const u = xe(e.props),
+    s = ensureCorrectionCheck(o),
+    c = Et(t, s, r, l, e.props.evaporationLh, u),
+    p = Be({ volumeL: 1, wri: s?.wri ?? "" }, u),
+    d = !!p.realPlato,
+    f = a(
+      "span",
+      `check-status ${c?.status || "pending"}`,
+      A(c?.summary || c?.title) || n("Informe WRI ap\xF3s corrigir"),
+    );
+  return (
+    c?.detail && (f.title = c.detail),
+    a("div", "check-block", [
+      a("div", "check-fields", [
+        a("label", "check-input", [
+          a("span", "", n("Me\xE7a de novo (WRI)")),
+          H(s.wri, (m) => setCorrectionCheck(o, "wri", m), "WRI", {
+            placeholder: b(r * u, 1),
+            "aria-label": n("WRI ap\xF3s corre\xE7\xE3o"),
+          }),
+        ]),
+        a("span", "check-target", [n("Alvo "), a("b", "", `${b(r, 1)} \xB0P`)]),
+        d
+          ? a(
+              "span",
+              "check-real num",
+              `${b(p.realPlato, 1)} \xB0P / ${p.sg.toFixed(3)}`,
+            )
+          : null,
+      ]),
+      f,
+      a("div", "correction-actions", [
+        c?.status === "adjust"
+          ? w(
+              n("Apliquei o ajuste"),
+              () => rt(o, c.summary || n("Ajuste fino")),
+              "btn primary apply-correction",
+            )
+          : null,
+        c?.status === "ok"
+          ? w(
+              n("Concluir corre\xE7\xE3o"),
+              () =>
+                acceptCorrection(
+                  o,
+                  n("Corre\xE7\xE3o conferida \u2014 dentro da margem."),
+                ),
+              "btn primary apply-correction",
+            )
+          : w(n("Est\xE1 bom assim"), () => acceptCorrection(o), "btn ghost", {
+              title: n(
+                "Encerra a corre\xE7\xE3o com a leitura atual \u2014 a decis\xE3o fica no log.",
+              ),
+            }),
+      ]),
+    ])
+  );
+}
+const pt = ["Hopstand", "Whirlpool", "Dry hop"];
+function ia(e) {
+  const t = e.boilAdditions.filter(
+      (s) => s.kind === "hop" && !pt.includes(s.use),
+    ),
+    o = e.boilAdditions.filter((s) => s.kind !== "hop" && !pt.includes(s.use)),
+    l = At(t).map((s) =>
+      a("div", "hop-group", [
+        a("div", "hop-group-head", [
+          s.timeLabel ? a("b", "hop-time", s.timeLabel) : null,
+          a("span", "hop-use", A(s.useLabel)),
+        ]),
+        ...s.items.map((c) =>
+          a(
+            "div",
+            `hop-row ${isAdditionChecked(c) ? "checked" : ""}`,
+            [
+              de(c),
+              a("b", "hop-name", c.name),
+              a("span", "hop-amount num", Y(c.amount, c.unit)),
+              a("label", "hop-alpha", [
+                a("span", "hop-alpha-label", n("a.a.")),
+                H(c.actualAlphaAcidPct, (p) => setHopLot(c.id, p), "%", {
+                  step: ".1",
+                  min: "0",
+                  "aria-label": n("Alfa \xE1cido real de {name}", {
+                    name: c.name,
+                  }),
+                }),
+              ]),
+            ],
+            { "data-guide-anchor": additionCheckKey(c) },
+          ),
+        ),
+      ]),
+    ),
+    u = o.length
+      ? a("div", "addition-list", [
+          a("b", "sub-title", n("Outras adi\xE7\xF5es de fervura")),
+          ...o.map((s) =>
+            a(
+              "div",
+              `addition-row with-check ${isAdditionChecked(s) ? "checked" : ""}`,
+              [
+                de(s),
+                a("b", "addition-name", s.name),
+                a("span", "addition-amount num", Y(s.amount, s.unit)),
+                a("span", "addition-when", dt(s)),
+              ],
+              { "data-guide-anchor": additionCheckKey(s) },
+            ),
+          ),
+        ])
+      : null;
+  return O(
+    k(
+      n("L\xFApulos e fervura"),
+      "hop",
+      [a("div", "hop-groups", l), u, ...at(e, "boil")],
+      [a("span", "head-meta", `${b(e.recipe.boilTimeMin, 0)} min`)],
+    ),
+    "boil-hops",
+  );
+}
+function sa(e) {
+  const t = e.boilAdditions.filter((c) =>
+      ["Hopstand", "Whirlpool"].includes(c.use),
+    ),
+    o = e.boilAdditions.filter((c) => /dry hop/i.test(c.use));
+  if (!t.length && !o.length) return null;
+  const r = h(
+      (t.find((c) => Number.isFinite(Number(c.temperatureC))) || {})
+        .temperatureC,
+    ),
+    l = (c, p) =>
+      a(
+        "div",
+        `hop-row ${isAdditionChecked(c) ? "checked" : ""}`,
+        [
+          de(c),
+          a("b", "hop-name", c.name),
+          a("span", "hop-amount num", Y(c.amount, c.unit)),
+          a("span", "addition-when", p),
+        ],
+        { "data-guide-anchor": additionCheckKey(c) },
+      ),
+    u = t.length
+      ? a("div", "addition-list", [
+          a(
+            "b",
+            "sub-title",
+            r
+              ? n("Hopstand / whirlpool \xB7 {t} \xB0C", { t: b(r, 0) })
+              : n("Hopstand / whirlpool"),
+          ),
+          ...t.map((c) =>
+            l(c, n("{min} min de repouso", { min: b(c.timeMin, 0) })),
+          ),
+        ])
+      : null,
+    s = o.length
+      ? a("div", "addition-list", [
+          a("b", "sub-title", n("Dry hop \xB7 na fermenta\xE7\xE3o")),
+          ...o.map((c) => l(c, n("durante a fermenta\xE7\xE3o"))),
+        ])
+      : null;
+  return O(
+    k(n("Adi\xE7\xF5es p\xF3s-fervura"), "hop", [u, s]),
+    "post-boil-additions",
+  );
+}
+function la(e) {
+  if (h(e.volumes.sparge) <= 0.05) return null;
+  const t = h(e.props.mashWaterUsedL, e.volumes.mashWater),
+    o = Math.max(0, e.volumes.totalWater - t);
+  return O(
+    k(
+      n("\xC1gua de lavagem"),
+      "water",
+      [
+        a(
+          "p",
+          "reading-hint",
+          n(
+            "Lave com {vol} de \xE1gua a ~76\u201378 \xB0C, ao fim das rampas.",
+            { vol: E(o, 1) },
+          ),
+        ),
+      ],
+      [me("mash-sparge", n("\xE1gua de lavagem"))],
+    ),
+    "sparge",
+  );
+}
+function dt(e) {
+  return /dry hop/i.test(e.use)
+    ? "Dry hop"
+    : Number.isFinite(Number(e.timeMin))
+      ? `${b(e.timeMin, 0)} min \xB7 ${A(e.use)}`
+      : A(e.use);
+}
+function ca(e) {
+  const t = i.session.measurements.cold,
+    o = me("boil-chill", n("mosto resfriado"));
+  return (
+    o && o.setAttribute("data-guide-anchor", "chill"),
+    O(
+      k(
+        n("Leitura fria"),
+        "thermo",
+        [
+          a("div", "reading-grid", [
+            a("div", "reading-col expected", [
+              a("span", "reading-col-title", n("Esperado")),
+              a("div", "reading-line", [
+                a("span", "", n("Volume trub")),
+                a("b", "num", E(e.props.trubLossL, 2)),
+              ]),
+              a("div", "reading-line", [
+                a("span", "", n("Fermentador")),
+                a("b", "num", E(e.expected.fermenterVolume, 2)),
+              ]),
+            ]),
+            a("div", "reading-col input", [
+              a("span", "reading-col-title", n("Sua leitura")),
+              a("div", "reading-line", [
+                a("span", "", n("Volume trub")),
+                le(
+                  t.trubVolumeL,
+                  (r) => setCold("trubVolumeL", r),
+                  {},
+                  e.props.trubLossL,
+                ),
+              ]),
+              a("div", "reading-line", [
+                a("span", "", n("Fermentador")),
+                le(
+                  t.fermenterVolumeL,
+                  (r) => setCold("fermenterVolumeL", r),
+                  {},
+                  e.expected.fermenterVolume,
+                ),
+              ]),
+            ]),
+          ]),
+        ],
+        [o, a("span", "head-meta temp-badge", n("~20 \xB0C"))],
+      ),
+      "cold-reading",
+    )
+  );
+}
+const ge = "beermother.fable.expectedUnlocked.v1";
+let Fe = 0;
+export function isExpectedUnlocked() {
+  try {
+    return localStorage.getItem(ge) === "1";
+  } catch {
+    return !1;
+  }
+}
+export function setExpectedUnlocked(e) {
+  try {
+    e ? localStorage.setItem(ge, "1") : localStorage.removeItem(ge);
+  } catch {}
+}
+function ua() {
+  if (!isExpectedUnlocked() && ((Fe += 1), !(Fe < 10))) {
+    Fe = 0;
+    try {
+      localStorage.setItem(ge, "1");
+    } catch {}
+    (S(n("Leituras esperadas (beta) ativado.")), i.requestRender());
+  }
+}
+export function setFermentationExpected(e, t) {
+  (R(i.session),
+    (i.session.fermentationExpected = Ot({
+      ...i.session.fermentationExpected,
+      [e]: t,
+    })),
+    i.requestRender());
+}
+function mt(e) {
+  return e.scaledYeasts?.[0]?.name || e.recipe.yeasts?.[0]?.name || "";
+}
+function pa(e, t) {
+  const o = e.fermentationExpected || {};
+  return o.yeastFamily && o.yeastFamily !== "auto" ? o.yeastFamily : ze(mt(t));
+}
+function da(e, t) {
+  const o = e.fermentationExpected || { enabled: !0 },
+    r = pa(e, t),
+    l = !o.yeastFamily || o.yeastFamily === "auto";
+  if (o.enabled === !1)
+    return { enabled: !1, supported: !1, family: r, auto: l, points: [] };
+  const u = ye(e, t),
+    s = u.initial.plato,
+    c = o.attenuationPct,
+    p =
+      c !== "" && Number.isFinite(Number(c)) && s > 0
+        ? T(s * (1 - h(c) / 100), 2)
+        : u.expected.plato,
+    d = (t.recipe.fermentation || []).reduce((m, g) => m + h(g.days), 0),
+    f = un({
+      yeastFamily: r,
+      p0Plato: s,
+      pfPlato: p,
+      tempSteps: mn(t.recipe.fermentation || []),
+      maxDays: Math.max(7, Math.ceil(d || 14)),
+      stepDays: 0.25,
+    });
+  return {
+    enabled: !0,
+    family: r,
+    auto: l,
+    ...f,
+    milestones: f.supported ? pn(f.params) : null,
+  };
+}
+function ma(e, t) {
+  const o = i.session.fermentationExpected || {},
+    r = o.enabled !== !1,
+    l = w(
+      r ? n("Ativado") : n("Desativado"),
+      () => setFermentationExpected("enabled", !r),
+      `btn small ${r ? "primary" : "ghost"}`,
+      { "aria-pressed": r ? "true" : "false" },
+    );
+  if (!r)
+    return k(
+      n("Leituras esperadas \xB7 beta"),
+      "flask",
+      [
+        a(
+          "p",
+          "muted",
+          n(
+            "Ative para ver o corredor esperado de extrato no gr\xE1fico e a leitura classificada.",
+          ),
+        ),
+      ],
+      [l],
+    );
+  const u = ze(mt(e)),
+    s = document.createElement("select");
+  (s.setAttribute(
+    "aria-label",
+    n("Fam\xEDlia da levedura para o modelo de fermenta\xE7\xE3o"),
+  ),
+    [
+      ["auto", n("Autom\xE1tico \u2014 {family}", { family: n(Le[u].label) })],
+      ...Object.entries(Le).map(([g, L]) => [g, n(L.label)]),
+    ].forEach(([g, L]) => {
+      const C = document.createElement("option");
+      ((C.value = g),
+        (C.textContent = L),
+        (o.yeastFamily || "auto") === g && (C.selected = !0),
+        s.append(C));
+    }),
+    (s.value = o.yeastFamily || "auto"),
+    s.addEventListener("change", () =>
+      setFermentationExpected("yeastFamily", s.value),
+    ));
+  const c = ye(i.session, e),
+    p =
+      c.initial.plato > 0
+        ? Math.round(
+            ((c.initial.plato - c.expected.plato) / c.initial.plato) * 100,
+          )
+        : 0,
+    d = H(
+      o.attenuationPct === "" || o.attenuationPct === void 0
+        ? ""
+        : o.attenuationPct,
+      (g) => setFermentationExpected("attenuationPct", g),
+      "%",
+      {
+        placeholder: String(p),
+        min: "0",
+        max: "100",
+        step: "1",
+        "aria-label": n("Atenua\xE7\xE3o aparente esperada"),
+      },
+    ),
+    f = t.milestones,
+    m =
+      t.supported && f
+        ? a("div", "expected-summary", [
+            a("div", "expected-metric", [
+              a("span", "", n("50% da atenua\xE7\xE3o")),
+              a("b", "num", `~${b(f.t50, 1)} ${n("dias")}`),
+            ]),
+            a("div", "expected-metric", [
+              a("span", "", n("90% da atenua\xE7\xE3o")),
+              a("b", "num", `~${b(f.t90, 1)} ${n("dias")}`),
+            ]),
+            a("div", "expected-metric", [
+              a("span", "", n("Plat\xF4 prov\xE1vel")),
+              a("b", "num", `${b(f.t90, 1)}\u2013${b(f.t98, 1)} ${n("dias")}`),
+            ]),
+          ])
+        : a(
+            "p",
+            "muted",
+            fn(t.family)
+              ? n("Informe OG e FG para gerar o corredor.")
+              : n("{family} n\xE3o gera curva autom\xE1tica.", {
+                  family: n(Le[t.family]?.label || "Esta levedura"),
+                }),
+          );
+  return k(
+    n("Leituras esperadas \xB7 beta"),
+    "flask",
+    [
+      a("div", "expected-fields", [
+        a("label", "expected-field", [
+          a("span", "", n("Fam\xEDlia da levedura")),
+          s,
+        ]),
+        a("label", "expected-field narrow", [
+          a("span", "", n("Atenua\xE7\xE3o esperada")),
+          d,
+        ]),
+      ]),
+      m,
+      a(
+        "p",
+        "reading-hint",
+        n(
+          "Refer\xEAncia beta \u2014 para pegar desvios grandes, n\xE3o como garantia de t\xE9rmino ou qualidade. Confirme estabilidade de extrato antes de envasar.",
+        ),
+      ),
+    ],
+    [l],
+  );
+}
+function fa(e) {
+  const t = e.scaledYeasts || [],
+    o = e.recipe.fermentation || [],
+    r = e.recipe.fermentationProfileName || n("Rampas de fermenta\xE7\xE3o"),
+    l = isExpectedUnlocked(),
+    u = l ? da(i.session, e) : { enabled: !1, supported: !1, points: [] },
+    s = k(n("Levedura"), "ferment", [
+      a(
+        "div",
+        "ingredient-list",
+        t.length
+          ? t.map((p) =>
+              a("div", "ingredient-row", [
+                a("b", "ingredient-name", p.name),
+                a("b", "ingredient-amount num", ke(p.amount, p.unit)),
+              ]),
+            )
+          : [a("p", "muted", n("Sem levedura no XML."))],
+      ),
+    ]),
+    c = k(r, "thermo", [
+      a(
+        "div",
+        "steps-list ferment",
+        o.length
+          ? o.map((p) =>
+              a("div", "step-row", [
+                a("b", "step-name", A(p.name)),
+                a(
+                  "span",
+                  "step-chip temp",
+                  Number.isFinite(Number(p.temperatureC))
+                    ? `${b(p.temperatureC, 1)} \xB0C`
+                    : "-",
+                ),
+                a(
+                  "span",
+                  "step-chip time",
+                  Number.isFinite(Number(p.days))
+                    ? `${b(p.days, 0)} ${n("dias")}`
+                    : "-",
+                ),
+              ]),
+            )
+          : [a("p", "muted", n("Sem perfil de fermenta\xE7\xE3o no XML."))],
+      ),
+    ]);
+  if (!l) {
+    const p = c.querySelector(".card-icon");
+    p && p.addEventListener("click", ua);
+  }
+  return [s, c, l ? ma(e, u) : null, va(e, u), ka(e, u), Sa()];
+}
+function ha(e, t) {
+  return !e || !e.length
+    ? null
+    : e.reduce(
+        (o, r) => (Math.abs(r.day - t) < Math.abs(o.day - t) ? r : o),
+        e[0],
+      );
+}
+const ga = {
+  ok: "no esperado",
+  lenta: "lenta",
+  rapida: "r\xE1pida",
+  muito_lenta: "muito lenta",
+  muito_rapida: "muito r\xE1pida",
+  abaixo_do_final_esperado: "atenuou +",
+};
+function ba(e, t) {
+  if (!e || !e.enabled || !e.supported || t.realPlato === "") return null;
+  const o = ha(e.points, t.day);
+  if (!o) return null;
+  const r = dn(t.realPlato, o, e.params.P0, e.params.Pf);
+  return r.status === "sem_dado"
+    ? null
+    : { ...r, label: n(ga[r.status] || "") };
+}
+function va(e, t) {
+  const o = ye(i.session, e),
+    r = i.fermentationDraftReading ? xa(i.fermentationDraftReading, o) : null,
+    l = _(
+      "plus",
+      n("Adicionar leitura de fermenta\xE7\xE3o"),
+      () => addFermentationReading(),
+      "icon-btn accent",
+    ),
+    u = $(
+      [
+        a("b", "", n("Dia")),
+        a("b", "", n("Data/hora")),
+        a("b", "", n("Temp.")),
+        a("b", "", "WRI"),
+        a("b", "", n("Real corrigido")),
+        a("span", "", ""),
+      ],
+      "head tracking",
+    ),
+    s = $(
+      [
+        a("span", "day-chip", "0"),
+        a("span", "row-label", A(o.initial.source)),
+        a("span", "num", ya(o.initial.expectedTemperatureC)),
+        a("span", "num", xn(o.initial.wri)),
+        a("span", "num", pe(o.initial.plato)),
+        a("span", "", ""),
+      ],
+      "tracking fixed",
+    ),
+    c = o.readings.map((f) => {
+      const m = ba(t, f);
+      return $(
+        [
+          a("span", "day-chip", be(f.day)),
+          ht(f, "saved"),
+          ft(f, !1),
+          H(f.wri, (g) => setFermentationReading(f.id, "wri", g), "WRI", {
+            min: "0",
+            step: ".1",
+            "aria-label": n("Leitura do refrat\xF4metro na fermenta\xE7\xE3o"),
+          }),
+          a("span", "num real-cell", [
+            f.realPlato === "" ? "-" : pe(f.realPlato),
+            m
+              ? a("span", `ferment-status ${m.severity}`, m.label, {
+                  title: n(m.message),
+                })
+              : null,
+          ]),
+          _(
+            "close",
+            n("Remover leitura"),
+            () => removeFermentationReading(f.id),
+            "icon-btn subtle small-btn",
+          ),
+        ],
+        "tracking",
+      );
+    }),
+    p = r
+      ? $(
+          [
+            a("span", "day-chip draft", be(r.day)),
+            ht(r, "draft"),
+            ft(r, !0),
+            H(r.wri, (f) => setFermentationDraftReading("wri", f), "WRI", {
+              min: "0",
+              step: ".1",
+              "aria-label": n(
+                "Nova leitura do refrat\xF4metro na fermenta\xE7\xE3o",
+              ),
+            }),
+            a("span", "num", r.realPlato === "" ? "-" : pe(r.realPlato)),
+            _(
+              "close",
+              n("Cancelar nova leitura"),
+              () => cancelFermentationDraftReading(),
+              "icon-btn subtle small-btn",
+            ),
+          ],
+          "tracking draft",
+        )
+      : null,
+    d = $(
+      [
+        a("span", "day-chip fg", "FG"),
+        a("span", "row-label", n("Esperada")),
+        a("span", "num", "-"),
+        a("span", "num", "-"),
+        a("span", "num", pe(o.expected.plato)),
+        a("span", "", ""),
+      ],
+      "tracking target",
+    );
+  return k(
+    n("Acompanhamento da fermenta\xE7\xE3o"),
+    "flask",
+    [a("div", "tracking-table", [u, s, ...c, p, d])],
+    [l],
+  );
+}
+function xa(e, t) {
+  const o = e.wri === "" ? "" : h(e.wri),
+    r = o === "" ? "" : Tt(t.initial.plato, o, xe(i.session.properties || {})),
+    l = Ne(ensureFermentationTracking().readings),
+    u = Oe(e, l, 0);
+  return {
+    id: e.id,
+    day: u,
+    datetime: e.datetime || "",
+    expectedTemperatureC: Ft(i.session.recipe.fermentation, u),
+    temperatureC: e.temperatureC === "" ? "" : h(e.temperatureC),
+    wri: o,
+    realPlato: r,
+    sg: r === "" ? "" : qt(r),
+  };
+}
+function ft(e, t) {
+  const o = t
+    ? (r) => setFermentationDraftReading("temperatureC", r)
+    : (r) => setFermentationReading(e.id, "temperatureC", r);
+  return H(e.temperatureC, o, "\xB0C", {
+    min: "0",
+    step: ".1",
+    "aria-label": n("Temperatura lida na fermenta\xE7\xE3o"),
+    placeholder: Number.isFinite(Number(e.expectedTemperatureC))
+      ? b(e.expectedTemperatureC, 1)
+      : "",
+  });
+}
+function ya(e) {
+  return Number.isFinite(Number(e)) ? `${b(e, 1)} \xB0C` : "-";
+}
+function be(e) {
+  return String(Math.floor(Math.max(0, h(e))));
+}
+function ht(e, t) {
+  const o = `${t}:${e.id}`,
+    r = i.openFermentationDateEditor === o,
+    l =
+      r && i.fermentationDateEditorValue
+        ? i.fermentationDateEditorValue
+        : dateTimeParts(e.datetime),
+    u = wa(l, t, e),
+    s = a("div", "date-control"),
+    c = w(La(e.datetime, u), () => kn(o, e.datetime), "date-trigger", {
+      "aria-expanded": String(r),
+    });
+  if ((s.append(c), r)) {
+    const p = document.createElement("input");
+    ((p.type = "date"),
+      (p.value = l.date),
+      p.setAttribute("aria-label", n("Data da leitura de fermenta\xE7\xE3o")),
+      p.addEventListener("change", () => Je("date", p.value)));
+    const d = document.createElement("input");
+    ((d.type = "time"),
+      (d.value = l.time),
+      d.setAttribute("aria-label", n("Hora da leitura de fermenta\xE7\xE3o")),
+      d.addEventListener("change", () => Je("time", d.value)));
+    const f = a("div", "date-backdrop");
+    f.addEventListener("click", () => Qe());
+    const m = a("div", "date-panel", [
+      a("b", "date-panel-title", n("Data e hora da leitura")),
+      a("div", "date-panel-fields", [
+        a("label", "", [n("Data"), p]),
+        a("label", "", [n("Hora"), d]),
+      ]),
+      a(
+        "span",
+        "date-preview",
+        n("Dia {n} de fermenta\xE7\xE3o", { n: be(u) }),
+      ),
+      a("div", "date-panel-actions", [
+        w(n("Cancelar"), () => Qe(), "btn small ghost"),
+        w(
+          t === "draft" ? n("Inserir") : n("Aplicar"),
+          () => Ln(t, e.id),
+          "btn small primary",
+        ),
+      ]),
+    ]);
+    s.append(f, m);
+  }
+  return s;
+}
+function wa(e, t, o = {}) {
+  const r = partsToDatetime(e),
+    l = ensureFermentationTracking(),
+    u = Ne(l.readings);
+  return !u && t === "draft" ? 0 : Oe({ ...o, datetime: r }, u, 0);
+}
+function La(e, t) {
+  const o = dateTimeParts(e),
+    [r, l, u] = o.date.split("-"),
+    s = r && l && u ? `${u}/${l}/${r}` : "--/--/----";
+  return n("Dia {n} \xB7 {date} {time}", { n: be(t), date: s, time: o.time });
+}
+function ka(e, t) {
+  const o = Dt(i.session, e),
+    r = t && t.enabled && t.supported && t.points.length > 1;
+  if (r) {
+    ((o.expected = t.points),
+      Number.isFinite(Number(t.params?.Pf)) &&
+        (o.expectedFgPlato = t.params.Pf));
+    const u = t.points
+      .flatMap((s) => [s.extractP05, s.extractP95])
+      .filter(Number.isFinite);
+    ((o.extractRange = Bt(
+      [o.extractRange.min, o.extractRange.max, ...u],
+      0.5,
+      4,
+    )),
+      (o.maxDay = Math.max(o.maxDay, ...t.points.map((s) => s.day))));
+  }
+  const l = a("div", "chart-host");
+  return (
+    (l.innerHTML = cn(o).trim()),
+    k(n("Gr\xE1fico da fermenta\xE7\xE3o"), "summary", [
+      a("div", "chart-legend", [
+        a("span", "chart-temp", n("Temp. planejada")),
+        a("span", "chart-temp-real", n("Temp. lida")),
+        a("span", "chart-extract", n("Extrato")),
+        r ? a("span", "chart-expected", n("Esperado (beta)")) : null,
+      ]),
+      l,
+      o.extractPoints.length <= 1 && !r
+        ? a(
+            "p",
+            "muted",
+            n("Adicione leituras para acompanhar a curva de extrato."),
+          )
+        : null,
+    ])
+  );
+}
+function Ca(e) {
+  const t = h(e.props.targetVolumeL, 20)
+      ? (e.analysis.trubLossL / h(e.props.targetVolumeL, 20)) * 100
+      : 0,
+    o = A(St(e)),
+    r = h(e.props.targetVolumeL, 20),
+    l = r + Math.max(0, h(e.analysis.trubLossL)),
+    u = l
+      ? (e.analysis.mashEfficiencyPct * r) / l
+      : e.analysis.mashEfficiencyPct,
+    s = k(n("An\xE1lise da brassagem"), "summary", [
+      a("div", "metric-grid", [
+        re(n("Efici\xEAncia equipamento"), `${b(u, 1)}%`),
+        re(
+          n("Absor\xE7\xE3o gr\xE3os"),
+          `${b(e.analysis.grainAbsorptionLkg, 2)} L/kg`,
+        ),
+        re(n("Evapora\xE7\xE3o"), `${b(e.analysis.evaporationPct, 1)}%/h`),
+        re(n("Evapora\xE7\xE3o"), Xe(e.analysis.evaporationLh, 2)),
+        re(n("Perda trub"), `${E(e.analysis.trubLossL, 2)} \xB7 ${b(t, 1)}%`),
+      ]),
+      a("div", "param-code", [
+        a("b", "", n("Par\xE2metros para a pr\xF3xima brassagem")),
+        Qt(o),
+      ]),
+    ]),
+    c = Ea(),
+    p = k(n("Log de brassagem"), "save", [
+      c,
+      a("div", "log-actions", [
+        w(
+          n("Abrir log completo"),
+          (f) => openPdfReport(f.currentTarget),
+          "btn primary",
+        ),
+      ]),
+    ]),
+    d = k(
+      n("Pr\xF3xima etapa: fermenta\xE7\xE3o"),
+      "ferment",
+      [
+        a(
+          "p",
+          "muted",
+          n(
+            "O dia de brassagem termina aqui \u2014 agora a levedura assume. Registre as leituras ao longo dos dias.",
+          ),
+        ),
+        a("div", "log-actions", [
+          w(
+            n("Iniciar fermenta\xE7\xE3o"),
+            startFermentationFromSummary,
+            "btn primary",
+          ),
+        ]),
+      ],
+      null,
+      "card-handoff",
+    );
+  return [rn(e), s, Hn(), d, p];
+}
+function Sa() {
+  return k(n("Encerrar a leva"), "check", [
+    a(
+      "p",
+      "muted",
+      n(
+        "Concluir move esta brassagem para o Caderno, com o log completo guardado. D\xE1 para reabrir por l\xE1.",
+      ),
+    ),
+    a("div", "log-actions", [
+      w(
+        n("Concluir brassagem"),
+        () => {
+          Ht() &&
+            ((i.workspaceSection = "notebook"),
+            S(n("Brassagem conclu\xEDda \u2014 a ficha dela mora no Caderno.")),
+            i.requestRender(),
+            window.scrollTo({ top: 0, behavior: "instant" }));
+        },
+        "btn primary",
+      ),
+    ]),
+  ]);
+}
+function re(e, t) {
+  return a("div", "metric", [
+    a("span", "metric-label", e),
+    a("b", "metric-value num", t),
+  ]);
+}
+function Ea() {
+  const e = document.createElement("textarea");
+  return (
+    (e.value = i.session.notes || ""),
+    (e.placeholder = n("Anota\xE7\xF5es livres da brassagem")),
+    e.addEventListener("input", () => {
+      ((i.session.notes = e.value), He());
+    }),
+    a("label", "notes-field", [a("span", "", n("Anota\xE7\xF5es")), e])
+  );
+}

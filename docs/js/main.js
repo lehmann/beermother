@@ -1,1 +1,1325 @@
-import{n as De,calculate as _}from"./engine.js";import{app as t,PAGE_PARAMS as A,IS_EMBED as Ne,APP_LOADER_VERSION as ot,saveTheme as at,startRecipe as rt,loadRecipeSource as st,recipeImportTokenFromHash as $e,decodeRecipeImportToken as ct,clearRecipeImportHash as dt,recipeIdToSrc as lt,scheduleAutosave as qe,readAutosave as ut,clearAutosave as mt,autosaveSummary as pt,restoreBrewSessionPayload as He,migrateAutosaveToBrews as ft,listBrews as gt,loadColorPalette as ht,loadGuideLevel as bt,loadPhMode as Z,APP_VERSION as vt}from"./state.js";import{parseBeerXml as kt}from"./beerxml.js";import{el as r,icon as C,button as g,iconButton as v,fallbackImage as yt,toast as E,isEditableElement as wt,showSheetBackdrop as Lt,hideSheetBackdrop as St,LOCAL_BRAND_MARK as xt,BRAND_MARK as Ct}from"./ui.js";import{PHASES as _e,renderPhase as Et,applyParameterText as Rt,isPhaseDone as Tt,addQuickNote as Mt,toggleGuideCheck as ge,setGuideAdditionsDone as he,startFermentationFromSummary as At}from"./screens.js";import{unseedCourseRecipes as Bt}from"./course-recipes.js";import{brewGuideSteps as ee,currentGuideStep as It,guideProgress as Pt,copilotoTimerTip as Dt}from"./guide.js";import{workspaceScreen as Nt,editorScreen as $t,brewLogScreen as qt,openBackupSheet as Ht,openImportPicker as _t,openEditorNew as Gt,openSettingsSheet as Ft}from"./editor.js?v=beta44-release1";import{analysisScreen as Ot}from"./analysis-screen.js?v=beta43-release1";import{timer as f,timerItemsForContext as Ge,timerRemainingMs as G,activeTimerStageRemainingMs as be,formatTimerClock as w,toggleTimerPause as ve,moveTimerStep as te,startTimer as Kt,startFirstTimer as Wt,timerRunningSummaryParts as Vt,timerIdleMashSummaryParts as Ut,timerIdleBoilSummaryParts as zt,timerDoneSummaryParts as Qt,timerDoneActionLabel as Fe}from"./timer.js";import{t as i,tEngine as F,formatIngredientAmount as jt}from"./i18n.js";const ke=document.querySelector("#app");let O=null,h=null,u=null,K=null,W=null,Oe=new Map;const Xt=[{id:"recipes",label:"Receitas",icon:"note"},{id:"brews",label:"Brassagens",icon:"boil"},{id:"notebook",label:"Caderno",icon:"summary"},{id:"equipment",label:"Equipamentos",icon:"scale"}],Yt=860,Jt=340,Zt=Yt+Jt+52;function en(){return window.innerWidth<900?0:document.body.classList.contains("sidebar-collapsed")?66:210}function ne(){return window.innerWidth<900?!1:window.innerWidth-en()>=Zt}document.documentElement.dataset.embed=Ne?"1":"0",we(),applyColorPalette(),t.guideLevel=bt(),t.requestRender=render,f.onTick=()=>{L(),qe()},tn(),yn();function tn(){ke.innerHTML="";const e=v("drag",i("Abrir menu"),()=>{document.body.classList.toggle("sidebar-open")},"icon-btn header-btn sidebar-toggle"),n=r("header","app-header",[r("div","header-brand",[e,Ke("brand-mark"),r("div","brand-text",[r("b","",i("Receitas Din\xE2micas")),r("span","",i("Beer School"))])]),r("div","header-actions",[v("note",i("Anotar algo agora"),()=>Ye(),"icon-btn header-btn header-note"),v("theme",i("Alternar tema claro/escuro"),()=>nn(),"icon-btn header-btn")])]);O=r("div","warnings hidden"),h=r("main","screen"),h.addEventListener("click",ln),u=r("div","timer-dock hidden");const o=r("nav","phase-nav",_e.map(l=>{const p=g("",()=>{t.phase=l.id,render(),window.scrollTo({top:0,behavior:"instant"})},"phase-btn",{"data-phase":l.id,"aria-label":i(l.label)});return p.append(C(l.icon,"icon nav-icon"),r("span","phase-label",i(l.label))),Oe.set(l.id,p),p}));K=r("aside","app-sidebar");const a=r("div","sidebar-backdrop");a.addEventListener("click",()=>document.body.classList.remove("sidebar-open")),W=r("aside","guide-column");const c=r("div","screen-row",[h,W]),d=r("div","app-main",[n,O,c,o]);ke.append(r("div","app-shell",[K,d]),u,a),document.body.classList.toggle("sidebar-collapsed",on()),Ue()}function ye(e){const n=e?W:ke;u.parentNode!==n&&n.append(u)}function Ke(e){return yt(xt,Ct,{className:e,alt:"Beer School",loading:"eager"})}function nn(){const e=ze();at(e==="dark"?"light":"dark"),we()}function B(){document.body.classList.remove("sidebar-open")}const We="fable.sidebar.collapsed";function on(){try{return localStorage.getItem(We)==="1"}catch{return!1}}function an(){const e=!document.body.classList.contains("sidebar-collapsed");document.body.classList.toggle("sidebar-collapsed",e);try{localStorage.setItem(We,e?"1":"0")}catch{}L()}function Ve(e){t.view="home",t.workspaceSection=e,document.body.classList.remove("sidebar-open"),render(),window.scrollTo({top:0,behavior:"instant"})}function I({iconName:e,label:n,active:o,badge:a,onClick:c}){const d=g("",c,`sidebar-item ${o?"active":""}`,{"aria-current":o?"page":"false",title:n});return[C(e,"icon sidebar-icon"),r("span","sidebar-label",n),a?r("span","sidebar-badge num",String(a)):null].filter(Boolean).forEach(l=>d.append(l)),d}function Ue(){if(!K)return;const e=t.view||"brew",n=t.workspaceSection||"recipes",o=gt().filter(l=>l.status==="active").length,a=g("",()=>Ve("recipes"),"sidebar-brand",{"aria-label":"Beer School \u2014 Receitas Din\xE2micas"});[Ke("brand-mark sidebar-mark"),r("div","brand-text",[r("b","",i("Receitas Din\xE2micas")),r("span","",i("Beer School"))])].forEach(l=>a.append(l));const c=v("chevron",i("Recolher menu"),()=>an(),"icon-btn sidebar-collapse"),d=g("",()=>{B(),Gt()},"sidebar-new",{title:i("Criar nova receita")});d.append(C("plus","icon"),r("span","sidebar-new-label",i("Nova receita"))),K.innerHTML="",[r("div","sidebar-head",[a,c]),d,t.session?I({iconName:"timer",label:t.session.recipe.name,active:e==="brew",onClick:()=>{t.view="brew",B(),render(),window.scrollTo({top:0,behavior:"instant"})}}):null,t.session?r("div","sidebar-sep"):null,...Xt.map(l=>I({iconName:l.icon,label:i(l.label),active:e==="home"&&n===l.id||e==="editor"&&l.id==="recipes"||e==="brewlog"&&l.id==="notebook",badge:l.id==="brews"&&o?o:0,onClick:()=>Ve(l.id)})),r("div","sidebar-spacer"),r("div","sidebar-foot",[I({iconName:"upload",label:i("Importar"),active:!1,onClick:()=>{B(),_t()}}),I({iconName:"note",label:i("Anotar"),active:!1,onClick:()=>{B(),Ye()}}),I({iconName:"settings",label:i("Configura\xE7\xF5es"),active:!1,onClick:()=>{B(),Ft()}}),I({iconName:"download",label:i("Backup"),active:!1,onClick:()=>{B(),Ht()}}),r("div","sidebar-version",`Fable \xB7 v${vt}`)])].filter(Boolean).forEach(l=>K.append(l))}function ze(){return t.theme==="dark"||t.theme==="light"?t.theme:window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}function we(){document.documentElement.dataset.theme=ze()}export function applyColorPalette(){document.documentElement.dataset.palette=ht()}window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{t.theme==="auto"&&we()});function ie(){const e=document.activeElement;if(!e||!e.dataset||!e.dataset.fkey)return null;let n=null;try{n=e.selectionStart}catch{n=null}return{key:e.dataset.fkey,caret:n}}function oe(e){const n=t.pendingFocusKey||e?.key;if(!n)return;const o=!!t.pendingFocusKey;t.pendingFocusKey=null;const a=h.querySelector(`[data-fkey="${n}"]`);if(a){if(a.focus({preventScroll:!o}),o&&a.select)a.select();else if(e&&e.key===n&&e.caret!==null&&a.setSelectionRange)try{a.setSelectionRange(e.caret,e.caret)}catch{}}}let V=!1,ae=!1;function Le(){ae&&!V&&(ae=!1,render())}document.addEventListener("pointerdown",()=>{V=!0},!0),document.addEventListener("pointerup",()=>{V=!1,window.setTimeout(Le,140)},!0),document.addEventListener("pointercancel",()=>{V=!1,window.setTimeout(Le,140)},!0),document.addEventListener("click",Le);let Se=0;window.addEventListener("resize",()=>{Se||(Se=window.requestAnimationFrame(()=>{Se=0,L()}))});export function render(){const e=t.view||"brew";if((e==="editor"||e==="home"||!t.session)&&V){ae=!0;return}if(ae=!1,Ue(),e==="editor"){const a=ie();P([]),h.innerHTML="",[$t()].flat(1/0).filter(Boolean).forEach(c=>h.append(c)),U(!1),L(),oe(a);return}if(e==="analysis"){const a=ie();P([]),h.innerHTML="",[Ot()].flat(1/0).filter(Boolean).forEach(c=>h.append(c)),U(!1),L(),oe(a);return}if(e==="brewlog"&&t.brewLogEntry){const a=ie();P([]),h.innerHTML="",[qt(t.brewLogEntry)].flat(1/0).filter(Boolean).forEach(c=>h.append(c)),U(!1),L(),oe(a);return}if(e==="home"||!t.session){const a=ie();P([]),h.innerHTML="",[Nt()].flat(1/0).filter(Boolean).forEach(c=>h.append(c)),U(!1),L(),oe(a);return}const n=_(t.session);P(n.warnings),h.innerHTML="";const o=rn();o&&h.append(o),[Et(n)].flat(1/0).filter(Boolean).forEach(a=>h.append(a)),U(!0),L(),qe()}function rn(){if(!t.pendingResume)return null;const e=pt(t.pendingResume);if(!e)return t.pendingResume=null,null;const n=g(i("Retomar"),()=>{const a=t.pendingResume;t.pendingResume=null,He(a,{confirmReplace:!1})&&(t.phase="prepare",E(i("Brassagem retomada de onde parou."))),render()},"btn primary small"),o=g(i("Descartar"),()=>{t.pendingResume=null,mt(),E(i("Brassagem anterior descartada.")),render()},"btn ghost small");return r("div","resume-banner",[C("open","icon resume-icon"),r("div","resume-text",[r("b","",i("Brassagem em andamento: {recipe}",{recipe:e.recipeName})),r("span","",e.savedAtLabel?i("Salva automaticamente em {when}",{when:e.savedAtLabel}):i("Salva automaticamente"))]),r("div","resume-actions",[n,o])])}function U(e){Oe.forEach((n,o)=>{n.classList.toggle("active",t.phase===o),n.classList.toggle("done",e&&Tt(o)),n.disabled=!e,n.setAttribute("aria-current",t.phase===o?"page":"false")}),document.body.classList.toggle("no-session",!e)}function P(e){O.innerHTML="";const n=(e||[]).filter(Boolean);O.classList.toggle("hidden",!n.length),n.forEach(o=>O.append(r("p","",o)))}function sn(){return t.phase==="mash"?"mash":t.phase==="boil"?"boil":""}function L(){if(!u)return;if(t.session&&(t.view||"brew")==="brew"){t.session.guideEnabled===!1&&(t.session.guideEnabled=!0,t.guideDockMin=!0),Xe(),hn(t.session),vn(),bn();return}if(Xe(),(t.view||"brew")!=="brew"&&!f.state){z();return}const e=t.session,n=f.state?f.state.context:"",o=sn(),a=n||o;if(!e||!a){z();return}const c=Ge(a);if(!c.length){z();return}const d=f.state&&f.state.context===a?f.state:null,l=d||c[0]||{},p=d&&d.status==="done",x=d&&d.status==="running",le=d&&d.status==="paused",D=d?.phase||l.phase||a,Q=a==="mash"?i("Mostura"):D==="hopstand"?i("Hopstand"):i("Fervura"),N=d?be():De(l.stageRemainingMin,l.boilRemainingMin??l.durationMin)*60*1e3,$=d?G():De(l.durationMin)*60*1e3,M=d?p?Qt(d):Vt(d):a==="mash"?Ut(l):zt(l);u.innerHTML="",u.classList.remove("hidden","guide-dock","guide-controller"),document.body.classList.remove("guide-col"),ye(!1),delete u.dataset.guideKey,u.classList.toggle("done",!!p);const k=r("div","dock-info",[r("span","dock-action",M.action),r("b","dock-target",M.target)]),m=r("div","dock-clock",[r("b","dock-time num",d&&!p?w($):M.info||"--:--"),r("span","dock-stage",i("{stage} restante {clock}",{stage:Q,clock:w(N)}))]),j=r("div","dock-controls",[v("previous",i("Etapa anterior"),()=>te(a,-1),"icon-btn dock-btn"),kn(a,{done:p,running:x,paused:le}),v("next",i("Pr\xF3xima etapa"),()=>te(a,1),"icon-btn dock-btn")]);if(p&&d){const q=g(F(Fe()),()=>ve(a),"btn primary dock-confirm");u.append(k,m,q,j)}else u.append(k,m,j);ce()}const cn={check:"check",timer:"timer",leitura:"review",correcao:"swap"};function Qe(e){const n=[e?.ref?.anchor,...Array.isArray(e?.checks)?e.checks:[]].filter(Boolean);for(const o of n){const a=document.querySelector(`[data-guide-anchor="${CSS.escape(o)}"]`);if(a)return a}return null}function R(e){if(!e||!e.ref)return;e.ref.tab&&t.phase!==e.ref.tab&&(t.phase=e.ref.tab,render());const n=Qe(e);n&&(document.querySelectorAll(".guide-flash").forEach(o=>o.classList.remove("guide-flash")),n.scrollIntoView({behavior:"smooth",block:"center"}),n.offsetWidth,n.classList.add("guide-flash"),n.addEventListener("animationend",()=>n.classList.remove("guide-flash"),{once:!0}))}function dn(e,n){const o=e.map((a,c)=>({step:a,index:c})).filter(({step:a})=>a.ref?.anchor===n||Array.isArray(a.checks)&&a.checks.includes(n));return o.length?(o.find(({step:a})=>!a.done)||o[0]).index:-1}function ln(e){if(!t.session||!t.session.recipe||(t.view||"brew")!=="brew"||t.phase==="prepare"||t.phase==="ferment")return;const n=e.target.closest(".card-head");if(!n||e.target.closest("button, input, a, select, textarea, [contenteditable='true']"))return;const o=n.closest("[data-guide-anchor]");if(!o)return;const a=ee(_(t.session),t.session,t.guideLevel,{phMode:Z()}),c=dn(a,o.getAttribute("data-guide-anchor"));c>=0&&xe(a,c)}function xe(e,n){const o=Math.max(0,Math.min(e.length-1,n)),a=e.findIndex(c=>c.status==="current");t.guideCursor=o===a?null:o,t.guideDockMin=!1,t.requestRender(),R(e[o])}function un(){if(!f.state)return;const e=u.querySelector("[data-clock-prefix]");e&&(e.textContent=e.dataset.clockPrefix+w(be())),f.state.status!=="done"&&u.querySelectorAll(".guide-c-time").forEach(n=>{n.textContent=w(G())})}function je(){const e=It(ee(_(t.session),t.session,t.guideLevel,{phMode:Z()}));e&&R(e)}const mn=["mash-end","boil-end","hopstand-end"];function pn(e){return!!e&&mn.includes(e.eventType)}function fn(e){e.forEach(n=>{Array.isArray(n.checks)&&n.checks.length?he(n.checks,!0):ge(n.id)}),t.guideCursor=null,t.requestRender()}function gn(e){if(e.type==="timer"){const o=e.context==="mash"?i("Iniciar contagem"):i("Iniciar fervura");return g(o,()=>{t.guideCursor=null,t.phase=e.context;const a=Ge(e.context),c=e.itemId&&a.find(d=>d.id===e.itemId)||null;c?Kt(e.context,c):Wt(e.context),t.requestRender(),R(e)},"btn primary guide-c-btn")}if(e.type==="check")return g(i("Feito"),()=>{t.guideCursor=null,Array.isArray(e.checks)&&e.checks.length?he(e.checks,!0):ge(e.id),je()},"btn primary guide-c-btn");const n=e.type==="leitura"?i("Abrir leitura"):i("Ver ajuste");return g(n,()=>{t.guideCursor=null,t.requestRender(),R(e)},"btn primary guide-c-btn")}let S=null;function Xe(){const e=t.phase!=="prepare"&&t.phase!=="ferment";if(!!!(t.session&&t.session.recipe&&t.guideDockMin&&e&&(t.view||"brew")==="brew")){S&&S.classList.add("hidden");return}S||(S=g([C("review","icon"),r("span","guide-chip-label",i("Guia"))],()=>{t.guideDockMin=!1,t.requestRender()},"guide-reopen",{title:i("Reabrir o painel do guia")}),document.body.append(S));const o=S.querySelector(".guide-chip-label"),a=f.state&&f.state.status!=="done";o.textContent=a?w(G()):i("Guia"),o.classList.toggle("num",!!a),S.classList.toggle("at-corner",ne()),S.classList.remove("hidden")}function hn(e){if(t.phase==="prepare"||t.phase==="ferment"){z();return}const n=_(e),o=ee(n,e,t.guideLevel,{phMode:Z()}),a=Pt(o),c={prepare:0,mash:1,boil:2,ferment:3,summary:4},d=c[t.phase]??1,l=s=>(c[s.phase]??1)>=d;let p=o.findIndex(s=>s.status==="current"&&l(s));p<0&&(p=o.findIndex(s=>!s.done&&l(s))),f.state&&f.state.status==="done"&&(t.guideDockMin=!1,t.guideCursor=null);const x=t.guideCursor!=null&&o.length>0;if(t.guideDockMin){z();return}const le=x?`peek:${t.guideCursor}`:f.state?`timer:${f.state.itemId||"x"}:${f.state.status}`:p<0?"fim":`passo:${p}`,D=ne(),Q=`${le}|${a.done}|${o.length}|${t.phase}|${t.guideLevel}|${D?"col":"foot"}`;if(u.dataset.guideKey===Q&&u.classList.contains("guide-controller")){un();return}u.dataset.guideKey=Q,u.innerHTML="",u.classList.remove("hidden","done"),u.classList.add("guide-dock","guide-controller"),u.classList.toggle("copilot",t.guideLevel==="copiloto"),document.body.classList.toggle("guide-col",D),ye(D);const N=v("chevron",i("Minimizar o painel"),()=>{t.guideDockMin=!0,t.requestRender()},"icon-btn guide-x"),$=()=>r("b","guide-c-time num is-empty",""),M=s=>v(s==="prev"?"previous":"next","",()=>{},`icon-btn guide-nav guide-nav-${s} disabled-look`);if(!x&&p<0&&!f.state){const s=t.phase==="summary";Ce({prev:M("prev"),main:r("div","guide-c-main",[r("span","guide-kicker",s?i("pr\xF3xima etapa"):i("dia de brassagem")),r("b","guide-c-title",s?i("A levedura assume agora."):i("Brassagem conclu\xEDda \u2014 bom trabalho."))]),clock:$(),action:s?g(i("Iniciar fermenta\xE7\xE3o"),At,"btn primary guide-c-btn guide-c-btn-accent"):g(i("Ver an\xE1lise"),()=>{t.phase="summary",t.requestRender(),window.scrollTo({top:0,behavior:"instant"})},"btn primary guide-c-btn"),next:M("next"),min:N}),ce();return}if(!x&&f.state){const s=f.state,b=s.status==="done",nt=s.status==="paused",y=s.context,Re=p>=0?o[p]:null,me=y==="mash"?i("Mostura"):s.phase==="hopstand"?i("Hopstand"):i("Fervura"),pe=s.label==="Aquecimento",J=s.additions.length?i("Adicione {list}",{list:s.additions.map(H=>`${H.name} (${jt(H.amount,H.unit)})`).join(", ")})+(s.withReading?` \xB7 ${i("e a leitura p\xF3s-fervura")}`:""):"",it=s.eventType==="addition"&&J?J:y==="mash"&&/^Confirmar /.test(s.eventActionLabel||"")&&s.eventTimeLabel?i("Come\xE7ar {step}",{step:s.eventTimeLabel})+(s.eventTargetLabel?` \xB7 ${s.eventTargetLabel}`:""):F((s.eventActionLabel||"Confirmar etapa").replace(/^Confirmar (?!início)/,"Confirmar in\xEDcio: ")),Te=b?it:y==="mash"?pe?i("Aquecendo para {step}",{step:s.eventTimeLabel||i("o pr\xF3ximo patamar")})+(s.eventTargetLabel?` \xB7 ${s.eventTargetLabel}`:""):F(s.label):me,Me=!b&&!pe&&y==="mash"&&s.detail||"",Ae=pe?"":s.eventType==="addition"&&J?J:F((s.eventActionLabel||"").replace(/^Confirmar /,"")),Be=`${me} \xB7 ${i("restante")} `,Ie=r("span","",b?me:Be+w(be()));b||(Ie.dataset.clockPrefix=Be);const fe=!b&&t.guideLevel==="copiloto"?Dt(o,y):null,Pe=r("div","guide-c-main linkable",[r("span","guide-kicker",[C("timer","icon guide-kicker-icon"),Ie]),r("b","guide-c-title",b?[Te]:[Te,Me?r("span","guide-c-detail",` \u2014 ${Me}`):null,Ae?r("span","guide-c-next",` \xB7 ${i("pr\xF3ximo:")} ${Ae}`):null]),fe?r("span","guide-c-tip",fe.tip||fe.title):null],{title:i("Mostrar na tela")});Re&&Pe.addEventListener("click",()=>R(Re)),Ce({prev:v("previous",i("Voltar etapa do contador"),()=>te(y,-1),"icon-btn guide-nav guide-nav-prev"),main:Pe,clock:b?$():r("b","guide-c-time num",w(G())),action:g(b?i("Confirmar"):nt?i("Retomar"):i("Pausar"),()=>{const H=b&&pn(s);ve(y),H&&je()},`btn primary guide-c-btn ${b?"confirm":""}`),next:v("next",i("Pular etapa do contador"),()=>te(y,1),"icon-btn guide-nav guide-nav-next"),min:N}),ce();return}const k=x?Math.max(0,Math.min(o.length-1,t.guideCursor)):Math.max(0,p),m=o[k],j=i(_e.find(s=>s.id===m.phase)?.label||""),q=k===p,X=o[k+1]||null,Je=v("previous",i("Espiar a a\xE7\xE3o anterior"),()=>xe(o,k-1),`icon-btn guide-nav guide-nav-prev ${k<=0?"disabled-look":""}`),Ze=v("next",i("Espiar a pr\xF3xima a\xE7\xE3o"),()=>xe(o,k+1),`icon-btn guide-nav guide-nav-next ${k>=o.length-1?"disabled-look":""}`),et=m.done?i("feito"):m.status==="skipped"?i("pulada"):q?i("agora"):i("a seguir"),ue=t.guideLevel==="copiloto",Y=r("span","guide-kicker",[C(ue&&m.icon||cn[m.type]||"review","icon guide-kicker-icon"),r("span","",`${j} \xB7 ${et}${ue?` \xB7 ${i("{i} de {n}",{i:k+1,n:o.length})}`:""}`)]);if(x)Y.append(g(i("voltar ao agora"),s=>{s.stopPropagation(),t.guideCursor=null,t.requestRender(),p>=0&&R(o[p])},"guide-now-link"));else{const s=o.filter(b=>b.status==="skipped"&&b.type==="check");s.length&&Y.append(g(s.length>1?i("marcar {n} anteriores",{n:s.length}):i("marcar {n} anterior",{n:s.length}),b=>{b.stopPropagation(),fn(s)},"guide-now-link"))}const Ee=r("div",`guide-c-main linkable ${m.done?"is-done":""}`,ue?[Y,r("b","guide-c-title",m.title),r("span","guide-c-why",[m.detail||"",q&&X?r("span","guide-c-next",`${m.detail?" \xB7 ":""}${i("pr\xF3ximo:")} ${X.title}`):null])]:[Y,r("b","guide-c-title",[m.title,m.detail?r("span","guide-c-detail",` \u2014 ${m.detail}`):null,q&&X?r("span","guide-c-next",` \xB7 ${i("pr\xF3ximo:")} ${X.title}`):null])],{title:i("Mostrar na tela")});Ee.addEventListener("click",()=>R(m));const tt=m.done&&m.type==="check"?g(i("Desfazer"),()=>{Array.isArray(m.checks)&&m.checks.length?he(m.checks,!1):ge(m.id),t.guideCursor=null,t.requestRender()},"btn ghost guide-c-btn"):null;Ce({prev:Je,main:Ee,clock:f.state?r("b","guide-c-time peek num",w(G())):$(),action:tt||(m.done?r("span","guide-done-tag",i("feito \u2713")):gn(m)),next:Ze,min:N}),ce()}function Ce({prev:e,main:n,clock:o,action:a,next:c,min:d}){u.append(r("div","guide-c-row",[e,n,o,a,c,d]))}let re=null;function bn(){if(re&&(re.classList.remove("guide-current-card"),re=null),t.guideLevel!=="copiloto"||!t.session||(t.view||"brew")!=="brew"||t.phase==="prepare"||t.phase==="ferment")return;const e=ee(_(t.session),t.session,t.guideLevel,{phMode:Z()}),n={prepare:0,mash:1,boil:2,ferment:3,summary:4},o=n[t.phase]??1,a=e.find(l=>!l.done&&(n[l.phase]??1)>=o);if(!a)return;const c=Qe(a),d=c?c.closest(".card")||c:null;d&&(d.classList.add("guide-current-card"),re=d)}let se="";function vn(){const e=h.querySelector('[data-guide-anchor="copilot-checklist"]'),n=W.querySelector('[data-guide-anchor="copilot-checklist"]');if(e&&n&&e!==n&&n.remove(),t.guideLevel!=="copiloto"){n&&!e&&n.remove(),se="";return}const o=e||n;if(!o){se="";return}if(!(ne()&&t.guideLevel==="copiloto"&&!t.guideDockMin&&u.classList.contains("guide-controller")))return;W.append(o);const c=o.querySelector(".checklist-row.is-current"),d=c&&c.querySelector(".checklist-title")?.textContent||"";c&&d!==se&&c.scrollIntoView({block:"nearest"}),se=d}function z(){u.classList.add("hidden"),u.classList.remove("guide-dock","guide-controller"),document.body.classList.remove("guide-col"),ye(!1),delete u.dataset.guideKey,u.innerHTML="",document.body.classList.remove("timer-visible"),document.body.style.removeProperty("--dock-space")}function ce(){if(document.body.classList.add("timer-visible"),ne()&&u.classList.contains("guide-controller")){document.body.style.removeProperty("--dock-space");return}const e=u.getBoundingClientRect?u.getBoundingClientRect():null,n=window.innerHeight||0,o=e?Math.max(0,n-e.top):0;document.body.style.setProperty("--dock-space",`${Math.ceil(o)+16}px`)}function kn(e,{done:n,running:o}){const a=n?"check":o?"pause":"play",c=n?F(Fe()):o?i("Pausar"):i("Iniciar");return v(a,c,()=>ve(e),`icon-btn dock-btn main ${n?"confirm":""}`)}let T=null;function Ye(){if(!t.session){E(i("Abra uma receita para anotar."),"error");return}if(T){de();return}const e=document.createElement("textarea");e.placeholder=i("Ex.: esqueci o Whirlfloc aos 10 min"),e.rows=3;const n=g(i("Adicionar nota"),()=>{Mt(e.value)?(E(i("Nota adicionada com hor\xE1rio.")),de(),t.phase==="summary"&&render()):e.focus()},"btn primary"),o=g(i("Fechar"),()=>de(),"btn ghost");T=r("div","quick-note-sheet",[r("b","",i("Nota r\xE1pida")),e,r("div","quick-note-actions",[o,n])]),document.body.append(T),Lt(()=>de(),T),e.focus()}function de(){T&&(T.remove(),T=null),St()}document.addEventListener("paste",e=>{if(!t.session||wt(e.target))return;const n=e.clipboardData&&e.clipboardData.getData("text");n&&(e.preventDefault(),Rt(n)?E(i("Par\xE2metros aplicados.")):E(i("N\xE3o encontrei um c\xF3digo completo de par\xE2metros."),"error"))});async function yn(){ft(),Bt(),t.workspaceSection=t.workspaceSection||"recipes";const e=ut();let n="";try{const o=await Ln();if(o.redirected)return;if(n=o.error||"",!o.attempted){const a=A.get("receita")||A.get("recipe")||A.get("r"),c=a?lt(a):A.get("src");if(c)try{await st(c)}catch(d){t.session=null,n=d.message||i("N\xE3o foi poss\xEDvel carregar a receita do link.")}}}catch(o){t.session=null,n=o.message||i("N\xE3o foi poss\xEDvel carregar a receita do link.")}wn(e),t.session||(t.view="home"),render(),n&&P([n])}function wn(e){if(!e||!t.session)return;if(t.session.recipe?.name&&t.session.recipe.name===e.recipe?.name){He(e,{confirmReplace:!1})&&E(i("Brassagem retomada de onde parou."));return}t.pendingResume=e}async function Ln(){const e=$e();if(!e)return{attempted:!1};if(Sn())return{attempted:!0,redirected:!0};try{const n=await ct(e),o=kt(n.text);return rt(o,n.fileName||i("Receita incorporada")),dt(),{attempted:!0}}catch(n){return t.session=null,{attempted:!0,error:n.message||i("N\xE3o foi poss\xEDvel carregar a receita incorporada no link.")}}}function Sn(){if(A.has("v")||A.has("test")||Ne)return!1;try{const e=new URL(location.href);return!e.hash||!$e()?!1:(e.searchParams.set("v",ot),location.replace(e.href),!0)}catch{return!1}}
+import { n as De, calculate as _ } from "./engine.js";
+import {
+  app as t,
+  PAGE_PARAMS as A,
+  IS_EMBED as Ne,
+  APP_LOADER_VERSION as ot,
+  saveTheme as at,
+  startRecipe as rt,
+  loadRecipeSource as st,
+  recipeImportTokenFromHash as $e,
+  decodeRecipeImportToken as ct,
+  clearRecipeImportHash as dt,
+  recipeIdToSrc as lt,
+  scheduleAutosave as qe,
+  readAutosave as ut,
+  clearAutosave as mt,
+  autosaveSummary as pt,
+  restoreBrewSessionPayload as He,
+  migrateAutosaveToBrews as ft,
+  listBrews as gt,
+  loadColorPalette as ht,
+  loadGuideLevel as bt,
+  loadPhMode as Z,
+  APP_VERSION as vt,
+} from "./state.js";
+import { parseBeerXml as kt } from "./beerxml.js";
+import {
+  el as r,
+  icon as C,
+  button as g,
+  iconButton as v,
+  fallbackImage as yt,
+  toast as E,
+  isEditableElement as wt,
+  showSheetBackdrop as Lt,
+  hideSheetBackdrop as St,
+  LOCAL_BRAND_MARK as xt,
+  BRAND_MARK as Ct,
+} from "./ui.js";
+import {
+  PHASES as _e,
+  renderPhase as Et,
+  applyParameterText as Rt,
+  isPhaseDone as Tt,
+  addQuickNote as Mt,
+  toggleGuideCheck as ge,
+  setGuideAdditionsDone as he,
+  startFermentationFromSummary as At,
+} from "./screens.js";
+import { unseedCourseRecipes as Bt } from "./course-recipes.js";
+import {
+  brewGuideSteps as ee,
+  currentGuideStep as It,
+  guideProgress as Pt,
+  copilotoTimerTip as Dt,
+} from "./guide.js";
+import {
+  workspaceScreen as Nt,
+  editorScreen as $t,
+  brewLogScreen as qt,
+  openBackupSheet as Ht,
+  openImportPicker as _t,
+  openEditorNew as Gt,
+  openSettingsSheet as Ft,
+} from "./editor.js?v=beta44-release1";
+import { analysisScreen as Ot } from "./analysis-screen.js?v=beta43-release1";
+import {
+  timer as f,
+  timerItemsForContext as Ge,
+  timerRemainingMs as G,
+  activeTimerStageRemainingMs as be,
+  formatTimerClock as w,
+  toggleTimerPause as ve,
+  moveTimerStep as te,
+  startTimer as Kt,
+  startFirstTimer as Wt,
+  timerRunningSummaryParts as Vt,
+  timerIdleMashSummaryParts as Ut,
+  timerIdleBoilSummaryParts as zt,
+  timerDoneSummaryParts as Qt,
+  timerDoneActionLabel as Fe,
+} from "./timer.js";
+import { t as i, tEngine as F, formatIngredientAmount as jt } from "./i18n.js";
+const ke = document.querySelector("#app");
+let O = null,
+  h = null,
+  u = null,
+  K = null,
+  W = null,
+  Oe = new Map();
+const Xt = [
+    { id: "recipes", label: "Receitas", icon: "note" },
+    { id: "brews", label: "Brassagens", icon: "boil" },
+    { id: "notebook", label: "Caderno", icon: "summary" },
+    { id: "equipment", label: "Equipamentos", icon: "scale" },
+  ],
+  Yt = 860,
+  Jt = 340,
+  Zt = Yt + Jt + 52;
+function en() {
+  return window.innerWidth < 900
+    ? 0
+    : document.body.classList.contains("sidebar-collapsed")
+      ? 66
+      : 210;
+}
+function ne() {
+  return window.innerWidth < 900 ? !1 : window.innerWidth - en() >= Zt;
+}
+((document.documentElement.dataset.embed = Ne ? "1" : "0"),
+  we(),
+  applyColorPalette(),
+  (t.guideLevel = bt()),
+  (t.requestRender = render),
+  (f.onTick = () => {
+    (L(), qe());
+  }),
+  tn(),
+  yn());
+function tn() {
+  ke.innerHTML = "";
+  const e = v(
+      "drag",
+      i("Abrir menu"),
+      () => {
+        document.body.classList.toggle("sidebar-open");
+      },
+      "icon-btn header-btn sidebar-toggle",
+    ),
+    n = r("header", "app-header", [
+      r("div", "header-brand", [
+        e,
+        Ke("brand-mark"),
+        r("div", "brand-text", [
+          r("b", "", i("Beermother")),
+          r("span", "", i("Beermother")),
+        ]),
+      ]),
+      r("div", "header-actions", [
+        v(
+          "note",
+          i("Anotar algo agora"),
+          () => Ye(),
+          "icon-btn header-btn header-note",
+        ),
+        v(
+          "theme",
+          i("Alternar tema claro/escuro"),
+          () => nn(),
+          "icon-btn header-btn",
+        ),
+      ]),
+    ]);
+  ((O = r("div", "warnings hidden")),
+    (h = r("main", "screen")),
+    h.addEventListener("click", ln),
+    (u = r("div", "timer-dock hidden")));
+  const o = r(
+    "nav",
+    "phase-nav",
+    _e.map((l) => {
+      const p = g(
+        "",
+        () => {
+          ((t.phase = l.id),
+            render(),
+            window.scrollTo({ top: 0, behavior: "instant" }));
+        },
+        "phase-btn",
+        { "data-phase": l.id, "aria-label": i(l.label) },
+      );
+      return (
+        p.append(
+          C(l.icon, "icon nav-icon"),
+          r("span", "phase-label", i(l.label)),
+        ),
+        Oe.set(l.id, p),
+        p
+      );
+    }),
+  );
+  K = r("aside", "app-sidebar");
+  const a = r("div", "sidebar-backdrop");
+  (a.addEventListener("click", () =>
+    document.body.classList.remove("sidebar-open"),
+  ),
+    (W = r("aside", "guide-column")));
+  const c = r("div", "screen-row", [h, W]),
+    d = r("div", "app-main", [n, O, c, o]);
+  (ke.append(r("div", "app-shell", [K, d]), u, a),
+    document.body.classList.toggle("sidebar-collapsed", on()),
+    Ue());
+}
+function ye(e) {
+  const n = e ? W : ke;
+  u.parentNode !== n && n.append(u);
+}
+function Ke(e) {
+  return yt(xt, Ct, { className: e, alt: "Beermother", loading: "eager" });
+}
+function nn() {
+  const e = ze();
+  (at(e === "dark" ? "light" : "dark"), we());
+}
+function B() {
+  document.body.classList.remove("sidebar-open");
+}
+const We = "fable.sidebar.collapsed";
+function on() {
+  try {
+    return localStorage.getItem(We) === "1";
+  } catch {
+    return !1;
+  }
+}
+function an() {
+  const e = !document.body.classList.contains("sidebar-collapsed");
+  document.body.classList.toggle("sidebar-collapsed", e);
+  try {
+    localStorage.setItem(We, e ? "1" : "0");
+  } catch {}
+  L();
+}
+function Ve(e) {
+  ((t.view = "home"),
+    (t.workspaceSection = e),
+    document.body.classList.remove("sidebar-open"),
+    render(),
+    window.scrollTo({ top: 0, behavior: "instant" }));
+}
+function I({ iconName: e, label: n, active: o, badge: a, onClick: c }) {
+  const d = g("", c, `sidebar-item ${o ? "active" : ""}`, {
+    "aria-current": o ? "page" : "false",
+    title: n,
+  });
+  return (
+    [
+      C(e, "icon sidebar-icon"),
+      r("span", "sidebar-label", n),
+      a ? r("span", "sidebar-badge num", String(a)) : null,
+    ]
+      .filter(Boolean)
+      .forEach((l) => d.append(l)),
+    d
+  );
+}
+function Ue() {
+  if (!K) return;
+  const e = t.view || "brew",
+    n = t.workspaceSection || "recipes",
+    o = gt().filter((l) => l.status === "active").length,
+    a = g("", () => Ve("recipes"), "sidebar-brand", {
+      "aria-label": "Beermother \u2014 Beermother",
+    });
+  [
+    Ke("brand-mark sidebar-mark"),
+    r("div", "brand-text", [
+      r("b", "", i("Beermother")),
+      r("span", "", i("Beermother")),
+    ]),
+  ].forEach((l) => a.append(l));
+  const c = v(
+      "chevron",
+      i("Recolher menu"),
+      () => an(),
+      "icon-btn sidebar-collapse",
+    ),
+    d = g(
+      "",
+      () => {
+        (B(), Gt());
+      },
+      "sidebar-new",
+      { title: i("Criar nova receita") },
+    );
+  (d.append(
+    C("plus", "icon"),
+    r("span", "sidebar-new-label", i("Nova receita")),
+  ),
+    (K.innerHTML = ""),
+    [
+      r("div", "sidebar-head", [a, c]),
+      d,
+      t.session
+        ? I({
+            iconName: "timer",
+            label: t.session.recipe.name,
+            active: e === "brew",
+            onClick: () => {
+              ((t.view = "brew"),
+                B(),
+                render(),
+                window.scrollTo({ top: 0, behavior: "instant" }));
+            },
+          })
+        : null,
+      t.session ? r("div", "sidebar-sep") : null,
+      ...Xt.map((l) =>
+        I({
+          iconName: l.icon,
+          label: i(l.label),
+          active:
+            (e === "home" && n === l.id) ||
+            (e === "editor" && l.id === "recipes") ||
+            (e === "brewlog" && l.id === "notebook"),
+          badge: l.id === "brews" && o ? o : 0,
+          onClick: () => Ve(l.id),
+        }),
+      ),
+      r("div", "sidebar-spacer"),
+      r("div", "sidebar-foot", [
+        I({
+          iconName: "upload",
+          label: i("Importar"),
+          active: !1,
+          onClick: () => {
+            (B(), _t());
+          },
+        }),
+        I({
+          iconName: "note",
+          label: i("Anotar"),
+          active: !1,
+          onClick: () => {
+            (B(), Ye());
+          },
+        }),
+        I({
+          iconName: "settings",
+          label: i("Configura\xE7\xF5es"),
+          active: !1,
+          onClick: () => {
+            (B(), Ft());
+          },
+        }),
+        I({
+          iconName: "download",
+          label: i("Backup"),
+          active: !1,
+          onClick: () => {
+            (B(), Ht());
+          },
+        }),
+        r("div", "sidebar-version", `Fable \xB7 v${vt}`),
+      ]),
+    ]
+      .filter(Boolean)
+      .forEach((l) => K.append(l)));
+}
+function ze() {
+  return t.theme === "dark" || t.theme === "light"
+    ? t.theme
+    : window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+}
+function we() {
+  document.documentElement.dataset.theme = ze();
+}
+export function applyColorPalette() {
+  document.documentElement.dataset.palette = ht();
+}
+window.matchMedia &&
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", () => {
+      t.theme === "auto" && we();
+    });
+function ie() {
+  const e = document.activeElement;
+  if (!e || !e.dataset || !e.dataset.fkey) return null;
+  let n = null;
+  try {
+    n = e.selectionStart;
+  } catch {
+    n = null;
+  }
+  return { key: e.dataset.fkey, caret: n };
+}
+function oe(e) {
+  const n = t.pendingFocusKey || e?.key;
+  if (!n) return;
+  const o = !!t.pendingFocusKey;
+  t.pendingFocusKey = null;
+  const a = h.querySelector(`[data-fkey="${n}"]`);
+  if (a) {
+    if ((a.focus({ preventScroll: !o }), o && a.select)) a.select();
+    else if (e && e.key === n && e.caret !== null && a.setSelectionRange)
+      try {
+        a.setSelectionRange(e.caret, e.caret);
+      } catch {}
+  }
+}
+let V = !1,
+  ae = !1;
+function Le() {
+  ae && !V && ((ae = !1), render());
+}
+(document.addEventListener(
+  "pointerdown",
+  () => {
+    V = !0;
+  },
+  !0,
+),
+  document.addEventListener(
+    "pointerup",
+    () => {
+      ((V = !1), window.setTimeout(Le, 140));
+    },
+    !0,
+  ),
+  document.addEventListener(
+    "pointercancel",
+    () => {
+      ((V = !1), window.setTimeout(Le, 140));
+    },
+    !0,
+  ),
+  document.addEventListener("click", Le));
+let Se = 0;
+window.addEventListener("resize", () => {
+  Se ||
+    (Se = window.requestAnimationFrame(() => {
+      ((Se = 0), L());
+    }));
+});
+export function render() {
+  const e = t.view || "brew";
+  if ((e === "editor" || e === "home" || !t.session) && V) {
+    ae = !0;
+    return;
+  }
+  if (((ae = !1), Ue(), e === "editor")) {
+    const a = ie();
+    (P([]),
+      (h.innerHTML = ""),
+      [$t()]
+        .flat(1 / 0)
+        .filter(Boolean)
+        .forEach((c) => h.append(c)),
+      U(!1),
+      L(),
+      oe(a));
+    return;
+  }
+  if (e === "analysis") {
+    const a = ie();
+    (P([]),
+      (h.innerHTML = ""),
+      [Ot()]
+        .flat(1 / 0)
+        .filter(Boolean)
+        .forEach((c) => h.append(c)),
+      U(!1),
+      L(),
+      oe(a));
+    return;
+  }
+  if (e === "brewlog" && t.brewLogEntry) {
+    const a = ie();
+    (P([]),
+      (h.innerHTML = ""),
+      [qt(t.brewLogEntry)]
+        .flat(1 / 0)
+        .filter(Boolean)
+        .forEach((c) => h.append(c)),
+      U(!1),
+      L(),
+      oe(a));
+    return;
+  }
+  if (e === "home" || !t.session) {
+    const a = ie();
+    (P([]),
+      (h.innerHTML = ""),
+      [Nt()]
+        .flat(1 / 0)
+        .filter(Boolean)
+        .forEach((c) => h.append(c)),
+      U(!1),
+      L(),
+      oe(a));
+    return;
+  }
+  const n = _(t.session);
+  (P(n.warnings), (h.innerHTML = ""));
+  const o = rn();
+  (o && h.append(o),
+    [Et(n)]
+      .flat(1 / 0)
+      .filter(Boolean)
+      .forEach((a) => h.append(a)),
+    U(!0),
+    L(),
+    qe());
+}
+function rn() {
+  if (!t.pendingResume) return null;
+  const e = pt(t.pendingResume);
+  if (!e) return ((t.pendingResume = null), null);
+  const n = g(
+      i("Retomar"),
+      () => {
+        const a = t.pendingResume;
+        ((t.pendingResume = null),
+          He(a, { confirmReplace: !1 }) &&
+            ((t.phase = "prepare"), E(i("Brassagem retomada de onde parou."))),
+          render());
+      },
+      "btn primary small",
+    ),
+    o = g(
+      i("Descartar"),
+      () => {
+        ((t.pendingResume = null),
+          mt(),
+          E(i("Brassagem anterior descartada.")),
+          render());
+      },
+      "btn ghost small",
+    );
+  return r("div", "resume-banner", [
+    C("open", "icon resume-icon"),
+    r("div", "resume-text", [
+      r(
+        "b",
+        "",
+        i("Brassagem em andamento: {recipe}", { recipe: e.recipeName }),
+      ),
+      r(
+        "span",
+        "",
+        e.savedAtLabel
+          ? i("Salva automaticamente em {when}", { when: e.savedAtLabel })
+          : i("Salva automaticamente"),
+      ),
+    ]),
+    r("div", "resume-actions", [n, o]),
+  ]);
+}
+function U(e) {
+  (Oe.forEach((n, o) => {
+    (n.classList.toggle("active", t.phase === o),
+      n.classList.toggle("done", e && Tt(o)),
+      (n.disabled = !e),
+      n.setAttribute("aria-current", t.phase === o ? "page" : "false"));
+  }),
+    document.body.classList.toggle("no-session", !e));
+}
+function P(e) {
+  O.innerHTML = "";
+  const n = (e || []).filter(Boolean);
+  (O.classList.toggle("hidden", !n.length),
+    n.forEach((o) => O.append(r("p", "", o))));
+}
+function sn() {
+  return t.phase === "mash" ? "mash" : t.phase === "boil" ? "boil" : "";
+}
+function L() {
+  if (!u) return;
+  if (t.session && (t.view || "brew") === "brew") {
+    (t.session.guideEnabled === !1 &&
+      ((t.session.guideEnabled = !0), (t.guideDockMin = !0)),
+      Xe(),
+      hn(t.session),
+      vn(),
+      bn());
+    return;
+  }
+  if ((Xe(), (t.view || "brew") !== "brew" && !f.state)) {
+    z();
+    return;
+  }
+  const e = t.session,
+    n = f.state ? f.state.context : "",
+    o = sn(),
+    a = n || o;
+  if (!e || !a) {
+    z();
+    return;
+  }
+  const c = Ge(a);
+  if (!c.length) {
+    z();
+    return;
+  }
+  const d = f.state && f.state.context === a ? f.state : null,
+    l = d || c[0] || {},
+    p = d && d.status === "done",
+    x = d && d.status === "running",
+    le = d && d.status === "paused",
+    D = d?.phase || l.phase || a,
+    Q =
+      a === "mash"
+        ? i("Mostura")
+        : D === "hopstand"
+          ? i("Hopstand")
+          : i("Fervura"),
+    N = d
+      ? be()
+      : De(l.stageRemainingMin, l.boilRemainingMin ?? l.durationMin) * 60 * 1e3,
+    $ = d ? G() : De(l.durationMin) * 60 * 1e3,
+    M = d ? (p ? Qt(d) : Vt(d)) : a === "mash" ? Ut(l) : zt(l);
+  ((u.innerHTML = ""),
+    u.classList.remove("hidden", "guide-dock", "guide-controller"),
+    document.body.classList.remove("guide-col"),
+    ye(!1),
+    delete u.dataset.guideKey,
+    u.classList.toggle("done", !!p));
+  const k = r("div", "dock-info", [
+      r("span", "dock-action", M.action),
+      r("b", "dock-target", M.target),
+    ]),
+    m = r("div", "dock-clock", [
+      r("b", "dock-time num", d && !p ? w($) : M.info || "--:--"),
+      r(
+        "span",
+        "dock-stage",
+        i("{stage} restante {clock}", { stage: Q, clock: w(N) }),
+      ),
+    ]),
+    j = r("div", "dock-controls", [
+      v("previous", i("Etapa anterior"), () => te(a, -1), "icon-btn dock-btn"),
+      kn(a, { done: p, running: x, paused: le }),
+      v("next", i("Pr\xF3xima etapa"), () => te(a, 1), "icon-btn dock-btn"),
+    ]);
+  if (p && d) {
+    const q = g(F(Fe()), () => ve(a), "btn primary dock-confirm");
+    u.append(k, m, q, j);
+  } else u.append(k, m, j);
+  ce();
+}
+const cn = {
+  check: "check",
+  timer: "timer",
+  leitura: "review",
+  correcao: "swap",
+};
+function Qe(e) {
+  const n = [
+    e?.ref?.anchor,
+    ...(Array.isArray(e?.checks) ? e.checks : []),
+  ].filter(Boolean);
+  for (const o of n) {
+    const a = document.querySelector(`[data-guide-anchor="${CSS.escape(o)}"]`);
+    if (a) return a;
+  }
+  return null;
+}
+function R(e) {
+  if (!e || !e.ref) return;
+  e.ref.tab && t.phase !== e.ref.tab && ((t.phase = e.ref.tab), render());
+  const n = Qe(e);
+  n &&
+    (document
+      .querySelectorAll(".guide-flash")
+      .forEach((o) => o.classList.remove("guide-flash")),
+    n.scrollIntoView({ behavior: "smooth", block: "center" }),
+    n.offsetWidth,
+    n.classList.add("guide-flash"),
+    n.addEventListener(
+      "animationend",
+      () => n.classList.remove("guide-flash"),
+      { once: !0 },
+    ));
+}
+function dn(e, n) {
+  const o = e
+    .map((a, c) => ({ step: a, index: c }))
+    .filter(
+      ({ step: a }) =>
+        a.ref?.anchor === n ||
+        (Array.isArray(a.checks) && a.checks.includes(n)),
+    );
+  return o.length ? (o.find(({ step: a }) => !a.done) || o[0]).index : -1;
+}
+function ln(e) {
+  if (
+    !t.session ||
+    !t.session.recipe ||
+    (t.view || "brew") !== "brew" ||
+    t.phase === "prepare" ||
+    t.phase === "ferment"
+  )
+    return;
+  const n = e.target.closest(".card-head");
+  if (
+    !n ||
+    e.target.closest(
+      "button, input, a, select, textarea, [contenteditable='true']",
+    )
+  )
+    return;
+  const o = n.closest("[data-guide-anchor]");
+  if (!o) return;
+  const a = ee(_(t.session), t.session, t.guideLevel, { phMode: Z() }),
+    c = dn(a, o.getAttribute("data-guide-anchor"));
+  c >= 0 && xe(a, c);
+}
+function xe(e, n) {
+  const o = Math.max(0, Math.min(e.length - 1, n)),
+    a = e.findIndex((c) => c.status === "current");
+  ((t.guideCursor = o === a ? null : o),
+    (t.guideDockMin = !1),
+    t.requestRender(),
+    R(e[o]));
+}
+function un() {
+  if (!f.state) return;
+  const e = u.querySelector("[data-clock-prefix]");
+  (e && (e.textContent = e.dataset.clockPrefix + w(be())),
+    f.state.status !== "done" &&
+      u.querySelectorAll(".guide-c-time").forEach((n) => {
+        n.textContent = w(G());
+      }));
+}
+function je() {
+  const e = It(ee(_(t.session), t.session, t.guideLevel, { phMode: Z() }));
+  e && R(e);
+}
+const mn = ["mash-end", "boil-end", "hopstand-end"];
+function pn(e) {
+  return !!e && mn.includes(e.eventType);
+}
+function fn(e) {
+  (e.forEach((n) => {
+    Array.isArray(n.checks) && n.checks.length ? he(n.checks, !0) : ge(n.id);
+  }),
+    (t.guideCursor = null),
+    t.requestRender());
+}
+function gn(e) {
+  if (e.type === "timer") {
+    const o =
+      e.context === "mash" ? i("Iniciar contagem") : i("Iniciar fervura");
+    return g(
+      o,
+      () => {
+        ((t.guideCursor = null), (t.phase = e.context));
+        const a = Ge(e.context),
+          c = (e.itemId && a.find((d) => d.id === e.itemId)) || null;
+        (c ? Kt(e.context, c) : Wt(e.context), t.requestRender(), R(e));
+      },
+      "btn primary guide-c-btn",
+    );
+  }
+  if (e.type === "check")
+    return g(
+      i("Feito"),
+      () => {
+        ((t.guideCursor = null),
+          Array.isArray(e.checks) && e.checks.length
+            ? he(e.checks, !0)
+            : ge(e.id),
+          je());
+      },
+      "btn primary guide-c-btn",
+    );
+  const n = e.type === "leitura" ? i("Abrir leitura") : i("Ver ajuste");
+  return g(
+    n,
+    () => {
+      ((t.guideCursor = null), t.requestRender(), R(e));
+    },
+    "btn primary guide-c-btn",
+  );
+}
+let S = null;
+function Xe() {
+  const e = t.phase !== "prepare" && t.phase !== "ferment";
+  if (
+    !!!(
+      t.session &&
+      t.session.recipe &&
+      t.guideDockMin &&
+      e &&
+      (t.view || "brew") === "brew"
+    )
+  ) {
+    S && S.classList.add("hidden");
+    return;
+  }
+  S ||
+    ((S = g(
+      [C("review", "icon"), r("span", "guide-chip-label", i("Guia"))],
+      () => {
+        ((t.guideDockMin = !1), t.requestRender());
+      },
+      "guide-reopen",
+      { title: i("Reabrir o painel do guia") },
+    )),
+    document.body.append(S));
+  const o = S.querySelector(".guide-chip-label"),
+    a = f.state && f.state.status !== "done";
+  ((o.textContent = a ? w(G()) : i("Guia")),
+    o.classList.toggle("num", !!a),
+    S.classList.toggle("at-corner", ne()),
+    S.classList.remove("hidden"));
+}
+function hn(e) {
+  if (t.phase === "prepare" || t.phase === "ferment") {
+    z();
+    return;
+  }
+  const n = _(e),
+    o = ee(n, e, t.guideLevel, { phMode: Z() }),
+    a = Pt(o),
+    c = { prepare: 0, mash: 1, boil: 2, ferment: 3, summary: 4 },
+    d = c[t.phase] ?? 1,
+    l = (s) => (c[s.phase] ?? 1) >= d;
+  let p = o.findIndex((s) => s.status === "current" && l(s));
+  (p < 0 && (p = o.findIndex((s) => !s.done && l(s))),
+    f.state &&
+      f.state.status === "done" &&
+      ((t.guideDockMin = !1), (t.guideCursor = null)));
+  const x = t.guideCursor != null && o.length > 0;
+  if (t.guideDockMin) {
+    z();
+    return;
+  }
+  const le = x
+      ? `peek:${t.guideCursor}`
+      : f.state
+        ? `timer:${f.state.itemId || "x"}:${f.state.status}`
+        : p < 0
+          ? "fim"
+          : `passo:${p}`,
+    D = ne(),
+    Q = `${le}|${a.done}|${o.length}|${t.phase}|${t.guideLevel}|${D ? "col" : "foot"}`;
+  if (u.dataset.guideKey === Q && u.classList.contains("guide-controller")) {
+    un();
+    return;
+  }
+  ((u.dataset.guideKey = Q),
+    (u.innerHTML = ""),
+    u.classList.remove("hidden", "done"),
+    u.classList.add("guide-dock", "guide-controller"),
+    u.classList.toggle("copilot", t.guideLevel === "copiloto"),
+    document.body.classList.toggle("guide-col", D),
+    ye(D));
+  const N = v(
+      "chevron",
+      i("Minimizar o painel"),
+      () => {
+        ((t.guideDockMin = !0), t.requestRender());
+      },
+      "icon-btn guide-x",
+    ),
+    $ = () => r("b", "guide-c-time num is-empty", ""),
+    M = (s) =>
+      v(
+        s === "prev" ? "previous" : "next",
+        "",
+        () => {},
+        `icon-btn guide-nav guide-nav-${s} disabled-look`,
+      );
+  if (!x && p < 0 && !f.state) {
+    const s = t.phase === "summary";
+    (Ce({
+      prev: M("prev"),
+      main: r("div", "guide-c-main", [
+        r(
+          "span",
+          "guide-kicker",
+          s ? i("pr\xF3xima etapa") : i("dia de brassagem"),
+        ),
+        r(
+          "b",
+          "guide-c-title",
+          s
+            ? i("A levedura assume agora.")
+            : i("Brassagem conclu\xEDda \u2014 bom trabalho."),
+        ),
+      ]),
+      clock: $(),
+      action: s
+        ? g(
+            i("Iniciar fermenta\xE7\xE3o"),
+            At,
+            "btn primary guide-c-btn guide-c-btn-accent",
+          )
+        : g(
+            i("Ver an\xE1lise"),
+            () => {
+              ((t.phase = "summary"),
+                t.requestRender(),
+                window.scrollTo({ top: 0, behavior: "instant" }));
+            },
+            "btn primary guide-c-btn",
+          ),
+      next: M("next"),
+      min: N,
+    }),
+      ce());
+    return;
+  }
+  if (!x && f.state) {
+    const s = f.state,
+      b = s.status === "done",
+      nt = s.status === "paused",
+      y = s.context,
+      Re = p >= 0 ? o[p] : null,
+      me =
+        y === "mash"
+          ? i("Mostura")
+          : s.phase === "hopstand"
+            ? i("Hopstand")
+            : i("Fervura"),
+      pe = s.label === "Aquecimento",
+      J = s.additions.length
+        ? i("Adicione {list}", {
+            list: s.additions
+              .map((H) => `${H.name} (${jt(H.amount, H.unit)})`)
+              .join(", "),
+          }) + (s.withReading ? ` \xB7 ${i("e a leitura p\xF3s-fervura")}` : "")
+        : "",
+      it =
+        s.eventType === "addition" && J
+          ? J
+          : y === "mash" &&
+              /^Confirmar /.test(s.eventActionLabel || "") &&
+              s.eventTimeLabel
+            ? i("Come\xE7ar {step}", { step: s.eventTimeLabel }) +
+              (s.eventTargetLabel ? ` \xB7 ${s.eventTargetLabel}` : "")
+            : F(
+                (s.eventActionLabel || "Confirmar etapa").replace(
+                  /^Confirmar (?!início)/,
+                  "Confirmar in\xEDcio: ",
+                ),
+              ),
+      Te = b
+        ? it
+        : y === "mash"
+          ? pe
+            ? i("Aquecendo para {step}", {
+                step: s.eventTimeLabel || i("o pr\xF3ximo patamar"),
+              }) + (s.eventTargetLabel ? ` \xB7 ${s.eventTargetLabel}` : "")
+            : F(s.label)
+          : me,
+      Me = (!b && !pe && y === "mash" && s.detail) || "",
+      Ae = pe
+        ? ""
+        : s.eventType === "addition" && J
+          ? J
+          : F((s.eventActionLabel || "").replace(/^Confirmar /, "")),
+      Be = `${me} \xB7 ${i("restante")} `,
+      Ie = r("span", "", b ? me : Be + w(be()));
+    b || (Ie.dataset.clockPrefix = Be);
+    const fe = !b && t.guideLevel === "copiloto" ? Dt(o, y) : null,
+      Pe = r(
+        "div",
+        "guide-c-main linkable",
+        [
+          r("span", "guide-kicker", [C("timer", "icon guide-kicker-icon"), Ie]),
+          r(
+            "b",
+            "guide-c-title",
+            b
+              ? [Te]
+              : [
+                  Te,
+                  Me ? r("span", "guide-c-detail", ` \u2014 ${Me}`) : null,
+                  Ae
+                    ? r(
+                        "span",
+                        "guide-c-next",
+                        ` \xB7 ${i("pr\xF3ximo:")} ${Ae}`,
+                      )
+                    : null,
+                ],
+          ),
+          fe ? r("span", "guide-c-tip", fe.tip || fe.title) : null,
+        ],
+        { title: i("Mostrar na tela") },
+      );
+    (Re && Pe.addEventListener("click", () => R(Re)),
+      Ce({
+        prev: v(
+          "previous",
+          i("Voltar etapa do contador"),
+          () => te(y, -1),
+          "icon-btn guide-nav guide-nav-prev",
+        ),
+        main: Pe,
+        clock: b ? $() : r("b", "guide-c-time num", w(G())),
+        action: g(
+          b ? i("Confirmar") : nt ? i("Retomar") : i("Pausar"),
+          () => {
+            const H = b && pn(s);
+            (ve(y), H && je());
+          },
+          `btn primary guide-c-btn ${b ? "confirm" : ""}`,
+        ),
+        next: v(
+          "next",
+          i("Pular etapa do contador"),
+          () => te(y, 1),
+          "icon-btn guide-nav guide-nav-next",
+        ),
+        min: N,
+      }),
+      ce());
+    return;
+  }
+  const k = x
+      ? Math.max(0, Math.min(o.length - 1, t.guideCursor))
+      : Math.max(0, p),
+    m = o[k],
+    j = i(_e.find((s) => s.id === m.phase)?.label || ""),
+    q = k === p,
+    X = o[k + 1] || null,
+    Je = v(
+      "previous",
+      i("Espiar a a\xE7\xE3o anterior"),
+      () => xe(o, k - 1),
+      `icon-btn guide-nav guide-nav-prev ${k <= 0 ? "disabled-look" : ""}`,
+    ),
+    Ze = v(
+      "next",
+      i("Espiar a pr\xF3xima a\xE7\xE3o"),
+      () => xe(o, k + 1),
+      `icon-btn guide-nav guide-nav-next ${k >= o.length - 1 ? "disabled-look" : ""}`,
+    ),
+    et = m.done
+      ? i("feito")
+      : m.status === "skipped"
+        ? i("pulada")
+        : q
+          ? i("agora")
+          : i("a seguir"),
+    ue = t.guideLevel === "copiloto",
+    Y = r("span", "guide-kicker", [
+      C((ue && m.icon) || cn[m.type] || "review", "icon guide-kicker-icon"),
+      r(
+        "span",
+        "",
+        `${j} \xB7 ${et}${ue ? ` \xB7 ${i("{i} de {n}", { i: k + 1, n: o.length })}` : ""}`,
+      ),
+    ]);
+  if (x)
+    Y.append(
+      g(
+        i("voltar ao agora"),
+        (s) => {
+          (s.stopPropagation(),
+            (t.guideCursor = null),
+            t.requestRender(),
+            p >= 0 && R(o[p]));
+        },
+        "guide-now-link",
+      ),
+    );
+  else {
+    const s = o.filter((b) => b.status === "skipped" && b.type === "check");
+    s.length &&
+      Y.append(
+        g(
+          s.length > 1
+            ? i("marcar {n} anteriores", { n: s.length })
+            : i("marcar {n} anterior", { n: s.length }),
+          (b) => {
+            (b.stopPropagation(), fn(s));
+          },
+          "guide-now-link",
+        ),
+      );
+  }
+  const Ee = r(
+    "div",
+    `guide-c-main linkable ${m.done ? "is-done" : ""}`,
+    ue
+      ? [
+          Y,
+          r("b", "guide-c-title", m.title),
+          r("span", "guide-c-why", [
+            m.detail || "",
+            q && X
+              ? r(
+                  "span",
+                  "guide-c-next",
+                  `${m.detail ? " \xB7 " : ""}${i("pr\xF3ximo:")} ${X.title}`,
+                )
+              : null,
+          ]),
+        ]
+      : [
+          Y,
+          r("b", "guide-c-title", [
+            m.title,
+            m.detail
+              ? r("span", "guide-c-detail", ` \u2014 ${m.detail}`)
+              : null,
+            q && X
+              ? r(
+                  "span",
+                  "guide-c-next",
+                  ` \xB7 ${i("pr\xF3ximo:")} ${X.title}`,
+                )
+              : null,
+          ]),
+        ],
+    { title: i("Mostrar na tela") },
+  );
+  Ee.addEventListener("click", () => R(m));
+  const tt =
+    m.done && m.type === "check"
+      ? g(
+          i("Desfazer"),
+          () => {
+            (Array.isArray(m.checks) && m.checks.length
+              ? he(m.checks, !1)
+              : ge(m.id),
+              (t.guideCursor = null),
+              t.requestRender());
+          },
+          "btn ghost guide-c-btn",
+        )
+      : null;
+  (Ce({
+    prev: Je,
+    main: Ee,
+    clock: f.state ? r("b", "guide-c-time peek num", w(G())) : $(),
+    action:
+      tt || (m.done ? r("span", "guide-done-tag", i("feito \u2713")) : gn(m)),
+    next: Ze,
+    min: N,
+  }),
+    ce());
+}
+function Ce({ prev: e, main: n, clock: o, action: a, next: c, min: d }) {
+  u.append(r("div", "guide-c-row", [e, n, o, a, c, d]));
+}
+let re = null;
+function bn() {
+  if (
+    (re && (re.classList.remove("guide-current-card"), (re = null)),
+    t.guideLevel !== "copiloto" ||
+      !t.session ||
+      (t.view || "brew") !== "brew" ||
+      t.phase === "prepare" ||
+      t.phase === "ferment")
+  )
+    return;
+  const e = ee(_(t.session), t.session, t.guideLevel, { phMode: Z() }),
+    n = { prepare: 0, mash: 1, boil: 2, ferment: 3, summary: 4 },
+    o = n[t.phase] ?? 1,
+    a = e.find((l) => !l.done && (n[l.phase] ?? 1) >= o);
+  if (!a) return;
+  const c = Qe(a),
+    d = c ? c.closest(".card") || c : null;
+  d && (d.classList.add("guide-current-card"), (re = d));
+}
+let se = "";
+function vn() {
+  const e = h.querySelector('[data-guide-anchor="copilot-checklist"]'),
+    n = W.querySelector('[data-guide-anchor="copilot-checklist"]');
+  if ((e && n && e !== n && n.remove(), t.guideLevel !== "copiloto")) {
+    (n && !e && n.remove(), (se = ""));
+    return;
+  }
+  const o = e || n;
+  if (!o) {
+    se = "";
+    return;
+  }
+  if (!(
+    ne() &&
+    t.guideLevel === "copiloto" &&
+    !t.guideDockMin &&
+    u.classList.contains("guide-controller")
+  ))
+    return;
+  W.append(o);
+  const c = o.querySelector(".checklist-row.is-current"),
+    d = (c && c.querySelector(".checklist-title")?.textContent) || "";
+  (c && d !== se && c.scrollIntoView({ block: "nearest" }), (se = d));
+}
+function z() {
+  (u.classList.add("hidden"),
+    u.classList.remove("guide-dock", "guide-controller"),
+    document.body.classList.remove("guide-col"),
+    ye(!1),
+    delete u.dataset.guideKey,
+    (u.innerHTML = ""),
+    document.body.classList.remove("timer-visible"),
+    document.body.style.removeProperty("--dock-space"));
+}
+function ce() {
+  if (
+    (document.body.classList.add("timer-visible"),
+    ne() && u.classList.contains("guide-controller"))
+  ) {
+    document.body.style.removeProperty("--dock-space");
+    return;
+  }
+  const e = u.getBoundingClientRect ? u.getBoundingClientRect() : null,
+    n = window.innerHeight || 0,
+    o = e ? Math.max(0, n - e.top) : 0;
+  document.body.style.setProperty("--dock-space", `${Math.ceil(o) + 16}px`);
+}
+function kn(e, { done: n, running: o }) {
+  const a = n ? "check" : o ? "pause" : "play",
+    c = n ? F(Fe()) : o ? i("Pausar") : i("Iniciar");
+  return v(a, c, () => ve(e), `icon-btn dock-btn main ${n ? "confirm" : ""}`);
+}
+let T = null;
+function Ye() {
+  if (!t.session) {
+    E(i("Abra uma receita para anotar."), "error");
+    return;
+  }
+  if (T) {
+    de();
+    return;
+  }
+  const e = document.createElement("textarea");
+  ((e.placeholder = i("Ex.: esqueci o Whirlfloc aos 10 min")), (e.rows = 3));
+  const n = g(
+      i("Adicionar nota"),
+      () => {
+        Mt(e.value)
+          ? (E(i("Nota adicionada com hor\xE1rio.")),
+            de(),
+            t.phase === "summary" && render())
+          : e.focus();
+      },
+      "btn primary",
+    ),
+    o = g(i("Fechar"), () => de(), "btn ghost");
+  ((T = r("div", "quick-note-sheet", [
+    r("b", "", i("Nota r\xE1pida")),
+    e,
+    r("div", "quick-note-actions", [o, n]),
+  ])),
+    document.body.append(T),
+    Lt(() => de(), T),
+    e.focus());
+}
+function de() {
+  (T && (T.remove(), (T = null)), St());
+}
+document.addEventListener("paste", (e) => {
+  if (!t.session || wt(e.target)) return;
+  const n = e.clipboardData && e.clipboardData.getData("text");
+  n &&
+    (e.preventDefault(),
+    Rt(n)
+      ? E(i("Par\xE2metros aplicados."))
+      : E(
+          i("N\xE3o encontrei um c\xF3digo completo de par\xE2metros."),
+          "error",
+        ));
+});
+async function yn() {
+  (ft(), Bt(), (t.workspaceSection = t.workspaceSection || "recipes"));
+  const e = ut();
+  let n = "";
+  try {
+    const o = await Ln();
+    if (o.redirected) return;
+    if (((n = o.error || ""), !o.attempted)) {
+      const a = A.get("receita") || A.get("recipe") || A.get("r"),
+        c = a ? lt(a) : A.get("src");
+      if (c)
+        try {
+          await st(c);
+        } catch (d) {
+          ((t.session = null),
+            (n =
+              d.message ||
+              i("N\xE3o foi poss\xEDvel carregar a receita do link.")));
+        }
+    }
+  } catch (o) {
+    ((t.session = null),
+      (n =
+        o.message || i("N\xE3o foi poss\xEDvel carregar a receita do link.")));
+  }
+  (wn(e), t.session || (t.view = "home"), render(), n && P([n]));
+}
+function wn(e) {
+  if (!e || !t.session) return;
+  if (t.session.recipe?.name && t.session.recipe.name === e.recipe?.name) {
+    He(e, { confirmReplace: !1 }) && E(i("Brassagem retomada de onde parou."));
+    return;
+  }
+  t.pendingResume = e;
+}
+async function Ln() {
+  const e = $e();
+  if (!e) return { attempted: !1 };
+  if (Sn()) return { attempted: !0, redirected: !0 };
+  try {
+    const n = await ct(e),
+      o = kt(n.text);
+    return (
+      rt(o, n.fileName || i("Receita incorporada")),
+      dt(),
+      { attempted: !0 }
+    );
+  } catch (n) {
+    return (
+      (t.session = null),
+      {
+        attempted: !0,
+        error:
+          n.message ||
+          i("N\xE3o foi poss\xEDvel carregar a receita incorporada no link."),
+      }
+    );
+  }
+}
+function Sn() {
+  if (A.has("v") || A.has("test") || Ne) return !1;
+  try {
+    const e = new URL(location.href);
+    return !e.hash || !$e()
+      ? !1
+      : (e.searchParams.set("v", ot), location.replace(e.href), !0);
+  } catch {
+    return !1;
+  }
+}

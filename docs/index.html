@@ -1,8 +1,11 @@
 <!doctype html>
 <html lang="pt-BR" data-theme="light">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Beermother</title>
     <meta name="description" content="Beermother" />
     <link href="assets/fonts/inter.css" rel="stylesheet" />
@@ -12,20 +15,24 @@
     <link href="css/editor.css" rel="stylesheet" />
     <link href="css/analysis.css" rel="stylesheet" />
     <script>
-        // Aplica o tema salvo antes do primeiro paint para evitar flash.
+      // Aplica o tema salvo antes do primeiro paint para evitar flash.
       (function () {
-            try {
-                var saved = localStorage.getItem("beerSchool.receitasDinamicas.fable.theme.v1");
-          var theme = saved === "dark" || saved === "light"
-            ? saved
-            : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-                document.documentElement.dataset.theme = theme;
-            } catch (error) {}
-        })();
+        try {
+          var saved = localStorage.getItem("beermother.fable.theme.v1");
+          var theme =
+            saved === "dark" || saved === "light"
+              ? saved
+              : window.matchMedia &&
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light";
+          document.documentElement.dataset.theme = theme;
+        } catch (error) {}
+      })();
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app"></div>
     <script type="module" src="js/gate.js"></script>
-</body>
+  </body>
 </html>
