@@ -80,12 +80,7 @@ async function authHeaders() {
 }
 
 async function apiFetch(url, options = {}) {
-  const res = await fetch(url, options);
-  if (res.status === 403) {
-    revokeLocalToken();
-    throw new Error(t("Acesso ao Google Drive negado. Tente salvar novamente para reconectar."));
-  }
-  return res;
+  return fetch(url, options);
 }
 
 async function findOrCreateFolder(name) {
@@ -97,10 +92,14 @@ async function findOrCreateFolder(name) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  if (!searchRes.ok) throw new Error(t("Erro ao buscar pasta no Google Drive."));
-
-  const data = await searchRes.json();
-  if (data.files?.length > 0) return data.files[0].id;
+  // 403 here means the folder was not created by this app (drive.file scope only
+  // sees files/folders the app itself created). Treat as not found and create below.
+  if (searchRes.ok) {
+    const data = await searchRes.json();
+    if (data.files?.length > 0) return data.files[0].id;
+  } else if (searchRes.status !== 403) {
+    throw new Error(t("Erro ao buscar pasta no Google Drive."));
+  }
 
   const createRes = await apiFetch(`${API}/files`, {
     method: "POST",
@@ -110,7 +109,10 @@ async function findOrCreateFolder(name) {
       mimeType: "application/vnd.google-apps.folder",
     }),
   });
-  if (!createRes.ok) throw new Error(t("Erro ao criar pasta no Google Drive."));
+  if (!createRes.ok) {
+    if (createRes.status === 403) revokeLocalToken();
+    throw new Error(t("Erro ao criar pasta no Google Drive."));
+  }
 
   const folder = await createRes.json();
   return folder.id;
@@ -128,9 +130,12 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
     `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
     { headers: h },
   );
-  if (!searchRes.ok) throw new Error(t("Erro ao verificar arquivo no Google Drive."));
+  // 403 on the file search is unexpected at this point (folder was just created/found
+  // by the app), but treat it as not found rather than aborting.
+  if (!searchRes.ok && searchRes.status !== 403)
+    throw new Error(t("Erro ao verificar arquivo no Google Drive."));
 
-  const searchData = await searchRes.json();
+  const searchData = searchRes.ok ? await searchRes.json() : { files: [] };
   const existing = searchData.files?.[0];
 
   const metadata = existing
@@ -154,6 +159,7 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
   });
 
   if (!uploadRes.ok) {
+    if (uploadRes.status === 403) revokeLocalToken();
     const err = await uploadRes.json().catch(() => ({}));
     throw new Error(err.error?.message || t("Erro ao salvar no Google Drive."));
   }
