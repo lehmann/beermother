@@ -202,3 +202,41 @@ async function doSave(xmlContent, fileName) {
 export async function saveRecipeToDrive(xmlContent, fileName) {
   return doSave(xmlContent, fileName);
 }
+
+export function hasDriveToken() {
+  return hasValidToken() || loadPersistedToken();
+}
+
+async function listRecipes() {
+  const folderName = loadDriveFolderName();
+  const folderId = await findOrCreateFolder(folderName);
+  const h = await authHeaders();
+
+  const q = encodeURIComponent(
+    `'${folderId}' in parents and trashed=false and name contains '.xml'`,
+  );
+  const res = await apiFetch(
+    `${API}/files?q=${q}&fields=files(id,name)&spaces=drive&pageSize=1000&orderBy=name`,
+    { headers: h },
+  );
+  if (!res.ok) throw new Error(t("Erro ao listar receitas no Google Drive."));
+
+  const data = await res.json();
+  const files = data.files || [];
+  const out = [];
+  for (const f of files) {
+    try {
+      const r = await apiFetch(`${API}/files/${f.id}?alt=media`, {
+        headers: h,
+      });
+      if (!r.ok) continue;
+      const content = await r.text();
+      out.push({ id: f.id, name: f.name, content });
+    } catch {}
+  }
+  return out;
+}
+
+export async function listRecipesFromDrive() {
+  return listRecipes();
+}

@@ -23,8 +23,10 @@ import {
   BASE_EQUIPMENT_PROFILE as _,
 } from "./recipes.js";
 import {
-  PH_ACIDS as E,
-  DEFAULT_PH_ACID as x,
+  PH_ACID_TYPES as E,
+  DEFAULT_PH_ACID_TYPE as x,
+  phAcidId as phAcidIdFor,
+  phAcidLabel as phAcidLabelFor,
   sanitizePhLog as m,
   isPhLogSane as F,
 } from "./ph.js";
@@ -148,13 +150,39 @@ export function savePhMode(e) {
   const t = !!e;
   return (saveSettings({ phMode: t }), t);
 }
-export function loadPhAcid() {
-  const e = loadSettings().phAcid;
-  return E.some((t) => t.id === e) ? e : x;
+function clampConcentration(e) {
+  const t = Number(e);
+  return Number.isFinite(t) ? Math.min(100, Math.max(1, t)) : null;
 }
-export function savePhAcid(e) {
-  const t = E.some((r) => r.id === e) ? e : x;
-  return (saveSettings({ phAcid: t }), t);
+export function loadPhAcidType() {
+  const e = loadSettings().phAcidType;
+  return E.some((t) => t.type === e) ? e : x;
+}
+export function savePhAcidType(e) {
+  const t = E.some((r) => r.type === e) ? e : x;
+  return (saveSettings({ phAcidType: t }), t);
+}
+export function loadPhAcidConcentration(e = loadPhAcidType()) {
+  const t = E.find((r) => r.type === e) || E.find((r) => r.type === x),
+    r = loadSettings().phAcidConcentrations,
+    o = r && typeof r === "object" ? clampConcentration(r[e]) : null;
+  return o ?? t.defaultConcentration;
+}
+export function savePhAcidConcentration(e, t) {
+  if (!E.some((i) => i.type === e)) return null;
+  const r = clampConcentration(t);
+  if (r == null) return loadPhAcidConcentration(e);
+  const o = loadSettings().phAcidConcentrations,
+    n = { ...(o && typeof o === "object" ? o : {}), [e]: r };
+  return (saveSettings({ phAcidConcentrations: n }), r);
+}
+export function loadPhAcid() {
+  const e = loadPhAcidType();
+  return phAcidIdFor(e, loadPhAcidConcentration(e));
+}
+export function loadPhAcidLabel() {
+  const e = loadPhAcidType();
+  return phAcidLabelFor(e, loadPhAcidConcentration(e));
 }
 export function loadPhMemory() {
   const e = loadSettings().phMemory;
@@ -271,17 +299,15 @@ export function sanitizeFermentationExpected(e = {}) {
 }
 export function sanitizeCorrectionRounds(e = {}) {
   const t = (r) =>
-    (Array.isArray(r) ? r : [])
-      .filter(c)
-      .map((o, n) => ({
-        round: Math.max(1, Math.trunc(d(o.round, n + 1))),
-        action: String(o.action || ""),
-        checkWri:
-          o.checkWri === "" || o.checkWri === void 0
-            ? ""
-            : Math.max(0, d(o.checkWri)),
-        at: String(o.at || ""),
-      }));
+    (Array.isArray(r) ? r : []).filter(c).map((o, n) => ({
+      round: Math.max(1, Math.trunc(d(o.round, n + 1))),
+      action: String(o.action || ""),
+      checkWri:
+        o.checkWri === "" || o.checkWri === void 0
+          ? ""
+          : Math.max(0, d(o.checkWri)),
+      at: String(o.at || ""),
+    }));
   return { pre: t(e?.pre), post: t(e?.post) };
 }
 export function sanitizeAdditionChecks(e = {}) {
