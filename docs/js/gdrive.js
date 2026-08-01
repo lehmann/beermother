@@ -84,7 +84,11 @@ function requestTokenInteractive() {
   return new Promise((resolve, reject) => {
     _pendingResolve = resolve;
     _pendingReject = reject;
-    _tokenClient = buildTokenClient("select_account");
+    // "consent" (not "select_account") forces Google to re-show the consent
+    // screen so a newly-added scope is actually granted. With a prior grant for
+    // this client, "select_account" would silently reissue a token carrying only
+    // the previously-consented scope, causing 403 on drive-scope API calls.
+    _tokenClient = buildTokenClient("consent");
     _tokenClient.requestAccessToken({});
   });
 }
