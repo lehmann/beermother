@@ -2,6 +2,35 @@ const GOOGLE_CLIENT_ID =
   "737027827720-hvm2q49b9cnojoe0voo8nlfu2ehhtdsd.apps.googleusercontent.com";
 
 const ALLOWED_USERS_PATH = "allowed.users";
+const SESSION_KEY = "beermother.gate.session.v1";
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const { emailHash, expiresAt } = JSON.parse(raw);
+    if (!emailHash || Date.now() >= expiresAt) return null;
+    return emailHash;
+  } catch {
+    return null;
+  }
+}
+
+function saveSession(emailHash) {
+  try {
+    localStorage.setItem(
+      SESSION_KEY,
+      JSON.stringify({ emailHash, expiresAt: Date.now() + SESSION_TTL_MS }),
+    );
+  } catch {}
+}
+
+function clearSession() {
+  try {
+    localStorage.removeItem(SESSION_KEY);
+  } catch {}
+}
 
 const GATE_LANG = (() => {
   const l = String(navigator.language || "").toLowerCase();
@@ -78,6 +107,7 @@ async function handleCredential(response) {
       hashEmail(payload.email),
     ]);
     if (allowed.includes(emailHash)) {
+      saveSession(emailHash);
       await boot();
     } else {
       showError(GATE_TEXT.denied);
@@ -124,6 +154,12 @@ function renderGate() {
 }
 
 (async function () {
+  // Resume a previously verified session without showing the gate.
+  if (loadSession()) {
+    await boot();
+    return;
+  }
+
   await new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = "https://accounts.google.com/gsi/client";

@@ -7,8 +7,10 @@ const SCOPE = "https://www.googleapis.com/auth/drive";
 const API = "https://www.googleapis.com/drive/v3";
 const UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
 
+const STORAGE_KEY = "beermother.drive.token.v1";
+
 let _tokenClient = null;
-let _token = null;
+let _token = null;       // in-memory cache
 let _tokenExpiry = 0;
 let _pendingResolve = null;
 let _pendingReject = null;
@@ -17,11 +19,38 @@ function hasValidToken() {
   return !!(_token && Date.now() < _tokenExpiry - 30000);
 }
 
+function persistToken(resp) {
+  const expiry = Date.now() + (Number(resp.expires_in) || 3600) * 1000;
+  _token = resp;
+  _tokenExpiry = expiry;
+  try {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ access_token: resp.access_token, expiry }),
+    );
+  } catch {}
+}
+
+function loadPersistedToken() {
+  if (hasValidToken()) return true;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const { access_token, expiry } = JSON.parse(raw);
+    if (!access_token || Date.now() >= expiry - 30000) return false;
+    _token = { access_token };
+    _tokenExpiry = expiry;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function revokeLocalToken() {
   _token = null;
   _tokenExpiry = 0;
-  // Force a new token client on the next request so the prompt is shown fresh.
   _tokenClient = null;
+  try { localStorage.removeItem(STORAGE_KEY); } catch {}
 }
 
 function buildTokenClient(prompt) {
@@ -31,13 +60,11 @@ function buildTokenClient(prompt) {
     prompt,
     callback: (resp) => {
       if (resp.error) {
-        const err = new Error(
-          resp.error_description || resp.error || t("Acesso ao Google Drive negado."),
+        _pendingReject?.(
+          new Error(resp.error_description || resp.error || t("Acesso ao Google Drive negado.")),
         );
-        _pendingReject?.(err);
       } else {
-        _token = resp;
-        _tokenExpiry = Date.now() + (Number(resp.expires_in) || 3600) * 1000;
+        persistToken(resp);
         _pendingResolve?.(_token);
       }
       _pendingResolve = null;
@@ -53,25 +80,41 @@ function buildTokenClient(prompt) {
   });
 }
 
-export function requestDriveAccess() {
+function requestTokenSilently() {
   return new Promise((resolve, reject) => {
-    if (!window.google?.accounts?.oauth2) {
-      reject(new Error(t("Google Identity Services não disponível.")));
-      return;
-    }
-    if (hasValidToken()) {
-      resolve(_token);
-      return;
-    }
     _pendingResolve = resolve;
     _pendingReject = reject;
-    // Always use "select_account" so the user explicitly picks the account and
-    // consents to the drive.file scope. Using "" or "consent" with FedCM active
-    // (gate.js sets use_fedcm_for_prompt: true) causes the token flow to fail
-    // silently or return access_denied.
-    if (!_tokenClient) _tokenClient = buildTokenClient("select_account");
+    if (!_tokenClient) _tokenClient = buildTokenClient("");
     _tokenClient.requestAccessToken({});
   });
+}
+
+function requestTokenInteractive() {
+  return new Promise((resolve, reject) => {
+    _pendingResolve = resolve;
+    _pendingReject = reject;
+    _tokenClient = buildTokenClient("select_account");
+    _tokenClient.requestAccessToken({});
+  });
+}
+
+export async function requestDriveAccess() {
+  if (!window.google?.accounts?.oauth2)
+    throw new Error(t("Google Identity Services não disponível."));
+
+  // 1. In-memory token still valid.
+  if (hasValidToken()) return _token;
+
+  // 2. Persisted token in localStorage still valid.
+  if (loadPersistedToken()) return _token;
+
+  // 3. Silent refresh — works if the user already consented this browser
+  //    (Google session cookie present). Falls back to interactive on error.
+  try {
+    return await requestTokenSilently();
+  } catch {
+    return await requestTokenInteractive();
+  }
 }
 
 async function authHeaders() {
