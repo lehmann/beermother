@@ -27,6 +27,7 @@ export const CALIBRATION_PROFILE = {
     { id: "cacl2", formula: "CaCl2", name: "CaCl2" },
     { id: "caso4", formula: "CaSO4", name: "CaSO4" },
     { id: "mgso4", formula: "MgSO4", name: "MgSO4" },
+    { id: "nacl", formula: "NaCl", name: "NaCl" },
   ],
   WATER_IONS = [
     { key: "calciumPpm", label: "Ca\xB2\u207A", plainLabel: "Ca" },
@@ -52,6 +53,7 @@ export const CALIBRATION_PROFILE = {
     CaCl2: { calciumPpm: 272.6, chloridePpm: 482.3 },
     CaSO4: { calciumPpm: 232.8, sulfatePpm: 557.6 },
     MgSO4: { magnesiumPpm: 98.6, sulfatePpm: 389.6 },
+    NaCl: { sodiumPpm: 393.4, chloridePpm: 606.6 },
   },
   PROFILE_KEYS = Object.keys(DEFAULT_PROFILE);
 export function n(t, e = 0) {
@@ -340,13 +342,15 @@ export function emptyWaterSalts() {
 }
 export function saltFormulaFromName(t) {
   const e = String(t || "").toLowerCase();
-  return /cacl/.test(e) || e.includes("calcium chloride")
-    ? "CaCl2"
-    : /caso/.test(e) || e.includes("gypsum")
-      ? "CaSO4"
-      : /mgso/.test(e) || e.includes("epsom")
-        ? "MgSO4"
-        : "";
+  return /nacl/.test(e) || e.includes("sodium chloride") || e.includes("table salt")
+    ? "NaCl"
+    : /cacl/.test(e) || e.includes("calcium chloride")
+      ? "CaCl2"
+      : /caso/.test(e) || e.includes("gypsum")
+        ? "CaSO4"
+        : /mgso/.test(e) || e.includes("epsom")
+          ? "MgSO4"
+          : "";
 }
 export function waterSaltsFromRecipe(t = {}) {
   const e = emptyWaterSalts(),

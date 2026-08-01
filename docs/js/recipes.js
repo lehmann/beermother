@@ -96,6 +96,7 @@ export function newDraft() {
       { formula: "CaCl2", amountG: 0 },
       { formula: "CaSO4", amountG: 0 },
       { formula: "MgSO4", amountG: 0 },
+      { formula: "NaCl", amountG: 0 },
     ],
     miscs: [],
   };
@@ -177,7 +178,7 @@ export function draftFromRecipe(t, a = {}) {
       ...sanitizeFermentationPressure(o),
     })),
     baseWaterProfile: $(r.baseWaterProfile, I),
-    salts: ["CaCl2", "CaSO4", "MgSO4"].map((o) => ({
+    salts: ["CaCl2", "CaSO4", "MgSO4", "NaCl"].map((o) => ({
       formula: o,
       amountG: (r.salts || [])
         .filter((m) => m.formula === o)

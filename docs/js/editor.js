@@ -40,8 +40,10 @@ import {
   saveGuideLevel as dt,
   loadPhMode as ut,
   savePhMode as mt,
-  loadPhAcid as pt,
-  savePhAcid as ft,
+  loadPhAcidType,
+  savePhAcidType,
+  loadPhAcidConcentration as loadPhAcidConc,
+  savePhAcidConcentration as savePhAcidConc,
   loadAnalysisBetaMode as va,
   saveAnalysisBetaMode as wa,
   APP_VERSION as bt,
@@ -56,7 +58,7 @@ import {
   listRecipesFromDrive as drvList,
   hasDriveToken as drvHasToken,
 } from "./gdrive.js";
-import { PH_ACIDS as ht } from "./ph.js";
+import { PH_ACID_TYPES as ht } from "./ph.js";
 import {
   generateBrewReportHtml as gt,
   buildBrewReport as vt,
@@ -1859,17 +1861,17 @@ export function openSettingsSheet() {
         `btn small ${M ? "primary" : "ghost"}`,
         { "aria-pressed": M ? "true" : "false" },
       ),
-      w = pt(),
+      w = loadPhAcidType(),
       L = M
         ? a(
             "div",
             "seg-switch settings-seg",
             ht.map((k) => {
-              const B = w === k.id;
+              const B = w === k.type;
               return d(
-                k.label.replace("\xC1cido ", ""),
+                t(k.short),
                 () => {
-                  B || (ft(k.id), c.requestRender(), n());
+                  B || (savePhAcidType(k.type), c.requestRender(), n());
                 },
                 "seg-btn",
                 { "aria-pressed": B ? "true" : "false" },
@@ -1877,9 +1879,33 @@ export function openSettingsSheet() {
             }),
           )
         : null,
+      acidTypeDef = ht.find((k) => k.type === w) || ht[0],
+      acidConcBlock = M
+        ? a("div", "settings-acid-conc", [
+            a("span", "field-label", t("Concentra\xE7\xE3o")),
+            U(
+              loadPhAcidConc(w),
+              (B) => {
+                (savePhAcidConc(
+                  w,
+                  B === "" ? acidTypeDef.defaultConcentration : B,
+                ),
+                  c.requestRender());
+              },
+              {
+                "aria-label": t("Concentra\xE7\xE3o do {acid}", {
+                  acid: t(acidTypeDef.label),
+                }),
+                class: "settings-input settings-acid-input",
+              },
+            ),
+            a("span", "settings-acid-unit", "%"),
+          ])
+        : null,
       x = a("div", "settings-guide", [
         a("div", "settings-toggle-row", [V]),
         L,
+        acidConcBlock,
         M
           ? a(
               "p",

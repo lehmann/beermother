@@ -1849,3 +1849,20 @@ select {
 .drive-sync-row .drive-sync-status {
   margin: 0;
 }
+.settings-acid-conc {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.settings-acid-conc .field-label {
+  flex: none;
+}
+.settings-acid-input {
+  width: 80px;
+  text-align: right;
+}
+.settings-acid-unit {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}

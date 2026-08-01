@@ -53,12 +53,14 @@ import {
   concludeCurrentBrew as Ht,
   loadPhMode as ie,
   loadPhAcid as se,
+  loadPhAcidType,
+  loadPhAcidConcentration as loadPhAcidConc,
   loadPhMemory as Ue,
   savePhMemory as Ut,
 } from "./state.js";
 import {
   PH_TARGETS as je,
-  PH_ACIDS as jt,
+  PH_ACID_TYPES as jt,
   PH_STAGE_TITLES as Kt,
   phDoseSuggestion as Yt,
   phSlopeFromReadings as Ke,
@@ -1097,8 +1099,11 @@ const qn = {
   },
   In = (e) => Kt[e] || e;
 function Wn() {
-  const e = jt.find((t) => t.id === se());
-  return e ? A(e.label).toLowerCase() : n("\xE1cido");
+  const e = loadPhAcidType(),
+    t = jt.find((o) => o.type === e);
+  if (!t) return n("\xE1cido");
+  const o = Math.round(loadPhAcidConc(e) * 10) / 10;
+  return `${A(t.label).toLowerCase()} ${o}%`;
 }
 function Z(e, t) {
   const o = h(e.props.mashWaterUsedL, e.volumes.mashWater);
@@ -1986,6 +1991,7 @@ export function buildShoppingList(e, t = {}) {
       CaCl2: n("Cloreto de c\xE1lcio (CaCl2)"),
       CaSO4: n("Sulfato de c\xE1lcio (CaSO4)"),
       MgSO4: n("Sulfato de magn\xE9sio (MgSO4)"),
+      NaCl: n("Cloreto de s\xF3dio (NaCl)"),
     },
     C = Ie(e.props, e.volumes)
       .filter((v) => h(v.totalG) > 0)
