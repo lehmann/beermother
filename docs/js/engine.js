@@ -342,7 +342,9 @@ export function emptyWaterSalts() {
 }
 export function saltFormulaFromName(t) {
   const e = String(t || "").toLowerCase();
-  return /nacl/.test(e) || e.includes("sodium chloride") || e.includes("table salt")
+  return /nacl/.test(e) ||
+    e.includes("sodium chloride") ||
+    e.includes("table salt")
     ? "NaCl"
     : /cacl/.test(e) || e.includes("calcium chloride")
       ? "CaCl2"
@@ -423,6 +425,126 @@ export function waterProfileSummary(t = {}) {
   return WATER_IONS.map(
     (e) => `${e.plainLabel} ${formatIonPpm(t.adjusted?.[e.key])}`,
   ).join(" \xB7 ");
+}
+export const MALT_PH_PROFILES = {
+    base: { distilledPh: 5.75, bufferMEqPerKg: 40 },
+    munich: { distilledPh: 5.55, bufferMEqPerKg: 45 },
+    trigo: { distilledPh: 5.95, bufferMEqPerKg: 30 },
+    crystal: { distilledPh: 5.2, bufferMEqPerKg: 55 },
+    torrado: { distilledPh: 4.65, bufferMEqPerKg: 65 },
+    acidulado: { distilledPh: 3.45, bufferMEqPerKg: 40 },
+  },
+  ACID_PROPERTIES = {
+    latico: {
+      equivalentWeightG: 90.08,
+      densityBase: 0.986,
+      densitySlope: 0.0025,
+    },
+    fosforico: {
+      equivalentWeightG: 98,
+      densityBase: 0.965,
+      densitySlope: 0.00853,
+    },
+  },
+  DEFAULT_MASH_PH_TARGET = 5.4,
+  ALKALINITY_DAMPING = 0.55;
+export function classifyMaltForPh(name, colorLovibond) {
+  const label = String(name || "").toLowerCase(),
+    lov = n(colorLovibond);
+  return /acidul|sauer|s\xE4ure|acid malt/.test(label)
+    ? "acidulado"
+    : /crystal|cristal|caramel|caramelo|\bcara|carared|caramunich|carahell/.test(
+          label,
+        )
+      ? "crystal"
+      : /chocolate|black|roast|torrad|preto|caf\xE9|coffee|carafa|patent/.test(
+            label,
+          ) || lov > 110
+        ? "torrado"
+        : /wheat|trigo|\boat|aveia|\brye|centeio/.test(label)
+          ? "trigo"
+          : /munich|munique|vienna|viena|melano/.test(label) ||
+              (lov >= 3.5 && lov <= 12)
+            ? "munich"
+            : /pilsen|pale|maris|2-row|two-row|pilsner|base/.test(label) ||
+                lov < 3.5
+              ? "base"
+              : null;
+}
+function maltPhProfile(malt) {
+  const category = classifyMaltForPh(malt.name, malt.colorLovibond);
+  if (category && MALT_PH_PROFILES[category]) return MALT_PH_PROFILES[category];
+  const lov = n(malt.colorLovibond);
+  return {
+    distilledPh: Math.max(4.3, Math.min(5.8, 5.75 - 0.01 * lov)),
+    bufferMEqPerKg: Math.max(30, Math.min(70, 35 + 0.3 * lov)),
+  };
+}
+export function acidNormality(acidType, concentrationPct) {
+  const props = ACID_PROPERTIES[acidType] || ACID_PROPERTIES.latico,
+    conc = Math.max(0, n(concentrationPct)),
+    density = props.densityBase + props.densitySlope * conc;
+  return {
+    mEqPerMl: ((conc / 100) * density * 1e3) / props.equivalentWeightG,
+    densityGPerMl: density,
+  };
+}
+export function predictMashPh({
+  fermentables = [],
+  ionProfile = {},
+  mashWaterL = 0,
+  grainKg = 0,
+} = {}) {
+  const grist = (Array.isArray(fermentables) ? fermentables : []).filter(
+      (m) => n(m.amountKg) > 0,
+    ),
+    totalKg = grist.reduce((sum, m) => sum + n(m.amountKg), 0);
+  if (totalKg <= 0) return null;
+  let weightedPh = 0,
+    bufferTotal = 0;
+  grist.forEach((m) => {
+    const profile = maltPhProfile(m),
+      kg = n(m.amountKg);
+    weightedPh += profile.distilledPh * kg;
+    bufferTotal += profile.bufferMEqPerKg * kg;
+  });
+  const distilledPh = weightedPh / totalKg,
+    alkalinityCaCO3 = n(ionProfile.bicarbonatePpm) * 0.8197,
+    residualAlkalinity =
+      alkalinityCaCO3 -
+      (n(ionProfile.calciumPpm) / 1.4 + n(ionProfile.magnesiumPpm) / 1.7),
+    water = Math.max(0, n(mashWaterL)),
+    alkalinityMEq = (residualAlkalinity / 50) * water,
+    deltaPh =
+      bufferTotal > 0 ? (ALKALINITY_DAMPING * alkalinityMEq) / bufferTotal : 0,
+    predictedPh = Math.max(4.5, Math.min(7, distilledPh + deltaPh));
+  return {
+    distilledPh: round(distilledPh, 2),
+    residualAlkalinity: round(residualAlkalinity, 1),
+    predictedPh: round(predictedPh, 2),
+    bufferTotal: round(bufferTotal, 1),
+    grainKg: round(n(grainKg) || totalKg, 2),
+  };
+}
+export function acidDoseForTarget({
+  predictedPh,
+  targetPh = DEFAULT_MASH_PH_TARGET,
+  bufferTotal = 0,
+  acidType = "latico",
+  concentrationPct = 0,
+} = {}) {
+  const gap = n(predictedPh) - n(targetPh, DEFAULT_MASH_PH_TARGET),
+    buffer = n(bufferTotal);
+  if (!(gap > 0) || buffer <= 0) return { doseMl: 0, doseG: 0, mEq: 0 };
+  const mEq = buffer * gap,
+    { mEqPerMl, densityGPerMl } = acidNormality(acidType, concentrationPct);
+  if (!(mEqPerMl > 0)) return { doseMl: 0, doseG: 0, mEq: round(mEq, 1) };
+  const doseMl = mEq / mEqPerMl;
+  return {
+    doseMl: round(Math.max(0, doseMl), 1),
+    doseG: round(Math.max(0, doseMl * densityGPerMl), 1),
+    mEq: round(mEq, 1),
+  };
 }
 export function createRecipeSession(t, e = "", r = {}) {
   const o = clonePlain(t);
@@ -845,16 +967,14 @@ export function additionOrder(t = {}) {
 export function boilAdditionRows(t, e, r, o) {
   const a = n(o, 1);
   return [
-    ...e
-      .filter(isBoilAddition)
-      .map((i) => ({
-        ...i,
-        kind: "hop",
-        type: "L\xFApulo",
-        amount: i.amountG,
-        unit: "g",
-        order: additionOrder(i),
-      })),
+    ...e.filter(isBoilAddition).map((i) => ({
+      ...i,
+      kind: "hop",
+      type: "L\xFApulo",
+      amount: i.amountG,
+      unit: "g",
+      order: additionOrder(i),
+    })),
     ...t
       .filter((i) => i.use === "Fervura")
       .map((i) => ({
@@ -868,14 +988,12 @@ export function boilAdditionRows(t, e, r, o) {
         unit: "kg",
         order: additionOrder({ use: "Fervura", timeMin: i.timeMin }),
       })),
-    ...(r || [])
-      .filter(isBoilAddition)
-      .map((i) => ({
-        ...i,
-        kind: "misc",
-        amount: scaleIngredientAmount(i.amount, i.unit, a),
-        order: additionOrder(i),
-      })),
+    ...(r || []).filter(isBoilAddition).map((i) => ({
+      ...i,
+      kind: "misc",
+      amount: scaleIngredientAmount(i.amount, i.unit, a),
+      order: additionOrder(i),
+    })),
   ].sort((i, s) => s.order - i.order);
 }
 export function mashAdditionRows(t, e) {

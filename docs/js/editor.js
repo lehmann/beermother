@@ -10,6 +10,8 @@ import {
   calculate as Te,
   createRecipeSession as pa,
   pickParameterValue as Ne,
+  acidDoseForTarget,
+  DEFAULT_MASH_PH_TARGET,
 } from "./engine.js";
 import {
   app as c,
@@ -5095,7 +5097,47 @@ function bo(e, o) {
         ]),
       ),
     ),
+    ...Do(o),
   ]);
+}
+function Do(o) {
+  const p = o.mashPh;
+  if (!p) return [];
+  const acidType = loadPhAcidType(),
+    acidConc = loadPhAcidConc(acidType),
+    acidDef = ht.find((k) => k.type === acidType),
+    dose = acidDoseForTarget({
+      predictedPh: p.predictedPh,
+      targetPh: DEFAULT_MASH_PH_TARGET,
+      bufferTotal: p.bufferTotal,
+      acidType,
+      concentrationPct: acidConc,
+    }),
+    acidLabel = `${t(acidDef ? acidDef.short : "\xC1cido")} ${Math.round(acidConc * 10) / 10}%`,
+    doseText =
+      dose.doseMl > 0
+        ? t("{acid} \xB7 {ml} mL", { acid: acidLabel, ml: P(dose.doseMl, 1) })
+        : t("sem ajuste necess\xE1rio");
+  return [
+    a("div", "water-block-title", [
+      a("b", "", t("Previs\xE3o de pH")),
+      a("span", "muted", t("estimativa \xB7 a leitura refina")),
+    ]),
+    a("div", "editor-water-grid result", [
+      a("div", "editor-water-field readonly", [
+        a("span", "", t("pH de mostura")),
+        a("b", "num", P(p.predictedPh, 2)),
+      ]),
+      a("div", "editor-water-field readonly", [
+        a("span", "", t("alvo")),
+        a("b", "num", P(DEFAULT_MASH_PH_TARGET, 1)),
+      ]),
+    ]),
+    a("div", "editor-water-field readonly wide", [
+      a("span", "", t("Dose de \xE1cido estimada")),
+      a("b", "num", doseText),
+    ]),
+  ];
 }
 function ho(e) {
   const o = (e.miscs || []).map((n, r) =>

@@ -21,6 +21,7 @@ import {
   abvBrewfather as Pt,
   pickParameterValue as w,
   finalParameterCode as gt,
+  predictMashPh as predMashPh,
 } from "./engine.js";
 import { findStyle as bt, FERMENTATION_PRESETS as Lt } from "./library.js";
 import { t as N } from "./i18n.js";
@@ -443,6 +444,15 @@ export function computeTargets(t) {
       bg: u(k, 4),
       ebc: u(z, 1),
       ions: F,
+      mashPh: predMashPh({
+        fermentables: i.filter((h) => h.use === "Mostura"),
+        ionProfile: F,
+        mashWaterL: Math.max(
+          0.1,
+          e(t.waterToGrainRatioLkg, f.waterToGrainRatioLkg) * q,
+        ),
+        grainKg: q,
+      }),
       grainKg: u(q, 2),
       totalWaterL: u(Q, 1),
       mashAdjust: A,
