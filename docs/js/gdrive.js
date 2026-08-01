@@ -80,15 +80,6 @@ function buildTokenClient(prompt) {
   });
 }
 
-function requestTokenSilently() {
-  return new Promise((resolve, reject) => {
-    _pendingResolve = resolve;
-    _pendingReject = reject;
-    if (!_tokenClient) _tokenClient = buildTokenClient("");
-    _tokenClient.requestAccessToken({});
-  });
-}
-
 function requestTokenInteractive() {
   return new Promise((resolve, reject) => {
     _pendingResolve = resolve;
@@ -121,13 +112,8 @@ export async function requestDriveAccess() {
   // 2. Persisted token in localStorage still valid.
   if (loadPersistedToken()) return _token;
 
-  // 3. Silent refresh — works if the user already consented this browser
-  //    (Google session cookie present). Falls back to interactive on error.
-  try {
-    return await requestTokenSilently();
-  } catch {
-    return await requestTokenInteractive();
-  }
+  // 3. No valid token — ask the user to authenticate interactively.
+  return await requestTokenInteractive();
 }
 
 async function authHeaders() {
@@ -166,7 +152,7 @@ async function findOrCreateFolder(name) {
   return folder.id;
 }
 
-export async function saveRecipeToDrive(xmlContent, fileName) {
+async function doSave(xmlContent, fileName) {
   const folderName = loadDriveFolderName();
   const folderId = await findOrCreateFolder(folderName);
   const h = await authHeaders();
@@ -203,10 +189,13 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
   });
 
   if (!uploadRes.ok) {
-    if (uploadRes.status === 403) revokeLocalToken();
     const err = await uploadRes.json().catch(() => ({}));
     throw new Error(err.error?.message || t("Erro ao salvar no Google Drive."));
   }
 
   return uploadRes.json();
+}
+
+export async function saveRecipeToDrive(xmlContent, fileName) {
+  return doSave(xmlContent, fileName);
 }
