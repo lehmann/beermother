@@ -10,6 +10,11 @@ import {
   STYLE_OPTIONS,
 } from "./ingredient-db.js";
 import { CONTROLS } from "./controls.js";
+import {
+  gravityEstimate,
+  calculateIbu,
+  abvBrewfather,
+} from "../engine.js";
 
 // ─── OLS regression coefficients per control ────────────────────────────────
 // Features: [intercept, og_pts, srm, ibu, abv, mash_temp, is_lager,
@@ -1110,24 +1115,40 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
   const batchVolumeL = draft.batchVolumeL || 20;
   const boilTimeMin = draft.boilTimeMin || 60;
   const whirlpoolTempC = draft.whirlpoolTemperatureC || 90;
-  const efficiencyPct = draft.efficiencyPct || 75;
+  const efficiencyPct =
+    draft.mashEfficiencyPct || draft.efficiencyPct || 75;
 
-  // ── Derived context ──────────────────────────────────────────────────────
-  const ogPoints = draft.ogPoints || (draft.og ? (draft.og - 1) * 1000 : 50);
-  const srmRaw = draft.colorEbc ? draft.colorEbc / 1.97 : draft.colorSrm || 5;
-  const ibu = draft.ibu || 20;
-  const abv = draft.abv || ogPoints * 0.131;
-  const fg =
-    draft.fg ||
-    1 +
-      (ogPoints - ogPoints * (draft.efficiencyPct || 75) * 0.01 * 0.01) / 1000;
+  // ── Derived context — use engine.js estimators for accurate values ─────────
+  const gravProps = { targetVolumeL: batchVolumeL, mashEfficiencyPct: efficiencyPct };
+  const gravResult = gravityEstimate(fermentables, gravProps);
+  const ogEst = gravResult.og || 1.05;
+  const ogPoints = (ogEst - 1) * 1000;
+
+  // FG from first yeast attenuation, else 75% apparent
+  const attenPct = (yeasts[0] || {}).attenuationPct || 75;
+  const fg = 1 + ((ogEst - 1) * (1 - attenPct / 100));
+
+  const abv = abvBrewfather(ogEst, fg);
+
+  // IBU via Tinseth with scaled hops
+  const preBoilSg = 1 + (ogPoints * 1.1) / 1000;
+  const ibu = calculateIbu(hops, ogEst, preBoilSg, batchVolumeL) || 0;
+
+  // SRM via Morey (draft fermentables use colorEbc; convert to Lovibond)
+  const gallons = Math.max(0.1, batchVolumeL / 3.78541);
+  const mcu =
+    fermentables.reduce((s, f) => {
+      const lov = f.colorLovibond ?? (f.colorEbc ? f.colorEbc / 1.97 : 0);
+      return s + (f.amountKg || 0) * 2.20462 * lov;
+    }, 0) / gallons;
+  const srmRaw = mcu > 0 ? 1.4922 * Math.pow(mcu, 0.6859) : 5;
 
   const context = {
     ogPlato: ogPoints / 4,
     srm: srmRaw,
     ibu,
     ogPoints,
-    fg: draft.fg || fg,
+    fg,
     abv,
     pitchRate:
       draft.pitchRate ||
