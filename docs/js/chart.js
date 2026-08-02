@@ -1,4 +1,4 @@
-import { n as s, chartTicks as y, dayTicks as j } from "./engine.js";
+import { toNumber as s, chartTicks as y, dayTicks as j } from "./engine.js";
 import { t as T, fmt as d } from "./i18n.js";
 export function svgNumber(t) {
   return Number(t)

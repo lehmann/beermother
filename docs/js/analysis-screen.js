@@ -1,6 +1,6 @@
 import { el as e, button as h, card as x } from "./ui.js";
 import { t, tEngine as E } from "./i18n.js";
-import { n as N } from "./engine.js";
+import { toNumber as N } from "./engine.js";
 import {
   CONTROLS as R,
   SECTIONS as z,

@@ -1,4 +1,4 @@
-import { n as De, calculate as _ } from "./engine.js";
+import { toNumber as De, calculate as _ } from "./engine.js";
 import {
   app as t,
   PAGE_PARAMS as A,
