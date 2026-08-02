@@ -1119,18 +1119,27 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
     draft.mashEfficiencyPct || draft.efficiencyPct || 75;
 
   // ── Derived context — use engine.js estimators for accurate values ─────────
+  // draft.fermentables use `when` ("Fervura"/"Fermentação") not `use` ("Mostura").
+  // gravityEstimate expects use="Mostura" to apply mash efficiency.
+  // draft also lacks `ppg`; derive it from yieldPct × PPG_100 (46 pts/lb/gal at 100%).
+  const PPG_100 = 46;
+  const fermsForGravity = fermentables.map((f) => ({
+    ...f,
+    use: f.when === "Fermentação" ? "Fermentação" : "Mostura",
+    ppg: ((f.yieldPct ?? 78) / 100) * PPG_100,
+  }));
   const gravProps = { targetVolumeL: batchVolumeL, mashEfficiencyPct: efficiencyPct };
-  const gravResult = gravityEstimate(fermentables, gravProps);
+  const gravResult = gravityEstimate(fermsForGravity, gravProps);
   const ogEst = gravResult.og || 1.05;
   const ogPoints = (ogEst - 1) * 1000;
 
   // FG from first yeast attenuation, else 75% apparent
   const attenPct = (yeasts[0] || {}).attenuationPct || 75;
-  const fg = 1 + ((ogEst - 1) * (1 - attenPct / 100));
+  const fg = 1 + (ogEst - 1) * (1 - attenPct / 100);
 
   const abv = abvBrewfather(ogEst, fg);
 
-  // IBU via Tinseth with scaled hops
+  // IBU via Tinseth (hops in draft already have timeMin and alphaAcidPct)
   const preBoilSg = 1 + (ogPoints * 1.1) / 1000;
   const ibu = calculateIbu(hops, ogEst, preBoilSg, batchVolumeL) || 0;
 
