@@ -12,6 +12,7 @@ import {
 import { CONTROLS } from "./controls.js";
 import {
   gravityEstimate,
+  hotPostBoilVolume,
   calculateIbu,
   abvBrewfather,
 } from "../engine.js";
@@ -1258,14 +1259,17 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
   // ── Derived context — use engine.js estimators for accurate values ─────────
   // draft.fermentables use `when` ("Fervura"/"Fermentação") not `use` ("Mostura").
   // gravityEstimate expects use="Mostura" to apply mash efficiency.
-  // draft also lacks `ppg`; derive it from yieldPct × PPG_100 (46 pts/lb/gal at 100%).
-  const PPG_100 = 46;
+  // draft lacks `ppg`; omit it so gravityEstimate uses its own default of 36,
+  // matching editor.js which also has no ppg field on draft fermentables.
+  // OG denominator is hotPostBoilVolume (= (batch + trub) / 0.96) to match GT.
+  const trubPct = draft.trubLossPct || 0.15;
+  const trubL = batchVolumeL * trubPct;
+  const targetVolumeL = hotPostBoilVolume(batchVolumeL, trubL);
   const fermsForGravity = fermentables.map((f) => ({
     ...f,
     use: f.when === "Fermentação" ? "Fermentação" : "Mostura",
-    ppg: ((f.yieldPct ?? 78) / 100) * PPG_100,
   }));
-  const gravProps = { targetVolumeL: batchVolumeL, mashEfficiencyPct: efficiencyPct };
+  const gravProps = { targetVolumeL, mashEfficiencyPct: efficiencyPct };
   const gravResult = gravityEstimate(fermsForGravity, gravProps);
   const ogEst = gravResult.og || 1.05;
   const ogPoints = (ogEst - 1) * 1000;
