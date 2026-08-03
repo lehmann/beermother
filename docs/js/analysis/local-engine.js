@@ -312,10 +312,34 @@ function classifyFermentable(ferm) {
   return "base";
 }
 
-// Build stochastic distribution from a continuous value
-function valueToDistribution(value, maxVal, stdFactor = 0.25) {
+// Per-control sigma = median Gaussian width of GT distributions across 49 response.json pairs.
+// Controls with median=0 have near-spike distributions in GT (>95% mass on the mode);
+// floor at 0.1 to keep valueToDistribution numerically stable.
+const CTRL_SIGMA = {
+  maltAroma: 0.207,
+  hopAroma: 0.1,
+  fermentationAroma: 0.456,
+  color: 0.307,
+  clarity: 0.1,
+  foamFormation: 0.1,
+  retention: 0.157,
+  maltFlavor: 0.346,
+  hopFlavor: 0.1,
+  fermentationFlavor: 0.456,
+  bitterness: 0.724,
+  balance: 0.561,
+  finish: 0.467,
+  body: 0.504,
+  warming: 0.1,
+  creaminess: 0.247,
+  astringency: 0.1,
+};
+
+// Build stochastic distribution from a continuous value.
+// sigma is the absolute Gaussian width; defaults to 0.5 if key not found.
+function valueToDistribution(value, maxVal, sigma = 0.5) {
   const bins = maxVal + 1;
-  const std = Math.max(0.3, maxVal * stdFactor);
+  const std = Math.max(0.1, sigma);
   const dist = new Array(bins).fill(0);
   let total = 0;
   for (let i = 0; i < bins; i++) {
@@ -358,7 +382,7 @@ function distributionPercentile(dist, p) {
 // Compute stochastic control entry from regression value
 function makeControl(key, rawValue, section, maxVal, labels) {
   const clamped = clamp(rawValue, 0, maxVal);
-  const dist = valueToDistribution(clamped, maxVal);
+  const dist = valueToDistribution(clamped, maxVal, CTRL_SIGMA[key]);
   const mode = distributionMode(dist);
   const mean = distributionMean(dist, maxVal);
   const p10 = distributionPercentile(dist, 0.1);
@@ -1175,7 +1199,7 @@ function buildComparisons(draft, ctx, baseControlDists, seed) {
 
         const baseVal = distributionMean(baseDist, ctrl.max);
         const newVal = clamp(baseVal + valueDelta, 0, ctrl.max);
-        const newDist = valueToDistribution(newVal, ctrl.max);
+        const newDist = valueToDistribution(newVal, ctrl.max, CTRL_SIGMA[ctrl.key]);
         const distDelta = baseDist.map(
           (v, i) => Math.round((newDist[i] - v) * 1000) / 1000,
         );
