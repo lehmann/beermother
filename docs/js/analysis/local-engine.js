@@ -19,72 +19,75 @@ import {
 // ─── OLS regression coefficients per control ────────────────────────────────
 // Features: [intercept, og_pts, srm, ibu, abv, mash_temp, is_lager,
 //             crystal_frac, roast_frac, wheat_frac, late_frac, wp_frac, dry_frac]
+// Recalibrated from 48 GT pairs (OLS, full feature set including crystal/roast/wheat fracs)
 const CTRL_COEFFS = {
   maltAroma: [
-    -2.371, -0.0143, 0.1292, 0.0058, 0.2758, 0.0344, 0.3718, 0, 0, 0, 0.3214, 0,
-    -1.4963,
+    -2.6128, -0.0173, 0.1225, 0.0235, 0.1412, 0.0441, -0.0099, 7.1051,
+    -21.7473, 0.44, -0.1628, 0.6122, -1.6873,
   ],
   hopAroma: [
-    2.834, -0.0133, -0.0176, 0.0226, 0.0093, -0.0293, 0.7518, 0, 0, 0, 0.5651,
-    0, 7.7823,
+    3.4836, -0.0115, -0.023, 0.0122, 0.0641, -0.0306, 0.6218, -3.9947,
+    -1.8881, -1.1701, 0.1481, 0.0983, 7.9736,
   ],
   fermentationAroma: [
-    6.584, -0.0359, 0, -0.011, 0.4248, -0.0559, -1.2767, 0, 0, 0, -0.4442, 0,
-    0.6188,
+    7.4601, -0.0441, 0.0189, 0.0131, 0.3579, -0.0718, -1.069, -5.3253, 0.8175,
+    1.9014, -0.3775, 0.6129, 0.1396,
   ],
   color: [
-    -0.705, 0, 0.192, 0.0059, 0.0227, 0, 0.169, 0, 0, 0, 0.1159, 0, -0.3344,
+    -0.7431, -0.008, 0.1297, 0.0203, 0.0375, 0.0068, 0.0488, 2.9123, -0.8155,
+    0.263, 0.0086, 0.0037, -0.4035,
   ],
   clarity: [
-    1.04, 0, 0.0437, -0.0079, 0.0405, -0.013, -0.2927, 0, 0, 0, -0.3725, 0,
-    -0.2826,
+    0.7521, -0.001, 0.0235, 0.0089, 0.0208, -0.0122, -0.1444, -3.5056, 4.8113,
+    1.3729, -0.1426, -0.2785, -0.2636,
   ],
   foamFormation: [
-    2.188, -0.0084, -0.0246, -0.0074, -0.041, 0.027, -0.0664, 0, 0, 0, -0.24, 0,
-    1.6759,
+    2.4604, -0.0065, -0.0204, 0.0159, -0.0011, 0.0083, 0.1002, 0.7364, 3.1572,
+    2.3945, 0.1828, 0.2442, 0.6286,
   ],
   retention: [
-    2.834, -0.0092, -0.0443, 0, -0.0188, 0.0119, -0.4225, 0, 0, 0, -0.9499, 0,
-    0.6591,
+    2.7683, -0.0111, -0.0265, 0.0124, 0.0283, -0.0006, 0.047, -0.1291, 8.6717,
+    2.8597, 0.0601, 0.1564, 0.4711,
   ],
   maltFlavor: [
-    -1.665, 0.01, 0.1357, 0.017, 0.0709, 0.0179, 0.2508, 0, 0, 0, 0.129, 0,
-    -2.63,
+    -3.11, -0.0167, 0.138, 0.0282, 0.1358, 0.047, -0.0272, 8.2751, -24.4745,
+    0.5395, -0.1906, 0.7497, -2.0478,
   ],
   hopFlavor: [
-    3.543, -0.0135, -0.0135, 0.0227, -0.0193, -0.0375, 0.7578, 0, 0, 0, 0.4821,
-    0, 7.881,
+    3.452, -0.0105, -0.0189, 0.0104, 0.0558, -0.032, 0.5721, -3.7284, -1.9212,
+    -1.021, 0.1989, 0.1314, 8.2261,
   ],
   fermentationFlavor: [
-    6.584, -0.0359, 0, -0.011, 0.4248, -0.0559, -1.2767, 0, 0, 0, -0.4442, 0,
-    0.6188,
+    7.4601, -0.0441, 0.0189, 0.0131, 0.3579, -0.0718, -1.069, -5.3253, 0.8175,
+    1.9014, -0.3775, 0.6129, 0.1396,
   ],
   bitterness: [
-    1.636, -0.0783, 0.0327, 0.1379, 0.0502, 0.0058, -0.2119, 0, 0, 0, 0.1932, 0,
-    -1.5362,
+    1.8824, 0.0029, -0.0351, 0.095, -0.1155, -0.0156, -0.073, 5.1227, 11.582,
+    -1.7658, 0.7725, 0.7619, 1.4294,
   ],
   balance: [
-    -1.38, 0.005, 0.0465, -0.0827, 0.3229, 0.0461, 0.1835, 0, 0, 0, 0.1913, 0,
-    0.7919,
+    0.7495, -0.0021, 0.05, -0.0532, 0.0565, 0.0218, 0.0861, 1.5928, 3.4795,
+    1.8837, -0.1483, -0.242, -1.1084,
   ],
   finish: [
-    -1.419, 0.1739, 0.0094, 0.0057, -1.3705, 0.0147, 0.2271, 0, 0, 0, -0.0445,
-    0, -0.5882,
+    -4.3194, 0.1106, 0.0253, 0.038, -0.7685, 0.0393, 0.3294, -0.0667, 2.6066,
+    1.4963, 0.2104, 0.2282, -1.2877,
   ],
   body: [
-    -0.43, 0.1571, 0.0408, 0.0186, -1.2659, 0.0092, -0.319, 0, 0, 0, -0.5005, 0,
-    -1.7033,
+    -4.9272, 0.1147, 0.0308, 0.0512, -0.7726, 0.0471, 0.2485, 0.9917, 10.858,
+    2.1982, 0.1157, 0.0862, -2.1534,
   ],
   warming: [
-    -0.102, 0.0222, -0.0064, 0, 0.2351, -0.0113, -0.1736, 0, 0, 0, 0.0495, 0,
-    0.3839,
+    -1.8343, 0.0204, 0.0362, 0.0249, 0.0617, 0.0069, -0.1341, -3.4831,
+    -11.7141, 0.4556, -0.0876, -0.3632, -0.5708,
   ],
   creaminess: [
-    1.12, 0.0359, 0.0298, -0.0135, -0.2364, 0, -0.3295, 0, 0, 0, -0.4453, 0,
-    1.107,
+    -0.1259, 0.0575, 0.0042, 0.0235, -0.3639, -0.0066, 0.0655, -2.738, 11.3408,
+    2.311, -0.0921, -0.094, -0.6968,
   ],
   astringency: [
-    -0.006, 0, 0.006, 0, 0.0258, 0, -0.034, 0, 0, 0, -0.0204, 0, 0.1602,
+    -0.0428, -0.0025, -0.0034, -0.005, 0.0149, 0.0044, -0.0576, 0.3308, 4.9759,
+    -0.26, -0.1872, -0.092, 0.0946,
   ],
 };
 
@@ -815,7 +818,53 @@ function buildFermentStep(yeastProfile, fermTemp, ogPoints, pitchRate) {
 
 // ─── Descriptor builder ──────────────────────────────────────────────────────
 
-function buildDescriptors(fermentables, hops, distribution, batchVolumeL) {
+// Tag → descriptor mapping for yeast-derived fermentation aromas
+const YEAST_TAG_DESCRIPTORS = {
+  "levedura-ester-banana": {
+    key: "frutado",
+    label: "Frutado",
+    group: "Éster",
+    rawMode: 2,
+  },
+  "aroma-emergente-condimentado": {
+    key: "condimentado-ferm",
+    label: "Condimentado",
+    group: "Fenólico",
+    rawMode: 1.5,
+  },
+  "aroma-emergente-herbal": {
+    key: "herbal-ferm",
+    label: "Herbal",
+    group: "Éster",
+    rawMode: 1.5,
+  },
+  "aroma-emergente-citrico": {
+    key: "citrico-ferm",
+    label: "Cítrico",
+    group: "Éster",
+    rawMode: 2,
+  },
+  "aroma-emergente-melao": {
+    key: "melao-ferm",
+    label: "Melão",
+    group: "Éster",
+    rawMode: 1.5,
+  },
+  "pof-4vg": {
+    key: "cravo-ferm",
+    label: "Cravo",
+    group: "Fenólico",
+    rawMode: 2,
+  },
+  "sta1-superatenua": {
+    key: "fenolico-ferm",
+    label: "Fenólico",
+    group: "Fenólico",
+    rawMode: 1.5,
+  },
+};
+
+function buildDescriptors(fermentables, hops, distribution, batchVolumeL, yeastProfile) {
   const seen = new Map(); // key → {entry, totalFrac, sources}
   const totalKg = fermentables.reduce((s, f) => s + (f.amountKg || 0), 0);
 
@@ -823,7 +872,7 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL) {
     if (f.use && f.use !== "Mostura") continue;
     const descs = MALT_DESCRIPTORS[f.name];
     if (!descs) continue;
-    const frac = totalKg > 0 ? f.amountKg / totalKg : 0;
+    const frac = totalKg > 0 ? (f.amountKg || 0) / totalKg : 0;
     for (const d of descs) {
       const k = `malte:${d.key}`;
       if (!seen.has(k)) {
@@ -841,21 +890,25 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL) {
     }
   }
 
-  // Hop descriptors — only visible hops (not 100% bittering kettle)
-  const aromaHops = hops.filter((h) => {
+  // Hop descriptors — all hops weighted by oil retention (kettle hops retain less)
+  const totalHopG = hops.reduce((s, h) => s + (h.amountG || h.amount || 0), 0);
+  let weightedHopTotal = 0;
+  const hopWeights = hops.map((h) => {
     const use = (h.use || "").toLowerCase();
     const timeMin = h.timeMin ?? h.time ?? 60;
-    return /whirl|flame|hopback|hopstand|dry|seco/.test(use) || timeMin <= 15;
+    const isWhirlpool = /whirl|flame|hopback|hopstand/.test(use);
+    const isDry = /dry|seco/.test(use);
+    const retentionPct = isDry ? 100 : hopOilRetentionPct(timeMin, isWhirlpool);
+    const w = (h.amountG || h.amount || 0) * retentionPct;
+    weightedHopTotal += w;
+    return w;
   });
-  const totalAromaG = aromaHops.reduce(
-    (s, h) => s + (h.amountG || h.amount || 0),
-    0,
-  );
-  for (const h of aromaHops) {
+  for (let i = 0; i < hops.length; i++) {
+    const h = hops[i];
     const descs = HOP_DESCRIPTORS[h.name];
     if (!descs) continue;
-    const frac =
-      totalAromaG > 0 ? (h.amountG || h.amount || 0) / totalAromaG : 0;
+    const frac = weightedHopTotal > 0 ? hopWeights[i] / weightedHopTotal : 0;
+    if (frac < 0.01) continue;
     for (const d of descs) {
       const k = `lupulo:${d.key}`;
       if (!seen.has(k)) {
@@ -873,13 +926,46 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL) {
     }
   }
 
+  // Yeast-derived fermentation descriptors
+  if (yeastProfile && yeastProfile.tags) {
+    for (const tag of yeastProfile.tags) {
+      const desc = YEAST_TAG_DESCRIPTORS[tag];
+      if (!desc) continue;
+      const k = `ferm:${desc.key}`;
+      if (!seen.has(k)) {
+        seen.set(k, {
+          key: desc.key,
+          label: desc.label,
+          group: desc.group,
+          familyId: "ferm",
+          family: "Fermentação",
+          totalFrac: 1,
+          sources: [yeastProfile._name || "levedura"],
+          _rawMode: desc.rawMode,
+        });
+      }
+    }
+  }
+
   const RUNS = 200;
   return [...seen.entries()]
-    .filter(([, e]) => e.totalFrac > 0.02)
+    .filter(([, e]) => e.totalFrac > 0.01)
     .sort(([, a], [, b]) => b.totalFrac - a.totalFrac)
     .map(([key, e]) => {
-      const strength = Math.min(1, e.totalFrac * 2);
-      const rawMode = clamp(strength * 5, 0, 5);
+      // rawMode: map totalFrac to perceptual intensity [1, 3]
+      // GT data shows malt descriptors cluster around mode=1 regardless of frac
+      // — base malt at 100% grist → mode≈1; special malts at 10-30% → mode≈1-2
+      let rawMode;
+      if (e.familyId === "ferm") {
+        rawMode = e._rawMode ?? 2;
+      } else if (e.familyId === "malte") {
+        // GT: malt descriptors average p50≈1.4 regardless of grist fraction
+        // log1p compression keeps base malt near 1.2–1.5, special malts up to 2.5
+        rawMode = clamp(0.6 + Math.log1p(e.totalFrac * 2) * 0.6, 0.5, 3);
+      } else {
+        // Lúpulo: GT avgP50≈1.3; oil-weighted frac ranges 0.01–1.0
+        rawMode = clamp(0.6 + Math.log1p(e.totalFrac * 3) * 0.5, 0.5, 2.5);
+      }
       const dist = valueToDistribution(rawMode, 5);
       const mode = distributionMode(dist);
       const p10 = distributionPercentile(dist, 0.1);
@@ -1170,6 +1256,20 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
   const mashFerms = fermentables.filter((f) => f.use === "Mostura" || !f.use);
   const totalKg = mashFerms.reduce((s, f) => s + (f.amountKg || 0), 0);
 
+  let crystalKg = 0,
+    roastKg = 0,
+    wheatKg = 0;
+  for (const f of mashFerms) {
+    const kg = f.amountKg || 0;
+    const fc = classifyFermentable(f);
+    if (fc === "crystal") crystalKg += kg;
+    else if (fc === "roast") roastKg += kg;
+    if (fc === "wheat") wheatKg += kg;
+  }
+  const crystalFrac = totalKg > 0 ? crystalKg / totalKg : 0;
+  const roastFrac = totalKg > 0 ? roastKg / totalKg : 0;
+  const wheatFrac = totalKg > 0 ? wheatKg / totalKg : 0;
+
   const totalHopG = hops.reduce((s, h) => s + (h.amountG || h.amount || 0), 0);
   let lateG = 0,
     wpG = 0,
@@ -1189,6 +1289,7 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
   const yname = (yeasts[0] || {}).name || "";
   if (/lager|bohemian|czech pil|fermolager|saflager|w3470|sy001/i.test(yname))
     isLager = 1;
+  const yeastProfileEarly = resolveYeastProfile(yname);
 
   const features = [
     1,
@@ -1205,9 +1306,9 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
         })()
       : 67,
     isLager,
-    0,
-    0,
-    0,
+    crystalFrac,
+    roastFrac,
+    wheatFrac,
     lateFrac,
     wpFrac,
     dryFrac,
@@ -1227,6 +1328,11 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
       rawValue = evalLinear(coeffs, features);
     } else {
       rawValue = ctrl.max / 2;
+    }
+    // astringency: OLS systematically outputs ~0.7 for clean recipes (GT=0 in 39/48)
+    // only flag when roasted malts are present (roastFrac > 0.05) or OLS > 0.8
+    if (ctrl.key === "astringency") {
+      rawValue = roastFrac > 0.05 ? rawValue : rawValue > 0.8 ? rawValue - 0.7 : 0;
     }
     const clamped = clamp(rawValue, 0, ctrl.max);
     const entry = makeControl(ctrl.key, clamped, ctrl.section, ctrl.max, []);
@@ -1254,6 +1360,7 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
     hops,
     baseControlDists,
     batchVolumeL,
+    yeastProfileEarly,
   );
 
   const notes = descriptors
@@ -1346,7 +1453,12 @@ export function runLocalAnalysis({ draft, seed = 1, styleSlug }) {
       controlsArr.map((c) => [
         c.key,
         {
-          value: distributionMean(c.distribution, c.max),
+          // astringency and clarity use mode (integer) to avoid gaussian tail bias
+          // for clean recipes where the true value is exactly 0
+          value:
+            c.key === "astringency" || c.key === "clarity"
+              ? c.mode
+              : distributionMean(c.distribution, c.max),
           section: c.section,
           max: c.max,
         },
