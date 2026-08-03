@@ -21,7 +21,7 @@
                 "yieldPct": 80,
                 "colorEbc": 1.2,
                 "amountKg": 1.35,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Chateau Special B",
@@ -29,7 +29,7 @@
                 "yieldPct": 77,
                 "colorEbc": 205,
                 "amountKg": 0.05,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Candi Sugar, Dark",
@@ -37,7 +37,7 @@
                 "yieldPct": 78.3,
                 "colorEbc": 371,
                 "amountKg": 0.04,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Brown Sugar, Light",
@@ -45,7 +45,7 @@
                 "yieldPct": 100,
                 "colorEbc": 9.4,
                 "amountKg": 0.035,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

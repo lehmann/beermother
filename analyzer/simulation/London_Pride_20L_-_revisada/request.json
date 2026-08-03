@@ -21,7 +21,7 @@
                 "yieldPct": 79,
                 "colorEbc": 2,
                 "amountKg": 3.75,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Light Crystal 150",
@@ -29,7 +29,7 @@
                 "yieldPct": 72,
                 "colorEbc": 115.4,
                 "amountKg": 0.29,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Chocolate Malt",
@@ -37,7 +37,7 @@
                 "yieldPct": 72,
                 "colorEbc": 715.8,
                 "amountKg": 0.04,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

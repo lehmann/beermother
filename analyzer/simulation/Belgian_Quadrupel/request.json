@@ -21,7 +21,7 @@
                 "yieldPct": 77.83,
                 "colorEbc": 0.9,
                 "amountKg": 1.495,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Candi Syrup, D-90",
@@ -29,7 +29,7 @@
                 "yieldPct": 90,
                 "colorEbc": 120.5,
                 "amountKg": 0.176,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Chateau Special B",
@@ -37,7 +37,7 @@
                 "yieldPct": 77,
                 "colorEbc": 205,
                 "amountKg": 0.176,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Heidelberg Wheat Malt",
@@ -45,7 +45,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0.9,
                 "amountKg": 0.11,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Chateau Biscuit",
@@ -53,7 +53,7 @@
                 "yieldPct": 77,
                 "colorEbc": 32.9,
                 "amountKg": 0.11,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Captains Classic - Cara Malt",
@@ -61,7 +61,7 @@
                 "yieldPct": 0,
                 "colorEbc": 19.1,
                 "amountKg": 0.066,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Cane (Beet) Sugar",
@@ -69,7 +69,7 @@
                 "yieldPct": 100,
                 "colorEbc": 0,
                 "amountKg": 0.044,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Chocolate",
@@ -77,7 +77,7 @@
                 "yieldPct": 75,
                 "colorEbc": 617.3,
                 "amountKg": 0.022,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

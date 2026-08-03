@@ -21,7 +21,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 6,
                 "amountKg": 3.5,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Malte Vienna",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.1,
                 "amountKg": 0.55,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Crystal",
@@ -37,7 +37,7 @@
                 "yieldPct": 69.57,
                 "colorEbc": 138.1,
                 "amountKg": 0.26,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Roasted Barley",
@@ -45,7 +45,7 @@
                 "yieldPct": 75,
                 "colorEbc": 1300.2,
                 "amountKg": 0.05,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

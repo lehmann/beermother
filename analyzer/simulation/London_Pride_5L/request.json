@@ -21,7 +21,7 @@
                 "yieldPct": 80,
                 "colorEbc": 2.5,
                 "amountKg": 0.76,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich III",
@@ -29,7 +29,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 94.6,
                 "amountKg": 0.06,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Chocolate",
@@ -37,7 +37,7 @@
                 "yieldPct": 75,
                 "colorEbc": 617.3,
                 "amountKg": 0.01,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

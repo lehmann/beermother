@@ -21,7 +21,7 @@
                 "yieldPct": 77.83,
                 "colorEbc": 0.9,
                 "amountKg": 0.664,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Melanoidin",
@@ -29,7 +29,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 39.1,
                 "amountKg": 0.045,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Munich",
@@ -37,7 +37,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.029,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich III",
@@ -45,7 +45,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 94.6,
                 "amountKg": 0.015,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

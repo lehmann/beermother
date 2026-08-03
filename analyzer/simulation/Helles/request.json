@@ -21,7 +21,7 @@
                 "yieldPct": 80,
                 "colorEbc": 1.2,
                 "amountKg": 0.856,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carahell",
@@ -29,7 +29,7 @@
                 "yieldPct": 75.74,
                 "colorEbc": 16.1,
                 "amountKg": 0.044,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

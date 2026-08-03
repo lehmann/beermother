@@ -21,7 +21,7 @@
                 "yieldPct": 80,
                 "colorEbc": 3,
                 "amountKg": 0.385,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Pilsen MD",
@@ -29,7 +29,7 @@
                 "yieldPct": 74.78,
                 "colorEbc": 0.6,
                 "amountKg": 0.239,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Candi Syrup, D-45",
@@ -37,7 +37,7 @@
                 "yieldPct": 69.57,
                 "colorEbc": 59.3,
                 "amountKg": 0.236,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Cara 20 MD",
@@ -45,7 +45,7 @@
                 "yieldPct": 67.88,
                 "colorEbc": 12.4,
                 "amountKg": 0.077,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Munich",
@@ -53,7 +53,7 @@
                 "yieldPct": 80,
                 "colorEbc": 6,
                 "amountKg": 0.077,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Cara 120 MD",
@@ -61,7 +61,7 @@
                 "yieldPct": 69.56,
                 "colorEbc": 81,
                 "amountKg": 0.0075,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

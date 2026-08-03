@@ -56,10 +56,10 @@ export const CALIBRATION_PROFILE = {
     NaCl: { sodiumPpm: 393.4, chloridePpm: 606.6 },
   },
   PROFILE_KEYS = Object.keys(DEFAULT_PROFILE);
-export function n(t, e = 0) {
-  if (t === "" || t === void 0 || t === null) return e;
-  const r = Number(t);
-  return Number.isFinite(r) ? r : e;
+export function toNumber(value, fallback = 0) {
+  if (value === "" || value === void 0 || value === null) return fallback;
+  const num = Number(value);
+  return Number.isFinite(num) ? num : fallback;
 }
 export function round(t, e = 2) {
   const r = Number(t);
@@ -89,13 +89,13 @@ export function sgToPlato(t) {
 export function platoToSg(t) {
   return round(1 + t / (258.6 - (t / 258.2) * 227.1), 3);
 }
-export function abvBrewfather(t, e) {
-  const r = n(t, 1),
-    o = n(e, 1),
-    a = 1.775 - r;
-  return r <= 1 || o <= 0 || a <= 0
+export function abvBrewfather(og, fg) {
+  const ogNum = toNumber(og, 1),
+    fgNum = toNumber(fg, 1),
+    midpoint = 1.775 - ogNum;
+  return ogNum <= 1 || fgNum <= 0 || midpoint <= 0
     ? 0
-    : Math.max(0, ((76.08 * (r - o)) / a) * (o / 0.794));
+    : Math.max(0, ((76.08 * (ogNum - fgNum)) / midpoint) * (fgNum / 0.794));
 }
 export function clonePlain(t) {
   return JSON.parse(JSON.stringify(t ?? null));
@@ -191,31 +191,31 @@ export function formatIonPpm(t) {
 }
 export function scaleIngredientAmount(t, e, r) {
   const o = ["kg", "L"].includes(e) ? 3 : 1;
-  return round(n(t) * n(r, 1), o);
+  return round(toNumber(t) * toNumber(r, 1), o);
 }
 export function formatPlatoSg(t) {
-  const e = Math.max(0, n(t));
+  const e = Math.max(0, toNumber(t));
   return `${fmt(e, 1)} \xB0P / ${platoToSg(e).toFixed(3)}`;
 }
 export function formatWriValue(t) {
-  return n(t) ? `${fmt(t, 1)} WRI` : "-";
+  return toNumber(t) ? `${fmt(t, 1)} WRI` : "-";
 }
 export function sanitizeBaseWaterProfile(t = {}, e = EMPTY_BASE_WATER_PROFILE) {
   return WATER_IONS.reduce((r, o) => {
-    const a = n(e?.[o.key]),
-      i = n(t?.[o.key], a);
+    const a = toNumber(e?.[o.key]),
+      i = toNumber(t?.[o.key], a);
     return ((r[o.key] = Number.isFinite(i) && i >= 0 ? i : a), r);
   }, {});
 }
 export function isEmptyBaseWaterProfile(t = {}) {
-  return WATER_IONS.every((e) => n(t?.[e.key]) === 0);
+  return WATER_IONS.every((e) => toNumber(t?.[e.key]) === 0);
 }
 export function sanitizeProductionProfile(t = {}) {
   const e = {};
   return (
     PROFILE_KEYS.forEach((r) => {
       const o = DEFAULT_PROFILE[r],
-        a = n(t[r], o);
+        a = toNumber(t[r], o);
       e[r] = Number.isFinite(a) && a >= 0 ? a : o;
     }),
     Object.prototype.hasOwnProperty.call(t, "baseWaterProfile") &&
@@ -226,62 +226,62 @@ export function sanitizeProductionProfile(t = {}) {
   );
 }
 export function hotPostBoilVolume(t, e) {
-  return (n(t) + n(e)) / 0.96;
+  return (toNumber(t) + toNumber(e)) / 0.96;
 }
 export function sourceWaterTotalVolume(t, e, r, o) {
-  return Math.max(0, n(t) + n(e) + Math.max(0, n(r)) + Math.max(0, n(o)));
+  return Math.max(0, toNumber(t) + toNumber(e) + Math.max(0, toNumber(r)) + Math.max(0, toNumber(o)));
 }
 export function evaporationLhFromPct(t, e, r = 60) {
-  const o = Math.max(0.01, n(r, 60) / 60),
-    a = Math.max(0, n(t)) / 100,
+  const o = Math.max(0.01, toNumber(r, 60) / 60),
+    a = Math.max(0, toNumber(t)) / 100,
     i = Math.max(0.05, 1 - a * o),
-    s = n(e) / i;
-  return Math.max(0, (s - n(e)) / o);
+    s = toNumber(e) / i;
+  return Math.max(0, (s - toNumber(e)) / o);
 }
 export function evaporationPctFromLh(t, e, r = 60) {
-  const o = Math.max(0.01, n(r, 60) / 60),
-    a = Math.max(0, n(t)) * o,
-    i = n(e) + a;
-  return i ? round((Math.max(0, n(t)) / i) * 100, 1) : 0;
+  const o = Math.max(0.01, toNumber(r, 60) / 60),
+    a = Math.max(0, toNumber(t)) * o,
+    i = toNumber(e) + a;
+  return i ? round((Math.max(0, toNumber(t)) / i) * 100, 1) : 0;
 }
 export function equipmentEfficiencyPct(t) {
-  const e = Math.max(0, n(t.targetVolumeL, 20)),
-    r = e + Math.max(0, n(t.trubLossL, 0));
-  return r ? round((n(t.mashEfficiencyPct, 65) * e) / r, 1) : 0;
+  const e = Math.max(0, toNumber(t.targetVolumeL, 20)),
+    r = e + Math.max(0, toNumber(t.trubLossL, 0));
+  return r ? round((toNumber(t.mashEfficiencyPct, 65) * e) / r, 1) : 0;
 }
 export function mashEfficiencyFromEquipment(t, e, r) {
-  const o = Math.max(0.01, n(e)),
-    a = o + Math.max(0, n(r));
-  return round((n(t, DEFAULT_PROFILE.mashEfficiencyPct) * a) / o, 1);
+  const o = Math.max(0.01, toNumber(e)),
+    a = o + Math.max(0, toNumber(r));
+  return round((toNumber(t, DEFAULT_PROFILE.mashEfficiencyPct) * a) / o, 1);
 }
 export function syncTrubLoss(t) {
-  const e = Math.max(0, n(t.targetVolumeL, 20));
+  const e = Math.max(0, toNumber(t.targetVolumeL, 20));
   (Number.isFinite(Number(t.trubLossPct)) ||
-    (t.trubLossPct = e ? round(n(t.trubLossL, e * 0.15) / e, 4) : 0.15),
-    t.trubLossEdited || (t.trubLossL = round(e * n(t.trubLossPct, 0.15), 2)));
+    (t.trubLossPct = e ? round(toNumber(t.trubLossL, e * 0.15) / e, 4) : 0.15),
+    t.trubLossEdited || (t.trubLossL = round(e * toNumber(t.trubLossPct, 0.15), 2)));
 }
 export function importedProductionProfile(t = {}) {
   const e = (t.fermentables || [])
       .filter((u) => u.use === "Mostura")
-      .reduce((u, c) => u + n(c.amountKg), 0),
-    r = (t.mash || []).reduce((u, c) => u + n(c.waterVolumeL), 0),
-    o = n(t.batchVolumeL, DEFAULT_PROFILE.targetVolumeL),
-    a = n(t.trubLossL, o * DEFAULT_PROFILE.trubLossPct),
+      .reduce((u, c) => u + toNumber(c.amountKg), 0),
+    r = (t.mash || []).reduce((u, c) => u + toNumber(c.waterVolumeL), 0),
+    o = toNumber(t.batchVolumeL, DEFAULT_PROFILE.targetVolumeL),
+    a = toNumber(t.trubLossL, o * DEFAULT_PROFILE.trubLossPct),
     i = hotPostBoilVolume(o, a),
     s = evaporationLhFromPct(
-      n(t.evaporationPct, DEFAULT_PROFILE.evaporationPct),
+      toNumber(t.evaporationPct, DEFAULT_PROFILE.evaporationPct),
       i,
       t.boilTimeMin,
     ),
-    m = n(t.evaporationLh, s);
+    m = toNumber(t.evaporationLh, s);
   return {
     targetVolumeL: o,
-    mashEfficiencyPct: n(
+    mashEfficiencyPct: toNumber(
       t.mashEfficiencyPct,
-      n(t.efficiencyPct, DEFAULT_PROFILE.mashEfficiencyPct),
+      toNumber(t.efficiencyPct, DEFAULT_PROFILE.mashEfficiencyPct),
     ),
     evaporationPct: Number.isFinite(Number(t.evaporationPct))
-      ? n(t.evaporationPct)
+      ? toNumber(t.evaporationPct)
       : evaporationPctFromLh(m, i, t.boilTimeMin),
     trubLossPct: o ? round(a / o, 4) : DEFAULT_PROFILE.trubLossPct,
     trubLossL: round(a, 2),
@@ -297,7 +297,7 @@ export function importedProductionProfile(t = {}) {
 }
 export function defaultProperties(t, e = {}) {
   const r = { ...DEFAULT_PROFILE, ...e },
-    o = round(n(r.targetVolumeL, 20) * n(r.trubLossPct, 0.15), 2),
+    o = round(toNumber(r.targetVolumeL, 20) * toNumber(r.trubLossPct, 0.15), 2),
     a = hotPostBoilVolume(r.targetVolumeL, o);
   return {
     targetVolumeL: r.targetVolumeL,
@@ -313,10 +313,10 @@ export function defaultProperties(t, e = {}) {
     grainAbsorptionLkg: r.grainAbsorptionLkg,
     waterToGrainRatioLkg: r.waterToGrainRatioLkg,
     wriFactor: effectiveWriFactor(r),
-    mashTunDeadSpaceL: Math.max(0, n(r.mashTunDeadSpaceL)),
+    mashTunDeadSpaceL: Math.max(0, toNumber(r.mashTunDeadSpaceL)),
     heatingRateCMin: Math.min(
       10,
-      Math.max(0, n(r.heatingRateCMin, DEFAULT_PROFILE.heatingRateCMin)),
+      Math.max(0, toNumber(r.heatingRateCMin, DEFAULT_PROFILE.heatingRateCMin)),
     ),
     baseWaterProfile:
       e.baseWaterProfile && !isEmptyBaseWaterProfile(e.baseWaterProfile)
@@ -356,12 +356,12 @@ export function saltFormulaFromName(t) {
 }
 export function waterSaltsFromRecipe(t = {}) {
   const e = emptyWaterSalts(),
-    r = n(t.saltReferenceWaterL, t.batchVolumeL || 0);
+    r = toNumber(t.saltReferenceWaterL, t.batchVolumeL || 0);
   return (
     (t.salts || []).forEach((o) => {
       const a = saltFormulaFromName(o.formula || o.name),
         i = e.find((s) => s.formula === a);
-      i && (i.sourceTotalG = round(n(i.sourceTotalG) + n(o.amountG), 2));
+      i && (i.sourceTotalG = round(toNumber(i.sourceTotalG) + toNumber(o.amountG), 2));
     }),
     e.forEach((o) => {
       o.concentrationGPerL = r ? o.sourceTotalG / r : 0;
@@ -376,8 +376,8 @@ export function ensureWaterSalts(t) {
       return {
         ...o,
         name: a?.name || o.name,
-        sourceTotalG: n(a?.sourceTotalG),
-        concentrationGPerL: n(a?.concentrationGPerL),
+        sourceTotalG: toNumber(a?.sourceTotalG),
+        concentrationGPerL: toNumber(a?.concentrationGPerL),
       };
     });
   return ((t.waterSalts = r), r);
@@ -390,10 +390,10 @@ export function ensureBaseWaterProfile(t) {
 }
 export function scaledWaterSalts(t, e) {
   const r = ensureWaterSalts(t),
-    o = n(t.mashWaterUsedL, e.mashWater),
-    a = Math.max(0, n(e.totalWater) - o);
+    o = toNumber(t.mashWaterUsedL, e.mashWater),
+    a = Math.max(0, toNumber(e.totalWater) - o);
   return r.map((i) => {
-    const s = n(i.concentrationGPerL);
+    const s = toNumber(i.concentrationGPerL);
     return {
       ...i,
       mashG: round(s * o, 1),
@@ -405,18 +405,18 @@ export function scaledWaterSalts(t, e) {
 export function adjustedWaterProfile(t, e) {
   const r = ensureBaseWaterProfile(t),
     o = scaledWaterSalts(t, e),
-    a = Math.max(0.01, n(e.totalWater)),
+    a = Math.max(0.01, toNumber(e.totalWater)),
     i = { ...EMPTY_BASE_WATER_PROFILE };
   o.forEach((m) => {
     const u = SALT_ION_CONTRIBUTIONS[m.formula];
     if (!u) return;
-    const c = n(m.totalG) / a;
+    const c = toNumber(m.totalG) / a;
     Object.entries(u).forEach(([d, p]) => {
-      i[d] = n(i[d]) + c * p;
+      i[d] = toNumber(i[d]) + c * p;
     });
   });
   const s = WATER_IONS.reduce(
-    (m, u) => ((m[u.key] = round(n(r[u.key]) + n(i[u.key]), 0)), m),
+    (m, u) => ((m[u.key] = round(toNumber(r[u.key]) + toNumber(i[u.key]), 0)), m),
     {},
   );
   return { base: r, additions: i, adjusted: s };
@@ -450,7 +450,7 @@ export const MALT_PH_PROFILES = {
   ALKALINITY_DAMPING = 0.55;
 export function classifyMaltForPh(name, colorLovibond) {
   const label = String(name || "").toLowerCase(),
-    lov = n(colorLovibond);
+    lov = toNumber(colorLovibond);
   return /acidul|sauer|s\xE4ure|acid malt/.test(label)
     ? "acidulado"
     : /crystal|cristal|caramel|caramelo|\bcara|carared|caramunich|carahell/.test(
@@ -474,7 +474,7 @@ export function classifyMaltForPh(name, colorLovibond) {
 function maltPhProfile(malt) {
   const category = classifyMaltForPh(malt.name, malt.colorLovibond);
   if (category && MALT_PH_PROFILES[category]) return MALT_PH_PROFILES[category];
-  const lov = n(malt.colorLovibond);
+  const lov = toNumber(malt.colorLovibond);
   return {
     distilledPh: Math.max(4.3, Math.min(5.8, 5.75 - 0.01 * lov)),
     bufferMEqPerKg: Math.max(30, Math.min(70, 35 + 0.3 * lov)),
@@ -482,7 +482,7 @@ function maltPhProfile(malt) {
 }
 export function acidNormality(acidType, concentrationPct) {
   const props = ACID_PROPERTIES[acidType] || ACID_PROPERTIES.latico,
-    conc = Math.max(0, n(concentrationPct)),
+    conc = Math.max(0, toNumber(concentrationPct)),
     density = props.densityBase + props.densitySlope * conc;
   return {
     mEqPerMl: ((conc / 100) * density * 1e3) / props.equivalentWeightG,
@@ -496,24 +496,24 @@ export function predictMashPh({
   grainKg = 0,
 } = {}) {
   const grist = (Array.isArray(fermentables) ? fermentables : []).filter(
-      (m) => n(m.amountKg) > 0,
+      (m) => toNumber(m.amountKg) > 0,
     ),
-    totalKg = grist.reduce((sum, m) => sum + n(m.amountKg), 0);
+    totalKg = grist.reduce((sum, m) => sum + toNumber(m.amountKg), 0);
   if (totalKg <= 0) return null;
   let weightedPh = 0,
     bufferTotal = 0;
   grist.forEach((m) => {
     const profile = maltPhProfile(m),
-      kg = n(m.amountKg);
+      kg = toNumber(m.amountKg);
     weightedPh += profile.distilledPh * kg;
     bufferTotal += profile.bufferMEqPerKg * kg;
   });
   const distilledPh = weightedPh / totalKg,
-    alkalinityCaCO3 = n(ionProfile.bicarbonatePpm) * 0.8197,
+    alkalinityCaCO3 = toNumber(ionProfile.bicarbonatePpm) * 0.8197,
     residualAlkalinity =
       alkalinityCaCO3 -
-      (n(ionProfile.calciumPpm) / 1.4 + n(ionProfile.magnesiumPpm) / 1.7),
-    water = Math.max(0, n(mashWaterL)),
+      (toNumber(ionProfile.calciumPpm) / 1.4 + toNumber(ionProfile.magnesiumPpm) / 1.7),
+    water = Math.max(0, toNumber(mashWaterL)),
     alkalinityMEq = (residualAlkalinity / 50) * water,
     deltaPh =
       bufferTotal > 0 ? (ALKALINITY_DAMPING * alkalinityMEq) / bufferTotal : 0,
@@ -523,7 +523,7 @@ export function predictMashPh({
     residualAlkalinity: round(residualAlkalinity, 1),
     predictedPh: round(predictedPh, 2),
     bufferTotal: round(bufferTotal, 1),
-    grainKg: round(n(grainKg) || totalKg, 2),
+    grainKg: round(toNumber(grainKg) || totalKg, 2),
   };
 }
 export function acidDoseForTarget({
@@ -533,8 +533,8 @@ export function acidDoseForTarget({
   acidType = "latico",
   concentrationPct = 0,
 } = {}) {
-  const gap = n(predictedPh) - n(targetPh, DEFAULT_MASH_PH_TARGET),
-    buffer = n(bufferTotal);
+  const gap = toNumber(predictedPh) - toNumber(targetPh, DEFAULT_MASH_PH_TARGET),
+    buffer = toNumber(bufferTotal);
   if (!(gap > 0) || buffer <= 0) return { doseMl: 0, doseG: 0, mEq: 0 };
   const mEq = buffer * gap,
     { mEqPerMl, densityGPerMl } = acidNormality(acidType, concentrationPct);
@@ -574,10 +574,10 @@ export function createRecipeSession(t, e = "", r = {}) {
   );
 }
 export function normalizeReading(t = {}, e = 1.04) {
-  const r = n(t.wri),
+  const r = toNumber(t.wri),
     o = r ? round(r / e, 1) : 0;
   return {
-    volumeL: t.volumeL === "" ? "" : n(t.volumeL),
+    volumeL: t.volumeL === "" ? "" : toNumber(t.volumeL),
     wri: t.wri === "" ? "" : r,
     realPlato: o,
     sg: o ? platoToSg(o) : 0,
@@ -587,28 +587,28 @@ export function calculate(t) {
   const e = t.recipe,
     r = t.properties;
   syncTrubLoss(r);
-  const o = Math.max(0.1, n(e.batchVolumeL, r.targetVolumeL)),
-    a = n(r.targetVolumeL, o) / o,
+  const o = Math.max(0.1, toNumber(e.batchVolumeL, r.targetVolumeL)),
+    a = toNumber(r.targetVolumeL, o) / o,
     i =
-      Math.max(0.1, n(e.mashEfficiencyPct, e.efficiencyPct || 70)) /
-      Math.max(0.1, n(r.mashEfficiencyPct, 65)),
+      Math.max(0.1, toNumber(e.mashEfficiencyPct, e.efficiencyPct || 70)) /
+      Math.max(0.1, toNumber(r.mashEfficiencyPct, 65)),
     s = e.fermentables.map((h) => ({
       ...h,
-      amountKg: round(n(h.amountKg) * a * (h.use === "Mostura" ? i : 1), 3),
+      amountKg: round(toNumber(h.amountKg) * a * (h.use === "Mostura" ? i : 1), 3),
     })),
-    m = e.hops.map((h) => ({ ...h, amountG: round(n(h.amountG) * a, 1) })),
+    m = e.hops.map((h) => ({ ...h, amountG: round(toNumber(h.amountG) * a, 1) })),
     u = (e.yeasts || []).map((h) => ({
       ...h,
-      amount: round(n(h.amount) * a, 3),
+      amount: round(toNumber(h.amount) * a, 3),
     })),
     c = (e.miscs || []).map((h) => ({
       ...h,
-      amount: scaleIngredientAmount(n(h.amount), h.unit, a),
+      amount: scaleIngredientAmount(toNumber(h.amount), h.unit, a),
     })),
     d = s
       .filter((h) => h.use === "Mostura")
-      .reduce((h, R) => h + n(R.amountKg), 0),
-    p = n(r.targetVolumeL) + n(r.trubLossL),
+      .reduce((h, R) => h + toNumber(R.amountKg), 0),
+    p = toNumber(r.targetVolumeL) + toNumber(r.trubLossL),
     l = hotPostBoilVolume(r.targetVolumeL, r.trubLossL);
   r.evaporationLh = round(
     evaporationLhFromPct(r.evaporationPct, l, e.boilTimeMin),
@@ -616,10 +616,10 @@ export function calculate(t) {
   );
   const b = (r.evaporationLh * e.boilTimeMin) / 60,
     L = l + b,
-    f = Math.max(0, n(r.mashTunDeadSpaceL)),
+    f = Math.max(0, toNumber(r.mashTunDeadSpaceL)),
     g = effectiveWriFactor(r),
-    M = n(r.waterToGrainRatioLkg, 3) * d + f,
-    x = n(r.grainAbsorptionLkg, 1.2) * d,
+    M = toNumber(r.waterToGrainRatioLkg, 3) * d + f,
+    x = toNumber(r.grainAbsorptionLkg, 1.2) * d,
     w = sourceWaterTotalVolume(r.targetVolumeL, r.trubLossL, b, x),
     E = Math.max(0, w - M),
     P = {
@@ -647,8 +647,8 @@ export function calculate(t) {
     B = $ ? $.volumeL : A.status === "ready" ? A.targetVolumeL : P.preBoil,
     v = m.map((h) => {
       const R = t.hopLots.find((tt) => tt.id === h.id) || {},
-        k = n(R.plannedAlpha, h.alphaAcidPct),
-        D = n(R.actualAlpha, 0),
+        k = toNumber(R.plannedAlpha, h.alphaAcidPct),
+        D = toNumber(R.actualAlpha, 0),
         Z = k && D ? k / D : 1;
       return {
         ...h,
@@ -705,7 +705,7 @@ export function calculate(t) {
     og: F,
     fg: S,
     ibu: Math.round(H),
-    ebc: n(e.colorEbc) > 0 ? round(n(e.colorEbc), 1) : moreyEbc(s, p),
+    ebc: toNumber(e.colorEbc) > 0 ? round(toNumber(e.colorEbc), 1) : moreyEbc(s, p),
     preBoilSg: T,
     preBoilPlato: N,
     ogPlato: z,
@@ -726,47 +726,55 @@ export function calculate(t) {
   };
 }
 export function moreyEbc(t, e) {
-  const r = Math.max(0.1, lToGal(n(e, 20))),
+  const r = Math.max(0.1, lToGal(toNumber(e, 20))),
     o =
       (t || []).reduce(
-        (a, i) => a + kgToLb(n(i.amountKg)) * n(i.colorLovibond),
+        (a, i) => a + kgToLb(toNumber(i.amountKg)) * toNumber(i.colorLovibond),
         0,
       ) / r;
   return o <= 0 ? 0 : round(1.4922 * Math.pow(o, 0.6859) * 1.97, 1);
 }
-export function gravityEstimate(t, e) {
-  const r = Math.max(0.1, n(e.targetVolumeL, 20));
-  let o = 0,
-    a = 0,
-    i = 0;
+export function gravityEstimate(fermentables, props) {
+  const volumeL = Math.max(0.1, toNumber(props.targetVolumeL, 20));
+  let totalPoints = 0,
+    preBoilPoints = 0,
+    preFermentPoints = 0;
   return (
-    t.forEach((s) => {
-      const m = s.use === "Mostura" ? n(e.mashEfficiencyPct, 65) / 100 : 1,
-        u = (kgToLb(n(s.amountKg)) * n(s.ppg, 36) * m) / lToGal(r);
-      ((o += u),
-        s.use === "Mostura" && (a += u),
-        s.use !== "Fermenta\xE7\xE3o" && (i += u));
+    fermentables.forEach((ferm) => {
+      const effFactor =
+          ferm.use === "Mostura" ? toNumber(props.mashEfficiencyPct, 65) / 100 : 1,
+        pts =
+          (kgToLb(toNumber(ferm.amountKg)) * toNumber(ferm.ppg, 36) * effFactor) /
+          lToGal(volumeL);
+      ((totalPoints += pts),
+        ferm.use === "Mostura" && (preBoilPoints += pts),
+        ferm.use !== "Fermenta\xE7\xE3o" && (preFermentPoints += pts));
     }),
-    { points: o, preBoilPoints: a, preFermentPoints: i, og: 1 + o / 1e3 }
+    {
+      points: totalPoints,
+      preBoilPoints,
+      preFermentPoints,
+      og: 1 + totalPoints / 1e3,
+    }
   );
 }
 export function correctedStageSg(t, e, r, o) {
-  const a = Math.max(0.1, n(o)),
-    i = Math.max(0, n(e)),
-    s = Math.max(0, n(r, 1));
+  const a = Math.max(0.1, toNumber(o)),
+    i = Math.max(0, toNumber(e)),
+    s = Math.max(0, toNumber(r, 1));
   return 1 + (sgPoints(t) * i * s) / a / 1e3;
 }
 export function plannedPreBoilSg(t, e, r) {
   const o = Math.max(0, sgPoints(t)),
-    a = Math.max(0, n(e.points)),
-    i = Math.max(0, n(e.preBoilPoints, a)),
+    a = Math.max(0, toNumber(e.points)),
+    i = Math.max(0, toNumber(e.preBoilPoints, a)),
     s = a ? Math.max(0, Math.min(1, i / a)) : 1;
-  return 1 + (o * s * n(r.hotPostBoil)) / Math.max(0.1, n(r.preBoil)) / 1e3;
+  return 1 + (o * s * toNumber(r.hotPostBoil)) / Math.max(0.1, toNumber(r.preBoil)) / 1e3;
 }
 export function correction(t, e, r, o, a = 0, i = 1.04) {
   const s = normalizeReading(r, i),
-    m = n(s.volumeL),
-    u = n(s.realPlato);
+    m = toNumber(s.volumeL),
+    u = toNumber(s.realPlato);
   if (!m || !u || !e || !t)
     return {
       status: "pending",
@@ -804,8 +812,8 @@ export function correction(t, e, r, o, a = 0, i = 1.04) {
 }
 export function negligibleCorrection(t = {}) {
   if (t.status !== "ready" || t.action === "Sem corre\xE7\xE3o") return !1;
-  const e = Math.max(0.1, n(t.targetVolumeL) * 0.01);
-  return Math.abs(n(t.deltaL)) <= e;
+  const e = Math.max(0.1, toNumber(t.targetVolumeL) * 0.01);
+  return Math.abs(toNumber(t.deltaL)) <= e;
 }
 export function correctionCheckReading(t, e, r, o, a = 1.04) {
   if (!e || r.status !== "ready") return null;
@@ -822,7 +830,7 @@ export function correctionSoftPlatoTolerance() {
   return 0.4;
 }
 export function signedPlato(t) {
-  const e = round(n(t), 1);
+  const e = round(toNumber(t), 1);
   return `${e > 0 ? "+" : ""}${fmt(e, 1)} \xB0P`;
 }
 export function correctionActionText(t) {
@@ -903,22 +911,28 @@ export function correctionSummary(t) {
       ? "Sem corre\xE7\xE3o"
       : `${t.action} ${formatVolume(Math.abs(t.deltaL), 2)}`;
 }
-export function calculateIbu(t, e, r, o) {
-  const a = (e + r) / 2,
-    i = Math.max(0.1, n(o, 20));
-  return t.reduce((s, m) => {
-    if (["Dry hop", "Mostura"].includes(m.use)) return s;
-    const u = ["Hopstand", "Whirlpool"].includes(m.use)
+export function calculateIbu(hops, og, preBoilSg, volumeL) {
+  const avgSg = (og + preBoilSg) / 2,
+    volGal = Math.max(0.1, toNumber(volumeL, 20));
+  return hops.reduce((ibuAcc, hop) => {
+    if (["Dry hop", "Mostura"].includes(hop.use)) return ibuAcc;
+    const useFactor = ["Hopstand", "Whirlpool"].includes(hop.use)
         ? 0.3
-        : m.use === "First wort"
+        : hop.use === "First wort"
           ? 1.1
           : 1,
-      c =
+      utilization =
         (1.65 *
-          Math.pow(125e-6, a - 1) *
-          (1 - Math.exp(-0.04 * n(m.timeMin)))) /
+          Math.pow(125e-6, avgSg - 1) *
+          (1 - Math.exp(-0.04 * toNumber(hop.timeMin)))) /
         4.15;
-    return s + c * u * (((n(m.alphaAcidPct) / 100) * n(m.amountG) * 1e3) / i);
+    return (
+      ibuAcc +
+      utilization *
+        useFactor *
+        ((toNumber(hop.alphaAcidPct) / 100) * toNumber(hop.amountG) * 1e3) /
+        volGal
+    );
   }, 0);
 }
 export function analyze(t, e, r, o, a, i, s = e.preBoil, m = i) {
@@ -926,26 +940,26 @@ export function analyze(t, e, r, o, a, i, s = e.preBoil, m = i) {
     c = normalizeReading(r.preBoil, u),
     d = normalizeReading(r.postBoil, u),
     p = e.grainKg || 0,
-    l = n(o.mashWaterUsedL, e.mashWater),
+    l = toNumber(o.mashWaterUsedL, e.mashWater),
     b = Math.max(0, e.totalWater - l),
-    L = n(c.volumeL),
-    f = n(s, L || e.preBoil),
-    g = d.volumeL === "" ? 0 : n(d.volumeL),
-    M = Math.max(0, n(e.hotPostBoil) - n(e.coldPostBoil)),
+    L = toNumber(c.volumeL),
+    f = toNumber(s, L || e.preBoil),
+    g = d.volumeL === "" ? 0 : toNumber(d.volumeL),
+    M = Math.max(0, toNumber(e.hotPostBoil) - toNumber(e.coldPostBoil)),
     x = Math.max(0, L - M),
     w = c.sg ? sgPoints(c.sg) * lToGal(L) : 0,
     E = t
       .filter((S) => S.use === "Mostura")
-      .reduce((S, T) => S + kgToLb(n(T.amountKg)) * n(T.ppg, 36), 0),
+      .reduce((S, T) => S + kgToLb(toNumber(T.amountKg)) * toNumber(T.ppg, 36), 0),
     P = r.cold || {},
-    y = n(P.fermenterVolumeL, Math.max(0, i * 0.96 - o.trubLossL)),
+    y = toNumber(P.fermenterVolumeL, Math.max(0, i * 0.96 - o.trubLossL)),
     F = f && g ? Math.max(0, (f - g) / Math.max(0.01, a.boilTimeMin / 60)) : 0;
   return {
     mashEfficiencyPct: E ? round((w / E) * 100, 1) : 0,
     grainAbsorptionLkg: p && L ? round((l + b - x) / p, 2) : 0,
     evaporationLh: round(F, 2),
     evaporationPct: f ? round((F / f) * 100, 1) : 0,
-    trubLossL: round(n(P.trubVolumeL, Math.max(0, i * 0.96 - y)), 2),
+    trubLossL: round(toNumber(P.trubVolumeL, Math.max(0, i * 0.96 - y)), 2),
   };
 }
 export function isBoilAddition(t = {}) {
@@ -955,17 +969,17 @@ export function isBoilAddition(t = {}) {
 }
 export function additionOrder(t = {}) {
   return t.use === "First wort"
-    ? 1e4 + n(t.timeMin)
+    ? 1e4 + toNumber(t.timeMin)
     : t.use === "Fervura"
-      ? 5e3 + n(t.timeMin)
+      ? 5e3 + toNumber(t.timeMin)
       : t.use === "Hopstand" || t.use === "Whirlpool"
-        ? 1e3 + n(t.timeMin)
+        ? 1e3 + toNumber(t.timeMin)
         : t.use === "Dry hop"
           ? -100
-          : n(t.timeMin);
+          : toNumber(t.timeMin);
 }
 export function boilAdditionRows(t, e, r, o) {
-  const a = n(o, 1);
+  const a = toNumber(o, 1);
   return [
     ...e.filter(isBoilAddition).map((i) => ({
       ...i,
@@ -1007,7 +1021,7 @@ export function mashAdditionRows(t, e) {
         amount: r.amountG,
         unit: "g",
         moment: "Mash hopping",
-        order: n(r.timeMin),
+        order: toNumber(r.timeMin),
       })),
     ...(e || [])
       .filter((r) => r.use === "Mostura")
@@ -1015,7 +1029,7 @@ export function mashAdditionRows(t, e) {
         ...r,
         kind: "misc",
         moment: r.type,
-        order: n(r.timeMin),
+        order: toNumber(r.timeMin),
       })),
   ].sort((r, o) => o.order - r.order);
 }
@@ -1059,7 +1073,7 @@ export function mashStepName(t) {
 }
 export function effectiveMashSteps(t = []) {
   return (t || []).filter((e) => {
-    if (!n(e.timeMin)) return !1;
+    if (!toNumber(e.timeMin)) return !1;
     const o = String(e.name || "").toLowerCase(),
       a = String(e.type || "").toLowerCase();
     return !(
@@ -1069,10 +1083,10 @@ export function effectiveMashSteps(t = []) {
   });
 }
 export function totalMashTimeMin(t = []) {
-  return effectiveMashSteps(t).reduce((e, r) => e + n(r.timeMin), 0);
+  return effectiveMashSteps(t).reduce((e, r) => e + toNumber(r.timeMin), 0);
 }
 export function operationalMashSteps(t = []) {
-  return (t || []).filter((e) => n(e.timeMin) > 0);
+  return (t || []).filter((e) => toNumber(e.timeMin) > 0);
 }
 export function mashTimerStepInfo(t = {}) {
   const e = mashStepName(t.name || "Mostura"),
@@ -1087,25 +1101,25 @@ export function effectiveHeatingRateCMin(t = {}, e = {}) {
     10,
     Math.max(
       0,
-      n(e.heatingRateCMin, n(t.heatingRateCMin, DEFAULT_HEATING_RATE_C_MIN)),
+      toNumber(e.heatingRateCMin, toNumber(t.heatingRateCMin, DEFAULT_HEATING_RATE_C_MIN)),
     ),
   );
 }
 export function mashTimerItems(t = [], e = 0) {
   const r = operationalMashSteps(t),
-    o = Math.max(0, n(e)),
+    o = Math.max(0, toNumber(e)),
     a = [];
   r.forEach((u, c) => {
     const d = r[c - 1];
     if (o > 0 && d) {
-      const p = n(u.temperatureC) - n(d.temperatureC);
+      const p = toNumber(u.temperatureC) - toNumber(d.temperatureC);
       p > 0 &&
         a.push({ kind: "heat", from: d, to: u, durationMin: round(p / o, 1) });
     }
     a.push({ kind: "step", step: u });
   });
   const i = a.reduce(
-      (u, c) => u + (c.kind === "step" ? n(c.step.timeMin) : c.durationMin),
+      (u, c) => u + (c.kind === "step" ? toNumber(c.step.timeMin) : c.durationMin),
       0,
     ),
     s = [];
@@ -1113,7 +1127,7 @@ export function mashTimerItems(t = [], e = 0) {
   return (
     a.forEach((u, c) => {
       const d = a[c + 1] || null,
-        p = u.kind === "step" ? n(u.step.timeMin) : u.durationMin,
+        p = u.kind === "step" ? toNumber(u.step.timeMin) : u.durationMin,
         l = Math.max(0, m - p);
       if (u.kind === "heat") {
         const b = mashTimerStepInfo(u.to);
@@ -1170,7 +1184,7 @@ export function mashTimerItems(t = [], e = 0) {
 export function boilAdditionTimerTime(t, e) {
   return ["First wort", "Fervura"].includes(t.use)
     ? Number.isFinite(Number(t.timeMin))
-      ? Math.max(0, Math.min(e, n(t.timeMin)))
+      ? Math.max(0, Math.min(e, toNumber(t.timeMin)))
       : t.use === "First wort"
         ? e
         : Math.min(10, e)
@@ -1179,7 +1193,7 @@ export function boilAdditionTimerTime(t, e) {
 export function hopstandAdditionTimerTime(t) {
   return ["Hopstand", "Whirlpool"].includes(t.use)
     ? Number.isFinite(Number(t.timeMin))
-      ? Math.max(0, n(t.timeMin))
+      ? Math.max(0, toNumber(t.timeMin))
       : 0
     : null;
 }
@@ -1199,7 +1213,7 @@ export function uniqueTimerTimes(t) {
   return Array.from(new Set(t.map((e) => timerTimeKey(e)))).map(Number);
 }
 export function timerTimeKey(t) {
-  return String(round(n(t), 2));
+  return String(round(toNumber(t), 2));
 }
 export function additionCountLabel(t) {
   return `${t} ${t === 1 ? "adi\xE7\xE3o" : "adi\xE7\xF5es"}`;
@@ -1217,7 +1231,7 @@ export function timerAdditionSummary(t) {
 }
 export const POST_READING_OFFSET_MIN = 0;
 export function boilTimerItems(t) {
-  const e = n(t.recipe.boilTimeMin, 60),
+  const e = toNumber(t.recipe.boilTimeMin, 60),
     r = t.boilAdditions || [],
     o = groupTimerAdditions(r, (l) => boilAdditionTimerTime(l, e)),
     a = groupTimerAdditions(r, hopstandAdditionTimerTime),
@@ -1331,9 +1345,9 @@ export function boilTimerItems(t) {
 export function expectedFermentationTemperature(t = [], e = 0) {
   if (!Array.isArray(t) || !t.length) return "";
   let r = 0;
-  const o = Math.max(0, n(e));
+  const o = Math.max(0, toNumber(e));
   for (const i of t) {
-    const s = Math.max(0, n(i.days)),
+    const s = Math.max(0, toNumber(i.days)),
       m = Number(i.temperatureC);
     if (Number.isFinite(m) && o <= r + s) return m;
     r += s;
@@ -1353,7 +1367,7 @@ export function fermentationDayFromDatetime(t = {}, e = null, r = 0) {
     ? Math.floor(Math.max(0, (o.getTime() - e.getTime()) / 864e5))
     : t.day === ""
       ? r + 1
-      : Math.floor(Math.max(0, n(t.day, r + 1)));
+      : Math.floor(Math.max(0, toNumber(t.day, r + 1)));
 }
 export function parseFermentationDatetime(t) {
   if (!t) return null;
@@ -1361,9 +1375,9 @@ export function parseFermentationDatetime(t) {
   return Number.isFinite(e.getTime()) ? e : null;
 }
 export function fermentedRefractometerPlato(t, e, r = 1.04) {
-  if (!n(e)) return "";
-  const o = n(r) > 0 ? n(r) : 1.04,
-    a = 1 - 0.002349 * n(t) + 0.006276 * (n(e) / o);
+  if (!toNumber(e)) return "";
+  const o = toNumber(r) > 0 ? toNumber(r) : 1.04,
+    a = 1 - 0.002349 * toNumber(t) + 0.006276 * (toNumber(e) / o);
   return round(Math.max(0, sgToPlato(a)), 1);
 }
 export function sanitizeFermentationTracking(t = {}) {
@@ -1377,17 +1391,17 @@ export function sanitizeFermentationReading(t = {}, e = 0) {
   return isPlainObject(t)
     ? {
         id: String(t.id || `fermentation-${e + 1}`),
-        day: t.day === "" ? "" : Math.max(0, n(t.day, e + 1)),
+        day: t.day === "" ? "" : Math.max(0, toNumber(t.day, e + 1)),
         datetime: String(t.datetime || ""),
         temperatureC:
-          t.temperatureC === "" ? "" : Math.max(0, n(t.temperatureC)),
-        wri: t.wri === "" ? "" : Math.max(0, n(t.wri)),
+          t.temperatureC === "" ? "" : Math.max(0, toNumber(t.temperatureC)),
+        wri: t.wri === "" ? "" : Math.max(0, toNumber(t.wri)),
       }
     : null;
 }
 export function fermentationInitialReadingValue(t, e, r, o = 1.04) {
-  const a = round(Math.max(0, n(e)), 1);
-  return { source: t, plato: a, wri: round(n(r, a * o), 1), sg: platoToSg(a) };
+  const a = round(Math.max(0, toNumber(e)), 1);
+  return { source: t, plato: a, wri: round(toNumber(r, a * o), 1), sg: platoToSg(a) };
 }
 export function fermentationInitialReading(t, e) {
   const r = effectiveWriFactor(t.properties || {}),
@@ -1426,7 +1440,7 @@ export function fermentationTrackingState(t, e) {
     i = firstFermentationReadingDate(a),
     s = effectiveWriFactor(t.properties || {}),
     m = a.map((u, c) => {
-      const d = u.wri === "" ? "" : n(u.wri),
+      const d = u.wri === "" ? "" : toNumber(u.wri),
         p = d === "" ? "" : fermentedRefractometerPlato(r.plato, d, s),
         l = fermentationDayFromDatetime(u, i, c);
       return {
@@ -1437,7 +1451,7 @@ export function fermentationTrackingState(t, e) {
           e.recipe.fermentation,
           l,
         ),
-        temperatureC: u.temperatureC === "" ? "" : n(u.temperatureC),
+        temperatureC: u.temperatureC === "" ? "" : toNumber(u.temperatureC),
         wri: d,
         realPlato: p,
         sg: p === "" ? "" : platoToSg(p),
@@ -1448,7 +1462,7 @@ export function fermentationTrackingState(t, e) {
 export function fermentationTemperatureChartPoints(t = []) {
   const e = (t || [])
     .map((a) => ({
-      day: Math.max(0, n(a.days)),
+      day: Math.max(0, toNumber(a.days)),
       value: Number(a.temperatureC),
     }))
     .filter((a) => Number.isFinite(a.value));
@@ -1513,13 +1527,13 @@ export function fermentationChartModel(t, e) {
   };
 }
 export function chartTicks(t, e, r = 4) {
-  const o = n(t),
-    a = n(e, o + 1),
+  const o = toNumber(t),
+    a = toNumber(e, o + 1),
     i = Math.max(1, r - 1);
   return Array.from({ length: r }, (s, m) => round(o + ((a - o) / i) * m, 1));
 }
 export function dayTicks(t) {
-  const e = Math.max(1, Math.ceil(n(t, 1))),
+  const e = Math.max(1, Math.ceil(toNumber(t, 1))),
     r = e <= 5 ? 1 : Math.ceil(e / 5),
     o = [];
   for (let a = 0; a < e; a += r) o.push(a);
@@ -1528,11 +1542,11 @@ export function dayTicks(t) {
 export function finalParameterCode(t) {
   const e = t.analysis || {},
     r = t.props || {},
-    o = n(r.targetVolumeL, 20),
+    o = toNumber(r.targetVolumeL, 20),
     a = pickParameterValue(e.trubLossL, r.trubLossL),
-    i = o ? a / o : n(r.trubLossPct, 0.15),
+    i = o ? a / o : toNumber(r.trubLossPct, 0.15),
     s = pickParameterValue(e.mashEfficiencyPct, r.mashEfficiencyPct),
-    m = o + Math.max(0, n(a)),
+    m = o + Math.max(0, toNumber(a)),
     u = m ? (s * o) / m : s;
   return [
     `vol=${fmt(o, 1)}`,
@@ -1566,7 +1580,7 @@ export function applyProductionParameterValues(t, e) {
     Number.isFinite(e.RAM) && (t.waterToGrainRatioLkg = e.RAM),
     Number.isFinite(e.TR) &&
       ((t.trubLossPct = e.TR > 1 ? e.TR / 100 : e.TR),
-      (t.trubLossL = round(n(t.targetVolumeL, 20) * t.trubLossPct, 2)),
+      (t.trubLossL = round(toNumber(t.targetVolumeL, 20) * t.trubLossPct, 2)),
       (t.trubLossEdited = !1)),
     Number.isFinite(e.EE)
       ? (t.mashEfficiencyPct = mashEfficiencyFromEquipment(
@@ -1660,12 +1674,12 @@ export function parseParameterText(t) {
 export function originalWaterPlan(t) {
   const e = (t.fermentables || [])
       .filter((u) => u.use === "Mostura")
-      .reduce((u, c) => u + n(c.amountKg), 0),
+      .reduce((u, c) => u + toNumber(c.amountKg), 0),
     o =
-      (t.mash || []).reduce((u, c) => u + n(c.waterVolumeL), 0) ||
+      (t.mash || []).reduce((u, c) => u + toNumber(c.waterVolumeL), 0) ||
       e * DEFAULT_PROFILE.waterToGrainRatioLkg,
     a = e * DEFAULT_PROFILE.grainAbsorptionLkg,
-    i = (n(t.evaporationLh) * n(t.boilTimeMin, 60)) / 60,
+    i = (toNumber(t.evaporationLh) * toNumber(t.boilTimeMin, 60)) / 60,
     s = sourceWaterTotalVolume(t.batchVolumeL, t.trubLossL, i, a),
     m = Math.max(0, s - o);
   return {

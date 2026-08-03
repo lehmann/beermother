@@ -21,7 +21,7 @@
                 "yieldPct": 75.74,
                 "colorEbc": 16.1,
                 "amountKg": 0.5,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carared",
@@ -29,7 +29,7 @@
                 "yieldPct": 77.9,
                 "colorEbc": 31.1,
                 "amountKg": 0.35,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich III",
@@ -37,7 +37,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 94.6,
                 "amountKg": 0.15,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Honey",
@@ -45,7 +45,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

@@ -1,6 +1,6 @@
 import { el as e, button as h, card as x } from "./ui.js";
 import { t, tEngine as E } from "./i18n.js";
-import { n as N } from "./engine.js";
+import { toNumber as N } from "./engine.js";
 import {
   CONTROLS as R,
   SECTIONS as z,
@@ -15,6 +15,7 @@ import {
   betaQuantile as g,
 } from "./analysis/bounded-beta.js";
 import { app as i } from "./state.js";
+import { runLocalAnalysis } from "./analysis/local-engine.js";
 const O = { bom: "good", alerta: "warn", neutro: "neutral" };
 let f = 0;
 export async function requestRecipeAnalysis(a = {}) {
@@ -23,26 +24,13 @@ export async function requestRecipeAnalysis(a = {}) {
   const s = ++f;
   ((i.analysisLoading = !0), (i.analysisError = ""), i.requestRender());
   try {
-    const r = await fetch("/api/analyze-recipe", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          draft: n,
-          seed: a.seed ?? i.analysisSeed ?? 1,
-          styleSlug: a.styleSlug ?? i.analysisStyleSlug,
-        }),
-      }),
-      l = await r.json().catch(() => null);
-    if (!r.ok || !l?.ok || !l.analysis)
-      throw new Error(
-        r.status === 401
-          ? "Sua sess\xE3o expirou. Recarregue a p\xE1gina para entrar novamente."
-          : "N\xE3o foi poss\xEDvel analisar esta receita.",
-      );
+    const l = runLocalAnalysis({
+      draft: n,
+      seed: a.seed ?? i.analysisSeed ?? 1,
+      styleSlug: a.styleSlug ?? i.analysisStyleSlug,
+    });
+    if (!l?.ok || !l.analysis)
+      throw new Error("N\xE3o foi poss\xEDvel analisar esta receita.");
     return s !== f
       ? !1
       : ((i.analysisData = l.analysis),

@@ -1,5 +1,5 @@
 import {
-  n as d,
+  toNumber as d,
   normalizeReading as R,
   correctionSummary as h,
   correctionCheckResult as W,

@@ -21,7 +21,7 @@
                 "yieldPct": 82.8,
                 "colorEbc": 0.9,
                 "amountKg": 0.8,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Malte Vienna",
@@ -29,7 +29,7 @@
                 "yieldPct": 83,
                 "colorEbc": 4.1,
                 "amountKg": 0.2,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Molasses",
@@ -37,7 +37,7 @@
                 "yieldPct": 78.3,
                 "colorEbc": 106.8,
                 "amountKg": 0.15,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [
