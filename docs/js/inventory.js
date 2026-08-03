@@ -405,7 +405,7 @@ function afterMutation() {
 
 function openAddSheet(cat) {
   const item = defaultForCategory(cat);
-  const catLabel = CATEGORIES.find((c) => c.id === cat)?.label || cat;
+  const catLabel = t(CATEGORIES.find((c) => c.id === cat)?.label || cat);
 
   const save = button(
     t("Salvar"),
@@ -439,7 +439,7 @@ function openEditSheet(cat, itemId) {
   if (!original) return;
 
   const item = { ...original };
-  const catLabel = CATEGORIES.find((c) => c.id === cat)?.label || cat;
+  const catLabel = t(CATEGORIES.find((c) => c.id === cat)?.label || cat);
 
   const save = button(
     t("Salvar"),
@@ -512,7 +512,7 @@ function categorySection(cat, items) {
 
   if (!items.length) {
     return el("div", "inv-empty-cat", [
-      el("span", "muted", t("Nenhum item em {cat}.", { cat: catMeta.label })),
+      el("span", "muted", t("Nenhum item em {cat}.", { cat: t(catMeta.label) })),
     ]);
   }
 
