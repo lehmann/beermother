@@ -467,7 +467,31 @@ function buildFields(cat, item) {
       ),
       fieldRow(
         t("Uso"),
-        nameInput(item.use || "", (v) => { item.use = v; }),
+        (() => {
+          const sel = document.createElement("select");
+          sel.className = "field-input";
+          const useOptions = [
+            "",
+            "Mostura",
+            "Sparge",
+            "Fervura",
+            "Flameout",
+            "Fermentação Primária",
+            "Fermentação Secundária",
+            "Envase",
+          ];
+          useOptions.forEach((u) => {
+            const opt = document.createElement("option");
+            opt.value = u;
+            opt.textContent = u ? t(u) : `— ${t("selecione")} —`;
+            if (u === (item.use || "")) opt.selected = true;
+            sel.append(opt);
+          });
+          sel.addEventListener("change", () => {
+            item.use = sel.value;
+          });
+          return sel;
+        })(),
       ),
     );
   }
@@ -584,7 +608,7 @@ function itemSubLabel(cat, item) {
   const parts = [];
   if (item.miscType) parts.push(t(item.miscType));
   if (item.qtyPerL) parts.push(`${item.qtyPerL} g/L`);
-  if (item.use) parts.push(item.use);
+  if (item.use) parts.push(t(item.use));
   return parts.join(" · ");
 }
 

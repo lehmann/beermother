@@ -1852,4 +1852,11 @@ export default {
   "Especiaria": "Spice",
   "Quantidade por litro (g/L)": "Quantity per liter (g/L)",
   "selecione": "select",
+  "Mostura": "Mash",
+  "Sparge": "Sparge",
+  "Fervura": "Boil",
+  "Flameout": "Flameout",
+  "Fermentação Primária": "Primary Fermentation",
+  "Fermentação Secundária": "Secondary Fermentation",
+  "Envase": "Packaging",
 };

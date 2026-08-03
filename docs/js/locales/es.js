@@ -1879,4 +1879,11 @@ export default {
   "Especiaria": "Especia",
   "Quantidade por litro (g/L)": "Cantidad por litro (g/L)",
   "selecione": "seleccione",
+  "Mostura": "Maceración",
+  "Sparge": "Sparge",
+  "Fervura": "Hervido",
+  "Flameout": "Flameout",
+  "Fermentação Primária": "Fermentación Primaria",
+  "Fermentação Secundária": "Fermentación Secundaria",
+  "Envase": "Envasado",
 };
