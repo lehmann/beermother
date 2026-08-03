@@ -38,6 +38,7 @@ export const PROFILE_STORAGE_KEY = "beermother.productionProfile.v1",
   SHOPPING_STORAGE_KEY = "beermother.fable.shopping.v1",
   BREWS_STORAGE_KEY = "beermother.fable.brews.v1",
   BREW_EXCLUDED_STORAGE_KEY = "beermother.fable.brewExcluded.v1",
+  INVENTORY_STORAGE_KEY = "beermother.fable.inventory.v1",
   DEFAULT_FRACTIONING = {
     malteG: 50,
     lupuloG: 50,
@@ -756,6 +757,62 @@ export function localDatetimeValue(e = new Date()) {
     .toISOString()
     .slice(0, 16);
 }
+export function loadInventory() {
+  try {
+    const raw = JSON.parse(
+      localStorage.getItem(INVENTORY_STORAGE_KEY) || "null",
+    );
+    if (!raw || typeof raw !== "object") return emptyInventory();
+    return {
+      fermentables: Array.isArray(raw.fermentables) ? raw.fermentables : [],
+      hops: Array.isArray(raw.hops) ? raw.hops : [],
+      yeasts: Array.isArray(raw.yeasts) ? raw.yeasts : [],
+      others: Array.isArray(raw.others) ? raw.others : [],
+    };
+  } catch {
+    return emptyInventory();
+  }
+}
+function emptyInventory() {
+  return { fermentables: [], hops: [], yeasts: [], others: [] };
+}
+export function saveInventory(inv) {
+  try {
+    localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(inv));
+  } catch {}
+}
+export function addInventoryItem(category, item) {
+  const inv = loadInventory();
+  const id = `inv-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+  inv[category] = [...(inv[category] || []), { ...item, id }];
+  saveInventory(inv);
+  return id;
+}
+export function updateInventoryItem(category, id, updates) {
+  const inv = loadInventory();
+  inv[category] = (inv[category] || []).map((it) =>
+    it.id === id ? { ...it, ...updates } : it,
+  );
+  saveInventory(inv);
+}
+export function removeInventoryItem(category, id) {
+  const inv = loadInventory();
+  inv[category] = (inv[category] || []).filter((it) => it.id !== id);
+  saveInventory(inv);
+}
+export function deductInventoryItems(deductions) {
+  const inv = loadInventory();
+  for (const { category, id, qty } of deductions) {
+    inv[category] = (inv[category] || []).map((it) => {
+      if (it.id !== id) return it;
+      const field = category === "fermentables" ? "amountKg" : "amount";
+      const current = Number(it[field]) || 0;
+      return { ...it, [field]: Math.max(0, current - (Number(qty) || 0)) };
+    });
+  }
+  saveInventory(inv);
+}
+
 export const DEFAULT_DRIVE_FOLDER_NAME = "Beer Mother";
 export function loadDriveEnabled() {
   return loadSettings().driveEnabled === true;

@@ -203,6 +203,32 @@ export async function saveRecipeToDrive(xmlContent, fileName) {
   return doSave(xmlContent, fileName);
 }
 
+export async function saveInventoryToDrive(xmlContent) {
+  return doSave(xmlContent, "inventory.xml");
+}
+
+export async function loadInventoryFromDrive() {
+  const folderName = loadDriveFolderName();
+  const folderId = await findOrCreateFolder(folderName);
+  const h = await authHeaders();
+
+  const q = encodeURIComponent(
+    `name='inventory.xml' and '${folderId}' in parents and trashed=false`,
+  );
+  const searchRes = await apiFetch(
+    `${API}/files?q=${q}&fields=files(id)&spaces=drive`,
+    { headers: h },
+  );
+  if (!searchRes.ok) return null;
+  const searchData = await searchRes.json();
+  const file = searchData.files?.[0];
+  if (!file) return null;
+
+  const r = await apiFetch(`${API}/files/${file.id}?alt=media`, { headers: h });
+  if (!r.ok) return null;
+  return r.text();
+}
+
 export function hasDriveToken() {
   return hasValidToken() || loadPersistedToken();
 }

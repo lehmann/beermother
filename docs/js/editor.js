@@ -149,6 +149,13 @@ import {
   CALIBRATION_DEFAULT_VOLUME_L as Ca,
 } from "./calibration.js";
 import { requestRecipeAnalysis as an } from "./analysis-screen.js";
+import {
+  inventoryScreen as invScreen,
+  inventoryMaltItems,
+  inventoryHopItems,
+  inventoryYeastItems,
+  inventoryMiscItems,
+} from "./inventory.js";
 function j(e) {
   return 1 + Math.min(0.5, Math.max(0, m(e, O.trubLossPct)));
 }
@@ -669,16 +676,40 @@ function F(e, o, n, r = sn[n]) {
   return a("div", "field-line", [r ? H(i, r) : i, a("b", "field-unit", n)]);
 }
 function ln() {
-  return [...De().malts.map((e) => ({ ...e, mine: !0 })), ...xt];
+  const inv = inventoryMaltItems().map((e) => ({
+    ...e,
+    mine: !0,
+    inStock: !0,
+  }));
+  return [
+    ...inv,
+    ...De().malts.map((e) => ({ ...e, mine: !0 })),
+    ...xt,
+  ];
 }
 function cn() {
-  return [...De().hops.map((e) => ({ ...e, mine: !0 })), ...Dt];
+  const inv = inventoryHopItems().map((e) => ({
+    ...e,
+    mine: !0,
+    inStock: !0,
+  }));
+  return [...inv, ...De().hops.map((e) => ({ ...e, mine: !0 })), ...Dt];
 }
 function dn() {
-  return [...De().yeasts.map((e) => ({ ...e, mine: !0 })), ...Ot];
+  const inv = inventoryYeastItems().map((e) => ({
+    ...e,
+    mine: !0,
+    inStock: !0,
+  }));
+  return [...inv, ...De().yeasts.map((e) => ({ ...e, mine: !0 })), ...Ot];
 }
 function un() {
-  return [...De().miscs.map((e) => ({ ...e, mine: !0 })), ...Gt];
+  const inv = inventoryMiscItems().map((e) => ({
+    ...e,
+    mine: !0,
+    inStock: !0,
+  }));
+  return [...inv, ...De().miscs.map((e) => ({ ...e, mine: !0 })), ...Gt];
 }
 export function workspaceScreen() {
   const e = c.workspaceSection || "recipes";
@@ -688,7 +719,9 @@ export function workspaceScreen() {
       ? notebookScreen()
       : e === "equipment"
         ? equipmentScreen()
-        : recipesScreen();
+        : e === "inventory"
+          ? invScreen()
+          : recipesScreen();
 }
 function pageHead(e, o, n = []) {
   return a("div", "page-head", [
@@ -4110,7 +4143,7 @@ function no(e, o) {
                 placeholder: t("Buscar malte\u2026"),
                 items: ln(),
                 itemLabel: (w) =>
-                  `${w.name} \xB7 ${P(w.ebc, 0)} EBC${w.mine ? " \xB7 meu" : ""}`,
+                  `${w.name} \xB7 ${P(w.ebc, 0)} EBC${w.inStock ? ` \xB7 ✓ ${w.inventoryKg} kg` : w.mine ? " \xB7 meu" : ""}`,
                 customLabel: "Criar",
                 multi: !0,
                 onPickMany: (w) => {
@@ -4375,7 +4408,7 @@ function oo(e, o) {
             placeholder: t("Buscar l\xFApulo\u2026"),
             items: cn(),
             itemLabel: (l) =>
-              `${l.name} \xB7 ${P(l.alpha, 1)}%aa${l.mine ? " \xB7 meu" : ""}`,
+              `${l.name} \xB7 ${P(l.alpha, 1)}%aa${l.inStock ? ` \xB7 ✓ ${l.inventoryG} g` : l.mine ? " \xB7 meu" : ""}`,
             customLabel: "Criar",
             multi: !0,
             onPickMany: (l) => {
@@ -4653,7 +4686,7 @@ function io(e, o) {
           placeholder: t("Buscar levedura\u2026"),
           items: dn(),
           itemLabel: (s) =>
-            `${s.name} \xB7 ${s.attenuation}%${s.mine ? " \xB7 meu" : ""}`,
+            `${s.name} \xB7 ${s.attenuation}%${s.inStock ? ` \xB7 ✓ ${s.amount} ${s.unit || "pkg"}` : s.mine ? " \xB7 meu" : ""}`,
           customLabel: "Criar",
           onPick: (s) => {
             if (s.custom !== void 0) {
@@ -5184,7 +5217,8 @@ function ho(e) {
           title: t("Adicionar insumo"),
           placeholder: t("Buscar insumo\u2026"),
           items: un(),
-          itemLabel: (n) => `${n.name}${n.mine ? " \xB7 meu" : ""}`,
+          itemLabel: (n) =>
+            `${n.name}${n.inStock ? ` \xB7 ✓ ${n.amount} ${n.unit || "g"}` : n.mine ? " \xB7 meu" : ""}`,
           customLabel: "Criar",
           onPick: (n) => {
             if (n.custom !== void 0) {
