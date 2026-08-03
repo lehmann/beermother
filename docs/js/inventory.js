@@ -15,6 +15,7 @@ import {
   loadInventoryFromDrive,
   requestDriveAccess,
 } from "./gdrive.js";
+import { MALT_LIBRARY, HOP_LIBRARY, YEAST_LIBRARY } from "./library.js";
 
 const INVENTORY_FILE = "inventory.xml";
 
@@ -238,95 +239,157 @@ function defaultForCategory(cat) {
   return { name: "", amount: 0, unit: "g", use: "" };
 }
 
-function nameInput(val, onChange) {
+function nameInput(val, onChange, suggestions = []) {
+  const wrap = el("div", "inv-suggest-wrap", []);
   const inp = document.createElement("input");
   inp.type = "text";
   inp.className = "field-input";
   inp.value = val || "";
-  inp.addEventListener("input", () => onChange(inp.value));
-  return inp;
+
+  let listEl = null;
+  let activeIdx = -1;
+
+  function hideSuggestions() {
+    if (listEl) {
+      listEl.remove();
+      listEl = null;
+    }
+    activeIdx = -1;
+  }
+
+  function showSuggestions(matches) {
+    hideSuggestions();
+    if (!matches.length) return;
+    listEl = el(
+      "ul",
+      "inv-suggest-list",
+      matches.map((s, i) => {
+        const li = document.createElement("li");
+        li.className = "inv-suggest-item";
+        li.textContent = s.name;
+        li.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          inp.value = s.name;
+          onChange(s.name);
+          // Auto-fill numeric fields when a library entry is selected
+          if (s._autofill) s._autofill();
+          hideSuggestions();
+        });
+        return li;
+      }),
+    );
+    wrap.appendChild(listEl);
+  }
+
+  function setActive(idx) {
+    if (!listEl) return;
+    const items = listEl.querySelectorAll(".inv-suggest-item");
+    items.forEach((li, i) => li.classList.toggle("active", i === idx));
+    activeIdx = idx;
+  }
+
+  inp.addEventListener("input", () => {
+    const q = inp.value.trim().toLowerCase();
+    onChange(inp.value);
+    if (!q) { hideSuggestions(); return; }
+    const matches = suggestions
+      .filter((s) => s.name.toLowerCase().includes(q))
+      .slice(0, 8);
+    showSuggestions(matches);
+  });
+
+  inp.addEventListener("keydown", (e) => {
+    if (!listEl) return;
+    const items = listEl.querySelectorAll(".inv-suggest-item");
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActive(Math.min(activeIdx + 1, items.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(Math.max(activeIdx - 1, 0));
+    } else if (e.key === "Enter" && activeIdx >= 0) {
+      e.preventDefault();
+      items[activeIdx].dispatchEvent(new MouseEvent("mousedown"));
+    } else if (e.key === "Escape") {
+      hideSuggestions();
+    }
+  });
+
+  inp.addEventListener("blur", () => setTimeout(hideSuggestions, 150));
+
+  wrap.appendChild(inp);
+  return wrap;
+}
+
+function setInputVal(inputEl, val) {
+  const inp = inputEl.querySelector("input") || inputEl;
+  inp.value = val;
+  inp.dispatchEvent(new Event("input"));
 }
 
 function buildFields(cat, item) {
   const rows = [];
 
+  // Build category-specific numeric fields first so autofill can reference them
+  const numRefs = {};
+
+  if (cat === "fermentables") {
+    numRefs.yieldEl = numInput(item.yieldPct, (v) => { item.yieldPct = Math.max(1, Math.min(100, Number(v) || 78)); }, { step: "1", min: "1", max: "100" });
+    numRefs.ebcEl   = numInput(item.ebc,      (v) => { item.ebc      = Math.max(0, Number(v) || 0); },               { step: "1", min: "0" });
+  } else if (cat === "hops") {
+    numRefs.alphaEl = numInput(item.alpha, (v) => { item.alpha = Math.max(0, Math.min(25, Number(v) || 10)); }, { step: "0.1", min: "0", max: "25" });
+  } else if (cat === "yeasts") {
+    numRefs.attenEl = numInput(item.attenuation, (v) => { item.attenuation = Math.max(30, Math.min(100, Number(v) || 75)); }, { step: "1", min: "30", max: "100" });
+  }
+
+  // Suggestions per category with autofill callbacks
+  const suggestions =
+    cat === "fermentables"
+      ? MALT_LIBRARY.map((s) => ({
+          name: s.name,
+          _autofill: () => {
+            if (s.yieldPct != null) { item.yieldPct = s.yieldPct; setInputVal(numRefs.yieldEl, s.yieldPct); }
+            if (s.ebc     != null) { item.ebc      = s.ebc;      setInputVal(numRefs.ebcEl,   s.ebc); }
+          },
+        }))
+      : cat === "hops"
+      ? HOP_LIBRARY.map((s) => ({
+          name: s.name,
+          _autofill: () => {
+            const alpha = s.alpha?.avg ?? s.alpha;
+            if (alpha != null) { item.alpha = alpha; setInputVal(numRefs.alphaEl, alpha); }
+          },
+        }))
+      : cat === "yeasts"
+      ? YEAST_LIBRARY.map((s) => ({
+          name: s.name,
+          _autofill: () => {
+            if (s.attenuation != null) { item.attenuation = s.attenuation; setInputVal(numRefs.attenEl, s.attenuation); }
+          },
+        }))
+      : [];
+
   rows.push(
     fieldRow(
       t("Nome"),
-      nameInput(item.name, (v) => {
-        item.name = v;
-      }),
+      nameInput(item.name, (v) => { item.name = v; }, suggestions),
     ),
   );
 
   if (cat === "fermentables") {
     rows.push(
-      fieldRow(
-        t("Quantidade (kg)"),
-        numInput(
-          item.amountKg,
-          (v) => {
-            item.amountKg = Math.max(0, Number(v) || 0);
-          },
-          { step: "0.1", min: "0" },
-        ),
-      ),
-      fieldRow(
-        t("Rendimento (%)"),
-        numInput(
-          item.yieldPct,
-          (v) => {
-            item.yieldPct = Math.max(1, Math.min(100, Number(v) || 78));
-          },
-          { step: "1", min: "1", max: "100" },
-        ),
-      ),
-      fieldRow(
-        t("Cor (EBC)"),
-        numInput(
-          item.ebc,
-          (v) => {
-            item.ebc = Math.max(0, Number(v) || 0);
-          },
-          { step: "1", min: "0" },
-        ),
-      ),
+      fieldRow(t("Quantidade (kg)"), numInput(item.amountKg, (v) => { item.amountKg = Math.max(0, Number(v) || 0); }, { step: "0.1", min: "0" })),
+      fieldRow(t("Rendimento (%)"), numRefs.yieldEl),
+      fieldRow(t("Cor (EBC)"),      numRefs.ebcEl),
     );
   } else if (cat === "hops") {
     rows.push(
-      fieldRow(
-        t("Quantidade (g)"),
-        numInput(
-          item.amount,
-          (v) => {
-            item.amount = Math.max(0, Number(v) || 0);
-          },
-          { step: "1", min: "0" },
-        ),
-      ),
-      fieldRow(
-        t("Alfa ácido (%)"),
-        numInput(
-          item.alpha,
-          (v) => {
-            item.alpha = Math.max(0, Math.min(25, Number(v) || 10));
-          },
-          { step: "0.1", min: "0", max: "25" },
-        ),
-      ),
+      fieldRow(t("Quantidade (g)"), numInput(item.amount, (v) => { item.amount = Math.max(0, Number(v) || 0); }, { step: "1", min: "0" })),
+      fieldRow(t("Alfa ácido (%)"), numRefs.alphaEl),
     );
   } else if (cat === "yeasts") {
     rows.push(
-      fieldRow(
-        t("Quantidade"),
-        numInput(
-          item.amount,
-          (v) => {
-            item.amount = Math.max(0, Number(v) || 0);
-          },
-          { step: "1", min: "0" },
-        ),
-      ),
+      fieldRow(t("Quantidade"), numInput(item.amount, (v) => { item.amount = Math.max(0, Number(v) || 0); }, { step: "1", min: "0" })),
       fieldRow(
         t("Unidade"),
         (() => {
@@ -339,22 +402,11 @@ function buildFields(cat, item) {
             if (u === (item.unit || "pkg")) opt.selected = true;
             sel.append(opt);
           });
-          sel.addEventListener("change", () => {
-            item.unit = sel.value;
-          });
+          sel.addEventListener("change", () => { item.unit = sel.value; });
           return sel;
         })(),
       ),
-      fieldRow(
-        t("Atenuação (%)"),
-        numInput(
-          item.attenuation,
-          (v) => {
-            item.attenuation = Math.max(30, Math.min(100, Number(v) || 75));
-          },
-          { step: "1", min: "30", max: "100" },
-        ),
-      ),
+      fieldRow(t("Atenuação (%)"), numRefs.attenEl),
     );
   } else {
     rows.push(

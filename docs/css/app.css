@@ -1473,3 +1473,38 @@ body.guide-col .guide-dock.copilot .guide-c-title {
 .btn.danger:hover {
   background: color-mix(in srgb, var(--color-danger, #e05252) 8%, transparent);
 }
+.inv-suggest-wrap {
+  position: relative;
+  width: 100%;
+}
+.inv-suggest-wrap .field-input {
+  width: 100%;
+}
+.inv-suggest-list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--surface-2, #fff);
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  max-height: 220px;
+  overflow-y: auto;
+}
+.inv-suggest-item {
+  padding: 8px 12px;
+  font-size: var(--text-md);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.inv-suggest-item:hover,
+.inv-suggest-item.active {
+  background: var(--surface-hover, rgba(0, 0, 0, 0.06));
+}
