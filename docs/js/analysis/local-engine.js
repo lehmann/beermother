@@ -1013,7 +1013,15 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL, yeastP
       const mode = distributionMode(dist);
       const p10 = distributionPercentile(dist, 0.1);
       const p90 = distributionPercentile(dist, 0.9);
-      const presence = e.totalFrac > 0.15 ? 1 : e.totalFrac > 0.05 ? 0.9 : 0.7;
+      // Presence = probability the descriptor is perceptible.
+      // Scaled to totalFrac so trace amounts (e.g. 2% Carahell) don't surface as
+      // dominant characters. Lúpulo uses oil-weighted frac; already scales naturally.
+      const presence =
+        e.familyId === "ferm"
+          ? 1
+          : e.familyId === "lupulo"
+          ? Math.min(1, 0.5 + e.totalFrac * 2)
+          : clamp(e.totalFrac / 0.15, 0, 1);
       return {
         key,
         id: e.key,
