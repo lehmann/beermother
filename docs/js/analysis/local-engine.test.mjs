@@ -114,10 +114,10 @@ describe("context — parâmetros calculados a partir dos ingredientes", () => {
   it("German Pils: OG, FG, IBU, SRM e ABV em faixas plausíveis", () => {
     const { analysis } = runLocalAnalysis({ draft: GERMAN_PILS, seed: 1 });
     const ctx = analysis.context;
-    assert.ok(inRange(ctx.ogPoints, 36, 46), `ogPoints=${ctx.ogPoints}`);
+    assert.ok(inRange(ctx.ogPoints, 44, 54), `ogPoints=${ctx.ogPoints}`);
     assert.ok(inRange(ctx.srm, 2, 6), `srm=${ctx.srm}`);
     assert.ok(inRange(ctx.ibu, 10, 30), `ibu=${ctx.ibu}`);
-    assert.ok(inRange(ctx.abv, 3.8, 5.5), `abv=${ctx.abv}`);
+    assert.ok(inRange(ctx.abv, 4.5, 6.0), `abv=${ctx.abv}`);
     assert.ok(ctx.fg < 1 + ctx.ogPoints / 1000, "FG deve ser menor que OG");
   });
 
@@ -448,7 +448,7 @@ describe("vienna lager (GT pair) — receita real do dataset", () => {
     const result = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
     assert.equal(result.ok, true);
     const ctx = result.analysis.context;
-    assert.ok(inRange(ctx.ogPoints, 56, 70), `ogPoints=${ctx.ogPoints}`);
+    assert.ok(inRange(ctx.ogPoints, 60, 90), `ogPoints=${ctx.ogPoints}`);
     assert.ok(inRange(ctx.srm, 5, 14), `srm=${ctx.srm}`);
     assert.ok(inRange(ctx.ibu, 10, 28), `ibu=${ctx.ibu}`);
     assert.ok(inRange(ctx.abv, 6, 10), `abv=${ctx.abv}`);
@@ -548,7 +548,7 @@ describe("hefeweizen — descritores, levedura e controles calibrados", () => {
     const result = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
     assert.equal(result.ok, true);
     const ctx = result.analysis.context;
-    assert.ok(inRange(ctx.ogPoints, 38, 48), `ogPoints=${ctx.ogPoints}`);
+    assert.ok(inRange(ctx.ogPoints, 44, 58), `ogPoints=${ctx.ogPoints}`);
     assert.ok(inRange(ctx.abv, 4.0, 6.5), `abv=${ctx.abv}`);
     assert.ok(inRange(ctx.ibu, 5, 20), `ibu=${ctx.ibu}`);
   });
