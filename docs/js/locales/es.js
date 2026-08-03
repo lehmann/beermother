@@ -1871,4 +1871,12 @@ export default {
   "Item removido.": "Ítem eliminado.",
   "Sincronizando com o Drive…": "Sincronizando con Drive…",
   "Falha ao sincronizar com o Drive.": "Error al sincronizar con Drive.",
+  "Tipo": "Tipo",
+  "Sabor": "Sabor",
+  "Erva": "Hierba",
+  "Sais": "Sales",
+  "Clarificante": "Clarificante",
+  "Especiaria": "Especia",
+  "Quantidade por litro (g/L)": "Cantidad por litro (g/L)",
+  "selecione": "seleccione",
 };

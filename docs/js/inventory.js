@@ -70,7 +70,7 @@ export function inventoryToXml(inv) {
   const others = (inv.others || [])
     .map(
       (it) =>
-        `<MISC>${tag("ID", it.id)}${tag("NAME", it.name)}${tag("AMOUNT", it.amount ?? 0)}${tag("AMOUNT_IS_WEIGHT", "FALSE")}${tag("DISPLAY_AMOUNT", `${it.amount ?? 0} ${it.unit || "g"}`)}${it.use ? tag("USE", it.use) : ""}</MISC>`,
+        `<MISC>${tag("ID", it.id)}${tag("NAME", it.name)}${tag("AMOUNT", it.amount ?? 0)}${tag("AMOUNT_IS_WEIGHT", "FALSE")}${tag("DISPLAY_AMOUNT", `${it.amount ?? 0} ${it.unit || "g"}`)}${it.use ? tag("USE", it.use) : ""}${it.miscType ? tag("MISC_TYPE", it.miscType) : ""}${it.qtyPerL != null ? tag("QTY_PER_L", it.qtyPerL) : ""}</MISC>`,
     )
     .join("\n");
 
@@ -142,6 +142,8 @@ export function parseInventoryXml(xml) {
         amount: getNum(n, "AMOUNT"),
         unit: unitMatch ? unitMatch[1] : "g",
         use: getText(n, "USE"),
+        miscType: getText(n, "MISC_TYPE"),
+        qtyPerL: getNum(n, "QTY_PER_L", 0),
       };
     });
 
@@ -236,7 +238,7 @@ function defaultForCategory(cat) {
     return { name: "", amountKg: 0, yieldPct: 78, ebc: 5, type: "Grão" };
   if (cat === "hops") return { name: "", amount: 0, unit: "g", alpha: 10, form: "Pellet" };
   if (cat === "yeasts") return { name: "", amount: 0, unit: "pkg", attenuation: 75 };
-  return { name: "", amount: 0, unit: "g", use: "" };
+  return { name: "", amount: 0, unit: "g", use: "", miscType: "", qtyPerL: 0 };
 }
 
 function nameInput(val, onChange, suggestions = []) {
@@ -439,10 +441,33 @@ function buildFields(cat, item) {
         })(),
       ),
       fieldRow(
+        t("Tipo"),
+        (() => {
+          const sel = document.createElement("select");
+          sel.className = "field-input";
+          const types = ["", "Sabor", "Erva", "Sais", "Clarificante", "Especiaria"];
+          types.forEach((tp) => {
+            const opt = document.createElement("option");
+            opt.value = tp;
+            opt.textContent = tp ? t(tp) : `— ${t("selecione")} —`;
+            if (tp === (item.miscType || "")) opt.selected = true;
+            sel.append(opt);
+          });
+          sel.addEventListener("change", () => { item.miscType = sel.value; });
+          return sel;
+        })(),
+      ),
+      fieldRow(
+        t("Quantidade por litro (g/L)"),
+        numInput(
+          item.qtyPerL,
+          (v) => { item.qtyPerL = Math.max(0, Number(v) || 0); },
+          { step: "0.1", min: "0" },
+        ),
+      ),
+      fieldRow(
         t("Uso"),
-        nameInput(item.use || "", (v) => {
-          item.use = v;
-        }),
+        nameInput(item.use || "", (v) => { item.use = v; }),
       ),
     );
   }
@@ -556,7 +581,11 @@ function itemSubLabel(cat, item) {
     return `${item.yieldPct || 78}% rend. · ${item.ebc || 0} EBC`;
   if (cat === "hops") return `${item.alpha || 10}% AA`;
   if (cat === "yeasts") return `${item.attenuation || 75}% aten.`;
-  return item.use || "";
+  const parts = [];
+  if (item.miscType) parts.push(t(item.miscType));
+  if (item.qtyPerL) parts.push(`${item.qtyPerL} g/L`);
+  if (item.use) parts.push(item.use);
+  return parts.join(" · ");
 }
 
 function categorySection(cat, items) {

@@ -1844,4 +1844,12 @@ export default {
   "Item removido.": "Item removed.",
   "Sincronizando com o Drive…": "Syncing with Drive…",
   "Falha ao sincronizar com o Drive.": "Failed to sync with Drive.",
+  "Tipo": "Type",
+  "Sabor": "Flavor",
+  "Erva": "Herb",
+  "Sais": "Salts",
+  "Clarificante": "Fining",
+  "Especiaria": "Spice",
+  "Quantidade por litro (g/L)": "Quantity per liter (g/L)",
+  "selecione": "select",
 };
