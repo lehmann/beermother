@@ -818,37 +818,16 @@ function buildFermentStep(yeastProfile, fermTemp, ogPoints, pitchRate) {
 
 // ─── Descriptor builder ──────────────────────────────────────────────────────
 
-// Tag → descriptor mapping for yeast-derived fermentation aromas
+// Tag → descriptor mapping for yeast-derived fermentation aromas.
+// Tags with emergentRequires only fire when late hops (dry hop / whirlpool / hopstand)
+// carry a matching descriptor key — they represent biotransformation potential that
+// surfaces only when the appropriate hop substrate is present.
 const YEAST_TAG_DESCRIPTORS = {
   "levedura-ester-banana": {
     key: "frutado",
     label: "Frutado",
     group: "Éster",
     rawMode: 2,
-  },
-  "aroma-emergente-condimentado": {
-    key: "condimentado-ferm",
-    label: "Condimentado",
-    group: "Fenólico",
-    rawMode: 1.5,
-  },
-  "aroma-emergente-herbal": {
-    key: "herbal-ferm",
-    label: "Herbal",
-    group: "Éster",
-    rawMode: 1.5,
-  },
-  "aroma-emergente-citrico": {
-    key: "citrico-ferm",
-    label: "Cítrico",
-    group: "Éster",
-    rawMode: 2,
-  },
-  "aroma-emergente-melao": {
-    key: "melao-ferm",
-    label: "Melão",
-    group: "Éster",
-    rawMode: 1.5,
   },
   "pof-4vg": {
     key: "cravo-ferm",
@@ -861,6 +840,34 @@ const YEAST_TAG_DESCRIPTORS = {
     label: "Fenólico",
     group: "Fenólico",
     rawMode: 1.5,
+  },
+  "aroma-emergente-citrico": {
+    key: "citrico-ferm",
+    label: "Cítrico",
+    group: "Biotransformação",
+    rawMode: 1.2,
+    emergentRequires: "citrico",
+  },
+  "aroma-emergente-herbal": {
+    key: "herbal-ferm",
+    label: "Herbal",
+    group: "Biotransformação",
+    rawMode: 1.2,
+    emergentRequires: "herbal",
+  },
+  "aroma-emergente-condimentado": {
+    key: "condimentado-ferm",
+    label: "Condimentado",
+    group: "Biotransformação",
+    rawMode: 1.0,
+    emergentRequires: "condimentado",
+  },
+  "aroma-emergente-melao": {
+    key: "melao-ferm",
+    label: "Melão",
+    group: "Biotransformação",
+    rawMode: 1.0,
+    emergentRequires: "melao",
   },
 };
 
@@ -926,11 +933,22 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL, yeastP
     }
   }
 
+  // Collect descriptor keys present in late hops (dry hop / whirlpool / hopstand)
+  // used to gate biotransformation-emergent yeast aromas
+  const lateHopDescKeys = new Set();
+  for (const h of hops) {
+    const use = (h.use || "").toLowerCase();
+    if (!/dry|seco|whirl|flame|hopback|hopstand/.test(use)) continue;
+    for (const d of HOP_DESCRIPTORS[h.name] || []) lateHopDescKeys.add(d.key);
+  }
+
   // Yeast-derived fermentation descriptors
   if (yeastProfile && yeastProfile.tags) {
     for (const tag of yeastProfile.tags) {
       const desc = YEAST_TAG_DESCRIPTORS[tag];
       if (!desc) continue;
+      // Emergent tags require a matching hop substrate in late additions
+      if (desc.emergentRequires && !lateHopDescKeys.has(desc.emergentRequires)) continue;
       const k = `ferm:${desc.key}`;
       if (!seen.has(k)) {
         seen.set(k, {

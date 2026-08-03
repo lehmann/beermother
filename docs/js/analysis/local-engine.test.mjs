@@ -374,3 +374,251 @@ describe("robustez — receitas incompletas não devem crashar", () => {
     assert.ok(typeof result.ok === "boolean");
   });
 });
+
+// ─── Hefeweizen — cobertura das correções de descritores ─────────────────────
+
+const HEFEWEIZEN = {
+  name: "Hefeweizen",
+  batchVolumeL: 20,
+  boilTimeMin: 60,
+  mashEfficiencyPct: 75,
+  fermentables: [
+    {
+      name: "Wheat Malt",
+      type: "Grão",
+      amountKg: 2.8,
+      yieldPct: 82,
+      colorEbc: 3,
+      when: "Fervura",
+    },
+    {
+      name: "Pilsner Malt",
+      type: "Grão",
+      amountKg: 1.8,
+      yieldPct: 80,
+      colorEbc: 3.5,
+      when: "Fervura",
+    },
+  ],
+  hops: [
+    {
+      name: "Hallertauer Mittelfrueh",
+      amountG: 20,
+      alphaAcidPct: 4.0,
+      use: "Fervura",
+      timeMin: 60,
+    },
+  ],
+  yeasts: [{ name: "Bavarian Wheat Yeast", attenuationPct: 73, amount: 1 }],
+  mash: [
+    { temperatureC: 64, timeMin: 20 },
+    { temperatureC: 72, timeMin: 40 },
+  ],
+};
+
+// ─── Vienna Lager — receita real do dataset GT ───────────────────────────────
+
+const VIENNA_LAGER = {
+  id: "recipe-mryisanu-jajym",
+  name: "Vienna Lager",
+  styleName: "Vienna Lager",
+  batchVolumeL: 4.5,
+  boilTimeMin: 60,
+  mashEfficiencyPct: 126.6,
+  fermentables: [
+    { name: "Vienna Malt", type: "Grão", yieldPct: 80, colorEbc: 6, amountKg: 0.705, when: "Fervura" },
+    { name: "Melanoidin", type: "Grão", yieldPct: 80.07, colorEbc: 39.1, amountKg: 0.071, when: "Fervura" },
+    { name: "Caramunich III", type: "Grão", yieldPct: 80.07, colorEbc: 94.6, amountKg: 0.047, when: "Fervura" },
+    { name: "Chateau Biscuit", type: "Grão", yieldPct: 77, colorEbc: 32.9, amountKg: 0.047, when: "Fervura" },
+  ],
+  hops: [
+    { name: "Magnum", alphaAcidPct: 12.4, amountG: 3.3, use: "First wort", timeMin: 60, temperatureC: 90 },
+    { name: "Hallertauer Mittelfrueh", alphaAcidPct: 4, amountG: 4.5, use: "Hopstand", timeMin: 0, temperatureC: 90 },
+  ],
+  yeasts: [{ name: "Levedura", attenuationPct: 75, amount: 90, unit: "un." }],
+  mash: [
+    { name: "Step 1", temperatureC: 55, timeMin: 5 },
+    { name: "Mostura", temperatureC: 62, timeMin: 20 },
+    { name: "Step 3", temperatureC: 72, timeMin: 10 },
+  ],
+};
+
+describe("vienna lager (GT pair) — receita real do dataset", () => {
+  it("ok:true e contexto em faixa plausível", () => {
+    const result = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    assert.equal(result.ok, true);
+    const ctx = result.analysis.context;
+    assert.ok(inRange(ctx.ogPoints, 60, 90), `ogPoints=${ctx.ogPoints}`);
+    assert.ok(inRange(ctx.srm, 5, 14), `srm=${ctx.srm}`);
+    assert.ok(inRange(ctx.ibu, 10, 28), `ibu=${ctx.ibu}`);
+    assert.ok(inRange(ctx.abv, 6, 10), `abv=${ctx.abv}`);
+  });
+
+  it("descritores de Lúpulo presentes — Hallertauer Mittelfrueh via Hopstand", () => {
+    // Hopstand é tratado como whirlpool; HOP_OIL_RETENTION deve dar peso ao hop
+    // e Hallertauer Mittelfrueh é um dos 14 novos hops adicionados ao DB
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    const hopDescs = analysis.stochastic.descriptors.filter(
+      (d) => d.familia === "Lúpulo",
+    );
+    assert.ok(hopDescs.length >= 1, "nenhum descritor de Lúpulo encontrado");
+    const labels = hopDescs.map((d) => d.d);
+    const hasHallertau = labels.some((l) =>
+      ["Herbal", "Condimentado", "Floral"].includes(l),
+    );
+    assert.ok(
+      hasHallertau,
+      `esperado Herbal/Condimentado/Floral do Hallertauer Mittelfrueh; encontrado: ${labels.join(", ")}`,
+    );
+  });
+
+  it("descritores de Fermentação presentes — levedura genérica emite Frutado", () => {
+    // Yeast "Levedura" resolve para o perfil genérico com tag levedura-ester-banana
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    const fermDescs = analysis.stochastic.descriptors.filter(
+      (d) => d.familia === "Fermentação",
+    );
+    assert.ok(fermDescs.length >= 1, "nenhum descritor de Fermentação encontrado");
+    const labels = fermDescs.map((d) => d.d);
+    assert.ok(
+      labels.includes("Frutado"),
+      `Frutado ausente; encontrado: ${labels.join(", ")}`,
+    );
+  });
+
+  it("descritores de Malte ricos — Biscoito, Casca de pão ou Tostado presentes", () => {
+    // Caramunich III + Chateau Biscuit + Melanoidin devem gerar descritores maltados ricos
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    const maltDescs = analysis.stochastic.descriptors.filter(
+      (d) => d.familia === "Malte",
+    );
+    const labels = maltDescs.map((d) => d.d);
+    const hasRich = labels.some((l) =>
+      ["Biscoito", "Casca de pão", "Tostado"].includes(l),
+    );
+    assert.ok(
+      hasRich,
+      `esperado pelo menos um de Biscoito/Casca de pão/Tostado; encontrado: ${labels.join(", ")}`,
+    );
+  });
+
+  it("astringency === 0 (sem malte torrado no grist)", () => {
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    assert.equal(
+      analysis.deterministic.controls.astringency?.value,
+      0,
+    );
+  });
+
+  it("clarity === 0 (lager limpa sem trigo ou aveia)", () => {
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    assert.equal(
+      analysis.deterministic.controls.clarity?.value,
+      0,
+    );
+  });
+
+  it("mash 55°C dispara sacar-baixa (rest de proteína/β-glucanase)", () => {
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    const step = analysis.deterministic.steps.find(
+      (s) => s.kind === "mash" && s.titleMeta === "55°C",
+    );
+    assert.ok(step, "step de mash 55°C não encontrado");
+    assert.ok(
+      step.fired.includes("sacar-baixa"),
+      `fired=${JSON.stringify(step.fired)}`,
+    );
+  });
+
+  it("mash 72°C dispara sacar-alta (α-amilase)", () => {
+    const { analysis } = runLocalAnalysis({ draft: VIENNA_LAGER, seed: 1 });
+    const step = analysis.deterministic.steps.find(
+      (s) => s.kind === "mash" && s.titleMeta === "72°C",
+    );
+    assert.ok(step, "step de mash 72°C não encontrado");
+    assert.ok(
+      step.fired.includes("sacar-alta"),
+      `fired=${JSON.stringify(step.fired)}`,
+    );
+  });
+});
+
+describe("hefeweizen — descritores, levedura e controles calibrados", () => {
+  it("ok:true e contexto plausível", () => {
+    const result = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    assert.equal(result.ok, true);
+    const ctx = result.analysis.context;
+    assert.ok(inRange(ctx.ogPoints, 44, 58), `ogPoints=${ctx.ogPoints}`);
+    assert.ok(inRange(ctx.abv, 4.0, 6.5), `abv=${ctx.abv}`);
+    assert.ok(inRange(ctx.ibu, 5, 20), `ibu=${ctx.ibu}`);
+  });
+
+  it("descritores de Lúpulo presentes para Hallertauer Mittelfrueh (hop novo no DB)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const hopDescs = analysis.stochastic.descriptors.filter(
+      (d) => d.familia === "Lúpulo",
+    );
+    assert.ok(hopDescs.length >= 1, "nenhum descritor de Lúpulo encontrado");
+    const labels = hopDescs.map((d) => d.d);
+    const hasExpected = labels.some((l) =>
+      ["Herbal", "Condimentado", "Floral"].includes(l),
+    );
+    assert.ok(
+      hasExpected,
+      `descritores Lúpulo encontrados: ${labels.join(", ")}`,
+    );
+  });
+
+  it("descritores de Fermentação presentes para Bavarian Wheat Yeast (levedura com pof-4vg)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const fermDescs = analysis.stochastic.descriptors.filter(
+      (d) => d.familia === "Fermentação",
+    );
+    assert.ok(fermDescs.length >= 1, "nenhum descritor de Fermentação encontrado");
+    const labels = fermDescs.map((d) => d.d);
+    // Bavarian Wheat Yeast tem levedura-ester-banana → Frutado e pof-4vg → Cravo
+    assert.ok(labels.includes("Frutado"), `Frutado ausente; found: ${labels.join(", ")}`);
+    assert.ok(labels.includes("Cravo"), `Cravo ausente; found: ${labels.join(", ")}`);
+  });
+
+  it("descritores têm mode entre 1 e 3 (escala calibrada — não mais 5)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    for (const d of analysis.stochastic.descriptors) {
+      const mode = d.bins.indexOf(Math.max(...d.bins));
+      assert.ok(
+        mode >= 1 && mode <= 3,
+        `descritor "${d.d}" tem mode=${mode} fora de [1,3]`,
+      );
+    }
+  });
+
+  it("astringency === 0 para receita sem malte torrado", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const ast = analysis.deterministic.controls.astringency?.value;
+    assert.equal(ast, 0, `astringency esperado 0, obtido ${ast}`);
+  });
+
+  it("warming ≤ 1.5 para receita de baixo ABV (< 6%)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const w = analysis.deterministic.controls.warming?.value;
+    assert.ok(w <= 1.5, `warming esperado ≤ 1.5, obtido ${w}`);
+  });
+
+  it("mash step 64°C dispara sacar-baixa (β-amilase)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const step = analysis.deterministic.steps.find(
+      (s) => s.kind === "mash" && s.titleMeta === "64°C",
+    );
+    assert.ok(step, "step de mash 64°C não encontrado");
+    assert.ok(step.fired.includes("sacar-baixa"), `fired=${step.fired}`);
+  });
+
+  it("mash step 72°C dispara sacar-alta (α-amilase)", () => {
+    const { analysis } = runLocalAnalysis({ draft: HEFEWEIZEN, seed: 1 });
+    const step = analysis.deterministic.steps.find(
+      (s) => s.kind === "mash" && s.titleMeta === "72°C",
+    );
+    assert.ok(step, "step de mash 72°C não encontrado");
+    assert.ok(step.fired.includes("sacar-alta"), `fired=${step.fired}`);
+  });
+});
