@@ -21,7 +21,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0.9,
                 "amountKg": 0.6,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carrot Juice",
@@ -29,7 +29,7 @@
                 "yieldPct": 75.8,
                 "colorEbc": 12.4,
                 "amountKg": 0.33,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

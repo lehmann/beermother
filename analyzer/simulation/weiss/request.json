@@ -1,1 +1,125 @@
-{"draft":{"id":"recipe-mryhm5qg-sqsrg","name":"PFC - Weiss","styleName":"Weissbier","brewer":"Jamal","batchVolumeL":23,"boilTimeMin":60,"mashEfficiencyPct":67.8,"manualFg":"","equipmentProfileName":"","trubLossPct":0.0435,"evaporationPct":9.1,"whirlpoolNoChillMin":5,"whirlpoolTemperatureC":90,"heatingRateCMin":1.5,"fermentables":[{"name":"Wheat Malt, Pale","type":"Grão","yieldPct":78,"colorEbc":3.7,"amountKg":3.277,"when":"Fervura"},{"name":"Pilsner","type":"Grão","yieldPct":82.23,"colorEbc":3,"amountKg":2.0905,"when":"Fervura"},{"name":"Melanoidin","type":"Grão","yieldPct":80.07,"colorEbc":59,"amountKg":0.2825,"when":"Fervura"}],"hops":[{"name":"Hallertau Tradition","alphaAcidPct":7,"amountG":17,"use":"Fervura","timeMin":60,"temperatureC":0}],"yeasts":[{"name":"Munich Classic","attenuationPct":72,"amount":2,"unit":"pacote"}],"mash":[{"name":"Mash In","temperatureC":37,"timeMin":0},{"name":"Ácido Ferúlico","temperatureC":45,"timeMin":15},{"name":"B-Amilase","temperatureC":62,"timeMin":30},{"name":"A-Amilase","temperatureC":72,"timeMin":30},{"name":"Mash out","temperatureC":77,"timeMin":10}],"fermentation":[{"name":"Inoculação","temperatureC":17,"days":2},{"name":"Primária","temperatureC":21,"days":3}],"baseWaterProfile":{"calciumPpm":10,"magnesiumPpm":4,"sodiumPpm":4,"chloridePpm":12,"sulfatePpm":10,"bicarbonatePpm":30},"salts":[{"formula":"CaCl2","amountG":2.4},{"formula":"CaSO4","amountG":0.5},{"formula":"MgSO4","amountG":0.5}],"miscs":[]},"seed":1}
+{
+  "draft": {
+    "id": "recipe-mryhm5qg-sqsrg",
+    "name": "PFC - Weiss",
+    "styleName": "Weissbier",
+    "brewer": "Jamal",
+    "batchVolumeL": 23,
+    "boilTimeMin": 60,
+    "mashEfficiencyPct": 67.8,
+    "manualFg": "",
+    "equipmentProfileName": "",
+    "trubLossPct": 0.0435,
+    "evaporationPct": 9.1,
+    "whirlpoolNoChillMin": 5,
+    "whirlpoolTemperatureC": 90,
+    "heatingRateCMin": 1.5,
+    "fermentables": [
+      {
+        "name": "Wheat Malt, Pale",
+        "type": "Grão",
+        "yieldPct": 78,
+        "colorEbc": 3.7,
+        "amountKg": 3.277,
+        "when": "Mostura"
+      },
+      {
+        "name": "Pilsner",
+        "type": "Grão",
+        "yieldPct": 82.23,
+        "colorEbc": 3,
+        "amountKg": 2.0905,
+        "when": "Mostura"
+      },
+      {
+        "name": "Melanoidin",
+        "type": "Grão",
+        "yieldPct": 80.07,
+        "colorEbc": 59,
+        "amountKg": 0.2825,
+        "when": "Mostura"
+      }
+    ],
+    "hops": [
+      {
+        "name": "Hallertau Tradition",
+        "alphaAcidPct": 7,
+        "amountG": 17,
+        "use": "Fervura",
+        "timeMin": 60,
+        "temperatureC": 0
+      }
+    ],
+    "yeasts": [
+      {
+        "name": "Munich Classic",
+        "attenuationPct": 72,
+        "amount": 2,
+        "unit": "pacote"
+      }
+    ],
+    "mash": [
+      {
+        "name": "Mash In",
+        "temperatureC": 37,
+        "timeMin": 0
+      },
+      {
+        "name": "Ácido Ferúlico",
+        "temperatureC": 45,
+        "timeMin": 15
+      },
+      {
+        "name": "B-Amilase",
+        "temperatureC": 62,
+        "timeMin": 30
+      },
+      {
+        "name": "A-Amilase",
+        "temperatureC": 72,
+        "timeMin": 30
+      },
+      {
+        "name": "Mash out",
+        "temperatureC": 77,
+        "timeMin": 10
+      }
+    ],
+    "fermentation": [
+      {
+        "name": "Inoculação",
+        "temperatureC": 17,
+        "days": 2
+      },
+      {
+        "name": "Primária",
+        "temperatureC": 21,
+        "days": 3
+      }
+    ],
+    "baseWaterProfile": {
+      "calciumPpm": 10,
+      "magnesiumPpm": 4,
+      "sodiumPpm": 4,
+      "chloridePpm": 12,
+      "sulfatePpm": 10,
+      "bicarbonatePpm": 30
+    },
+    "salts": [
+      {
+        "formula": "CaCl2",
+        "amountG": 2.4
+      },
+      {
+        "formula": "CaSO4",
+        "amountG": 0.5
+      },
+      {
+        "formula": "MgSO4",
+        "amountG": 0.5
+      }
+    ],
+    "miscs": []
+  },
+  "seed": 1
+}

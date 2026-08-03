@@ -21,7 +21,7 @@
                 "yieldPct": 80.13,
                 "colorEbc": 3.3,
                 "amountKg": 0.526,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carared",
@@ -29,7 +29,7 @@
                 "yieldPct": 77.9,
                 "colorEbc": 31.1,
                 "amountKg": 0.052,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Chateau Biscuit",
@@ -37,7 +37,7 @@
                 "yieldPct": 77,
                 "colorEbc": 32.9,
                 "amountKg": 0.052,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

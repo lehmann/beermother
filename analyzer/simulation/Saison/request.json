@@ -21,7 +21,7 @@
                 "yieldPct": 75.45,
                 "colorEbc": 0.9,
                 "amountKg": 0.7,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Heidelberg Wheat Malt",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0.9,
                 "amountKg": 0.2,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Munich",
@@ -37,7 +37,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.13,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Sugar, Table (Sucrose)",
@@ -45,7 +45,7 @@
                 "yieldPct": 100,
                 "colorEbc": 0,
                 "amountKg": 0.05,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

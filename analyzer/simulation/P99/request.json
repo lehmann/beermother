@@ -21,7 +21,7 @@
                 "yieldPct": 77.83,
                 "colorEbc": 0.9,
                 "amountKg": 0.5,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Melanoidin",
@@ -29,7 +29,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 39.1,
                 "amountKg": 0.05,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

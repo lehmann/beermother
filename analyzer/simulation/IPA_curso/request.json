@@ -21,7 +21,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 2.5,
                 "amountKg": 0.88,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Malte Munique",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 14,
                 "amountKg": 0.124,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Wheat Malt, Pale",
@@ -37,7 +37,7 @@
                 "yieldPct": 78,
                 "colorEbc": 1.2,
                 "amountKg": 0.124,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

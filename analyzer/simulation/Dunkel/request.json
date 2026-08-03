@@ -21,7 +21,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.93,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich II",
@@ -29,7 +29,7 @@
                 "yieldPct": 75.74,
                 "colorEbc": 83.9,
                 "amountKg": 0.04,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Melanoidin",
@@ -37,7 +37,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 39.1,
                 "amountKg": 0.02,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Sinamar",
@@ -45,7 +45,7 @@
                 "yieldPct": 42.5,
                 "colorEbc": 4811.8,
                 "amountKg": 0.008,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

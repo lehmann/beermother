@@ -21,7 +21,7 @@
                 "yieldPct": 77.83,
                 "colorEbc": 0.9,
                 "amountKg": 1,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carared",
@@ -29,7 +29,7 @@
                 "yieldPct": 77.9,
                 "colorEbc": 31.1,
                 "amountKg": 0.141,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

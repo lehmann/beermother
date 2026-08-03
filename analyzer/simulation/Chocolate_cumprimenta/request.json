@@ -21,7 +21,7 @@
                 "yieldPct": 80.13,
                 "colorEbc": 3.3,
                 "amountKg": 0.7,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Munich",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.2,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Candi Sugar, Clear",
@@ -37,7 +37,7 @@
                 "yieldPct": 78.3,
                 "colorEbc": 0,
                 "amountKg": 0.125,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Chocolate",
@@ -45,7 +45,7 @@
                 "yieldPct": 75,
                 "colorEbc": 617.3,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Oats, Flaked",
@@ -53,7 +53,7 @@
                 "yieldPct": 85,
                 "colorEbc": 0.4,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

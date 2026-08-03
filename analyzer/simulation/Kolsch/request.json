@@ -21,7 +21,7 @@
                 "yieldPct": 80,
                 "colorEbc": 1.2,
                 "amountKg": 0.85,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Heidelberg Wheat Malt",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0.9,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Munich",
@@ -37,7 +37,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

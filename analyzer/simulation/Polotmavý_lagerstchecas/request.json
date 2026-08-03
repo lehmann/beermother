@@ -21,7 +21,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 2.5,
                 "amountKg": 3.11,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Munich II",
@@ -29,7 +29,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 10,
                 "amountKg": 2.49,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich III",
@@ -37,7 +37,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 94.6,
                 "amountKg": 0.62,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

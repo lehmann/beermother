@@ -21,7 +21,7 @@
                 "yieldPct": 75,
                 "colorEbc": 0.9,
                 "amountKg": 0.544,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Odd Amphibian – Lager/Pilsner Malt",
@@ -29,7 +29,7 @@
                 "yieldPct": 77.83,
                 "colorEbc": 0.9,
                 "amountKg": 0.362,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Melanoidin",
@@ -37,7 +37,7 @@
                 "yieldPct": 80.07,
                 "colorEbc": 39.1,
                 "amountKg": 0.045,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

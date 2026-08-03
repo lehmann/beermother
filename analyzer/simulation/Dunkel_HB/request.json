@@ -21,7 +21,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 10,
                 "amountKg": 2.94,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Pilsner",
@@ -29,7 +29,7 @@
                 "yieldPct": 82.23,
                 "colorEbc": 0.9,
                 "amountKg": 1.33,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Caramunich II",
@@ -37,7 +37,7 @@
                 "yieldPct": 75.74,
                 "colorEbc": 83.9,
                 "amountKg": 0.59,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "Carafa I",
@@ -45,7 +45,7 @@
                 "yieldPct": 77.9,
                 "colorEbc": 431.9,
                 "amountKg": 0.05,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [

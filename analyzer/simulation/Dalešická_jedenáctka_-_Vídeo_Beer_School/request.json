@@ -21,7 +21,7 @@
                 "yieldPct": 81,
                 "colorEbc": 1.4,
                 "amountKg": 0.95,
-                "when": "Fervura"
+                "when": "Mostura"
             },
             {
                 "name": "BEST Munich",
@@ -29,7 +29,7 @@
                 "yieldPct": 75,
                 "colorEbc": 8.9,
                 "amountKg": 0.1,
-                "when": "Fervura"
+                "when": "Mostura"
             }
         ],
         "hops": [
