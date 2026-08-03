@@ -971,6 +971,193 @@ export const MALT_DESCRIPTORS = {
   ],
 };
 
+// ─── Generic malt type descriptors (fallback layer) ──────────────────────────
+// Keys are normalized generic type names. Used when a specific maltster entry
+// is not found in MALT_DESCRIPTORS. Profiles derived from BrewUnited grain DB.
+
+function m(key, label, group) {
+  return { key, label, group, familyId: "malte", family: "Malte" };
+}
+
+export const MALT_TYPE_DESCRIPTORS = {
+  // Base malts — light, bready, grainy
+  "base-pilsner": [
+    m("cereal", "Cereal", "Base"),
+    m("grao", "Grão", "Base"),
+    m("farinha", "Farinha", "Base"),
+  ],
+  "base-pale": [
+    m("grao", "Grão", "Base"),
+    m("cereal", "Cereal", "Base"),
+    m("farinha", "Farinha", "Base"),
+  ],
+  "base-pale-ale": [
+    m("grao", "Grão", "Base"),
+    m("biscoito", "Biscoito", "Base"),
+    m("pao", "Pão", "Base"),
+  ],
+
+  // Kilned malts
+  "kilned-vienna": [
+    m("biscoito", "Biscoito", "Kilned"),
+    m("casca-de-pao", "Casca de pão", "Kilned"),
+    m("tostado", "Tostado", "Kilned"),
+  ],
+  "kilned-munich-light": [
+    m("mel", "Mel", "Kilned"),
+    m("biscoito", "Biscoito", "Kilned"),
+    m("casca-de-pao", "Casca de pão", "Kilned"),
+    m("tostado", "Tostado", "Kilned"),
+  ],
+  "kilned-munich-dark": [
+    m("casca-de-pao", "Casca de pão", "Kilned"),
+    m("mel", "Mel", "Kilned"),
+    m("tostado", "Tostado", "Kilned"),
+  ],
+  "kilned-aromatic": [
+    m("mel", "Mel", "Kilned"),
+    m("casca-de-pao", "Casca de pão", "Kilned"),
+    m("tostado", "Tostado", "Kilned"),
+  ],
+  "kilned-biscuit": [
+    m("biscoito", "Biscoito", "Kilned"),
+    m("cracker", "Cracker", "Kilned"),
+    m("nozes", "Nozes", "Kilned"),
+    m("tostado", "Tostado", "Kilned"),
+  ],
+
+  // Crystal / caramel malts
+  "crystal-light": [
+    m("caramelo", "Caramelo", "Caramelo"),
+    m("mel", "Mel", "Caramelo"),
+    m("toffee", "Toffee", "Caramelo"),
+  ],
+  "crystal-medium": [
+    m("caramelo", "Caramelo", "Caramelo"),
+    m("toffee", "Toffee", "Caramelo"),
+    m("mel", "Mel", "Caramelo"),
+  ],
+  "crystal-dark": [
+    m("frutas-secas", "Frutas secas", "Caramelo"),
+    m("melaco", "Melaço", "Caramelo"),
+    m("ameixa-passa", "Ameixa/passa", "Caramelo"),
+  ],
+  "crystal-extra-dark": [
+    m("ameixa-passa", "Ameixa/passa", "Caramelo"),
+    m("frutas-secas", "Frutas secas", "Caramelo"),
+    m("mascavo", "Mascavo", "Caramelo"),
+    m("melaco", "Melaço", "Caramelo"),
+  ],
+  "wheat-crystal": [
+    m("caramelo", "Caramelo", "Caramelo"),
+    m("mel", "Mel", "Caramelo"),
+  ],
+
+  // Roasted malts
+  "roast-chocolate": [
+    m("chocolate", "Chocolate", "Torrado"),
+    m("cafe", "Café", "Torrado"),
+  ],
+  "roast-black": [
+    m("cafe", "Café", "Torrado"),
+    m("torrado", "Torrado", "Torrado"),
+    m("queimado", "Queimado", "Torrado"),
+  ],
+  "roast-black-dehusked": [
+    m("cafe", "Café", "Torrado"),
+    m("torrado", "Torrado", "Torrado"),
+  ],
+
+  // Wheat base
+  "wheat-base": [
+    m("grao", "Grão", "Base"),
+    m("farinha", "Farinha", "Base"),
+  ],
+  "wheat-dark": [
+    m("chocolate", "Chocolate", "Torrado"),
+    m("cafe", "Café", "Torrado"),
+  ],
+
+  // Adjuncts / other
+  oat: [m("grao", "Grão", "Base")],
+  rye: [m("grao", "Grão", "Base"), m("condimentado", "Condimentado", "Base")],
+  smoked: [m("defumado", "Defumado", "Kilned"), m("grao", "Grão", "Kilned")],
+  "adjunct-flaked": [m("cereal", "Cereal", "Base"), m("grao", "Grão", "Base")],
+  acid: [m("cereal", "Cereal", "Base")],
+  sugar: [m("mel", "Mel", "Açúcar")],
+};
+
+// Maltster prefixes to strip when normalizing names
+const _MALTSTER_RE =
+  /^(weyermann|briess|bestm[äa]lz|best\s+|dingemans|crisp|simpsons?|thomas\s+fawcett|muntons?|avangard|gambrinus|great\s+western|rahr|chateau|ch[âa]teau|castle\s+malting|blackswan|odd\s+amphibian\s*[–-]\s*|swaen|paul'?s?\s+malt|pilsner\s+malt,|agraria|castle|captains?\s+classic\s*[–-]?\s*|m\.?f\.?b\.?\s*)/i;
+
+function _classifyByNameAndColor(name, color) {
+  const n = name.toLowerCase();
+  if (/acid|acidulat/.test(n)) return "acid";
+  if (/sugar|candi\s+syrup|honey\s+malt|maple|molasses|maltose|dextrose|sucrose|corn\s+sugar|rice\s+extract|turbinado|lactose|treacle/.test(n))
+    return "sugar";
+  if (/smoked|rauch|peat/.test(n)) return "smoked";
+  if (/rye\s+malt|malte?\s+de\s+centeio|centeio/.test(n)) return "rye";
+  if (/oat|avei/.test(n)) return "oat";
+  if (/flaked|torrefied|flocos/.test(n)) {
+    if (/wheat|trigo|weizen/.test(n)) return "wheat-base";
+    return "adjunct-flaked";
+  }
+  if (/wheat|trigo|weizen|weiss|wit/.test(n)) {
+    if (color >= 200) return "wheat-dark";
+    if (color >= 15) return "wheat-crystal";
+    return "wheat-base";
+  }
+  if (/chocolate/.test(n)) return "roast-chocolate";
+  if (/carafa.*iii|patent|blackprinz|black\s+barley|roast.*barley|barley.*roast/.test(n) || color >= 400)
+    return "roast-black";
+  if (/carafa/.test(n) || (color >= 200 && color < 400)) return "roast-chocolate";
+  if (/special\s*b/.test(n) && color >= 100) return "crystal-extra-dark";
+  if (/caraaroma|cara\s*aroma/.test(n)) return "crystal-extra-dark";
+  if (/caramunich|cara\s*munich/.test(n)) {
+    if (color <= 40) return "crystal-medium";
+    if (color <= 80) return "crystal-dark";
+    return "crystal-extra-dark";
+  }
+  if (/melanoidin|melanoiden|aromatic/.test(n)) return "kilned-aromatic";
+  if (/amber/.test(n) && color >= 15 && color <= 35) return "kilned-aromatic";
+  if (/biscuit|biscoito|victory/.test(n)) return "kilned-biscuit";
+  if (/munich|m[üu]nch/.test(n)) {
+    if (color <= 10) return "kilned-munich-light";
+    return "kilned-munich-dark";
+  }
+  if (/vienna|viena/.test(n)) return "kilned-vienna";
+  if (/crystal|caramel|cara|crystal/.test(n) || (color >= 10 && color < 200)) {
+    if (color <= 20) return "crystal-light";
+    if (color <= 60) return "crystal-medium";
+    if (color <= 120) return "crystal-dark";
+    return "crystal-extra-dark";
+  }
+  if (/maris\s+otter|golden\s+promise|pale\s+ale/.test(n)) return "base-pale-ale";
+  if (/pilsn|pilsen|lager/.test(n)) return "base-pilsner";
+  if (color > 0 && color <= 4) return "base-pilsner";
+  if (color > 0 && color <= 7) return "base-pale";
+  return null;
+}
+
+// Lovibond color from parenthetical in name, e.g. "Crystal 60L" → 60
+function _colorFromName(name) {
+  const m = name.match(/(\d+)\s*[Ll]/);
+  return m ? parseFloat(m[1]) : 0;
+}
+
+export function resolveMaltDescriptors(name) {
+  if (!name) return null;
+  // Layer 1: exact match
+  if (MALT_DESCRIPTORS[name]) return MALT_DESCRIPTORS[name];
+  // Layer 2: normalize → generic type lookup
+  const normalized = name.replace(_MALTSTER_RE, "").trim();
+  const color = _colorFromName(name) || _colorFromName(normalized);
+  const type = _classifyByNameAndColor(normalized, color) ||
+    _classifyByNameAndColor(name, color);
+  return type ? MALT_TYPE_DESCRIPTORS[type] ?? null : null;
+}
+
 export const HOP_DESCRIPTORS = {
   Centennial: [
     {

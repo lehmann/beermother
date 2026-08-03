@@ -2,7 +2,7 @@
 // Produces the same response structure that analysis-screen.js expects.
 
 import {
-  MALT_DESCRIPTORS,
+  resolveMaltDescriptors,
   HOP_DESCRIPTORS,
   YEAST_PROFILES,
   HOP_OIL_RETENTION,
@@ -878,7 +878,7 @@ function buildDescriptors(fermentables, hops, distribution, batchVolumeL, yeastP
 
   for (const f of fermentables) {
     if (f.use && f.use !== "Mostura") continue;
-    const descs = MALT_DESCRIPTORS[f.name];
+    const descs = resolveMaltDescriptors(f.name);
     if (!descs) continue;
     const frac = totalKg > 0 ? (f.amountKg || 0) / totalKg : 0;
     for (const d of descs) {
@@ -1031,7 +1031,7 @@ function buildMaltPerception(fermentables, batchVolumeL) {
 
   for (const f of fermentables) {
     if (f.use && f.use !== "Mostura") continue;
-    const descs = MALT_DESCRIPTORS[f.name];
+    const descs = resolveMaltDescriptors(f.name);
     if (!descs || !descs.length) continue;
     const frac = totalKg > 0 ? f.amountKg / totalKg : 0;
     for (const d of descs.slice(0, 3)) {
