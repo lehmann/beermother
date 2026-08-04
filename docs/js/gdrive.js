@@ -196,10 +196,15 @@ async function downloadFileById(fileId) {
 
 // ── cache-aware sync ──────────────────────────────────────────────────────────
 //
-// cache: [{driveFileId, name, md5Checksum, content}]
-// Returns {entries: [...], changed: boolean}
-//   - entries has the same shape as cache — one entry per Drive file
-//   - changed is true if any file was added, modified, or deleted vs cache
+// cache:   [{driveFileId, name, md5Checksum, ...rest}]
+//          content is optional — recipes pass index-only entries (no content)
+//
+// Returns: {entries, changed}
+//   entries: [{driveFileId, name, md5Checksum, content, fresh}]
+//     - content is present only for entries that were downloaded this call
+//     - fresh=true  → file was new or its md5 changed (content downloaded)
+//     - fresh=false → file unchanged (content not downloaded, may be absent)
+//   changed: true if any entry is fresh OR any cache entry was deleted
 //
 async function syncFolderWithCache(folderId, extension, cache) {
   const metaList = await listFilesMetadataInFolder(folderId, extension);
@@ -212,22 +217,17 @@ async function syncFolderWithCache(folderId, extension, cache) {
   for (const meta of metaList) {
     const cached = cacheByDriveId.get(meta.id);
     if (cached && cached.md5Checksum === meta.md5Checksum) {
-      entries.push(cached);
+      entries.push({ ...cached, fresh: false });
     } else {
       try {
         const content = await downloadFileById(meta.id);
-        entries.push({
-          driveFileId: meta.id,
-          name: meta.name,
-          md5Checksum: meta.md5Checksum,
-          content,
-        });
+        entries.push({ driveFileId: meta.id, name: meta.name, md5Checksum: meta.md5Checksum, content, fresh: true });
         changed = true;
       } catch {}
     }
   }
 
-  // Detect deletions: files in cache no longer present in Drive
+  // Detect deletions
   if (!changed && cache.some((entry) => !driveIds.has(entry.driveFileId))) {
     changed = true;
   }

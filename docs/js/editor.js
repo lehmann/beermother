@@ -175,24 +175,63 @@ let driveRows = [],
   driveBatchesLoaded = false;
 
 // localStorage keys for Drive file caches
-const DRIVE_RECIPE_CACHE_KEY = "beermother.drive.cache.recipes.v1";
+//
+// Recipes index: [{driveFileId, name, md5Checksum}]  — no XML content here
+// Per-recipe row: key = beermother.drive.recipe.<driveFileId>
+//   value = {id, driveFileId, name, styleName, abv, ebc, ibu, og, isDraft, fromDrive, draft}
+//
+// Equipments/batches index: [{driveFileId, name, md5Checksum, content}]
+//   (they are small JSON objects, keeping content in the index is fine)
+const DRIVE_RECIPE_INDEX_KEY = "beermother.drive.cache.recipes.v1";
+const DRIVE_RECIPE_ROW_PREFIX = "beermother.drive.recipe.";
 const DRIVE_EQUIPMENT_CACHE_KEY = "beermother.drive.cache.equipments.v1";
 const DRIVE_BATCH_CACHE_KEY = "beermother.drive.cache.batches.v1";
 
-function loadDriveCache(key) {
+function loadJsonFromStorage(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
-    const parsed = JSON.parse(raw || "[]");
-    return Array.isArray(parsed) ? parsed : [];
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return parsed ?? fallback;
   } catch {
-    return [];
+    return fallback;
   }
 }
 
-function saveDriveCache(key, entries) {
+function saveJsonToStorage(key, value) {
   try {
-    localStorage.setItem(key, JSON.stringify(entries));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch {}
+}
+
+// Recipes — index only, rows stored individually
+function loadRecipeIndex() {
+  return loadJsonFromStorage(DRIVE_RECIPE_INDEX_KEY, []);
+}
+
+function saveRecipeIndex(index) {
+  saveJsonToStorage(DRIVE_RECIPE_INDEX_KEY, index);
+}
+
+function loadRecipeRow(driveFileId) {
+  return loadJsonFromStorage(DRIVE_RECIPE_ROW_PREFIX + driveFileId, null);
+}
+
+function saveRecipeRow(driveFileId, row) {
+  saveJsonToStorage(DRIVE_RECIPE_ROW_PREFIX + driveFileId, row);
+}
+
+function deleteRecipeRow(driveFileId) {
+  try { localStorage.removeItem(DRIVE_RECIPE_ROW_PREFIX + driveFileId); } catch {}
+}
+
+// Equipments / batches — small objects, content kept in the index entry
+function loadDriveCache(key) {
+  return loadJsonFromStorage(key, []);
+}
+
+function saveDriveCache(key, entries) {
+  saveJsonToStorage(key, entries);
 }
 
 // Fire-and-forget Drive sync helpers — never throw into the calling flow.
@@ -232,45 +271,81 @@ function driveKey(e) {
     .trim()
     .toLowerCase();
 }
-function driveFileToRow(e) {
+// Build a row from XML content and persist it under its own localStorage key.
+// Called only when a file is new or its md5 changed — never on every page load.
+function parseAndCacheRecipeRow(driveFileId, fileName, xmlContent) {
   try {
-    const o = parseBeerXml(e.content),
-      n = draftFromRecipe(o),
-      r = computeTargets(n);
-    return {
-      id: `drive:${e.id}`,
-      driveFileId: e.id,
-      name: n.name || e.name.replace(/\.xml$/i, ""),
-      styleName: n.styleName || "",
-      abv: r.abv,
-      ebc: r.ebc,
-      ibu: r.ibu,
-      og: r.og,
-      isDraft: !1,
-      fromDrive: !0,
-      draft: n,
+    const recipe = parseBeerXml(xmlContent);
+    const draft = draftFromRecipe(recipe);
+    const targets = computeTargets(draft);
+    const row = {
+      id: `drive:${driveFileId}`,
+      driveFileId,
+      name: draft.name || fileName.replace(/\.xml$/i, ""),
+      styleName: draft.styleName || "",
+      abv: targets.abv,
+      ebc: targets.ebc,
+      ibu: targets.ibu,
+      og: targets.og,
+      isDraft: false,
+      fromDrive: true,
+      draft,
     };
+    saveRecipeRow(driveFileId, row);
+    return row;
   } catch {
     return null;
   }
 }
+
 async function loadDriveRecipes(forceRefresh) {
-  // Step 1: hydrate from localStorage cache immediately
-  const cache = loadDriveCache(DRIVE_RECIPE_CACHE_KEY);
-  if (cache.length && driveLoadState === "idle") {
-    driveRows = cache.map(driveFileToRow).filter(Boolean);
-    c.requestRender();
+  // Step 1: hydrate driveRows from the index + per-recipe rows synchronously.
+  // No XML parsing here — rows are already pre-computed.
+  const index = loadRecipeIndex();
+  if (index.length) {
+    driveRows = index
+      .map((meta) => loadRecipeRow(meta.driveFileId))
+      .filter(Boolean);
+    if (driveRows.length) c.requestRender();
   }
 
   driveLoadState = "loading";
   if (forceRefresh) c.requestRender();
 
   try {
-    const { entries, changed } = await drvSyncRecipes(cache);
+    // Step 2: one API call to list metadata; only downloads files whose md5 changed.
+    const { entries, changed } = await drvSyncRecipes(index);
+
     if (changed) {
-      saveDriveCache(DRIVE_RECIPE_CACHE_KEY, entries);
-      driveRows = entries.map(driveFileToRow).filter(Boolean);
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
+
+      const newRows = [];
+      for (const entry of entries) {
+        if (entry.fresh) {
+          // File is new or changed — parse XML and persist the row
+          const row = parseAndCacheRecipeRow(entry.driveFileId, entry.name, entry.content);
+          if (row) newRows.push(row);
+        } else {
+          // File unchanged — load the pre-computed row from localStorage
+          const row = loadRecipeRow(entry.driveFileId);
+          if (row) newRows.push(row);
+        }
+      }
+
+      // Remove rows for files deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteRecipeRow(meta.driveFileId);
+      }
+
+      saveRecipeIndex(newIndex);
+      driveRows = newRows;
     }
+
     driveLoadState = "done";
   } catch (err) {
     driveLoadState = "error";
@@ -5468,11 +5543,15 @@ function vo(e) {
             const n = o.currentTarget;
             n.disabled = !0;
             try {
-              const cacheEntry = await drvUpload(Pa(e), Aa(e));
-              const recipeCache = loadDriveCache(DRIVE_RECIPE_CACHE_KEY);
-              const updatedCache = recipeCache.filter((ce) => ce.driveFileId !== cacheEntry.driveFileId);
-              updatedCache.push(cacheEntry);
-              saveDriveCache(DRIVE_RECIPE_CACHE_KEY, updatedCache);
+              const xmlContent = Pa(e);
+              const fileName = Aa(e);
+              const cacheEntry = await drvUpload(xmlContent, fileName);
+              // Update the index and persist the pre-computed row
+              const index = loadRecipeIndex();
+              const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
+              newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+              saveRecipeIndex(newIndex);
+              parseAndCacheRecipeRow(cacheEntry.driveFileId, cacheEntry.name, xmlContent);
               b(t('"{name}" salvo no Google Drive.', { name: e.name || t("Receita") }));
             } catch (r) {
               b(r.message || t("Erro ao salvar no Google Drive."), "error");
