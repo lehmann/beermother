@@ -171,6 +171,7 @@ let recipeSearchQuery = "",
   showIbuPerAddition = !1;
 let driveRows = [],
   driveLoadState = "idle",
+  driveRowsHydrated = false,
   driveEquipmentsLoaded = false,
   driveBatchesLoaded = false;
 
@@ -298,16 +299,22 @@ function parseAndCacheRecipeRow(driveFileId, fileName, xmlContent) {
   }
 }
 
+function hydrateRecipeRowsFromCache() {
+  if (driveRowsHydrated) return;
+  driveRowsHydrated = true;
+  const index = loadRecipeIndex();
+  if (!index.length) return;
+  const rows = index.map((meta) => loadRecipeRow(meta.driveFileId)).filter(Boolean);
+  if (rows.length) {
+    driveRows = rows;
+    c.requestRender();
+  }
+}
+
 async function loadDriveRecipes(forceRefresh) {
   // Step 1: hydrate driveRows from the index + per-recipe rows synchronously.
   // No XML parsing here — rows are already pre-computed.
-  const index = loadRecipeIndex();
-  if (index.length) {
-    driveRows = index
-      .map((meta) => loadRecipeRow(meta.driveFileId))
-      .filter(Boolean);
-    if (driveRows.length) c.requestRender();
-  }
+  hydrateRecipeRowsFromCache();
 
   driveLoadState = "loading";
   if (forceRefresh) c.requestRender();
@@ -432,7 +439,10 @@ async function loadDriveBatches() {
 }
 
 function maybeAutoLoadDrive() {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (!drvEnabled()) return;
+  // Always hydrate from localStorage cache — no token required.
+  hydrateRecipeRowsFromCache();
+  if (!drvHasToken()) return;
   if (driveLoadState === "idle") loadDriveRecipes(!1);
   loadDriveEquipments();
   loadDriveBatches();
