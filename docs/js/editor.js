@@ -299,6 +299,41 @@ function driveKey(e) {
     .toLowerCase();
 }
 
+// Convert a brew entry whose payload was synthesised from external BeerXML (no
+// schema/version) into a valid native payload that restoreBrewSessionPayload
+// can accept.  The recipe field from parseBeerXml is a draft — pass it through
+// draftFromRecipe+recipeFromDraft so it matches the internal recipe format.
+function normalizeLegacyBatchEntry(entry) {
+  const p = entry.payload || {};
+  let recipe = p.recipe || {};
+  try {
+    recipe = Le(draftFromRecipe(recipe));
+  } catch {}
+  const payload = {
+    schema: "beermother-recipe-session",
+    version: 1,
+    savedAt: p.savedAt || new Date().toISOString(),
+    brewId: entry.id,
+    recipe,
+    properties: p.properties || {},
+    measurements: p.measurements || {},
+    correctionChecks: {},
+    hopLots: [],
+    timerEvents: p.timerEvents || [],
+    notes: p.notes || "",
+    fermentationTracking: p.fermentationTracking || {},
+    correctionRounds: [],
+    additionChecks: {},
+    phasesDone: {},
+    guideEnabled: false,
+    guideChecks: {},
+    correctionAccepted: {},
+    calibration: false,
+    phLog: {},
+  };
+  return { ...entry, payload };
+}
+
 // Wrappers that bind the draft-aware recipe serializer to the pure batch-xml functions.
 function brewEntryToXml(entry) {
   return batchBrewEntryToXml(entry, (recipe) => Pa(draftFromRecipe(recipe)));
@@ -501,8 +536,29 @@ async function loadDriveBatches(forceRefresh) {
       }));
       for (const entry of entries) {
         if (entry.fresh) {
-          const brewEntry = brewEntryFromXml(entry.content);
+          let brewEntry = brewEntryFromXml(entry.content);
           if (brewEntry?.id && brewEntry?.payload) {
+            // Path 2 (external BeerXML): payload lacks schema/version — convert
+            // to native format and overwrite the Drive file so future reads use
+            // the lossless round-trip path.
+            if (!brewEntry.payload.schema) {
+              brewEntry = normalizeLegacyBatchEntry(brewEntry);
+              const xml = brewEntryToXml(brewEntry);
+              const originalDriveFileId = entry.driveFileId;
+              drvSaveBatch(xml, brewEntry.id)
+                .then((cacheEntry) => {
+                  // Update md5 in stored index now that file is native format
+                  const idx = loadBatchIndex();
+                  const updated = idx.map((m) =>
+                    m.driveFileId === originalDriveFileId
+                      ? { ...m, md5Checksum: cacheEntry.md5Checksum }
+                      : m,
+                  );
+                  saveBatchIndex(updated);
+                  saveBatchItem(cacheEntry.driveFileId, brewEntry);
+                })
+                .catch(() => {});
+            }
             saveBatchItem(entry.driveFileId, brewEntry);
             mergeBatchFromDrive(brewEntry);
           }
