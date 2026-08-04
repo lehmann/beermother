@@ -451,15 +451,7 @@ async function loadDriveBatches() {
   }
 }
 
-function maybeAutoLoadDrive() {
-  if (!drvEnabled()) return;
-  // Always hydrate from localStorage cache — no token required.
-  hydrateRecipeRowsFromCache();
-  if (!drvHasToken()) return;
-  if (driveLoadState === "idle") loadDriveRecipes(!1);
-  loadDriveEquipments();
-  loadDriveBatches();
-}
+
 function mergeDriveRecipes(e) {
   if (!driveRows.length) return e;
   const o = new Set(e.map((n) => driveKey(n.name)));
@@ -983,7 +975,10 @@ function pageHead(e, o, n = []) {
   ]);
 }
 function recipesScreen() {
-  maybeAutoLoadDrive();
+  if (drvEnabled()) {
+    hydrateRecipeRowsFromCache();
+    if (drvHasToken() && driveLoadState === "idle") loadDriveRecipes(false);
+  }
   const e = mergeDriveRecipes(listMyRecipes());
   return [
     pageHead(
@@ -1032,6 +1027,7 @@ function openCommunityRecipe(e) {
     window.scrollTo({ top: 0, behavior: "instant" }));
 }
 function brewsScreen() {
+  if (drvEnabled() && drvHasToken()) loadDriveBatches();
   const e = Fe().filter((r) => r.status === "active"),
     o = e.length ? t("{n} em andamento", { n: e.length }) : "",
     n = e.length
@@ -1060,6 +1056,7 @@ function brewsScreen() {
   return [pageHead(t("Brassagens"), o), n, Ln()];
 }
 function equipmentScreen() {
+  if (drvEnabled() && drvHasToken()) loadDriveEquipments();
   const e = X();
   return [
     pageHead(
