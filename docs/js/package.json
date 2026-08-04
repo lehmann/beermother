@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-loader ./tests/loader.js --test ./tests/*.test.js"
+  }
+}

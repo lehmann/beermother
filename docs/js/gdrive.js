@@ -206,30 +206,39 @@ async function downloadFileById(fileId) {
 //     - fresh=false → file unchanged (content not downloaded, may be absent)
 //   changed: true if any entry is fresh OR any cache entry was deleted
 //
-async function syncFolderWithCache(folderId, extension, cache) {
-  const metaList = await listFilesMetadataInFolder(folderId, extension);
+// Pure diff logic — exported for unit tests.
+export function diffCacheWithMetadata(metaList, cache) {
   const cacheByDriveId = new Map(cache.map((entry) => [entry.driveFileId, entry]));
   const driveIds = new Set(metaList.map((m) => m.id));
-
-  let changed = false;
-  const entries = [];
+  const toDownload = [];
+  const unchanged = [];
 
   for (const meta of metaList) {
     const cached = cacheByDriveId.get(meta.id);
     if (cached && cached.md5Checksum === meta.md5Checksum) {
-      entries.push({ ...cached, fresh: false });
+      unchanged.push({ ...cached, fresh: false });
     } else {
-      try {
-        const content = await downloadFileById(meta.id);
-        entries.push({ driveFileId: meta.id, name: meta.name, md5Checksum: meta.md5Checksum, content, fresh: true });
-        changed = true;
-      } catch {}
+      toDownload.push(meta);
     }
   }
 
-  // Detect deletions
-  if (!changed && cache.some((entry) => !driveIds.has(entry.driveFileId))) {
-    changed = true;
+  const deleted = cache.some((entry) => !driveIds.has(entry.driveFileId));
+  return { toDownload, unchanged, deleted };
+}
+
+async function syncFolderWithCache(folderId, extension, cache) {
+  const metaList = await listFilesMetadataInFolder(folderId, extension);
+  const { toDownload, unchanged, deleted } = diffCacheWithMetadata(metaList, cache);
+
+  let changed = deleted;
+  const entries = [...unchanged];
+
+  for (const meta of toDownload) {
+    try {
+      const content = await downloadFileById(meta.id);
+      entries.push({ driveFileId: meta.id, name: meta.name, md5Checksum: meta.md5Checksum, content, fresh: true });
+      changed = true;
+    } catch {}
   }
 
   return { entries, changed };
@@ -336,14 +345,15 @@ export async function loadInventoryFromDrive() {
 // cache: [{driveFileId, name, md5Checksum, content}] from localStorage
 export async function syncEquipmentsFromDrive(cache) {
   const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
-  return syncFolderWithCache(folderId, ".json", cache);
+  return syncFolderWithCache(folderId, ".xml", cache);
 }
 
 export async function saveEquipmentToDrive(profile) {
   const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
-  const fileName = `${profile.id}.json`;
-  const result = await saveFileToFolder(JSON.stringify(profile), fileName, folderId, "application/json");
-  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: JSON.stringify(profile) };
+  const fileName = `${profile.id}.xml`;
+  const content = JSON.stringify(profile);
+  const result = await saveFileToFolder(content, fileName, folderId, "application/xml");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content };
 }
 
 // ── public API — batches ──────────────────────────────────────────────────────
@@ -351,14 +361,15 @@ export async function saveEquipmentToDrive(profile) {
 // cache: [{driveFileId, name, md5Checksum, content}] from localStorage
 export async function syncBatchesFromDrive(cache) {
   const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
-  return syncFolderWithCache(folderId, ".json", cache);
+  return syncFolderWithCache(folderId, ".xml", cache);
 }
 
 export async function saveBatchToDrive(brewEntry) {
   const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
-  const fileName = `${brewEntry.id}.json`;
-  const result = await saveFileToFolder(JSON.stringify(brewEntry), fileName, folderId, "application/json");
-  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: JSON.stringify(brewEntry) };
+  const fileName = `${brewEntry.id}.xml`;
+  const content = JSON.stringify(brewEntry);
+  const result = await saveFileToFolder(content, fileName, folderId, "application/xml");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content };
 }
 
 // ── misc ──────────────────────────────────────────────────────────────────────
