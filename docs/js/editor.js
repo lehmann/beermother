@@ -59,6 +59,7 @@ import {
 import {
   saveRecipeToDrive as drvUpload,
   requestDriveAccess as drvAuth,
+  restorePersistedToken as drvRestoreToken,
   syncRecipesFromDrive as drvSyncRecipes,
   hasDriveToken as drvHasToken,
   saveEquipmentToDrive as drvSaveEquipment,
@@ -169,13 +170,17 @@ let recipeSearchQuery = "",
   recipeSearchDebounceTimer = null,
   fermentablePercentEdit = null,
   showIbuPerAddition = !1;
+// Restore any persisted Drive token into memory immediately at module load,
+// so drvHasToken() returns true on first render without requiring user action.
+if (drvEnabled()) drvRestoreToken();
+
 let driveRows = [],
   driveLoadState = "idle",
   driveRowsHydrated = false,
   driveEquipmentsHydrated = false,
-  driveEquipmentsLoaded = false,
+  driveEquipmentsState = "idle",
   driveBatchesHydrated = false,
-  driveBatchesLoaded = false;
+  driveBatchesState = "idle";
 
 // localStorage keys for Drive file caches
 //
@@ -397,10 +402,11 @@ function hydrateEquipmentsFromCache() {
   c.requestRender();
 }
 
-async function loadDriveEquipments() {
-  if (!drvEnabled() || !drvHasToken() || driveEquipmentsLoaded) return;
-  driveEquipmentsLoaded = true;
-  hydrateEquipmentsFromCache();
+async function loadDriveEquipments(forceRefresh) {
+  if (!drvEnabled() || !drvHasToken()) return;
+  if (!forceRefresh && driveEquipmentsState !== "idle") return;
+  driveEquipmentsState = "loading";
+  if (forceRefresh) c.requestRender();
   try {
     const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
     const { entries, changed } = await drvSyncEquipments(cache);
@@ -413,11 +419,13 @@ async function loadDriveEquipments() {
           if (profile?.id) ne(profile);
         } catch {}
       }
-      c.requestRender();
     }
-  } catch {
-    // Do NOT reset driveEquipmentsLoaded — avoids an infinite retry loop on every render.
+    driveEquipmentsState = "done";
+  } catch (err) {
+    driveEquipmentsState = "error";
+    if (forceRefresh) b(err.message || t("Erro ao carregar equipamentos do Drive."), "error");
   }
+  c.requestRender();
 }
 
 function hydrateBatchesFromCache() {
@@ -434,10 +442,11 @@ function hydrateBatchesFromCache() {
   c.requestRender();
 }
 
-async function loadDriveBatches() {
-  if (!drvEnabled() || !drvHasToken() || driveBatchesLoaded) return;
-  driveBatchesLoaded = true;
-  hydrateBatchesFromCache();
+async function loadDriveBatches(forceRefresh) {
+  if (!drvEnabled() || !drvHasToken()) return;
+  if (!forceRefresh && driveBatchesState !== "idle") return;
+  driveBatchesState = "loading";
+  if (forceRefresh) c.requestRender();
   try {
     const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
     const { entries, changed } = await drvSyncBatches(cache);
@@ -450,11 +459,13 @@ async function loadDriveBatches() {
           if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
         } catch {}
       }
-      c.requestRender();
     }
-  } catch {
-    // Do NOT reset driveBatchesLoaded — avoids an infinite retry loop on every render.
+    driveBatchesState = "done";
+  } catch (err) {
+    driveBatchesState = "error";
+    if (forceRefresh) b(err.message || t("Erro ao carregar brassagens do Drive."), "error");
   }
+  c.requestRender();
 }
 
 
@@ -466,18 +477,38 @@ function mergeDriveRecipes(e) {
 function driveStatusRow() {
   if (!drvEnabled()) return null;
   if (driveLoadState === "loading")
-    return a(
-      "p",
-      "muted drive-sync-status",
-      t("Carregando receitas do Drive…"),
-    );
-  const e =
-    driveLoadState === "done"
-      ? t("Atualizar do Drive")
-      : t("Carregar do Drive");
+    return a("p", "muted drive-sync-status", t("Carregando receitas do Drive…"));
+  const label =
+    driveLoadState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
   return a("div", "drive-sync-row", [
-    d(e, () => loadDriveRecipes(!0), "btn ghost small"),
+    d(label, () => loadDriveRecipes(true), "btn ghost small"),
     driveLoadState === "error"
+      ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
+      : null,
+  ]);
+}
+function driveEquipmentsStatusRow() {
+  if (!drvEnabled()) return null;
+  if (driveEquipmentsState === "loading")
+    return a("p", "muted drive-sync-status", t("Carregando equipamentos do Drive…"));
+  const label =
+    driveEquipmentsState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
+  return a("div", "drive-sync-row", [
+    d(label, () => loadDriveEquipments(true), "btn ghost small"),
+    driveEquipmentsState === "error"
+      ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
+      : null,
+  ]);
+}
+function driveBatchesStatusRow() {
+  if (!drvEnabled()) return null;
+  if (driveBatchesState === "loading")
+    return a("p", "muted drive-sync-status", t("Carregando brassagens do Drive…"));
+  const label =
+    driveBatchesState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
+  return a("div", "drive-sync-row", [
+    d(label, () => loadDriveBatches(true), "btn ghost small"),
+    driveBatchesState === "error"
       ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
       : null,
   ]);
@@ -1035,7 +1066,7 @@ function openCommunityRecipe(e) {
 function brewsScreen() {
   if (drvEnabled()) {
     hydrateBatchesFromCache();
-    if (drvHasToken()) loadDriveBatches();
+    if (drvHasToken() && driveBatchesState === "idle") loadDriveBatches(false);
   }
   const e = Fe().filter((r) => r.status === "active"),
     o = e.length ? t("{n} em andamento", { n: e.length }) : "",
@@ -1062,12 +1093,12 @@ function brewsScreen() {
             ]),
           ]),
         ]);
-  return [pageHead(t("Brassagens"), o), n, Ln()];
+  return [pageHead(t("Brassagens"), o), driveBatchesStatusRow(), n, Ln()];
 }
 function equipmentScreen() {
   if (drvEnabled()) {
     hydrateEquipmentsFromCache();
-    if (drvHasToken()) loadDriveEquipments();
+    if (drvHasToken() && driveEquipmentsState === "idle") loadDriveEquipments(false);
   }
   const e = X();
   return [
@@ -1079,6 +1110,7 @@ function equipmentScreen() {
           : t("{n} perfis", { n: e.length })
         : "",
     ),
+    driveEquipmentsStatusRow(),
     gn(),
     vn(),
     kn(e),

@@ -108,6 +108,12 @@ function waitForGsi(timeout = 10000) {
   });
 }
 
+// Called once at app boot — restores a previously persisted token into memory
+// so drive operations can proceed without waiting for user interaction.
+export function restorePersistedToken() {
+  loadPersistedToken();
+}
+
 export async function requestDriveAccess() {
   await waitForGsi();
   if (hasValidToken()) return _token;
