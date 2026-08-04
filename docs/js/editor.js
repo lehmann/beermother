@@ -142,7 +142,6 @@ import {
   localeTag as ka,
 } from "./i18n.js";
 import { COURSE_RECIPES as ea } from "./course-recipes-data.js";
-import { ANNIVERSARY_RECIPE as Yt } from "./anniversary-recipe-data.js";
 import {
   buildCalibrationDraft as Zt,
   calibrationSessionProperties as en,
@@ -740,40 +739,10 @@ function recipesScreen() {
       t("Receitas"),
       e.length ? t("{n} na prateleira", { n: e.length }) : "",
     ),
-    anniversaryRecipeCard(),
     driveStatusRow(),
     e.length ? myRecipesCard(e) : emptyRecipesState(),
     courseRecipesCard(),
   ];
-}
-function anniversaryRecipeCard() {
-  const e = Yt,
-    o = d(
-      t("Abrir receita especial"),
-      () => openCommunityRecipe(e),
-      "btn primary anniversary-recipe-button",
-    );
-  return a("section", "card anniversary-recipe-card", [
-    a("div", "anniversary-recipe-mark", "11", { "aria-hidden": "true" }),
-    a("div", "anniversary-recipe-body", [
-      a("div", "anniversary-recipe-copy", [
-        a("span", "anniversary-recipe-kicker", t("Edi\xE7\xE3o comemorativa")),
-        a("h2", "anniversary-recipe-heading", t("11 anos Beermother")),
-        a("p", "anniversary-recipe-name", e.name),
-        a(
-          "p",
-          "anniversary-recipe-text",
-          t("Uma receita especial para celebrar essa hist\xF3ria."),
-        ),
-        a("div", "anniversary-recipe-meta", [
-          a("span", "anniversary-recipe-pill", "20 L"),
-          a("span", "anniversary-recipe-pill", `OG ${P(1.06, 3)}`),
-          a("span", "anniversary-recipe-pill", "25 IBU"),
-        ]),
-      ]),
-      o,
-    ]),
-  ]);
 }
 function courseRecipesCard() {
   if (!ea.length) return null;
