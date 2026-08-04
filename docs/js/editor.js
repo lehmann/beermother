@@ -172,7 +172,9 @@ let recipeSearchQuery = "",
 let driveRows = [],
   driveLoadState = "idle",
   driveRowsHydrated = false,
+  driveEquipmentsHydrated = false,
   driveEquipmentsLoaded = false,
+  driveBatchesHydrated = false,
   driveBatchesLoaded = false;
 
 // localStorage keys for Drive file caches
@@ -381,27 +383,28 @@ function mergeBatchFromDrive(remoteEntry) {
   }
 }
 
+function hydrateEquipmentsFromCache() {
+  if (driveEquipmentsHydrated) return;
+  driveEquipmentsHydrated = true;
+  const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
+  if (!cache.length) return;
+  for (const entry of cache) {
+    try {
+      const profile = JSON.parse(entry.content);
+      if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
+    } catch {}
+  }
+  c.requestRender();
+}
+
 async function loadDriveEquipments() {
   if (!drvEnabled() || !drvHasToken() || driveEquipmentsLoaded) return;
   driveEquipmentsLoaded = true;
-
-  // Hydrate from localStorage cache immediately — no Drive request needed.
-  const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
-  if (cache.length) {
-    for (const entry of cache) {
-      try {
-        const profile = JSON.parse(entry.content);
-        if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
-      } catch {}
-    }
-    c.requestRender();
-  }
-
+  hydrateEquipmentsFromCache();
   try {
+    const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
     const { entries, changed } = await drvSyncEquipments(cache);
     if (changed) {
-      // Only entries with content (fresh=true) are new/changed.
-      // Unchanged entries carry the cached content via spread in syncFolderWithCache.
       saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, entries.filter((e) => e.content));
       for (const entry of entries) {
         if (!entry.fresh) continue;
@@ -417,23 +420,26 @@ async function loadDriveEquipments() {
   }
 }
 
+function hydrateBatchesFromCache() {
+  if (driveBatchesHydrated) return;
+  driveBatchesHydrated = true;
+  const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
+  if (!cache.length) return;
+  for (const entry of cache) {
+    try {
+      const brewEntry = JSON.parse(entry.content);
+      if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
+    } catch {}
+  }
+  c.requestRender();
+}
+
 async function loadDriveBatches() {
   if (!drvEnabled() || !drvHasToken() || driveBatchesLoaded) return;
   driveBatchesLoaded = true;
-
-  // Hydrate from localStorage cache immediately — no Drive request needed.
-  const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
-  if (cache.length) {
-    for (const entry of cache) {
-      try {
-        const brewEntry = JSON.parse(entry.content);
-        if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
-      } catch {}
-    }
-    c.requestRender();
-  }
-
+  hydrateBatchesFromCache();
   try {
+    const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
     const { entries, changed } = await drvSyncBatches(cache);
     if (changed) {
       saveDriveCache(DRIVE_BATCH_CACHE_KEY, entries.filter((e) => e.content));
@@ -1027,7 +1033,10 @@ function openCommunityRecipe(e) {
     window.scrollTo({ top: 0, behavior: "instant" }));
 }
 function brewsScreen() {
-  if (drvEnabled() && drvHasToken()) loadDriveBatches();
+  if (drvEnabled()) {
+    hydrateBatchesFromCache();
+    if (drvHasToken()) loadDriveBatches();
+  }
   const e = Fe().filter((r) => r.status === "active"),
     o = e.length ? t("{n} em andamento", { n: e.length }) : "",
     n = e.length
@@ -1056,7 +1065,10 @@ function brewsScreen() {
   return [pageHead(t("Brassagens"), o), n, Ln()];
 }
 function equipmentScreen() {
-  if (drvEnabled() && drvHasToken()) loadDriveEquipments();
+  if (drvEnabled()) {
+    hydrateEquipmentsFromCache();
+    if (drvHasToken()) loadDriveEquipments();
+  }
   const e = X();
   return [
     pageHead(
