@@ -15,7 +15,7 @@ const SUBFOLDER_EQUIPMENTS = "equipments";
 const SUBFOLDER_BATCHES = "batches";
 
 let _tokenClient = null;
-let _token = null;       // in-memory cache
+let _token = null;
 let _tokenExpiry = 0;
 let _pendingResolve = null;
 let _pendingReject = null;
@@ -110,14 +110,8 @@ function waitForGsi(timeout = 10000) {
 
 export async function requestDriveAccess() {
   await waitForGsi();
-
-  // 1. In-memory token still valid.
   if (hasValidToken()) return _token;
-
-  // 2. Persisted token in localStorage still valid.
   if (loadPersistedToken()) return _token;
-
-  // 3. No valid token — ask the user to authenticate interactively.
   return await requestTokenInteractive();
 }
 
@@ -166,14 +160,82 @@ async function findOrCreateFolderUnder(name, parentId) {
   return folder.id;
 }
 
-// Returns the id of Beer Mother/<subFolder>, creating both levels as needed.
 async function resolveSubFolder(subFolder) {
   const rootName = loadDriveFolderName();
   const rootId = await findOrCreateFolderUnder(rootName, null);
   return findOrCreateFolderUnder(subFolder, rootId);
 }
 
-// ── generic file upsert ───────────────────────────────────────────────────────
+// ── file primitives ───────────────────────────────────────────────────────────
+
+// Single metadata-only listing — one API call, no content download.
+async function listFilesMetadataInFolder(folderId, extension) {
+  const h = await authHeaders();
+  const extClause = extension ? ` and name contains '${extension}'` : "";
+  const q = encodeURIComponent(
+    `'${folderId}' in parents and trashed=false${extClause}`,
+  );
+  const res = await apiFetch(
+    `${API}/files?q=${q}&fields=files(id,name,md5Checksum)&spaces=drive&pageSize=1000&orderBy=name`,
+    { headers: h },
+  );
+  if (!res.ok) {
+    if (res.status === 403) revokeLocalToken();
+    throw new Error(t("Erro ao listar arquivos no Google Drive."));
+  }
+  const data = await res.json();
+  return data.files || [];
+}
+
+async function downloadFileById(fileId) {
+  const h = await authHeaders();
+  const r = await apiFetch(`${API}/files/${fileId}?alt=media`, { headers: h });
+  if (!r.ok) throw new Error(t("Erro ao baixar arquivo do Google Drive."));
+  return r.text();
+}
+
+// ── cache-aware sync ──────────────────────────────────────────────────────────
+//
+// cache: [{driveFileId, name, md5Checksum, content}]
+// Returns {entries: [...], changed: boolean}
+//   - entries has the same shape as cache — one entry per Drive file
+//   - changed is true if any file was added, modified, or deleted vs cache
+//
+async function syncFolderWithCache(folderId, extension, cache) {
+  const metaList = await listFilesMetadataInFolder(folderId, extension);
+  const cacheByDriveId = new Map(cache.map((entry) => [entry.driveFileId, entry]));
+  const driveIds = new Set(metaList.map((m) => m.id));
+
+  let changed = false;
+  const entries = [];
+
+  for (const meta of metaList) {
+    const cached = cacheByDriveId.get(meta.id);
+    if (cached && cached.md5Checksum === meta.md5Checksum) {
+      entries.push(cached);
+    } else {
+      try {
+        const content = await downloadFileById(meta.id);
+        entries.push({
+          driveFileId: meta.id,
+          name: meta.name,
+          md5Checksum: meta.md5Checksum,
+          content,
+        });
+        changed = true;
+      } catch {}
+    }
+  }
+
+  // Detect deletions: files in cache no longer present in Drive
+  if (!changed && cache.some((entry) => !driveIds.has(entry.driveFileId))) {
+    changed = true;
+  }
+
+  return { entries, changed };
+}
+
+// ── generic upsert ────────────────────────────────────────────────────────────
 
 async function saveFileToFolder(content, fileName, folderId, mimeType = "application/xml") {
   const h = await authHeaders();
@@ -202,11 +264,11 @@ async function saveFileToFolder(content, fileName, folderId, mimeType = "applica
   );
   form.append("file", new Blob([content], { type: mimeType }));
 
-  const url = existing
-    ? `${UPLOAD_API}/files/${existing.id}?uploadType=multipart`
-    : `${UPLOAD_API}/files?uploadType=multipart`;
+  const uploadUrl = existing
+    ? `${UPLOAD_API}/files/${existing.id}?uploadType=multipart&fields=id,md5Checksum`
+    : `${UPLOAD_API}/files?uploadType=multipart&fields=id,md5Checksum`;
 
-  const uploadRes = await apiFetch(url, {
+  const uploadRes = await apiFetch(uploadUrl, {
     method: existing ? "PATCH" : "POST",
     headers: h,
     body: form,
@@ -218,37 +280,8 @@ async function saveFileToFolder(content, fileName, folderId, mimeType = "applica
     throw new Error(err.error?.message || t("Erro ao salvar no Google Drive."));
   }
 
+  // Return {id, md5Checksum} so callers can update their local cache entry
   return uploadRes.json();
-}
-
-// ── generic folder listing ────────────────────────────────────────────────────
-
-async function listFilesInFolder(folderId, extension) {
-  const h = await authHeaders();
-  const extClause = extension ? ` and name contains '${extension}'` : "";
-  const q = encodeURIComponent(
-    `'${folderId}' in parents and trashed=false${extClause}`,
-  );
-  const res = await apiFetch(
-    `${API}/files?q=${q}&fields=files(id,name)&spaces=drive&pageSize=1000&orderBy=name`,
-    { headers: h },
-  );
-  if (!res.ok) {
-    if (res.status === 403) revokeLocalToken();
-    throw new Error(t("Erro ao listar arquivos no Google Drive."));
-  }
-  const data = await res.json();
-  const files = data.files || [];
-  const results = [];
-  for (const file of files) {
-    try {
-      const r = await apiFetch(`${API}/files/${file.id}?alt=media`, { headers: h });
-      if (!r.ok) continue;
-      const content = await r.text();
-      results.push({ id: file.id, name: file.name, content });
-    } catch {}
-  }
-  return results;
 }
 
 async function loadSingleFile(folderId, fileName) {
@@ -270,20 +303,23 @@ async function loadSingleFile(folderId, fileName) {
 
 // ── public API — recipes ──────────────────────────────────────────────────────
 
-export async function saveRecipeToDrive(xmlContent, fileName) {
+// cache: [{driveFileId, name, md5Checksum, content}] from localStorage
+// Returns {entries, changed}
+export async function syncRecipesFromDrive(cache) {
   const folderId = await resolveSubFolder(SUBFOLDER_RECIPES);
-  return saveFileToFolder(xmlContent, fileName, folderId);
+  return syncFolderWithCache(folderId, ".xml", cache);
 }
 
-export async function listRecipesFromDrive() {
+// Saves a recipe and returns {driveFileId, md5Checksum} for cache update
+export async function saveRecipeToDrive(xmlContent, fileName) {
   const folderId = await resolveSubFolder(SUBFOLDER_RECIPES);
-  return listFilesInFolder(folderId, ".xml");
+  const result = await saveFileToFolder(xmlContent, fileName, folderId);
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 
 // ── public API — inventory ────────────────────────────────────────────────────
 
 export async function saveInventoryToDrive(xmlContent) {
-  // Inventory lives directly in the root Beer Mother folder (not a sub-folder)
   const rootName = loadDriveFolderName();
   const rootId = await findOrCreateFolderUnder(rootName, null);
   return saveFileToFolder(xmlContent, "inventory.xml", rootId);
@@ -297,56 +333,32 @@ export async function loadInventoryFromDrive() {
 
 // ── public API — equipment ────────────────────────────────────────────────────
 
-// Equipment profiles are stored as JSON files (filename = "<id>.json")
+// cache: [{driveFileId, name, md5Checksum, content}] from localStorage
+export async function syncEquipmentsFromDrive(cache) {
+  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
+  return syncFolderWithCache(folderId, ".json", cache);
+}
+
 export async function saveEquipmentToDrive(profile) {
   const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
   const fileName = `${profile.id}.json`;
-  return saveFileToFolder(
-    JSON.stringify(profile),
-    fileName,
-    folderId,
-    "application/json",
-  );
-}
-
-export async function loadEquipmentsFromDrive() {
-  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
-  const files = await listFilesInFolder(folderId, ".json");
-  return files.flatMap((file) => {
-    try {
-      const profile = JSON.parse(file.content);
-      return profile && profile.id ? [profile] : [];
-    } catch {
-      return [];
-    }
-  });
+  const result = await saveFileToFolder(JSON.stringify(profile), fileName, folderId, "application/json");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: JSON.stringify(profile) };
 }
 
 // ── public API — batches ──────────────────────────────────────────────────────
 
-// Brew log entries are stored as JSON files (filename = "<id>.json")
+// cache: [{driveFileId, name, md5Checksum, content}] from localStorage
+export async function syncBatchesFromDrive(cache) {
+  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
+  return syncFolderWithCache(folderId, ".json", cache);
+}
+
 export async function saveBatchToDrive(brewEntry) {
   const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
   const fileName = `${brewEntry.id}.json`;
-  return saveFileToFolder(
-    JSON.stringify(brewEntry),
-    fileName,
-    folderId,
-    "application/json",
-  );
-}
-
-export async function loadBatchesFromDrive() {
-  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
-  const files = await listFilesInFolder(folderId, ".json");
-  return files.flatMap((file) => {
-    try {
-      const entry = JSON.parse(file.content);
-      return entry && entry.id ? [entry] : [];
-    } catch {
-      return [];
-    }
-  });
+  const result = await saveFileToFolder(JSON.stringify(brewEntry), fileName, folderId, "application/json");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: JSON.stringify(brewEntry) };
 }
 
 // ── misc ──────────────────────────────────────────────────────────────────────

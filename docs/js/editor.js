@@ -59,12 +59,12 @@ import {
 import {
   saveRecipeToDrive as drvUpload,
   requestDriveAccess as drvAuth,
-  listRecipesFromDrive as drvList,
+  syncRecipesFromDrive as drvSyncRecipes,
   hasDriveToken as drvHasToken,
   saveEquipmentToDrive as drvSaveEquipment,
-  loadEquipmentsFromDrive as drvLoadEquipments,
+  syncEquipmentsFromDrive as drvSyncEquipments,
   saveBatchToDrive as drvSaveBatch,
-  loadBatchesFromDrive as drvLoadBatches,
+  syncBatchesFromDrive as drvSyncBatches,
 } from "./gdrive.js";
 import { PH_ACID_TYPES as ht } from "./ph.js";
 import {
@@ -174,6 +174,27 @@ let driveRows = [],
   driveEquipmentsLoaded = false,
   driveBatchesLoaded = false;
 
+// localStorage keys for Drive file caches
+const DRIVE_RECIPE_CACHE_KEY = "beermother.drive.cache.recipes.v1";
+const DRIVE_EQUIPMENT_CACHE_KEY = "beermother.drive.cache.equipments.v1";
+const DRIVE_BATCH_CACHE_KEY = "beermother.drive.cache.batches.v1";
+
+function loadDriveCache(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    const parsed = JSON.parse(raw || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveDriveCache(key, entries) {
+  try {
+    localStorage.setItem(key, JSON.stringify(entries));
+  } catch {}
+}
+
 // Fire-and-forget Drive sync helpers — never throw into the calling flow.
 async function syncBrewToDrive(brewId) {
   if (!drvEnabled() || !drvHasToken()) return;
@@ -187,15 +208,23 @@ async function syncBrewToDrive(brewId) {
 async function syncEquipmentToDrive(profile) {
   if (!drvEnabled() || !drvHasToken() || !profile) return;
   try {
-    await drvSaveEquipment(profile);
+    const cacheEntry = await drvSaveEquipment(profile);
+    const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
+    const updated = cache.filter((e) => e.driveFileId !== cacheEntry.driveFileId);
+    updated.push(cacheEntry);
+    saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, updated);
   } catch {}
 }
 
 // Register Drive sync on every brew upsert (autosave, conclude, reopen, etc.)
 setBrewUpsertedCallback((entry) => {
-  if (drvEnabled() && drvHasToken()) {
-    drvSaveBatch(entry).catch(() => {});
-  }
+  if (!drvEnabled() || !drvHasToken()) return;
+  drvSaveBatch(entry).then((cacheEntry) => {
+    const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
+    const updated = cache.filter((e) => e.driveFileId !== cacheEntry.driveFileId);
+    updated.push(cacheEntry);
+    saveDriveCache(DRIVE_BATCH_CACHE_KEY, updated);
+  }).catch(() => {});
 });
 
 function driveKey(e) {
@@ -225,15 +254,27 @@ function driveFileToRow(e) {
     return null;
   }
 }
-async function loadDriveRecipes(e) {
-  ((driveLoadState = "loading"), e && c.requestRender());
+async function loadDriveRecipes(forceRefresh) {
+  // Step 1: hydrate from localStorage cache immediately
+  const cache = loadDriveCache(DRIVE_RECIPE_CACHE_KEY);
+  if (cache.length && driveLoadState === "idle") {
+    driveRows = cache.map(driveFileToRow).filter(Boolean);
+    c.requestRender();
+  }
+
+  driveLoadState = "loading";
+  if (forceRefresh) c.requestRender();
+
   try {
-    const o = await drvList();
-    ((driveRows = o.map(driveFileToRow).filter(Boolean)),
-      (driveLoadState = "done"));
-  } catch (o) {
-    ((driveLoadState = "error"),
-      e && b(o.message || t("Erro ao carregar receitas do Drive."), "error"));
+    const { entries, changed } = await drvSyncRecipes(cache);
+    if (changed) {
+      saveDriveCache(DRIVE_RECIPE_CACHE_KEY, entries);
+      driveRows = entries.map(driveFileToRow).filter(Boolean);
+    }
+    driveLoadState = "done";
+  } catch (err) {
+    driveLoadState = "error";
+    if (forceRefresh) b(err.message || t("Erro ao carregar receitas do Drive."), "error");
   }
   c.requestRender();
 }
@@ -252,14 +293,31 @@ function mergeBatchFromDrive(remoteEntry) {
 async function loadDriveEquipments() {
   if (!drvEnabled() || !drvHasToken() || driveEquipmentsLoaded) return;
   driveEquipmentsLoaded = true;
-  try {
-    const profiles = await drvLoadEquipments();
-    for (const profile of profiles) {
-      if (profile?.id && !X().find((p) => p.id === profile.id)) {
-        ne(profile);
-      }
+
+  // Hydrate from cache immediately
+  const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
+  if (cache.length) {
+    for (const entry of cache) {
+      try {
+        const profile = JSON.parse(entry.content);
+        if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
+      } catch {}
     }
-    if (profiles.length) c.requestRender();
+    if (cache.length) c.requestRender();
+  }
+
+  try {
+    const { entries, changed } = await drvSyncEquipments(cache);
+    if (changed) {
+      saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, entries);
+      for (const entry of entries) {
+        try {
+          const profile = JSON.parse(entry.content);
+          if (profile?.id) ne(profile);
+        } catch {}
+      }
+      c.requestRender();
+    }
   } catch {
     driveEquipmentsLoaded = false;
   }
@@ -268,14 +326,31 @@ async function loadDriveEquipments() {
 async function loadDriveBatches() {
   if (!drvEnabled() || !drvHasToken() || driveBatchesLoaded) return;
   driveBatchesLoaded = true;
-  try {
-    const entries = await drvLoadBatches();
-    for (const entry of entries) {
-      if (entry?.id && entry?.payload) {
-        mergeBatchFromDrive(entry);
-      }
+
+  // Hydrate from cache immediately
+  const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
+  if (cache.length) {
+    for (const entry of cache) {
+      try {
+        const brewEntry = JSON.parse(entry.content);
+        if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
+      } catch {}
     }
-    if (entries.length) c.requestRender();
+    if (cache.length) c.requestRender();
+  }
+
+  try {
+    const { entries, changed } = await drvSyncBatches(cache);
+    if (changed) {
+      saveDriveCache(DRIVE_BATCH_CACHE_KEY, entries);
+      for (const entry of entries) {
+        try {
+          const brewEntry = JSON.parse(entry.content);
+          if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
+        } catch {}
+      }
+      c.requestRender();
+    }
   } catch {
     driveBatchesLoaded = false;
   }
@@ -5393,12 +5468,12 @@ function vo(e) {
             const n = o.currentTarget;
             n.disabled = !0;
             try {
-              (await drvUpload(Pa(e), Aa(e)),
-                b(
-                  t('"{name}" salvo no Google Drive.', {
-                    name: e.name || t("Receita"),
-                  }),
-                ));
+              const cacheEntry = await drvUpload(Pa(e), Aa(e));
+              const recipeCache = loadDriveCache(DRIVE_RECIPE_CACHE_KEY);
+              const updatedCache = recipeCache.filter((ce) => ce.driveFileId !== cacheEntry.driveFileId);
+              updatedCache.push(cacheEntry);
+              saveDriveCache(DRIVE_RECIPE_CACHE_KEY, updatedCache);
+              b(t('"{name}" salvo no Google Drive.', { name: e.name || t("Receita") }));
             } catch (r) {
               b(r.message || t("Erro ao salvar no Google Drive."), "error");
             } finally {
