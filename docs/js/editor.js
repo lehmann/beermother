@@ -23,6 +23,7 @@ import {
   clearAutosave as Ya,
   listBrews as Fe,
   getBrew as Za,
+  upsertBrewFromPayload as upsertBrewEntry,
   setBrewStatus as ba,
   deleteBrew as et,
   appendBrewNote as at,
@@ -53,12 +54,17 @@ import {
   saveDriveEnabled as drvSetEnabled,
   loadDriveFolderName as drvFolder,
   saveDriveFolderName as drvSetFolder,
+  setBrewUpsertedCallback,
 } from "./state.js";
 import {
   saveRecipeToDrive as drvUpload,
   requestDriveAccess as drvAuth,
   listRecipesFromDrive as drvList,
   hasDriveToken as drvHasToken,
+  saveEquipmentToDrive as drvSaveEquipment,
+  loadEquipmentsFromDrive as drvLoadEquipments,
+  saveBatchToDrive as drvSaveBatch,
+  loadBatchesFromDrive as drvLoadBatches,
 } from "./gdrive.js";
 import { PH_ACID_TYPES as ht } from "./ph.js";
 import {
@@ -164,6 +170,31 @@ let recipeSearchQuery = "",
   showIbuPerAddition = !1;
 let driveRows = [],
   driveLoadState = "idle";
+
+// Fire-and-forget Drive sync helpers — never throw into the calling flow.
+async function syncBrewToDrive(brewId) {
+  if (!drvEnabled() || !drvHasToken()) return;
+  const entry = Za(brewId);
+  if (!entry) return;
+  try {
+    await drvSaveBatch(entry);
+  } catch {}
+}
+
+async function syncEquipmentToDrive(profile) {
+  if (!drvEnabled() || !drvHasToken() || !profile) return;
+  try {
+    await drvSaveEquipment(profile);
+  } catch {}
+}
+
+// Register Drive sync on every brew upsert (autosave, conclude, reopen, etc.)
+setBrewUpsertedCallback((entry) => {
+  if (drvEnabled() && drvHasToken()) {
+    drvSaveBatch(entry).catch(() => {});
+  }
+});
+
 function driveKey(e) {
   return String(e || "")
     .trim()
@@ -203,11 +234,48 @@ async function loadDriveRecipes(e) {
   }
   c.requestRender();
 }
+// Merge a brew entry loaded from Drive: only import if remote is newer than local.
+function mergeBatchFromDrive(remoteEntry) {
+  if (!remoteEntry?.id || !remoteEntry?.payload) return;
+  const local = Za(remoteEntry.id);
+  const remoteNewer = !local || new Date(remoteEntry.updatedAt) > new Date(local.updatedAt);
+  if (remoteNewer) {
+    // payload must carry brewId — ensure it does
+    const payload = { ...remoteEntry.payload, brewId: remoteEntry.id };
+    upsertBrewEntry(payload, { status: remoteEntry.status });
+  }
+}
+
+async function loadDriveEquipments() {
+  if (!drvEnabled() || !drvHasToken()) return;
+  try {
+    const profiles = await drvLoadEquipments();
+    for (const profile of profiles) {
+      if (profile?.id && !X().find((p) => p.id === profile.id)) {
+        ne(profile);
+      }
+    }
+  } catch {}
+}
+
+async function loadDriveBatches() {
+  if (!drvEnabled() || !drvHasToken()) return;
+  try {
+    const entries = await drvLoadBatches();
+    for (const entry of entries) {
+      if (entry?.id && entry?.payload) {
+        mergeBatchFromDrive(entry);
+      }
+    }
+    if (entries.length) c.requestRender();
+  } catch {}
+}
+
 function maybeAutoLoadDrive() {
-  drvEnabled() &&
-    driveLoadState === "idle" &&
-    drvHasToken() &&
-    loadDriveRecipes(!1);
+  if (!drvEnabled() || !drvHasToken()) return;
+  if (driveLoadState === "idle") loadDriveRecipes(!1);
+  loadDriveEquipments();
+  loadDriveBatches();
 }
 function mergeDriveRecipes(e) {
   if (!driveRows.length) return e;
@@ -1036,6 +1104,7 @@ function oa(e) {
               t("Reabrir leva"),
               () => {
                 (ba(e.id, "active"),
+                  syncBrewToDrive(e.id),
                   h(),
                   c.view === "brewlog" &&
                     ((c.view = "home"),
@@ -1054,6 +1123,7 @@ function oa(e) {
               t("Concluir brassagem"),
               () => {
                 (o ? tt() : ba(e.id, "done"),
+                  syncBrewToDrive(e.id),
                   h(),
                   (c.workspaceSection = "notebook"),
                   b(t("Brassagem conclu\xEDda \u2014 ela mora no Caderno.")),
@@ -1264,6 +1334,7 @@ function En(e) {
       }
       const s = Za(e.id);
       (s && (c.brewLogEntry = s),
+        syncBrewToDrive(e.id),
         b(t("Nota adicionada com data e hora.")),
         c.requestRender());
     },
@@ -2250,6 +2321,7 @@ function Z(e, o = null) {
               const $ = X();
               ((!pe() || $.length === 1 || pe() === v.id) &&
                 (ye(v.id), re(v.params)),
+                syncEquipmentToDrive(v),
                 c.requestRender(),
                 p(v, pe() === v.id));
             }
@@ -2454,6 +2526,7 @@ function In(e) {
           });
           g &&
             (pe() === g.id && re(g.params),
+            syncEquipmentToDrive(g),
             b(
               t('"{name}" calibrado com {source}.', {
                 name: g.name,
@@ -2478,6 +2551,7 @@ function In(e) {
           y &&
             (ye(y.id),
             re(y.params),
+            syncEquipmentToDrive(y),
             b(
               t('Perfil "{name}" criado e definido como principal.', {
                 name: y.name,
@@ -3784,6 +3858,7 @@ export function calibrationPayoffCard(e) {
                 params: { ...r.params, ...p() },
               });
               (g && pe() === g.id && re(g.params),
+                syncEquipmentToDrive(g),
                 E(
                   g,
                   t('"{name}" calibrado com esta brassagem.', { name: r.name }),
@@ -3803,6 +3878,7 @@ export function calibrationPayoffCard(e) {
                 params: { targetVolumeL: i, ...p() },
               });
               (g && (ye(g.id), re(g.params)),
+                syncEquipmentToDrive(g),
                 E(g, t("Perfil criado e definido como principal.")));
             },
             "btn small",
@@ -3817,6 +3893,7 @@ export function calibrationPayoffCard(e) {
                 params: { targetVolumeL: i, ...p() },
               });
               (g && (ye(g.id), re(g.params)),
+                syncEquipmentToDrive(g),
                 E(g, t("Equipamento salvo e definido como principal.")));
             },
             "btn primary",

@@ -581,6 +581,10 @@ function p(e) {
     localStorage.setItem(BREWS_STORAGE_KEY, JSON.stringify(e.slice(0, W)));
   } catch {}
 }
+let _onBrewUpserted = null;
+export function setBrewUpsertedCallback(fn) {
+  _onBrewUpserted = fn;
+}
 export function upsertBrewFromPayload(e, t = {}) {
   if (!c(e) || !e.brewId) return null;
   const r = listBrews(),
@@ -596,7 +600,9 @@ export function upsertBrewFromPayload(e, t = {}) {
         n === "done" ? o?.concludedAt || new Date().toISOString() : "",
       payload: i(e),
     };
-  return (p([s, ...r.filter((a) => a.id !== s.id)]), s);
+  p([s, ...r.filter((a) => a.id !== s.id)]);
+  try { _onBrewUpserted?.(s); } catch {}
+  return s;
 }
 export function setBrewStatus(e, t) {
   const r = listBrews(),
