@@ -184,16 +184,19 @@ let driveRows = [],
 
 // localStorage keys for Drive file caches
 //
-// Recipes index: [{driveFileId, name, md5Checksum}]  — no XML content here
-// Per-recipe row: key = beermother.drive.recipe.<driveFileId>
-//   value = {id, driveFileId, name, styleName, abv, ebc, ibu, og, isDraft, fromDrive, draft}
+// All three categories follow the same pattern:
+//   Index key  → [{driveFileId, name, md5Checksum}]   (no content)
+//   Item key   → <prefix><driveFileId>  stores the parsed object
 //
-// Equipments/batches index: [{driveFileId, name, md5Checksum, content}]
-//   (they are small JSON objects, keeping content in the index is fine)
+// Recipes:    index = DRIVE_RECIPE_INDEX_KEY,    item = DRIVE_RECIPE_ROW_PREFIX + driveFileId
+// Equipments: index = DRIVE_EQUIPMENT_INDEX_KEY, item = DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId
+// Batches:    index = DRIVE_BATCH_INDEX_KEY,     item = DRIVE_BATCH_ITEM_PREFIX + driveFileId
 const DRIVE_RECIPE_INDEX_KEY = "beermother.drive.cache.recipes.v1";
 const DRIVE_RECIPE_ROW_PREFIX = "beermother.drive.recipe.";
-const DRIVE_EQUIPMENT_CACHE_KEY = "beermother.drive.cache.equipments.v1";
-const DRIVE_BATCH_CACHE_KEY = "beermother.drive.cache.batches.v1";
+const DRIVE_EQUIPMENT_INDEX_KEY = "beermother.drive.cache.equipments.v1";
+const DRIVE_EQUIPMENT_ITEM_PREFIX = "beermother.drive.equipment.";
+const DRIVE_BATCH_INDEX_KEY = "beermother.drive.cache.batches.v1";
+const DRIVE_BATCH_ITEM_PREFIX = "beermother.drive.batch.";
 
 function loadJsonFromStorage(key, fallback) {
   try {
@@ -233,14 +236,19 @@ function deleteRecipeRow(driveFileId) {
   try { localStorage.removeItem(DRIVE_RECIPE_ROW_PREFIX + driveFileId); } catch {}
 }
 
-// Equipments / batches — small objects, content kept in the index entry
-function loadDriveCache(key) {
-  return loadJsonFromStorage(key, []);
-}
+// Equipments — index + per-item entries
+function loadEquipmentIndex() { return loadJsonFromStorage(DRIVE_EQUIPMENT_INDEX_KEY, []); }
+function saveEquipmentIndex(index) { saveJsonToStorage(DRIVE_EQUIPMENT_INDEX_KEY, index); }
+function loadEquipmentItem(driveFileId) { return loadJsonFromStorage(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId, null); }
+function saveEquipmentItem(driveFileId, profile) { saveJsonToStorage(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId, profile); }
+function deleteEquipmentItem(driveFileId) { try { localStorage.removeItem(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId); } catch {} }
 
-function saveDriveCache(key, entries) {
-  saveJsonToStorage(key, entries);
-}
+// Batches — index + per-item entries
+function loadBatchIndex() { return loadJsonFromStorage(DRIVE_BATCH_INDEX_KEY, []); }
+function saveBatchIndex(index) { saveJsonToStorage(DRIVE_BATCH_INDEX_KEY, index); }
+function loadBatchItem(driveFileId) { return loadJsonFromStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, null); }
+function saveBatchItem(driveFileId, brewEntry) { saveJsonToStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, brewEntry); }
+function deleteBatchItem(driveFileId) { try { localStorage.removeItem(DRIVE_BATCH_ITEM_PREFIX + driveFileId); } catch {} }
 
 // Fire-and-forget Drive sync helpers — never throw into the calling flow.
 async function syncBrewToDrive(brewId) {
@@ -256,10 +264,11 @@ async function syncEquipmentToDrive(profile) {
   if (!drvEnabled() || !drvHasToken() || !profile) return;
   try {
     const cacheEntry = await drvSaveEquipment(profile);
-    const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
-    const updated = cache.filter((e) => e.driveFileId !== cacheEntry.driveFileId);
-    updated.push(cacheEntry);
-    saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, updated);
+    const index = loadEquipmentIndex();
+    const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
+    newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+    saveEquipmentIndex(newIndex);
+    saveEquipmentItem(cacheEntry.driveFileId, profile);
   } catch {}
 }
 
@@ -268,10 +277,11 @@ async function syncEquipmentToDrive(profile) {
 setBrewUpsertedCallback((entry) => {
   if (_importingFromDrive || !drvEnabled() || !drvHasToken()) return;
   drvSaveBatch(entry).then((cacheEntry) => {
-    const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
-    const updated = cache.filter((e) => e.driveFileId !== cacheEntry.driveFileId);
-    updated.push(cacheEntry);
-    saveDriveCache(DRIVE_BATCH_CACHE_KEY, updated);
+    const index = loadBatchIndex();
+    const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
+    newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+    saveBatchIndex(newIndex);
+    saveBatchItem(cacheEntry.driveFileId, entry);
   }).catch(() => {});
 });
 
@@ -391,13 +401,11 @@ function mergeBatchFromDrive(remoteEntry) {
 function hydrateEquipmentsFromCache() {
   if (driveEquipmentsHydrated) return;
   driveEquipmentsHydrated = true;
-  const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
-  if (!cache.length) return;
-  for (const entry of cache) {
-    try {
-      const profile = JSON.parse(entry.content);
-      if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
-    } catch {}
+  const index = loadEquipmentIndex();
+  if (!index.length) return;
+  for (const meta of index) {
+    const profile = loadEquipmentItem(meta.driveFileId);
+    if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
   }
   c.requestRender();
 }
@@ -408,17 +416,31 @@ async function loadDriveEquipments(forceRefresh) {
   driveEquipmentsState = "loading";
   if (forceRefresh) c.requestRender();
   try {
-    const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
-    const { entries, changed } = await drvSyncEquipments(cache);
+    const index = loadEquipmentIndex();
+    const { entries, changed } = await drvSyncEquipments(index);
     if (changed) {
-      saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, entries.filter((e) => e.content));
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
       for (const entry of entries) {
-        if (!entry.fresh) continue;
-        try {
-          const profile = JSON.parse(entry.content);
-          if (profile?.id) ne(profile);
-        } catch {}
+        if (entry.fresh) {
+          try {
+            const profile = JSON.parse(entry.content);
+            if (profile?.id) {
+              saveEquipmentItem(entry.driveFileId, profile);
+              ne(profile);
+            }
+          } catch {}
+        }
       }
+      // Remove items deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteEquipmentItem(meta.driveFileId);
+      }
+      saveEquipmentIndex(newIndex);
     }
     driveEquipmentsState = "done";
   } catch (err) {
@@ -431,13 +453,11 @@ async function loadDriveEquipments(forceRefresh) {
 function hydrateBatchesFromCache() {
   if (driveBatchesHydrated) return;
   driveBatchesHydrated = true;
-  const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
-  if (!cache.length) return;
-  for (const entry of cache) {
-    try {
-      const brewEntry = JSON.parse(entry.content);
-      if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
-    } catch {}
+  const index = loadBatchIndex();
+  if (!index.length) return;
+  for (const meta of index) {
+    const brewEntry = loadBatchItem(meta.driveFileId);
+    if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
   }
   c.requestRender();
 }
@@ -448,17 +468,31 @@ async function loadDriveBatches(forceRefresh) {
   driveBatchesState = "loading";
   if (forceRefresh) c.requestRender();
   try {
-    const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
-    const { entries, changed } = await drvSyncBatches(cache);
+    const index = loadBatchIndex();
+    const { entries, changed } = await drvSyncBatches(index);
     if (changed) {
-      saveDriveCache(DRIVE_BATCH_CACHE_KEY, entries.filter((e) => e.content));
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
       for (const entry of entries) {
-        if (!entry.fresh) continue;
-        try {
-          const brewEntry = JSON.parse(entry.content);
-          if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
-        } catch {}
+        if (entry.fresh) {
+          try {
+            const brewEntry = JSON.parse(entry.content);
+            if (brewEntry?.id && brewEntry?.payload) {
+              saveBatchItem(entry.driveFileId, brewEntry);
+              mergeBatchFromDrive(brewEntry);
+            }
+          } catch {}
+        }
       }
+      // Remove items deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteBatchItem(meta.driveFileId);
+      }
+      saveBatchIndex(newIndex);
     }
     driveBatchesState = "done";
   } catch (err) {
