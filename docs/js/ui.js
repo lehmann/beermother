@@ -292,6 +292,9 @@ const M = {
   scale:
     "M4 7h16M7 7l-2.8 6a3 3 0 0 0 5.6 0L7 7zM17 7l-2.8 6a3 3 0 0 0 5.6 0L17 7zM12 4v13M9 21h6",
   hop: "M12 3c-4 2-6.5 5.5-6.5 9.5S8 20 12 21c4-1 6.5-4.5 6.5-8.5S16 5 12 3zM12 3v18M8 9c1.3 1 2.6 1.5 4 1.5S14.7 10 16 9M8 14c1.3 1 2.6 1.5 4 1.5s2.7-.5 4-1.5",
+  box: "M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v9",
+  trash:
+    "M5 7h14M9 7V4h6v3M10 11v6M14 11v6M6 7l1 13h10l1-13",
 };
 export function icon(t, e = "icon") {
   const n = document.createElementNS("http://www.w3.org/2000/svg", "svg");

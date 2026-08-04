@@ -112,6 +112,11 @@ import { parseBeerXml as hn } from "./beerxml.js";
 import { startRecipe as gn } from "./state.js";
 import { startTimer as bn } from "./timer.js";
 import {
+  loadInventory,
+  deductInventoryItems,
+} from "./state.js";
+import { syncInventoryToDrive } from "./inventory.js";
+import {
   t as n,
   tEngine as A,
   fmt as b,
@@ -731,7 +736,124 @@ function Rn(e) {
             ),
           ])
         : null;
-  return [Pn(e), Mn(e), Un(e, "prepare"), o];
+  return [Pn(e), Mn(e), Un(e, "prepare"), inventoryDeductCard(e), o];
+}
+function inventoryDeductCard(e) {
+  const inv = loadInventory();
+  const recipe = e.recipe;
+  const matches = [];
+
+  (recipe.fermentables || []).forEach((f) => {
+    const hit = inv.fermentables.find(
+      (it) => it.name.toLowerCase() === (f.name || "").toLowerCase(),
+    );
+    if (hit)
+      matches.push({
+        category: "fermentables",
+        id: hit.id,
+        name: hit.name,
+        recipeQty: h(f.amountKg),
+        stockQty: h(hit.amountKg),
+        unit: "kg",
+      });
+  });
+  (recipe.hops || []).forEach((f) => {
+    const hit = inv.hops.find(
+      (it) => it.name.toLowerCase() === (f.name || "").toLowerCase(),
+    );
+    if (hit)
+      matches.push({
+        category: "hops",
+        id: hit.id,
+        name: hit.name,
+        recipeQty: h(f.amountG),
+        stockQty: h(hit.amount),
+        unit: "g",
+      });
+  });
+  (recipe.yeasts || []).forEach((f) => {
+    const hit = inv.yeasts.find(
+      (it) => it.name.toLowerCase() === (f.name || "").toLowerCase(),
+    );
+    if (hit)
+      matches.push({
+        category: "yeasts",
+        id: hit.id,
+        name: hit.name,
+        recipeQty: h(f.amount),
+        stockQty: h(hit.amount),
+        unit: hit.unit || "pkg",
+      });
+  });
+  (recipe.miscs || []).forEach((f) => {
+    const hit = inv.others.find(
+      (it) => it.name.toLowerCase() === (f.name || "").toLowerCase(),
+    );
+    if (hit)
+      matches.push({
+        category: "others",
+        id: hit.id,
+        name: hit.name,
+        recipeQty: h(f.amount),
+        stockQty: h(hit.amount),
+        unit: hit.unit || "g",
+      });
+  });
+
+  if (!matches.length) return null;
+
+  const checked = new Set(matches.map((m) => m.id));
+
+  const rows = matches.map((m) => {
+    const enough = m.stockQty >= m.recipeQty;
+    const rowEl = a("div", `inv-deduct-row ${enough ? "" : "inv-deduct-low"}`, [
+      a("label", "inv-deduct-label", [
+        (() => {
+          const cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.checked = true;
+          cb.addEventListener("change", () => {
+            checked.has(m.id) ? checked.delete(m.id) : checked.add(m.id);
+          });
+          return cb;
+        })(),
+        a("span", "inv-deduct-name", m.name),
+      ]),
+      a(
+        "span",
+        "inv-deduct-stock",
+        `${m.stockQty} ${m.unit} ${n("em estoque")}`,
+      ),
+    ]);
+    return rowEl;
+  });
+
+  const deductBtn = w(
+    n("Deduzir do invent\u00e1rio"),
+    () => {
+      const deductions = matches
+        .filter((m) => checked.has(m.id))
+        .map((m) => ({ category: m.category, id: m.id, qty: m.recipeQty }));
+      if (!deductions.length) return;
+      deductInventoryItems(deductions);
+      syncInventoryToDrive(loadInventory());
+      S(n("Ingredientes deduzidos do invent\u00e1rio."));
+      i.requestRender();
+    },
+    "btn primary small",
+  );
+
+  return a("section", "card inv-deduct-card", [
+    a("header", "card-head", [
+      M("box", "icon card-icon"),
+      a("h2", "card-title", n("Invent\u00e1rio")),
+    ]),
+    a("div", "inv-deduct-body", [
+      a("p", "inv-deduct-hint", n("Ingredientes encontrados no seu invent\u00e1rio:")),
+      a("div", "inv-deduct-rows", rows),
+      a("div", "inv-deduct-actions", [deductBtn]),
+    ]),
+  ]);
 }
 function Pn(e) {
   const t = T(Ge(e.og, e.fg), 1);

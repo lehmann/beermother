@@ -93,6 +93,7 @@ const Xt = [
     { id: "brews", label: "Brassagens", icon: "boil" },
     { id: "notebook", label: "Caderno", icon: "summary" },
     { id: "equipment", label: "Equipamentos", icon: "scale" },
+    { id: "inventory", label: "Inventário", icon: "box" },
   ],
   Yt = 860,
   Jt = 340,
