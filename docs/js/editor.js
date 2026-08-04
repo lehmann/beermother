@@ -339,7 +339,9 @@ async function loadDriveRecipes(forceRefresh) {
 
   try {
     // Step 2: one API call to list metadata; only downloads files whose md5 changed.
-    const { entries, changed } = await drvSyncRecipes(index);
+    // Filter out index entries whose row was never persisted — they must be re-downloaded.
+    const effectiveIndex = index.filter((m) => loadRecipeRow(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncRecipes(effectiveIndex);
 
     if (changed) {
       const newIndex = entries.map((e) => ({
@@ -417,7 +419,10 @@ async function loadDriveEquipments(forceRefresh) {
   if (forceRefresh) c.requestRender();
   try {
     const index = loadEquipmentIndex();
-    const { entries, changed } = await drvSyncEquipments(index);
+    // Only pass entries whose item exists locally — missing items are treated as
+    // changed by the sync so they get downloaded even if their md5 matches the index.
+    const effectiveIndex = index.filter((m) => loadEquipmentItem(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncEquipments(effectiveIndex);
     if (changed) {
       const newIndex = entries.map((e) => ({
         driveFileId: e.driveFileId,
@@ -469,7 +474,10 @@ async function loadDriveBatches(forceRefresh) {
   if (forceRefresh) c.requestRender();
   try {
     const index = loadBatchIndex();
-    const { entries, changed } = await drvSyncBatches(index);
+    // Only pass entries whose item exists locally — missing items are treated as
+    // changed by the sync so they get downloaded even if their md5 matches the index.
+    const effectiveIndex = index.filter((m) => loadBatchItem(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncBatches(effectiveIndex);
     if (changed) {
       const newIndex = entries.map((e) => ({
         driveFileId: e.driveFileId,
