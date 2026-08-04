@@ -257,8 +257,9 @@ async function syncEquipmentToDrive(profile) {
 }
 
 // Register Drive sync on every brew upsert (autosave, conclude, reopen, etc.)
+// Skipped while importing from Drive to avoid re-uploading just-downloaded data.
 setBrewUpsertedCallback((entry) => {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (_importingFromDrive || !drvEnabled() || !drvHasToken()) return;
   drvSaveBatch(entry).then((cacheEntry) => {
     const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
     const updated = cache.filter((e) => e.driveFileId !== cacheEntry.driveFileId);
@@ -360,15 +361,23 @@ async function loadDriveRecipes(forceRefresh) {
   }
   c.requestRender();
 }
+// Suppress Drive sync callbacks while importing batches from Drive to avoid
+// re-uploading data we just downloaded.
+let _importingFromDrive = false;
+
 // Merge a brew entry loaded from Drive: only import if remote is newer than local.
 function mergeBatchFromDrive(remoteEntry) {
   if (!remoteEntry?.id || !remoteEntry?.payload) return;
   const local = Za(remoteEntry.id);
   const remoteNewer = !local || new Date(remoteEntry.updatedAt) > new Date(local.updatedAt);
   if (remoteNewer) {
-    // payload must carry brewId — ensure it does
     const payload = { ...remoteEntry.payload, brewId: remoteEntry.id };
-    upsertBrewEntry(payload, { status: remoteEntry.status });
+    _importingFromDrive = true;
+    try {
+      upsertBrewEntry(payload, { status: remoteEntry.status });
+    } finally {
+      _importingFromDrive = false;
+    }
   }
 }
 
@@ -376,7 +385,7 @@ async function loadDriveEquipments() {
   if (!drvEnabled() || !drvHasToken() || driveEquipmentsLoaded) return;
   driveEquipmentsLoaded = true;
 
-  // Hydrate from cache immediately
+  // Hydrate from localStorage cache immediately — no Drive request needed.
   const cache = loadDriveCache(DRIVE_EQUIPMENT_CACHE_KEY);
   if (cache.length) {
     for (const entry of cache) {
@@ -385,14 +394,17 @@ async function loadDriveEquipments() {
         if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
       } catch {}
     }
-    if (cache.length) c.requestRender();
+    c.requestRender();
   }
 
   try {
     const { entries, changed } = await drvSyncEquipments(cache);
     if (changed) {
-      saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, entries);
+      // Only entries with content (fresh=true) are new/changed.
+      // Unchanged entries carry the cached content via spread in syncFolderWithCache.
+      saveDriveCache(DRIVE_EQUIPMENT_CACHE_KEY, entries.filter((e) => e.content));
       for (const entry of entries) {
+        if (!entry.fresh) continue;
         try {
           const profile = JSON.parse(entry.content);
           if (profile?.id) ne(profile);
@@ -401,7 +413,7 @@ async function loadDriveEquipments() {
       c.requestRender();
     }
   } catch {
-    driveEquipmentsLoaded = false;
+    // Do NOT reset driveEquipmentsLoaded — avoids an infinite retry loop on every render.
   }
 }
 
@@ -409,7 +421,7 @@ async function loadDriveBatches() {
   if (!drvEnabled() || !drvHasToken() || driveBatchesLoaded) return;
   driveBatchesLoaded = true;
 
-  // Hydrate from cache immediately
+  // Hydrate from localStorage cache immediately — no Drive request needed.
   const cache = loadDriveCache(DRIVE_BATCH_CACHE_KEY);
   if (cache.length) {
     for (const entry of cache) {
@@ -418,14 +430,15 @@ async function loadDriveBatches() {
         if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
       } catch {}
     }
-    if (cache.length) c.requestRender();
+    c.requestRender();
   }
 
   try {
     const { entries, changed } = await drvSyncBatches(cache);
     if (changed) {
-      saveDriveCache(DRIVE_BATCH_CACHE_KEY, entries);
+      saveDriveCache(DRIVE_BATCH_CACHE_KEY, entries.filter((e) => e.content));
       for (const entry of entries) {
+        if (!entry.fresh) continue;
         try {
           const brewEntry = JSON.parse(entry.content);
           if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
@@ -434,7 +447,7 @@ async function loadDriveBatches() {
       c.requestRender();
     }
   } catch {
-    driveBatchesLoaded = false;
+    // Do NOT reset driveBatchesLoaded — avoids an infinite retry loop on every render.
   }
 }
 
