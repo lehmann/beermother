@@ -62,8 +62,8 @@ import {
   openImportPicker as _t,
   openEditorNew as Gt,
   openSettingsSheet as Ft,
-} from "./editor.js?v=beta47-release1";
-import { analysisScreen as Ot } from "./analysis-screen.js?v=beta44-local1";
+} from "./editor.js";
+import { analysisScreen as Ot } from "./analysis-screen.js";
 import {
   timer as f,
   timerItemsForContext as Ge,

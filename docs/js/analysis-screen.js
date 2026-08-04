@@ -9,7 +9,7 @@ import {
   ASSUMED_CONTROLS as T,
   scaleParts as $,
 } from "./analysis/controls.js";
-import { perceptionView as C } from "./analysis/perception-view.js?v=server-analysis-v1";
+import { perceptionView as C } from "./analysis/perception-view.js";
 import {
   constrainedBetaFromMeanSd as D,
   betaQuantile as g,
