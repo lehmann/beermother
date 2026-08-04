@@ -1,2 +1,0 @@
-id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
-recipe-mryirdr6-81fmb,Rubinfränkisch,Schwarzbier,Jamal,5,30,125.1,,,0.5,35.1,5,90,1.5,10,4,4,12,10,30

@@ -1148,7 +1148,54 @@ function brewsScreen() {
             ]),
           ]),
         ]);
-  return [pageHead(t("Brassagens"), o), driveBatchesStatusRow(), n, Ln()];
+  return [pageHead(t("Brassagens"), o), driveBatchesStatusRow(), n, Ln(), brewsDoneSection()];
+}
+function brewsDoneSection() {
+  const e = Fe()
+    .filter((n) => n.status === "done")
+    .sort(
+      (s, l) =>
+        new Date(l.concludedAt || l.updatedAt).getTime() -
+        new Date(s.concludedAt || s.updatedAt).getTime(),
+    );
+  if (!e.length) return null;
+  const o = e.map((n) => {
+    const r = d("", () => Fa(n), "recipe-row", {
+      title: t("Abrir a ficha da leva"),
+    });
+    r.append(
+      R("summary", "icon brew-row-icon"),
+      a("div", "recipe-row-main", [
+        a("b", "recipe-row-name", [
+          n.recipeName,
+          a("span", "recipe-row-when", ` \xB7 ${Ue(n.concludedAt || n.updatedAt)}`),
+        ]),
+        a(
+          "span",
+          "recipe-row-meta",
+          n.styleName || t("conclu\xEDda"),
+        ),
+      ]),
+      R("chevron", "icon recipe-row-chevron"),
+    );
+    const u = D(
+      "drag",
+      t("A\xE7\xF5es da leva"),
+      (p) => {
+        (p.stopPropagation(), oa(n));
+      },
+      "icon-btn subtle small-btn recipe-discard",
+    );
+    return a("div", "recipe-row-wrap", [r, u]);
+  });
+  return a("section", "card home-card", [
+    a("header", "card-head", [
+      R("summary", "icon card-icon"),
+      a("h2", "card-title", t("Conclu\xEDdas")),
+      e.length > 1 ? a("span", "card-count num", String(e.length)) : null,
+    ]),
+    a("div", "card-body", o),
+  ]);
 }
 function equipmentScreen() {
   if (drvEnabled()) {
