@@ -354,28 +354,26 @@ export async function syncEquipmentsFromDrive(cache) {
   return syncFolderWithCache(folderId, ".xml", cache);
 }
 
-export async function saveEquipmentToDrive(profile) {
+export async function saveEquipmentToDrive(xmlContent, profileId) {
   const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
-  const fileName = `${profile.id}.xml`;
-  const content = JSON.stringify(profile);
-  const result = await saveFileToFolder(content, fileName, folderId, "application/xml");
-  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content };
+  const fileName = `${profileId}.xml`;
+  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 
 // ── public API — batches ──────────────────────────────────────────────────────
 
-// cache: [{driveFileId, name, md5Checksum, content}] from localStorage
+// cache: [{driveFileId, name, md5Checksum}] from localStorage
 export async function syncBatchesFromDrive(cache) {
   const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
   return syncFolderWithCache(folderId, ".xml", cache);
 }
 
-export async function saveBatchToDrive(brewEntry) {
+export async function saveBatchToDrive(xmlContent, brewId) {
   const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
-  const fileName = `${brewEntry.id}.xml`;
-  const content = JSON.stringify(brewEntry);
-  const result = await saveFileToFolder(content, fileName, folderId, "application/xml");
-  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content };
+  const fileName = `${brewId}.xml`;
+  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml");
+  return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 
 // ── misc ──────────────────────────────────────────────────────────────────────
