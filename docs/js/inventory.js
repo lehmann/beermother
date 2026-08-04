@@ -241,92 +241,94 @@ function defaultForCategory(cat) {
   return { name: "", amount: 0, unit: "g", use: "", miscType: "", qtyPerL: 0 };
 }
 
-function nameInput(val, onChange, suggestions = []) {
-  const wrap = el("div", "inv-suggest-wrap", []);
-  const inp = document.createElement("input");
-  inp.type = "text";
-  inp.className = "field-input";
-  inp.value = val || "";
+function nameInput(initialValue, onChange, suggestions = []) {
+  const wrapper = el("div", "inv-suggest-wrap", []);
+  const textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.className = "field-input";
+  textInput.value = initialValue || "";
 
-  let listEl = null;
-  let activeIdx = -1;
+  let dropdownList = null;
+  let activeIndex = -1;
 
   function hideSuggestions() {
-    if (listEl) {
-      listEl.remove();
-      listEl = null;
+    if (dropdownList) {
+      dropdownList.remove();
+      dropdownList = null;
     }
-    activeIdx = -1;
+    activeIndex = -1;
   }
 
   function showSuggestions(matches) {
     hideSuggestions();
     if (!matches.length) return;
-    listEl = el(
+    dropdownList = el(
       "ul",
       "inv-suggest-list",
-      matches.map((s, i) => {
-        const li = document.createElement("li");
-        li.className = "inv-suggest-item";
-        li.textContent = s.name;
-        li.addEventListener("mousedown", (e) => {
-          e.preventDefault();
-          inp.value = s.name;
-          onChange(s.name);
-          // Auto-fill numeric fields when a library entry is selected
-          if (s._autofill) s._autofill();
+      matches.map((suggestion) => {
+        const listItem = document.createElement("li");
+        listItem.className = "inv-suggest-item";
+        listItem.textContent = suggestion.name;
+        listItem.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+          textInput.value = suggestion.name;
+          onChange(suggestion.name);
+          if (suggestion._autofill) suggestion._autofill();
           hideSuggestions();
         });
-        return li;
+        return listItem;
       }),
     );
-    wrap.appendChild(listEl);
+    wrapper.appendChild(dropdownList);
   }
 
-  function setActive(idx) {
-    if (!listEl) return;
-    const items = listEl.querySelectorAll(".inv-suggest-item");
-    items.forEach((li, i) => li.classList.toggle("active", i === idx));
-    activeIdx = idx;
+  function setActiveItem(index) {
+    if (!dropdownList) return;
+    const items = dropdownList.querySelectorAll(".inv-suggest-item");
+    items.forEach((item, i) => item.classList.toggle("active", i === index));
+    activeIndex = index;
   }
 
-  inp.addEventListener("input", () => {
-    const q = inp.value.trim().toLowerCase();
-    onChange(inp.value);
-    if (!q) { hideSuggestions(); return; }
+  textInput.addEventListener("input", () => {
+    const query = textInput.value.trim().toLowerCase();
+    onChange(textInput.value);
+    if (!query) {
+      hideSuggestions();
+      return;
+    }
     const matches = suggestions
-      .filter((s) => s.name.toLowerCase().includes(q))
+      .filter((suggestion) => suggestion.name.toLowerCase().includes(query))
       .slice(0, 8);
     showSuggestions(matches);
   });
 
-  inp.addEventListener("keydown", (e) => {
-    if (!listEl) return;
-    const items = listEl.querySelectorAll(".inv-suggest-item");
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActive(Math.min(activeIdx + 1, items.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActive(Math.max(activeIdx - 1, 0));
-    } else if (e.key === "Enter" && activeIdx >= 0) {
-      e.preventDefault();
-      items[activeIdx].dispatchEvent(new MouseEvent("mousedown"));
-    } else if (e.key === "Escape") {
+  textInput.addEventListener("keydown", (event) => {
+    if (!dropdownList) return;
+    const items = dropdownList.querySelectorAll(".inv-suggest-item");
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveItem(Math.min(activeIndex + 1, items.length - 1));
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveItem(Math.max(activeIndex - 1, 0));
+    } else if (event.key === "Enter" && activeIndex >= 0) {
+      event.preventDefault();
+      items[activeIndex].dispatchEvent(new MouseEvent("mousedown"));
+    } else if (event.key === "Escape") {
       hideSuggestions();
     }
   });
 
-  inp.addEventListener("blur", () => setTimeout(hideSuggestions, 150));
+  textInput.addEventListener("blur", () => setTimeout(hideSuggestions, 150));
 
-  wrap.appendChild(inp);
-  return wrap;
+  wrapper.appendChild(textInput);
+  return wrapper;
 }
 
-function setInputVal(inputEl, val) {
-  const inp = inputEl.querySelector("input") || inputEl;
-  inp.value = val;
-  inp.dispatchEvent(new Event("input"));
+function setInputVal(inputEl, newValue) {
+  const targetInput = inputEl.querySelector("input") || inputEl;
+  targetInput.value = newValue;
+  targetInput.dispatchEvent(new Event("input"));
 }
 
 function buildFields(cat, item) {
@@ -336,37 +338,37 @@ function buildFields(cat, item) {
   const numRefs = {};
 
   if (cat === "fermentables") {
-    numRefs.yieldEl = numInput(item.yieldPct, (v) => { item.yieldPct = Math.max(1, Math.min(100, Number(v) || 78)); }, { step: "1", min: "1", max: "100" });
-    numRefs.ebcEl   = numInput(item.ebc,      (v) => { item.ebc      = Math.max(0, Number(v) || 0); },               { step: "1", min: "0" });
+    numRefs.yieldEl = numInput(item.yieldPct, (value) => { item.yieldPct = Math.max(1, Math.min(100, Number(value) || 78)); }, { step: "1", min: "1", max: "100" });
+    numRefs.ebcEl   = numInput(item.ebc,      (value) => { item.ebc      = Math.max(0, Number(value) || 0); },                { step: "1", min: "0" });
   } else if (cat === "hops") {
-    numRefs.alphaEl = numInput(item.alpha, (v) => { item.alpha = Math.max(0, Math.min(25, Number(v) || 10)); }, { step: "0.1", min: "0", max: "25" });
+    numRefs.alphaEl = numInput(item.alpha, (value) => { item.alpha = Math.max(0, Math.min(25, Number(value) || 10)); }, { step: "0.1", min: "0", max: "25" });
   } else if (cat === "yeasts") {
-    numRefs.attenEl = numInput(item.attenuation, (v) => { item.attenuation = Math.max(30, Math.min(100, Number(v) || 75)); }, { step: "1", min: "30", max: "100" });
+    numRefs.attenEl = numInput(item.attenuation, (value) => { item.attenuation = Math.max(30, Math.min(100, Number(value) || 75)); }, { step: "1", min: "30", max: "100" });
   }
 
   // Suggestions per category with autofill callbacks
   const suggestions =
     cat === "fermentables"
-      ? MALT_LIBRARY.map((s) => ({
-          name: s.name,
+      ? MALT_LIBRARY.map((entry) => ({
+          name: entry.name,
           _autofill: () => {
-            if (s.yieldPct != null) { item.yieldPct = s.yieldPct; setInputVal(numRefs.yieldEl, s.yieldPct); }
-            if (s.ebc     != null) { item.ebc      = s.ebc;      setInputVal(numRefs.ebcEl,   s.ebc); }
+            if (entry.yieldPct != null) { item.yieldPct = entry.yieldPct; setInputVal(numRefs.yieldEl, entry.yieldPct); }
+            if (entry.ebc     != null) { item.ebc      = entry.ebc;      setInputVal(numRefs.ebcEl,   entry.ebc); }
           },
         }))
       : cat === "hops"
-      ? HOP_LIBRARY.map((s) => ({
-          name: s.name,
+      ? HOP_LIBRARY.map((entry) => ({
+          name: entry.name,
           _autofill: () => {
-            const alpha = s.alpha?.avg ?? s.alpha;
+            const alpha = entry.alpha?.avg ?? entry.alpha;
             if (alpha != null) { item.alpha = alpha; setInputVal(numRefs.alphaEl, alpha); }
           },
         }))
       : cat === "yeasts"
-      ? YEAST_LIBRARY.map((s) => ({
-          name: s.name,
+      ? YEAST_LIBRARY.map((entry) => ({
+          name: entry.name,
           _autofill: () => {
-            if (s.attenuation != null) { item.attenuation = s.attenuation; setInputVal(numRefs.attenEl, s.attenuation); }
+            if (entry.attenuation != null) { item.attenuation = entry.attenuation; setInputVal(numRefs.attenEl, entry.attenuation); }
           },
         }))
       : [];
@@ -380,119 +382,97 @@ function buildFields(cat, item) {
 
   if (cat === "fermentables") {
     rows.push(
-      fieldRow(t("Quantidade (kg)"), numInput(item.amountKg, (v) => { item.amountKg = Math.max(0, Number(v) || 0); }, { step: "0.1", min: "0" })),
+      fieldRow(t("Quantidade (kg)"), numInput(item.amountKg, (value) => { item.amountKg = Math.max(0, Number(value) || 0); }, { step: "0.1", min: "0" })),
       fieldRow(t("Rendimento (%)"), numRefs.yieldEl),
       fieldRow(t("Cor (EBC)"),      numRefs.ebcEl),
     );
   } else if (cat === "hops") {
     rows.push(
-      fieldRow(t("Quantidade (g)"), numInput(item.amount, (v) => { item.amount = Math.max(0, Number(v) || 0); }, { step: "1", min: "0" })),
+      fieldRow(t("Quantidade (g)"), numInput(item.amount, (value) => { item.amount = Math.max(0, Number(value) || 0); }, { step: "1", min: "0" })),
       fieldRow(t("Alfa ácido (%)"), numRefs.alphaEl),
     );
   } else if (cat === "yeasts") {
+    const yeastUnitSelect = document.createElement("select");
+    yeastUnitSelect.className = "field-input";
+    ["pkg", "g", "ml"].forEach((unit) => {
+      const option = document.createElement("option");
+      option.value = unit;
+      option.textContent = unit;
+      if (unit === (item.unit || "pkg")) option.selected = true;
+      yeastUnitSelect.append(option);
+    });
+    yeastUnitSelect.addEventListener("change", () => {
+      item.unit = yeastUnitSelect.value;
+    });
+
     rows.push(
-      fieldRow(t("Quantidade"), numInput(item.amount, (v) => { item.amount = Math.max(0, Number(v) || 0); }, { step: "1", min: "0" })),
-      fieldRow(
-        t("Unidade"),
-        (() => {
-          const sel = document.createElement("select");
-          sel.className = "field-input";
-          ["pkg", "g", "ml"].forEach((u) => {
-            const opt = document.createElement("option");
-            opt.value = u;
-            opt.textContent = u;
-            if (u === (item.unit || "pkg")) opt.selected = true;
-            sel.append(opt);
-          });
-          sel.addEventListener("change", () => { item.unit = sel.value; });
-          return sel;
-        })(),
-      ),
+      fieldRow(t("Quantidade"), numInput(item.amount, (value) => { item.amount = Math.max(0, Number(value) || 0); }, { step: "1", min: "0" })),
+      fieldRow(t("Unidade"), yeastUnitSelect),
       fieldRow(t("Atenuação (%)"), numRefs.attenEl),
     );
   } else {
+    const miscUnitSelect = document.createElement("select");
+    miscUnitSelect.className = "field-input";
+    ["g", "kg", "ml", "L", "un"].forEach((unit) => {
+      const option = document.createElement("option");
+      option.value = unit;
+      option.textContent = unit;
+      if (unit === (item.unit || "g")) option.selected = true;
+      miscUnitSelect.append(option);
+    });
+    miscUnitSelect.addEventListener("change", () => {
+      item.unit = miscUnitSelect.value;
+    });
+
+    const miscTypeSelect = document.createElement("select");
+    miscTypeSelect.className = "field-input";
+    const miscTypeOptions = ["", "Sabor", "Erva", "Sais", "Clarificante", "Especiaria"];
+    miscTypeOptions.forEach((typeName) => {
+      const option = document.createElement("option");
+      option.value = typeName;
+      option.textContent = typeName ? t(typeName) : `— ${t("selecione")} —`;
+      if (typeName === (item.miscType || "")) option.selected = true;
+      miscTypeSelect.append(option);
+    });
+    miscTypeSelect.addEventListener("change", () => {
+      item.miscType = miscTypeSelect.value;
+    });
+
+    const miscUseSelect = document.createElement("select");
+    miscUseSelect.className = "field-input";
+    const miscUseOptions = [
+      "",
+      "Mostura",
+      "Sparge",
+      "Fervura",
+      "Flameout",
+      "Fermentação Primária",
+      "Fermentação Secundária",
+      "Envase",
+    ];
+    miscUseOptions.forEach((useValue) => {
+      const option = document.createElement("option");
+      option.value = useValue;
+      option.textContent = useValue ? t(useValue) : `— ${t("selecione")} —`;
+      if (useValue === (item.use || "")) option.selected = true;
+      miscUseSelect.append(option);
+    });
+    miscUseSelect.addEventListener("change", () => {
+      item.use = miscUseSelect.value;
+    });
+
     rows.push(
       fieldRow(
         t("Quantidade"),
-        numInput(
-          item.amount,
-          (v) => {
-            item.amount = Math.max(0, Number(v) || 0);
-          },
-          { step: "1", min: "0" },
-        ),
+        numInput(item.amount, (value) => { item.amount = Math.max(0, Number(value) || 0); }, { step: "1", min: "0" }),
       ),
-      fieldRow(
-        t("Unidade"),
-        (() => {
-          const sel = document.createElement("select");
-          sel.className = "field-input";
-          ["g", "kg", "ml", "L", "un"].forEach((u) => {
-            const opt = document.createElement("option");
-            opt.value = u;
-            opt.textContent = u;
-            if (u === (item.unit || "g")) opt.selected = true;
-            sel.append(opt);
-          });
-          sel.addEventListener("change", () => {
-            item.unit = sel.value;
-          });
-          return sel;
-        })(),
-      ),
-      fieldRow(
-        t("Tipo"),
-        (() => {
-          const sel = document.createElement("select");
-          sel.className = "field-input";
-          const types = ["", "Sabor", "Erva", "Sais", "Clarificante", "Especiaria"];
-          types.forEach((tp) => {
-            const opt = document.createElement("option");
-            opt.value = tp;
-            opt.textContent = tp ? t(tp) : `— ${t("selecione")} —`;
-            if (tp === (item.miscType || "")) opt.selected = true;
-            sel.append(opt);
-          });
-          sel.addEventListener("change", () => { item.miscType = sel.value; });
-          return sel;
-        })(),
-      ),
+      fieldRow(t("Unidade"), miscUnitSelect),
+      fieldRow(t("Tipo"), miscTypeSelect),
       fieldRow(
         t("Quantidade por litro (g/L)"),
-        numInput(
-          item.qtyPerL,
-          (v) => { item.qtyPerL = Math.max(0, Number(v) || 0); },
-          { step: "0.1", min: "0" },
-        ),
+        numInput(item.qtyPerL, (value) => { item.qtyPerL = Math.max(0, Number(value) || 0); }, { step: "0.1", min: "0" }),
       ),
-      fieldRow(
-        t("Uso"),
-        (() => {
-          const sel = document.createElement("select");
-          sel.className = "field-input";
-          const useOptions = [
-            "",
-            "Mostura",
-            "Sparge",
-            "Fervura",
-            "Flameout",
-            "Fermentação Primária",
-            "Fermentação Secundária",
-            "Envase",
-          ];
-          useOptions.forEach((u) => {
-            const opt = document.createElement("option");
-            opt.value = u;
-            opt.textContent = u ? t(u) : `— ${t("selecione")} —`;
-            if (u === (item.use || "")) opt.selected = true;
-            sel.append(opt);
-          });
-          sel.addEventListener("change", () => {
-            item.use = sel.value;
-          });
-          return sel;
-        })(),
-      ),
+      fieldRow(t("Uso"), miscUseSelect),
     );
   }
 
