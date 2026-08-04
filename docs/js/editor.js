@@ -166,10 +166,13 @@ function j(e) {
 }
 let recipeSearchQuery = "",
   recipeListLimit = 10,
+  recipeSearchDebounceTimer = null,
   fermentablePercentEdit = null,
   showIbuPerAddition = !1;
 let driveRows = [],
-  driveLoadState = "idle";
+  driveLoadState = "idle",
+  driveEquipmentsLoaded = false,
+  driveBatchesLoaded = false;
 
 // Fire-and-forget Drive sync helpers — never throw into the calling flow.
 async function syncBrewToDrive(brewId) {
@@ -247,7 +250,8 @@ function mergeBatchFromDrive(remoteEntry) {
 }
 
 async function loadDriveEquipments() {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (!drvEnabled() || !drvHasToken() || driveEquipmentsLoaded) return;
+  driveEquipmentsLoaded = true;
   try {
     const profiles = await drvLoadEquipments();
     for (const profile of profiles) {
@@ -255,11 +259,15 @@ async function loadDriveEquipments() {
         ne(profile);
       }
     }
-  } catch {}
+    if (profiles.length) c.requestRender();
+  } catch {
+    driveEquipmentsLoaded = false;
+  }
 }
 
 async function loadDriveBatches() {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (!drvEnabled() || !drvHasToken() || driveBatchesLoaded) return;
+  driveBatchesLoaded = true;
   try {
     const entries = await drvLoadBatches();
     for (const entry of entries) {
@@ -268,7 +276,9 @@ async function loadDriveBatches() {
       }
     }
     if (entries.length) c.requestRender();
-  } catch {}
+  } catch {
+    driveBatchesLoaded = false;
+  }
 }
 
 function maybeAutoLoadDrive() {
@@ -1379,20 +1389,30 @@ function myRecipesCard(e = listMyRecipes()) {
       e.length >= 5
         ? (() => {
             const l = document.createElement("input");
-            return (
-              (l.type = "text"),
-              (l.placeholder = t("Buscar receita\u2026")),
-              (l.value = recipeSearchQuery),
-              l.setAttribute("aria-label", t("Buscar receita")),
-              l.setAttribute("data-fkey", "home-search"),
-              l.addEventListener("input", () => {
-                ((recipeSearchQuery = l.value),
-                  (recipeListLimit = 10),
-                  (c.pendingFocusKey = "home-search"),
-                  c.requestRender());
-              }),
-              l
-            );
+            l.type = "text";
+            l.placeholder = t("Buscar receita\u2026");
+            l.value = recipeSearchQuery;
+            l.setAttribute("aria-label", t("Buscar receita"));
+            l.setAttribute("data-fkey", "home-search");
+            l.addEventListener("input", () => {
+              clearTimeout(recipeSearchDebounceTimer);
+              recipeSearchDebounceTimer = setTimeout(() => {
+                recipeSearchQuery = l.value;
+                recipeListLimit = 10;
+                // Save caret position so render restores it without selecting all
+                const caretPos = l.selectionStart ?? l.value.length;
+                const prevFocused = document.activeElement === l;
+                c.requestRender();
+                if (prevFocused) {
+                  const restored = document.querySelector('[data-fkey="home-search"]');
+                  if (restored) {
+                    restored.focus({ preventScroll: true });
+                    try { restored.setSelectionRange(caretPos, caretPos); } catch {}
+                  }
+                }
+              }, 250);
+            });
+            return l;
           })()
         : null,
     s = r.map((l) => {
