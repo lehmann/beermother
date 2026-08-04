@@ -340,6 +340,34 @@ export async function saveInventoryToDrive(xmlContent) {
   return saveFileToFolder(xmlContent, "inventory.xml", rootId);
 }
 
+// Diff-aware sync: returns {content, md5Checksum, changed}.
+// cachedMd5 is the md5 stored locally from the last successful sync.
+// When the remote md5 matches cachedMd5, content is null and changed is false.
+export async function syncInventoryFromDrive(cachedMd5) {
+  const h = await authHeaders();
+  const rootName = loadDriveFolderName();
+  const rootId = await findOrCreateFolderUnder(rootName, null);
+  const q = encodeURIComponent(
+    `name='inventory.xml' and '${rootId}' in parents and trashed=false`,
+  );
+  const res = await apiFetch(
+    `${API}/files?q=${q}&fields=files(id,md5Checksum)&spaces=drive`,
+    { headers: h },
+  );
+  if (!res.ok) {
+    if (res.status === 403) revokeLocalToken();
+    throw new Error(t("Erro ao verificar inventário no Google Drive."));
+  }
+  const files = (await res.json()).files || [];
+  if (!files.length) return { content: null, md5Checksum: null, changed: false };
+  const { id, md5Checksum } = files[0];
+  if (md5Checksum && md5Checksum === cachedMd5) {
+    return { content: null, md5Checksum, changed: false };
+  }
+  const content = await downloadFileById(id);
+  return { content, md5Checksum, changed: true };
+}
+
 export async function loadInventoryFromDrive() {
   const rootName = loadDriveFolderName();
   const rootId = await findOrCreateFolderUnder(rootName, null);
