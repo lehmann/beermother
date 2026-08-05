@@ -70,6 +70,9 @@ import {
   saveBatchToDrive as drvSaveBatch,
   syncBatchesFromDrive as drvSyncBatches,
   overwriteDriveFile as drvOverwriteFile,
+  moveFileToBin as drvMoveFileToBin,
+  BIN_SUBFOLDER_RECIPES as drvBinRecipes,
+  BIN_SUBFOLDER_EQUIPMENTS as drvBinEquipments,
 } from "./gdrive.js";
 import {
   equipmentProfileToXml,
@@ -259,6 +262,45 @@ function saveBatchIndex(index) { saveJsonToStorage(DRIVE_BATCH_INDEX_KEY, index)
 function loadBatchItem(driveFileId) { return loadJsonFromStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, null); }
 function saveBatchItem(driveFileId, brewEntry) { saveJsonToStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, brewEntry); }
 function deleteBatchItem(driveFileId) { try { localStorage.removeItem(DRIVE_BATCH_ITEM_PREFIX + driveFileId); } catch {} }
+
+// ── Drive bin helpers ─────────────────────────────────────────────────────────
+
+// Finds the driveFileId for a recipe by its local id (which may be "drive:XYZ")
+// and moves the Drive file to the bin. Removes from local index. Fire-and-forget.
+function moveRecipeToBin(recipeId) {
+  if (!drvEnabled()) return;
+  const index = loadRecipeIndex();
+  let driveFileId;
+  if (recipeId.startsWith("drive:")) {
+    driveFileId = recipeId.slice("drive:".length);
+  } else {
+    const entry = index.find((m) => {
+      const row = loadRecipeRow(m.driveFileId);
+      return row && row.id === recipeId;
+    });
+    if (entry) driveFileId = entry.driveFileId;
+  }
+  if (!driveFileId) return;
+  saveRecipeIndex(index.filter((m) => m.driveFileId !== driveFileId));
+  deleteRecipeRow(driveFileId);
+  driveRows = driveRows.filter((r) => r.driveFileId !== driveFileId);
+  drvMoveFileToBin(driveFileId, drvBinRecipes, true).catch(() => {});
+}
+
+// Finds the driveFileId for an equipment profile by its local id and moves it
+// to the bin. Removes from local index. Fire-and-forget.
+function moveEquipmentToBin(profileId) {
+  if (!drvEnabled()) return;
+  const index = loadEquipmentIndex();
+  const entry = index.find((m) => {
+    const profile = loadEquipmentItem(m.driveFileId);
+    return profile && profile.id === profileId;
+  });
+  if (!entry) return;
+  saveEquipmentIndex(index.filter((m) => m.driveFileId !== entry.driveFileId));
+  deleteEquipmentItem(entry.driveFileId);
+  drvMoveFileToBin(entry.driveFileId, drvBinEquipments, true).catch(() => {});
+}
 
 // Fire-and-forget Drive sync helpers — never throw into the calling flow.
 async function syncBrewToDrive(brewId) {
@@ -1928,7 +1970,8 @@ function recipeActionsSheet(e) {
                       confirmLabel: "Excluir",
                       danger: !0,
                     })) &&
-                      (ya(e.id),
+                      (moveRecipeToBin(e.id),
+                      ya(e.id),
                       b(t("Receita exclu\xEDda.")),
                       c.requestRender()));
                 },
@@ -2677,7 +2720,10 @@ function Z(e, o = null) {
                     confirmLabel: "Excluir",
                     danger: !0,
                   })) &&
-                    (Bt(e.id), b(t("Perfil exclu\xEDdo.")), c.requestRender()));
+                    (moveEquipmentToBin(e.id),
+                    Bt(e.id),
+                    b(t("Perfil exclu\xEDdo.")),
+                    c.requestRender()));
               },
               "btn ghost sheet-danger",
             )
