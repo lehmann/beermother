@@ -168,6 +168,7 @@ import {
   inventoryHopItems,
   inventoryYeastItems,
   inventoryMiscItems,
+  inventoryWaterProfiles,
 } from "./inventory.js";
 function j(e) {
   return 1 + Math.min(0.5, Math.max(0, m(e, O.trubLossPct)));
@@ -2597,37 +2598,6 @@ function Z(e, o = null) {
           "muted percent-hint",
           t(
             "Velocidade de subida entre patamares \u2014 o rel\xF3gio da mostura conta uma etapa estimada de aquecimento. 0 desliga.",
-          ),
-        ),
-        a("div", "water-block-title sheet-water-title", [
-          a("b", "", t("\xC1gua base")),
-          a("span", "muted", "ppm"),
-        ]),
-        a(
-          "div",
-          "editor-water-grid sheet-water-grid",
-          ma.map((v) =>
-            a("label", "editor-water-field", [
-              a("span", "", v.label),
-              U(
-                r.baseWaterProfile[v.key],
-                ($) => {
-                  r.baseWaterProfile[v.key] = A($, 0, 1e3, v.plainLabel);
-                },
-                {
-                  "aria-label": t("{ion} da \xE1gua base", {
-                    ion: v.plainLabel,
-                  }),
-                },
-              ),
-            ]),
-          ),
-        ),
-        a(
-          "p",
-          "muted percent-hint",
-          t(
-            "A \xE1gua da SUA fonte. Nos valores padr\xE3o, vale a \xE1gua de cada receita; mudou, receitas novas e o Preparo usam a sua.",
           ),
         ),
       );
@@ -5512,7 +5482,49 @@ function bo(e, o) {
         a("span", "", u),
         a("b", "num", z(p, 1)),
       ]);
+  const waterProfiles = inventoryWaterProfiles();
+  const profileSelect = document.createElement("select");
+  profileSelect.className = "field-input water-profile-select";
+  const noProfileOpt = document.createElement("option");
+  noProfileOpt.value = "";
+  noProfileOpt.textContent = `— ${t("personalizado")} —`;
+  profileSelect.append(noProfileOpt);
+  waterProfiles.forEach((wp) => {
+    const opt = document.createElement("option");
+    opt.value = wp.id;
+    opt.textContent = wp.name;
+    if (wp.id === (e.waterProfileId || "")) opt.selected = true;
+    profileSelect.append(opt);
+  });
+  profileSelect.addEventListener("change", () => {
+    S(() => {
+      const sel = waterProfiles.find((wp) => wp.id === profileSelect.value);
+      e.waterProfileId = profileSelect.value || null;
+      if (sel) {
+        e.baseWaterProfile = We(
+          {
+            calciumPpm: sel.calciumPpm ?? 0,
+            magnesiumPpm: sel.magnesiumPpm ?? 0,
+            sodiumPpm: sel.sodiumPpm ?? 0,
+            chloridePpm: sel.chloridePpm ?? 0,
+            sulfatePpm: sel.sulfatePpm ?? 0,
+            bicarbonatePpm: sel.bicarbonatePpm ?? 0,
+          },
+          He,
+        );
+      } else {
+        e.waterProfileId = null;
+      }
+    });
+  });
+  const waterProfileRow = a("div", "water-profile-row", [
+    a("label", "field", [
+      a("span", "field-label", t("Perfil de água")),
+      profileSelect,
+    ]),
+  ]);
   return de(t("\xC1gua e sais"), "water", [
+    waterProfileRow,
     a("div", "water-block-title", [
       a("b", "", t("\xC1gua")),
       a("span", "muted", t("refer\xEAncia \xB7 L")),

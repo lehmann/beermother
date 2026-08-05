@@ -92,6 +92,7 @@ export function newDraft() {
       { name: "Mash out", temperatureC: 76, timeMin: 10 },
     ],
     fermentation: Lt[0].steps.map((t) => ({ ...t })),
+    waterProfileId: null,
     baseWaterProfile: { ...I },
     salts: [
       { formula: "CaCl2", amountG: 0 },
@@ -178,6 +179,7 @@ export function draftFromRecipe(t, a = {}) {
       days: e(o.days, 7),
       ...sanitizeFermentationPressure(o),
     })),
+    waterProfileId: r.waterProfileId || null,
     baseWaterProfile: $(r.baseWaterProfile, I),
     salts: ["CaCl2", "CaSO4", "MgSO4", "NaCl"].map((o) => ({
       formula: o,
@@ -603,8 +605,7 @@ export function customizedBaseWater(t) {
   return B.every((o) => e(a[o.key]) === e(I[o.key])) ? null : a;
 }
 export function saveProductionProfileEntry(t) {
-  const a = customizedBaseWater(t.params?.baseWaterProfile),
-    r = {
+  const r = {
       id:
         t.id ||
         `profile-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
@@ -654,7 +655,6 @@ export function saveProductionProfileEntry(t) {
           10,
           Math.max(0, e(t.params?.heatingRateCMin, v)),
         ),
-        ...(a ? { baseWaterProfile: a } : {}),
       },
     },
     o = listProductionProfiles().filter((m) => m.id !== r.id);
@@ -868,6 +868,7 @@ export function recipeFromDraft(t) {
         amount: e(n.amount),
         unit: n.unit || "g",
       })),
+    waterProfileId: t.waterProfileId || null,
     baseWaterProfile: $(t.baseWaterProfile, I),
     saltReferenceWaterL: a.totalWaterL,
     fermentationProfileName: "",
