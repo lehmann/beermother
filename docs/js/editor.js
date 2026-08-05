@@ -12,6 +12,8 @@ import {
   pickParameterValue as Ne,
   acidDoseForTarget,
   DEFAULT_MASH_PH_TARGET,
+  evaporationLhFromPct as evapLhFromPct,
+  evaporationPctFromLh as evapPctFromLh,
 } from "./engine.js";
 import {
   app as c,
@@ -2497,27 +2499,46 @@ function Z(e, o = null) {
           ),
         ]),
       ];
+    if (!r._evapUnit) r._evapUnit = "L/h";
+    if (!r._trubUnit) r._trubUnit = "%";
+    const unitToggle = (label, units, current, onSwitch) => {
+      const btns = units.map((un) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = un;
+        b.className = "unit-toggle-btn" + (un === current ? " active" : "");
+        b.addEventListener("click", () => { onSwitch(un); u(); });
+        return b;
+      });
+      return a("span", "unit-toggle", btns);
+    };
     i === "complete" &&
       y.push(
         a("label", "field", [
           a("span", "field-label", t("Evapora\xE7\xE3o")),
-          F(
-            r.evaporationPct,
-            (v) => {
-              ((r.evaporationPct = A(v, 0, 40, t("Evapora\xE7\xE3o"))), u());
-            },
-            "%/h",
-          ),
+          a("div", "field-line", [
+            r._evapUnit === "L/h"
+              ? U(T(evapLhFromPct(r.evaporationPct, r.targetVolumeL), 2), (v) => {
+                  r.evaporationPct = T(evapPctFromLh(A(v, 0, 50, t("Evapora\xE7\xE3o")), r.targetVolumeL), 1);
+                }, {})
+              : U(m(r.evaporationPct, O.evaporationPct), (v) => {
+                  r.evaporationPct = A(v, 0, 40, t("Evapora\xE7\xE3o"));
+                }, {}),
+            unitToggle(t("Evapora\xE7\xE3o"), ["L/h", "%/h"], r._evapUnit, (un) => { r._evapUnit = un; }),
+          ]),
         ]),
         a("label", "field", [
           a("span", "field-label", t("Perda Trub")),
-          F(
-            T(m(r.trubLossPct, 0.15) * 100, 1),
-            (v) => {
-              ((r.trubLossPct = A(v, 0, 50, "Trub") / 100), u());
-            },
-            "%",
-          ),
+          a("div", "field-line", [
+            r._trubUnit === "%"
+              ? U(T(m(r.trubLossPct, 0.15) * 100, 1), (v) => {
+                  r.trubLossPct = A(v, 0, 50, "Trub") / 100;
+                }, {})
+              : U(E, (v) => {
+                  r.trubLossPct = m(r.targetVolumeL) > 0 ? A(v, 0, 50, "Trub") / m(r.targetVolumeL) : 0.15;
+                }, {}),
+            unitToggle("Trub", ["%", "L"], r._trubUnit, (un) => { r._trubUnit = un; }),
+          ]),
         ]),
         a("label", "field", [
           a("span", "field-label", t("Absor\xE7\xE3o dos gr\xE3os")),
