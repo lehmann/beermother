@@ -198,23 +198,23 @@ Não fazem parte do servidor web. São utilitários de desenvolvimento:
 Todos os comandos abaixo devem ser executados a partir de `docs/js/`.
 
 ```bash
-# Rodar todos os testes
-node --test tests/*.test.js
+# Rodar todos os testes (Node 18 — usa --experimental-loader)
+node --experimental-loader ./tests/loader.js --test tests/*.test.js
 
-# Rodar um arquivo específico
+# Rodar um arquivo específico sem browser APIs (batch-xml, slugify)
 node --test tests/batch-xml.test.js
 node --test tests/slugify.test.js
 
 # gdrive.test.js importa gdrive.js que depende de state.js (usa `location`).
 # Requer o loader de stubs para rodar em Node:
-node --import ./tests/loader.js --test tests/gdrive.test.js
+node --experimental-loader ./tests/loader.js --test tests/gdrive.test.js
 
 # Validar sintaxe de um módulo JS (rodar após qualquer edição)
 node --input-type=module --check < editor.js
 ```
 
 - **`dom-shim.js`**: parser XML recursivo puro para Node — instala `globalThis.DOMParser`. Importar antes de qualquer módulo que use DOM.
-- **`loader.js`**: loader ESM que substitui `state.js` e `i18n.js` por stubs quando um módulo depende de browser APIs (`location`, `localStorage`). Usar com `--import ./tests/loader.js`.
+- **`loader.js`**: loader ESM que substitui `state.js` e `i18n.js` por stubs quando um módulo depende de browser APIs (`location`, `localStorage`). Usar com `--experimental-loader ./tests/loader.js` (Node 18) ou `--import ./tests/loader.js` (Node 20+).
 - **`batch-xml.test.js`**: 29 testes — helpers XML, brassagem externa (Brewfather), round-trip nativo, malformed, equipamento legacy (`Default_(no_sparge).xml`).
 - **`gdrive.test.js`**: 9 testes para `diffCacheWithMetadata`.
 - **`slugify.test.js`**: 13 testes para `slugify` em `engine.js`.
