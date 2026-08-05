@@ -275,7 +275,28 @@ async function syncFolderWithCache(folderId, extension, cache, interactive = fal
   return { entries, changed };
 }
 
-// ── generic upsert ────────────────────────────────────────────────────────────
+// ── generic upsert / patch ────────────────────────────────────────────────────
+
+// Overwrites an existing Drive file by ID — no name search needed.
+async function patchFileById(fileId, content, fileName, mimeType = "application/xml", interactive = false) {
+  const h = await authHeaders(interactive);
+  const form = new FormData();
+  form.append(
+    "metadata",
+    new Blob([JSON.stringify({ name: fileName })], { type: "application/json" }),
+  );
+  form.append("file", new Blob([content], { type: mimeType }));
+  const res = await apiFetch(
+    `${UPLOAD_API}/files/${fileId}?uploadType=multipart&fields=id,name,md5Checksum`,
+    { method: "PATCH", headers: h, body: form },
+  );
+  if (!res.ok) {
+    if (res.status === 403) revokeLocalToken();
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error?.message || t("Erro ao salvar no Google Drive."));
+  }
+  return res.json();
+}
 
 async function saveFileToFolder(content, fileName, folderId, mimeType = "application/xml", interactive = false) {
   const h = await authHeaders(interactive);
@@ -397,6 +418,14 @@ export async function loadInventoryFromDrive(interactive = false) {
   const rootName = loadDriveFolderName();
   const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
   return loadSingleFile(rootId, "inventory.xml", interactive);
+}
+
+// Overwrites an existing Drive file by its known ID (used for in-place
+// format conversion — replaces legacy BeerXML with native app format).
+// Returns {driveFileId, name, md5Checksum}.
+export async function overwriteDriveFile(driveFileId, content, fileName, interactive = false) {
+  const result = await patchFileById(driveFileId, content, fileName, "application/xml", interactive);
+  return { driveFileId: result.id, name: result.name, md5Checksum: result.md5Checksum };
 }
 
 // ── public API — equipment ────────────────────────────────────────────────────

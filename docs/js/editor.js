@@ -67,6 +67,7 @@ import {
   syncEquipmentsFromDrive as drvSyncEquipments,
   saveBatchToDrive as drvSaveBatch,
   syncBatchesFromDrive as drvSyncBatches,
+  overwriteDriveFile as drvOverwriteFile,
 } from "./gdrive.js";
 import {
   equipmentProfileToXml,
@@ -430,7 +431,7 @@ async function loadDriveRecipes(forceRefresh) {
     driveLoadState = "done";
   } catch (err) {
     driveLoadState = "error";
-    if (forceRefresh) b(err.message || t("Erro ao carregar receitas do Drive."), "error");
+    if (forceRefresh) b(t("Erro ao carregar receitas do Drive."), "error");
   }
   c.requestRender();
 }
@@ -487,6 +488,21 @@ async function loadDriveEquipments(forceRefresh) {
         if (entry.fresh) {
           const profile = equipmentProfileFromXml(entry.content);
           if (profile?.id) {
+            const isLegacy = !entry.content.includes("<BM_ID>");
+            if (isLegacy) {
+              const xml = equipmentProfileToXml(profile);
+              drvOverwriteFile(entry.driveFileId, xml, entry.name, true)
+                .then((cacheEntry) => {
+                  const idx = loadEquipmentIndex();
+                  saveEquipmentIndex(idx.map((m) =>
+                    m.driveFileId === entry.driveFileId
+                      ? { ...m, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum }
+                      : m,
+                  ));
+                  saveEquipmentItem(entry.driveFileId, profile);
+                })
+                .catch(() => {});
+            }
             saveEquipmentItem(entry.driveFileId, profile);
             ne(profile);
           }
@@ -502,7 +518,7 @@ async function loadDriveEquipments(forceRefresh) {
     driveEquipmentsState = "done";
   } catch (err) {
     driveEquipmentsState = "error";
-    if (forceRefresh) b(err.message || t("Erro ao carregar equipamentos do Drive."), "error");
+    if (forceRefresh) b(t("Erro ao carregar equipamentos do Drive."), "error");
   }
   c.requestRender();
 }
@@ -546,18 +562,15 @@ async function loadDriveBatches(forceRefresh) {
             if (!brewEntry.payload.schema) {
               brewEntry = normalizeLegacyBatchEntry(brewEntry);
               const xml = brewEntryToXml(brewEntry);
-              const originalDriveFileId = entry.driveFileId;
-              drvSaveBatch(xml, brewEntry.id)
+              drvOverwriteFile(entry.driveFileId, xml, entry.name, true)
                 .then((cacheEntry) => {
-                  // Update md5 in stored index now that file is native format
                   const idx = loadBatchIndex();
-                  const updated = idx.map((m) =>
-                    m.driveFileId === originalDriveFileId
-                      ? { ...m, md5Checksum: cacheEntry.md5Checksum }
+                  saveBatchIndex(idx.map((m) =>
+                    m.driveFileId === entry.driveFileId
+                      ? { ...m, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum }
                       : m,
-                  );
-                  saveBatchIndex(updated);
-                  saveBatchItem(cacheEntry.driveFileId, brewEntry);
+                  ));
+                  saveBatchItem(entry.driveFileId, brewEntry);
                 })
                 .catch(() => {});
             }
@@ -576,7 +589,7 @@ async function loadDriveBatches(forceRefresh) {
     driveBatchesState = "done";
   } catch (err) {
     driveBatchesState = "error";
-    if (forceRefresh) b(err.message || t("Erro ao carregar brassagens do Drive."), "error");
+    if (forceRefresh) b(t("Erro ao carregar brassagens do Drive."), "error");
   }
   c.requestRender();
 }

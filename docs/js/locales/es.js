@@ -1838,8 +1838,12 @@ export default {
   "Carregar do Drive": "Cargar desde Drive",
   "Atualizar do Drive": "Actualizar desde Drive",
   "Carregando receitas do Drive…": "Cargando recetas desde Drive…",
+  "Carregando equipamentos do Drive…": "Cargando equipos desde Drive…",
+  "Carregando brassagens do Drive…": "Cargando lotes desde Drive…",
   "Falha ao carregar do Drive.": "Error al cargar desde Drive.",
   "Erro ao carregar receitas do Drive.": "Error al cargar recetas desde Drive.",
+  "Erro ao carregar equipamentos do Drive.": "Error al cargar equipos desde Drive.",
+  "Erro ao carregar brassagens do Drive.": "Error al cargar lotes desde Drive.",
   "Salvar em Minhas receitas": "Guardar en Mis recetas",
   "Receita salva em Minhas receitas.": "Receta guardada en Mis recetas.",
   // Inventory screen
