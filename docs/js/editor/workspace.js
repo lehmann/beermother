@@ -18,6 +18,7 @@ import {
   restoreBrewSessionPayload as Qa,
   loadSavedProductionProfile as te,
   saveProductionProfile as fa,
+  loadAuthorName as rt,
 } from "../state.js";
 import {
   DEFAULT_PROFILE as O,
@@ -61,7 +62,6 @@ import {
   getPrincipalProfile as xe,
   BASE_EQUIPMENT_PROFILE as J,
   newDraft as Pt,
-  loadAuthorName as rt,
   computeTargets,
 } from "../recipes.js";
 import { equipmentProfileToXml } from "../batch-xml.js";
