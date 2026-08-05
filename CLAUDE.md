@@ -47,7 +47,9 @@ O app usa **ES modules nativos** — sem bundler, sem framework. Cada arquivo é
 | `ph.js` | Cálculos de pH e ácidos. |
 | `analysis-screen.js` | Tela de análise sensorial (beta). Faz POST para `/api/analyze-recipe`. |
 | `report.js` | Geração do relatório de brassagem para impressão. |
-| `gdrive.js` | Integração com Google Drive (OAuth2 implicit flow + upload de receitas como `.xml`). |
+| `gdrive.js` | Integração com Google Drive (OAuth2 implicit flow + upload de receitas como `.xml`). Token persistido em `localStorage`. `authHeaders(interactive)`, `hasDriveCredential()`, `overwriteDriveFile()`, `syncFolderWithCache()`. |
+| `batch-xml.js` | Serialização/parsing XML de perfis de equipamento (`equipmentProfileFromXml/ToXml`) e entradas de brassagem (`brewEntryFromXml/ToXml`). Dependências injetadas (`parseBeerXml`, `recipeToXml`) — testável em Node sem browser APIs. |
+| `inventory.js` | Tela e lógica de inventário de ingredientes, com cache/hydrate pattern idêntico ao de receitas e equipamentos. |
 | `library.js` | Catálogo de maltes, lúpulos, leveduras, estilos BJCP. |
 | `calibration.js` | Geração da brassagem de calibração de equipamento. |
 | `chart.js` | Gráfico da curva de fermentação. |
@@ -111,12 +113,35 @@ Idioma padrão: `pt`. Arquivos de locale em `docs/js/locales/`. Ao adicionar str
 
 - Ativada nas Configurações → Google Drive (toggle na seção Drive do painel de settings em `editor.js`).
 - Escopo: `https://www.googleapis.com/auth/drive.file` — acesso restrito a arquivos e pastas criados pelo próprio app.
-- O token OAuth2 é mantido apenas em memória (`_token`, `_tokenExpiry`). Não é persistido em localStorage. Expira em ~1 hora.
-- Ao detectar 403 na API, `revokeLocalToken()` apaga o token local e o `_tokenClient`, forçando nova tela de consentimento na próxima tentativa.
-- `saveRecipeToDrive(xmlContent, fileName)`: busca ou cria a pasta configurada → faz upsert do arquivo (POST se novo, PATCH se já existe).
-- A pasta padrão é `"Beer Mother"`, configurável pelo usuário. Como o escopo é `drive.file`, pastas criadas manualmente pelo usuário fora do app **não são visíveis** — o app sempre usa a pasta que ele mesmo criou.
+- O token OAuth2 é persistido em `localStorage` (`beermother.drive.token.v1`) e restaurado em memória na inicialização via `restorePersistedToken()`. Expira em ~1 hora.
+- **Renovação silenciosa**: `requestDriveAccess()` tenta `requestTokenSilent()` (sem UI) antes de cair no popup interativo. Usuário raramente precisa re-autenticar explicitamente.
+- **`authHeaders(interactive)`**: caminho único para obter token. `false` (padrão) = falha rápida sem popup; `true` = pode exibir consentimento. Todas as funções internas propagam esse flag.
+- **`hasDriveCredential()`**: retorna `true` se há `access_token` em localStorage, mesmo expirado. Usado como guarda para operações com `forceRefresh=true`, permitindo renovação mesmo com token expirado.
+- **`hasDriveToken()`**: retorna `true` apenas se o token é válido (não expirado). Usado para decisão de background sync.
+- **`overwriteDriveFile(driveFileId, content, fileName)`**: PATCH por ID conhecido — sobrescreve in-place sem busca por nome. Usado para conversão de formato legacy.
+- **`syncFolderWithCache(folderId, ext, cache, interactive)`**: uma chamada de metadados (`id,name,md5Checksum`), baixa apenas arquivos com md5 diferente. Retorna `{entries, changed}` com flag `fresh` por entrada.
+- Ao detectar 403 na API, `revokeLocalToken()` apaga token local e `_tokenClient`.
+- A pasta padrão é `"Beer Mother"` com subpastas `recipes/`, `equipments/`, `batches/`. Como o escopo é `drive.file`, pastas criadas fora do app não são visíveis.
 - O botão "Salvar no Drive" aparece no editor apenas quando `loadDriveEnabled()` retorna `true`.
-- Aliases usados em `editor.js` para os símbolos de Drive: `drvEnabled`, `drvSetEnabled`, `drvFolder`, `drvSetFolder`, `drvUpload`, `drvAuth`.
+- Aliases usados em `editor.js` para os símbolos de Drive: `drvEnabled`, `drvSetEnabled`, `drvFolder`, `drvSetFolder`, `drvUpload`, `drvAuth`, `drvHasToken`, `drvHasCredential`, `drvOverwriteFile`, `drvSyncEquipments`, `drvSyncBatches`.
+
+### Cache/hydrate pattern (receitas, equipamentos, brassagens, inventário)
+
+Todas as quatro entidades seguem o mesmo padrão:
+
+1. **Hydrate** (síncrono, ao renderizar a tela): lê o índice de cache (`cache.<entity>.v1`) e popula o estado local sem tocar na rede.
+2. **Sync** (assíncrono, background): `syncFolderWithCache` compara md5 remotos com o índice — baixa apenas o que mudou. `changed=true` dispara re-render.
+3. **`effectiveIndex`**: o índice é filtrado para entradas cujo item existe localmente antes de passar ao sync — garante re-download de itens ausentes.
+4. **Conversão de formato legacy**: arquivos sem `<BM_ID>` (equipamentos) ou sem `schema`/`version` (brassagens) são convertidos para o formato nativo e sobrescritos no Drive via `overwriteDriveFile` durante o processamento de entradas `fresh`.
+
+### Split localStorage para Drive cache
+
+- **Índice** (`cache.<entity>.v1`): array de `{driveFileId, name, md5Checksum}` — metadados apenas.
+- **Item** (`cache.<entity>.<driveFileId>`): objeto completo. Para brassagens, armazena o `brewEntry` parseado; para equipamentos, o `profile`; para receitas, o conteúdo XML.
+
+### `normalizeLegacyBatchEntry`
+
+Converte payload de brassagem Path 2 (BeerXML externo, sem `schema`/`version`) para o formato nativo `beermother-recipe-session` que `validateBrewSessionPayload` aceita. Injeta `schema: "beermother-recipe-session"`, `version: 1`, converte receita via `draftFromRecipe`.
 
 ### Atenção: colisão de aliases em `editor.js`
 
@@ -134,6 +159,23 @@ Não fazem parte do servidor web. São utilitários de desenvolvimento:
 | `data/data_extractor.py` | Extrai dados das receitas XML para CSV. |
 | `data/json_flatter.py` | Achata JSON para CSV. |
 | `recipes/files.py` | Cria diretórios e stubs JSON em `analyzer/simulation/` para cada receita `.xml`. |
+
+---
+
+## `batch-xml.js` — serialização de equipamentos e brassagens
+
+- **`equipmentProfileFromXml(xmlContent)`**: lê `<EQUIPMENT>`. Quando `<BM_ID>` está ausente (arquivo legacy), gera id como `profile-${slugify(name)}`. **`slugify` usa `/[^a-z0-9]/g` (sem `+`)** para que cada caracter especial vire seu próprio `-`, evitando colisão entre nomes que diferem apenas por parênteses (ex: `"Default (no sparge)"` → `"default--no-sparge"` vs `"Default no sparge"` → `"default-no-sparge"`).
+- **`brewEntryFromXml(xmlContent, parseBeerXml)`**: dois caminhos — Path 1 (nativo, com `BM_PAYLOAD` CDATA) e Path 2 (BeerXML externo, sem `BM_ID`). `parseBeerXml` é injetado.
+- Todas as dependências são injetadas; o módulo não importa `beerxml.js` nem `recipes.js` diretamente — testável em Node sem browser APIs.
+
+## Testes (`docs/js/tests/`)
+
+- Runner: `node:test` nativo (Node 18+). Executar de `docs/js/`: `node --test tests/<arquivo>.test.js`.
+- **`dom-shim.js`**: parser XML recursivo puro para Node — instala `globalThis.DOMParser`. Importar antes de qualquer módulo que use DOM.
+- **`batch-xml.test.js`**: 29 testes — helpers XML, brassagem externa (Brewfather), round-trip nativo, malformed, equipamento legacy (`Default_(no_sparge).xml`).
+- **`gdrive.test.js`**: 9 testes para `diffCacheWithMetadata`.
+- **`slugify.test.js`**: 13 testes para `slugify` em `engine.js`.
+- Fixtures em `docs/js/tests/fixtures/`.
 
 ---
 
