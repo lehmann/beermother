@@ -985,7 +985,7 @@ function yt(t) {
 function c(t, a) {
   return `<${t}>${yt(a)}</${t}>`;
 }
-export function recipeToBeerXml(t) {
+export function recipeToBeerXml(t, waterProfileName) {
   const a = recipeFromDraft(t),
     r = {
       Fervura: "Boil",
@@ -1064,7 +1064,7 @@ export function recipeToBeerXml(t) {
           `<MISC>${c("NAME", i.name)}${c("VERSION", 1)}${c("TYPE", "Other")}${c("USE", o[i.use] || "Boil")}${Number.isFinite(Number(i.timeMin)) ? c("TIME", i.timeMin) : ""}${c("AMOUNT", i.unit === "g" ? e(i.amount) / 1e3 : e(i.amount))}${c("AMOUNT_IS_WEIGHT", i.unit === "g" || i.unit === "kg" ? "TRUE" : "FALSE")}${c("DISPLAY_AMOUNT", `${i.amount} ${i.unit}`)}</MISC>`,
       ),
       "</MISCS>",
-      `<WATERS><WATER>${c("NAME", "\xC1gua base")}${c("VERSION", 1)}${c("CALCIUM", a.baseWaterProfile.calciumPpm)}${c("MAGNESIUM", a.baseWaterProfile.magnesiumPpm)}${c("SODIUM", a.baseWaterProfile.sodiumPpm)}${c("CHLORIDE", a.baseWaterProfile.chloridePpm)}${c("SULFATE", a.baseWaterProfile.sulfatePpm)}${c("BICARBONATE", a.baseWaterProfile.bicarbonatePpm)}</WATER></WATERS>`,
+      `<WATERS><WATER>${c("NAME", waterProfileName || "\xC1gua base")}${c("VERSION", 1)}${c("CALCIUM", a.baseWaterProfile.calciumPpm)}${c("MAGNESIUM", a.baseWaterProfile.magnesiumPpm)}${c("SODIUM", a.baseWaterProfile.sodiumPpm)}${c("CHLORIDE", a.baseWaterProfile.chloridePpm)}${c("SULFATE", a.baseWaterProfile.sulfatePpm)}${c("BICARBONATE", a.baseWaterProfile.bicarbonatePpm)}${a.waterProfileId ? c("BM_WATER_PROFILE_ID", a.waterProfileId) : ""}</WATER></WATERS>`,
       "<MASH><MASH_STEPS>",
       ...a.mash.map(
         (i) =>

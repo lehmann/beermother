@@ -5822,7 +5822,10 @@ function vo(e) {
     d(
       t("Exportar .xml"),
       () => {
-        (Ie(Pa(e), Aa(e), "application/xml;charset=utf-8"),
+        const wpName = e.waterProfileId
+          ? (inventoryWaterProfiles().find((p) => p.id === e.waterProfileId)?.name || null)
+          : null;
+        (Ie(Pa(e, wpName), Aa(e), "application/xml;charset=utf-8"),
           b(t("BeerXML exportado.")));
       },
       "btn",
@@ -5834,11 +5837,33 @@ function vo(e) {
             const n = o.currentTarget;
             n.disabled = !0;
             try {
-              const xmlContent = Pa(e);
+              // Resolve water profile name for embedding in XML
+              const wpName = e.waterProfileId
+                ? (inventoryWaterProfiles().find((p) => p.id === e.waterProfileId)?.name || null)
+                : null;
+              const xmlContent = Pa(e, wpName);
               const fileName = Aa(e);
-              const cacheEntry = await drvUpload(xmlContent, fileName, true);
-              // Update the index and persist the pre-computed row
+              // Use overwrite-by-id when a Drive file already exists for this recipe
+              // to avoid creating a duplicate when the recipe name changes.
               const index = loadRecipeIndex();
+              let existingDriveFileId = null;
+              if (e.id && e.id.startsWith("drive:")) {
+                existingDriveFileId = e.id.slice("drive:".length);
+              } else if (e.id) {
+                const entry = index.find((m) => {
+                  const row = loadRecipeRow(m.driveFileId);
+                  return row && row.id === e.id;
+                });
+                if (entry) existingDriveFileId = entry.driveFileId;
+              }
+              let cacheEntry;
+              if (existingDriveFileId) {
+                const result = await drvOverwriteFile(existingDriveFileId, xmlContent, fileName, true);
+                cacheEntry = { driveFileId: result.driveFileId, name: result.name, md5Checksum: result.md5Checksum, content: xmlContent };
+              } else {
+                cacheEntry = await drvUpload(xmlContent, fileName, true);
+              }
+              // Update the index and persist the pre-computed row
               const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
               newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
               saveRecipeIndex(newIndex);
