@@ -1,2 +1,0 @@
-id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
-recipe-mrz3jmsf-0f5yp,Tmavý #lagerstchecas V1,Czech Dark Lager,Jamal,25,60,80.3,,,0.1,3.1,5,90,1.5,10,4,4,12,10,30

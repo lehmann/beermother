@@ -11,13 +11,13 @@ import { el, button, iconButton, icon, toast, decimalInput } from "./ui.js";
 import { t } from "./i18n.js";
 import {
   hasDriveToken,
+  hasDriveCredential,
   saveInventoryToDrive,
-  loadInventoryFromDrive,
-  requestDriveAccess,
+  syncInventoryFromDrive,
 } from "./gdrive.js";
 import { MALT_LIBRARY, HOP_LIBRARY, YEAST_LIBRARY } from "./library.js";
 
-const INVENTORY_FILE = "inventory.xml";
+const INVENTORY_DRIVE_MD5_KEY = "beermother.drive.inventory.md5";
 
 const CATEGORIES = [
   { id: "fermentables", label: "Fermentáveis", icon: "scale" },
@@ -29,7 +29,15 @@ const CATEGORIES = [
 let activeCategory = "fermentables";
 let currentOverlay = null;
 let currentKeyHandler = null;
-let driveLoadState = "idle";
+let driveLoadState = "idle"; // "idle" | "loading" | "done" | "error"
+let driveHydrated = false;
+
+function loadCachedMd5() {
+  try { return localStorage.getItem(INVENTORY_DRIVE_MD5_KEY) || null; } catch { return null; }
+}
+function saveCachedMd5(md5) {
+  try { if (md5) localStorage.setItem(INVENTORY_DRIVE_MD5_KEY, md5); } catch {}
+}
 
 // ── XML serialization ─────────────────────────────────────────────────────────
 
@@ -158,34 +166,42 @@ export function parseInventoryXml(xml) {
 export async function syncInventoryToDrive(inv) {
   if (!loadDriveEnabled() || !hasDriveToken()) return;
   try {
-    await saveInventoryToDrive(inventoryToXml(inv));
+    const result = await saveInventoryToDrive(inventoryToXml(inv), true);
+    if (result?.md5Checksum) saveCachedMd5(result.md5Checksum);
   } catch {}
 }
 
-export async function loadInventoryFromDriveAndSync() {
-  if (!loadDriveEnabled()) return false;
+// Hydrate: restores inventory from localStorage (no token required).
+// Called unconditionally on every render of the inventory screen.
+function hydrateInventoryFromCache() {
+  if (driveHydrated) return;
+  driveHydrated = true;
+  // The inventory is already loaded via loadInventory() from state.js on each
+  // render — nothing extra needed here.  The flag just prevents re-entry and
+  // mirrors the pattern used by the other screens.
+}
+
+// Background sync: fetches Drive metadata, downloads only when md5 changed.
+async function loadDriveInventory(forceRefresh) {
+  if (!loadDriveEnabled() || !(hasDriveToken() || (forceRefresh && hasDriveCredential()))) return;
+  if (!forceRefresh && driveLoadState !== "idle") return;
   driveLoadState = "loading";
   app.requestRender();
   try {
-    await requestDriveAccess();
-    const xml = await loadInventoryFromDrive();
-    if (xml) {
-      const parsed = parseInventoryXml(xml);
+    const cachedMd5 = forceRefresh ? null : loadCachedMd5();
+    const { content, md5Checksum, changed } = await syncInventoryFromDrive(cachedMd5, forceRefresh);
+    if (changed && content) {
+      const parsed = parseInventoryXml(content);
       if (parsed) {
         saveInventory(parsed);
-        driveLoadState = "done";
-        app.requestRender();
-        return true;
+        saveCachedMd5(md5Checksum);
       }
     }
     driveLoadState = "done";
-    app.requestRender();
-    return false;
   } catch {
     driveLoadState = "error";
-    app.requestRender();
-    return false;
   }
+  app.requestRender();
 }
 
 function closeSheet() {
@@ -621,8 +637,9 @@ function categorySection(cat, items) {
 export function inventoryScreen() {
   const driveActive = loadDriveEnabled();
 
-  if (driveActive && driveLoadState === "idle" && hasDriveToken()) {
-    loadInventoryFromDriveAndSync();
+  if (driveActive) {
+    hydrateInventoryFromCache();
+    if (hasDriveToken() && driveLoadState === "idle") loadDriveInventory(false);
   }
 
   const inv = loadInventory();
@@ -661,10 +678,7 @@ export function inventoryScreen() {
           ? el("span", "muted drive-sync-status", t("Sincronizando com o Drive…"))
           : button(
               t(driveLoadState === "done" ? "Atualizar do Drive" : "Carregar do Drive"),
-              () => {
-                driveLoadState = "idle";
-                loadInventoryFromDriveAndSync();
-              },
+              () => loadDriveInventory(true),
               "btn ghost small",
             ),
         driveLoadState === "error"

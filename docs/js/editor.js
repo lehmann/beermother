@@ -23,6 +23,7 @@ import {
   clearAutosave as Ya,
   listBrews as Fe,
   getBrew as Za,
+  upsertBrewFromPayload as upsertBrewEntry,
   setBrewStatus as ba,
   deleteBrew as et,
   appendBrewNote as at,
@@ -53,13 +54,27 @@ import {
   saveDriveEnabled as drvSetEnabled,
   loadDriveFolderName as drvFolder,
   saveDriveFolderName as drvSetFolder,
+  setBrewUpsertedCallback,
 } from "./state.js";
 import {
   saveRecipeToDrive as drvUpload,
   requestDriveAccess as drvAuth,
-  listRecipesFromDrive as drvList,
+  restorePersistedToken as drvRestoreToken,
+  syncRecipesFromDrive as drvSyncRecipes,
   hasDriveToken as drvHasToken,
+  hasDriveCredential as drvHasCredential,
+  saveEquipmentToDrive as drvSaveEquipment,
+  syncEquipmentsFromDrive as drvSyncEquipments,
+  saveBatchToDrive as drvSaveBatch,
+  syncBatchesFromDrive as drvSyncBatches,
+  overwriteDriveFile as drvOverwriteFile,
 } from "./gdrive.js";
+import {
+  equipmentProfileToXml,
+  equipmentProfileFromXml,
+  brewEntryToXml as batchBrewEntryToXml,
+  brewEntryFromXml as batchBrewEntryFromXml,
+} from "./batch-xml.js";
 import { PH_ACID_TYPES as ht } from "./ph.js";
 import {
   generateBrewReportHtml as gt,
@@ -141,7 +156,6 @@ import {
   formatMaltMass as Ra,
   localeTag as ka,
 } from "./i18n.js";
-import { COURSE_RECIPES as ea } from "./course-recipes-data.js";
 import {
   buildCalibrationDraft as Zt,
   calibrationSessionProperties as en,
@@ -160,55 +174,444 @@ function j(e) {
 }
 let recipeSearchQuery = "",
   recipeListLimit = 10,
+  recipeSearchDebounceTimer = null,
   fermentablePercentEdit = null,
   showIbuPerAddition = !1;
+// Restore any persisted Drive token into memory immediately at module load,
+// so drvHasToken() returns true on first render without requiring user action.
+if (drvEnabled()) drvRestoreToken();
+
 let driveRows = [],
-  driveLoadState = "idle";
+  driveLoadState = "idle",
+  driveRowsHydrated = false,
+  driveEquipmentsHydrated = false,
+  driveEquipmentsState = "idle",
+  driveBatchesHydrated = false,
+  driveBatchesState = "idle";
+
+// localStorage keys for Drive file caches
+//
+// All three categories follow the same pattern:
+//   Index key  → [{driveFileId, name, md5Checksum}]   (no content)
+//   Item key   → <prefix><driveFileId>  stores the parsed object
+//
+// Recipes:    index = DRIVE_RECIPE_INDEX_KEY,    item = DRIVE_RECIPE_ROW_PREFIX + driveFileId
+// Equipments: index = DRIVE_EQUIPMENT_INDEX_KEY, item = DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId
+// Batches:    index = DRIVE_BATCH_INDEX_KEY,     item = DRIVE_BATCH_ITEM_PREFIX + driveFileId
+const DRIVE_RECIPE_INDEX_KEY = "beermother.drive.cache.recipes.v1";
+const DRIVE_RECIPE_ROW_PREFIX = "beermother.drive.recipe.";
+const DRIVE_EQUIPMENT_INDEX_KEY = "beermother.drive.cache.equipments.v1";
+const DRIVE_EQUIPMENT_ITEM_PREFIX = "beermother.drive.equipment.";
+const DRIVE_BATCH_INDEX_KEY = "beermother.drive.cache.batches.v1";
+const DRIVE_BATCH_ITEM_PREFIX = "beermother.drive.batch.";
+
+function loadJsonFromStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw);
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveJsonToStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+// Recipes — index only, rows stored individually
+function loadRecipeIndex() {
+  return loadJsonFromStorage(DRIVE_RECIPE_INDEX_KEY, []);
+}
+
+function saveRecipeIndex(index) {
+  saveJsonToStorage(DRIVE_RECIPE_INDEX_KEY, index);
+}
+
+function loadRecipeRow(driveFileId) {
+  return loadJsonFromStorage(DRIVE_RECIPE_ROW_PREFIX + driveFileId, null);
+}
+
+function saveRecipeRow(driveFileId, row) {
+  saveJsonToStorage(DRIVE_RECIPE_ROW_PREFIX + driveFileId, row);
+}
+
+function deleteRecipeRow(driveFileId) {
+  try { localStorage.removeItem(DRIVE_RECIPE_ROW_PREFIX + driveFileId); } catch {}
+}
+
+// Equipments — index + per-item entries
+function loadEquipmentIndex() { return loadJsonFromStorage(DRIVE_EQUIPMENT_INDEX_KEY, []); }
+function saveEquipmentIndex(index) { saveJsonToStorage(DRIVE_EQUIPMENT_INDEX_KEY, index); }
+function loadEquipmentItem(driveFileId) { return loadJsonFromStorage(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId, null); }
+function saveEquipmentItem(driveFileId, profile) { saveJsonToStorage(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId, profile); }
+function deleteEquipmentItem(driveFileId) { try { localStorage.removeItem(DRIVE_EQUIPMENT_ITEM_PREFIX + driveFileId); } catch {} }
+
+// Batches — index + per-item entries
+function loadBatchIndex() { return loadJsonFromStorage(DRIVE_BATCH_INDEX_KEY, []); }
+function saveBatchIndex(index) { saveJsonToStorage(DRIVE_BATCH_INDEX_KEY, index); }
+function loadBatchItem(driveFileId) { return loadJsonFromStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, null); }
+function saveBatchItem(driveFileId, brewEntry) { saveJsonToStorage(DRIVE_BATCH_ITEM_PREFIX + driveFileId, brewEntry); }
+function deleteBatchItem(driveFileId) { try { localStorage.removeItem(DRIVE_BATCH_ITEM_PREFIX + driveFileId); } catch {} }
+
+// Fire-and-forget Drive sync helpers — never throw into the calling flow.
+async function syncBrewToDrive(brewId) {
+  if (!drvEnabled() || !drvHasToken()) return;
+  const entry = Za(brewId);
+  if (!entry) return;
+  try {
+    await drvSaveBatch(entry);
+  } catch {}
+}
+
+async function syncEquipmentToDrive(profile) {
+  if (!drvEnabled() || !drvHasToken() || !profile) return;
+  try {
+    const xmlContent = equipmentProfileToXml(profile);
+    const cacheEntry = await drvSaveEquipment(xmlContent, profile.id);
+    const index = loadEquipmentIndex();
+    const newIndex = index.filter((entry) => entry.driveFileId !== cacheEntry.driveFileId);
+    newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+    saveEquipmentIndex(newIndex);
+    saveEquipmentItem(cacheEntry.driveFileId, profile);
+  } catch {}
+}
+
+// Register Drive sync on every brew upsert (autosave, conclude, reopen, etc.)
+// Skipped while importing from Drive to avoid re-uploading just-downloaded data.
+setBrewUpsertedCallback((entry) => {
+  if (_importingFromDrive || !drvEnabled() || !drvHasToken()) return;
+  const xmlContent = brewEntryToXml(entry);
+  drvSaveBatch(xmlContent, entry.id).then((cacheEntry) => {
+    const index = loadBatchIndex();
+    const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
+    newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+    saveBatchIndex(newIndex);
+    saveBatchItem(cacheEntry.driveFileId, entry);
+  }).catch(() => {});
+});
+
 function driveKey(e) {
   return String(e || "")
     .trim()
     .toLowerCase();
 }
-function driveFileToRow(e) {
+
+// Convert a brew entry whose payload was synthesised from external BeerXML (no
+// schema/version) into a valid native payload that restoreBrewSessionPayload
+// can accept.  The recipe field from parseBeerXml is a draft — pass it through
+// draftFromRecipe+recipeFromDraft so it matches the internal recipe format.
+function normalizeLegacyBatchEntry(entry) {
+  const p = entry.payload || {};
+  let recipe = p.recipe || {};
   try {
-    const o = parseBeerXml(e.content),
-      n = draftFromRecipe(o),
-      r = computeTargets(n);
-    return {
-      id: `drive:${e.id}`,
-      driveFileId: e.id,
-      name: n.name || e.name.replace(/\.xml$/i, ""),
-      styleName: n.styleName || "",
-      abv: r.abv,
-      ebc: r.ebc,
-      ibu: r.ibu,
-      og: r.og,
-      isDraft: !1,
-      fromDrive: !0,
-      draft: n,
+    recipe = Le(draftFromRecipe(recipe));
+  } catch {}
+  const payload = {
+    schema: "beermother-recipe-session",
+    version: 1,
+    savedAt: p.savedAt || new Date().toISOString(),
+    brewId: entry.id,
+    recipe,
+    properties: p.properties || {},
+    measurements: p.measurements || {},
+    correctionChecks: {},
+    hopLots: [],
+    timerEvents: p.timerEvents || [],
+    notes: p.notes || "",
+    fermentationTracking: p.fermentationTracking || {},
+    correctionRounds: [],
+    additionChecks: {},
+    phasesDone: {},
+    guideEnabled: false,
+    guideChecks: {},
+    correctionAccepted: {},
+    calibration: false,
+    phLog: {},
+  };
+  return { ...entry, payload };
+}
+
+// Wrappers that bind the draft-aware recipe serializer to the pure batch-xml functions.
+function brewEntryToXml(entry) {
+  return batchBrewEntryToXml(entry, (recipe) => Pa(draftFromRecipe(recipe)));
+}
+
+function brewEntryFromXml(xmlContent) {
+  return batchBrewEntryFromXml(xmlContent, parseBeerXml);
+}
+// Build a row from XML content and persist it under its own localStorage key.
+// Called only when a file is new or its md5 changed — never on every page load.
+function parseAndCacheRecipeRow(driveFileId, fileName, xmlContent) {
+  try {
+    const recipe = parseBeerXml(xmlContent);
+    const draft = draftFromRecipe(recipe);
+    const targets = computeTargets(draft);
+    const row = {
+      id: `drive:${driveFileId}`,
+      driveFileId,
+      name: draft.name || fileName.replace(/\.xml$/i, ""),
+      styleName: draft.styleName || "",
+      abv: targets.abv,
+      ebc: targets.ebc,
+      ibu: targets.ibu,
+      og: targets.og,
+      isDraft: false,
+      fromDrive: true,
+      draft,
     };
+    saveRecipeRow(driveFileId, row);
+    return row;
   } catch {
     return null;
   }
 }
-async function loadDriveRecipes(e) {
-  ((driveLoadState = "loading"), e && c.requestRender());
+
+function hydrateRecipeRowsFromCache() {
+  if (driveRowsHydrated) return;
+  driveRowsHydrated = true;
+  const index = loadRecipeIndex();
+  if (!index.length) return;
+  const rows = index.map((meta) => loadRecipeRow(meta.driveFileId)).filter(Boolean);
+  if (rows.length) {
+    driveRows = rows;
+    c.requestRender();
+  }
+}
+
+async function loadDriveRecipes(forceRefresh) {
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
+  // Step 1: hydrate driveRows from the index + per-recipe rows synchronously.
+  // No XML parsing here — rows are already pre-computed.
+  hydrateRecipeRowsFromCache();
+
+  driveLoadState = "loading";
+  if (forceRefresh) c.requestRender();
+
   try {
-    const o = await drvList();
-    ((driveRows = o.map(driveFileToRow).filter(Boolean)),
-      (driveLoadState = "done"));
-  } catch (o) {
-    ((driveLoadState = "error"),
-      e && b(o.message || t("Erro ao carregar receitas do Drive."), "error"));
+    // Step 2: one API call to list metadata; only downloads files whose md5 changed.
+    // Filter out index entries whose row was never persisted — they must be re-downloaded.
+    const index = loadRecipeIndex();
+    const effectiveIndex = index.filter((m) => loadRecipeRow(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncRecipes(effectiveIndex, forceRefresh);
+
+    if (changed) {
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
+
+      const newRows = [];
+      for (const entry of entries) {
+        if (entry.fresh) {
+          // File is new or changed — parse XML and persist the row
+          const row = parseAndCacheRecipeRow(entry.driveFileId, entry.name, entry.content);
+          if (row) newRows.push(row);
+        } else {
+          // File unchanged — load the pre-computed row from localStorage
+          const row = loadRecipeRow(entry.driveFileId);
+          if (row) newRows.push(row);
+        }
+      }
+
+      // Remove rows for files deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteRecipeRow(meta.driveFileId);
+      }
+
+      saveRecipeIndex(newIndex);
+      driveRows = newRows;
+    }
+
+    driveLoadState = "done";
+  } catch (err) {
+    driveLoadState = "error";
+    if (forceRefresh) b(t("Erro ao carregar receitas do Drive."), "error");
   }
   c.requestRender();
 }
-function maybeAutoLoadDrive() {
-  drvEnabled() &&
-    driveLoadState === "idle" &&
-    drvHasToken() &&
-    loadDriveRecipes(!1);
+// Suppress Drive sync callbacks while importing batches from Drive to avoid
+// re-uploading data we just downloaded.
+let _importingFromDrive = false;
+
+// Merge a brew entry loaded from Drive: only import if remote is newer than local.
+function mergeBatchFromDrive(remoteEntry) {
+  if (!remoteEntry?.id || !remoteEntry?.payload) return;
+  const local = Za(remoteEntry.id);
+  const remoteNewer = !local || new Date(remoteEntry.updatedAt) > new Date(local.updatedAt);
+  if (remoteNewer) {
+    const payload = { ...remoteEntry.payload, brewId: remoteEntry.id };
+    _importingFromDrive = true;
+    try {
+      upsertBrewEntry(payload, { status: remoteEntry.status });
+    } finally {
+      _importingFromDrive = false;
+    }
+  }
 }
+
+function hydrateEquipmentsFromCache() {
+  if (driveEquipmentsHydrated) return;
+  driveEquipmentsHydrated = true;
+  const index = loadEquipmentIndex();
+  if (!index.length) return;
+  // Detect legacy items: IDs generated from slug collide when names differ only by _ vs space.
+  // The new format is `profile-<driveFileId[-8:]>` — deterministically derived from driveFileId.
+  // If a cached item's id doesn't match the expected new format, it may be a legacy slug-based id;
+  // clear all md5s so the next sync re-downloads and applies the corrected id.
+  let hasLegacy = false;
+  for (const meta of index) {
+    const profile = loadEquipmentItem(meta.driveFileId);
+    const expectedNewId = `profile-${meta.driveFileId.slice(-8)}`;
+    if (profile?.id && profile.id !== expectedNewId) {
+      hasLegacy = true;
+    } else if (profile?.id && !X().find((p) => p.id === profile.id)) {
+      ne(profile);
+    }
+  }
+  if (hasLegacy) {
+    // Force re-download by clearing md5 checksums — sync will treat all as changed.
+    saveEquipmentIndex(index.map((m) => ({ ...m, md5Checksum: "" })));
+  }
+  c.requestRender();
+}
+
+async function loadDriveEquipments(forceRefresh) {
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
+  if (!forceRefresh && driveEquipmentsState !== "idle") return;
+  driveEquipmentsState = "loading";
+  if (forceRefresh) c.requestRender();
+  try {
+    const index = loadEquipmentIndex();
+    // Only pass entries whose item exists locally — missing items are treated as
+    // changed by the sync so they get downloaded even if their md5 matches the index.
+    const effectiveIndex = index.filter((m) => loadEquipmentItem(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncEquipments(effectiveIndex, forceRefresh);
+    if (changed) {
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
+      for (const entry of entries) {
+        if (entry.fresh) {
+          const profile = equipmentProfileFromXml(entry.content);
+          if (profile?.id) {
+            const isLegacy = !entry.content.includes("<BM_ID>");
+            if (isLegacy) {
+              // Slug-based IDs are not unique when names differ only by _ vs space.
+              // Use the driveFileId suffix to guarantee uniqueness across legacy files.
+              profile.id = `profile-${entry.driveFileId.slice(-8)}`;
+              const xml = equipmentProfileToXml(profile);
+              drvOverwriteFile(entry.driveFileId, xml, entry.name, true)
+                .then((cacheEntry) => {
+                  const idx = loadEquipmentIndex();
+                  saveEquipmentIndex(idx.map((m) =>
+                    m.driveFileId === entry.driveFileId
+                      ? { ...m, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum }
+                      : m,
+                  ));
+                  saveEquipmentItem(entry.driveFileId, profile);
+                })
+                .catch(() => {});
+            }
+            saveEquipmentItem(entry.driveFileId, profile);
+            ne(profile);
+          }
+        }
+      }
+      // Remove items deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteEquipmentItem(meta.driveFileId);
+      }
+      saveEquipmentIndex(newIndex);
+    }
+    driveEquipmentsState = "done";
+  } catch (err) {
+    driveEquipmentsState = "error";
+    if (forceRefresh) b(t("Erro ao carregar equipamentos do Drive."), "error");
+  }
+  c.requestRender();
+}
+
+function hydrateBatchesFromCache() {
+  if (driveBatchesHydrated) return;
+  driveBatchesHydrated = true;
+  const index = loadBatchIndex();
+  if (!index.length) return;
+  for (const meta of index) {
+    const brewEntry = loadBatchItem(meta.driveFileId);
+    if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
+  }
+  c.requestRender();
+}
+
+async function loadDriveBatches(forceRefresh) {
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
+  if (!forceRefresh && driveBatchesState !== "idle") return;
+  driveBatchesState = "loading";
+  if (forceRefresh) c.requestRender();
+  try {
+    const index = loadBatchIndex();
+    // Only pass entries whose item exists locally — missing items are treated as
+    // changed by the sync so they get downloaded even if their md5 matches the index.
+    const effectiveIndex = index.filter((m) => loadBatchItem(m.driveFileId) !== null);
+    const { entries, changed } = await drvSyncBatches(effectiveIndex, forceRefresh);
+    if (changed) {
+      const newIndex = entries.map((e) => ({
+        driveFileId: e.driveFileId,
+        name: e.name,
+        md5Checksum: e.md5Checksum,
+      }));
+      for (const entry of entries) {
+        if (entry.fresh) {
+          let brewEntry = brewEntryFromXml(entry.content);
+          if (brewEntry?.id && brewEntry?.payload) {
+            // Path 2 (external BeerXML): payload lacks schema/version — convert
+            // to native format and overwrite the Drive file so future reads use
+            // the lossless round-trip path.
+            if (!brewEntry.payload.schema) {
+              brewEntry = normalizeLegacyBatchEntry(brewEntry);
+              const xml = brewEntryToXml(brewEntry);
+              drvOverwriteFile(entry.driveFileId, xml, entry.name, true)
+                .then((cacheEntry) => {
+                  const idx = loadBatchIndex();
+                  saveBatchIndex(idx.map((m) =>
+                    m.driveFileId === entry.driveFileId
+                      ? { ...m, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum }
+                      : m,
+                  ));
+                  saveBatchItem(entry.driveFileId, brewEntry);
+                })
+                .catch(() => {});
+            }
+            saveBatchItem(entry.driveFileId, brewEntry);
+            mergeBatchFromDrive(brewEntry);
+          }
+        }
+      }
+      // Remove items deleted from Drive
+      const activeIds = new Set(entries.map((e) => e.driveFileId));
+      for (const meta of index) {
+        if (!activeIds.has(meta.driveFileId)) deleteBatchItem(meta.driveFileId);
+      }
+      saveBatchIndex(newIndex);
+    }
+    driveBatchesState = "done";
+  } catch (err) {
+    driveBatchesState = "error";
+    if (forceRefresh) b(t("Erro ao carregar brassagens do Drive."), "error");
+  }
+  c.requestRender();
+}
+
+
 function mergeDriveRecipes(e) {
   if (!driveRows.length) return e;
   const o = new Set(e.map((n) => driveKey(n.name)));
@@ -217,18 +620,38 @@ function mergeDriveRecipes(e) {
 function driveStatusRow() {
   if (!drvEnabled()) return null;
   if (driveLoadState === "loading")
-    return a(
-      "p",
-      "muted drive-sync-status",
-      t("Carregando receitas do Drive…"),
-    );
-  const e =
-    driveLoadState === "done"
-      ? t("Atualizar do Drive")
-      : t("Carregar do Drive");
+    return a("p", "muted drive-sync-status", t("Carregando receitas do Drive…"));
+  const label =
+    driveLoadState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
   return a("div", "drive-sync-row", [
-    d(e, () => loadDriveRecipes(!0), "btn ghost small"),
+    d(label, () => loadDriveRecipes(true), "btn ghost small"),
     driveLoadState === "error"
+      ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
+      : null,
+  ]);
+}
+function driveEquipmentsStatusRow() {
+  if (!drvEnabled()) return null;
+  if (driveEquipmentsState === "loading")
+    return a("p", "muted drive-sync-status", t("Carregando equipamentos do Drive…"));
+  const label =
+    driveEquipmentsState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
+  return a("div", "drive-sync-row", [
+    d(label, () => loadDriveEquipments(true), "btn ghost small"),
+    driveEquipmentsState === "error"
+      ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
+      : null,
+  ]);
+}
+function driveBatchesStatusRow() {
+  if (!drvEnabled()) return null;
+  if (driveBatchesState === "loading")
+    return a("p", "muted drive-sync-status", t("Carregando brassagens do Drive…"));
+  const label =
+    driveBatchesState === "done" ? t("Atualizar do Drive") : t("Carregar do Drive");
+  return a("div", "drive-sync-row", [
+    d(label, () => loadDriveBatches(true), "btn ghost small"),
+    driveBatchesState === "error"
       ? a("span", "muted drive-sync-status", t("Falha ao carregar do Drive."))
       : null,
   ]);
@@ -732,7 +1155,10 @@ function pageHead(e, o, n = []) {
   ]);
 }
 function recipesScreen() {
-  maybeAutoLoadDrive();
+  if (drvEnabled()) {
+    hydrateRecipeRowsFromCache();
+    if (drvHasToken() && driveLoadState === "idle") loadDriveRecipes(false);
+  }
   const e = mergeDriveRecipes(listMyRecipes());
   return [
     pageHead(
@@ -741,46 +1167,13 @@ function recipesScreen() {
     ),
     driveStatusRow(),
     e.length ? myRecipesCard(e) : emptyRecipesState(),
-    courseRecipesCard(),
   ];
 }
-function courseRecipesCard() {
-  if (!ea.length) return null;
-  const e = ea.map((o) => {
-    const n = d("", () => openCommunityRecipe(o), "recipe-row", {
-      title: t("Abrir receita do curso"),
-    });
-    return (
-      n.append(
-        R("hop", "icon brew-row-icon"),
-        a("div", "recipe-row-main", [
-          a("b", "recipe-row-name", o.name),
-          a("span", "recipe-row-meta", o.styleName),
-        ]),
-        R("chevron", "icon recipe-row-chevron"),
-      ),
-      a("div", "recipe-row-wrap", [n])
-    );
-  });
-  return a("section", "card home-card", [
-    a("header", "card-head", [
-      R("hop", "icon card-icon"),
-      a("h2", "card-title", t("Receitas do curso")),
-      a("span", "card-count", String(ea.length)),
-    ]),
-    a("div", "recipe-list", e),
-  ]);
-}
-function openCommunityRecipe(e) {
-  ((c.editorDraft = draftFromRecipe(parseBeerXml(e.xml))),
-    (fermentablePercentEdit = null),
-    ta(c.editorDraft),
-    ia(),
-    (c.view = "editor"),
-    c.requestRender(),
-    window.scrollTo({ top: 0, behavior: "instant" }));
-}
 function brewsScreen() {
+  if (drvEnabled()) {
+    hydrateBatchesFromCache();
+    if (drvHasToken() && driveBatchesState === "idle") loadDriveBatches(false);
+  }
   const e = Fe().filter((r) => r.status === "active"),
     o = e.length ? t("{n} em andamento", { n: e.length }) : "",
     n = e.length
@@ -806,9 +1199,60 @@ function brewsScreen() {
             ]),
           ]),
         ]);
-  return [pageHead(t("Brassagens"), o), n, Ln()];
+  return [pageHead(t("Brassagens"), o), driveBatchesStatusRow(), n, Ln(), brewsDoneSection()];
+}
+function brewsDoneSection() {
+  const e = Fe()
+    .filter((n) => n.status === "done")
+    .sort(
+      (s, l) =>
+        new Date(l.concludedAt || l.updatedAt).getTime() -
+        new Date(s.concludedAt || s.updatedAt).getTime(),
+    );
+  if (!e.length) return null;
+  const o = e.map((n) => {
+    const r = d("", () => Fa(n), "recipe-row", {
+      title: t("Abrir a ficha da leva"),
+    });
+    r.append(
+      R("summary", "icon brew-row-icon"),
+      a("div", "recipe-row-main", [
+        a("b", "recipe-row-name", [
+          n.recipeName,
+          a("span", "recipe-row-when", ` \xB7 ${Ue(n.concludedAt || n.updatedAt)}`),
+        ]),
+        a(
+          "span",
+          "recipe-row-meta",
+          n.styleName || t("conclu\xEDda"),
+        ),
+      ]),
+      R("chevron", "icon recipe-row-chevron"),
+    );
+    const u = D(
+      "drag",
+      t("A\xE7\xF5es da leva"),
+      (p) => {
+        (p.stopPropagation(), oa(n));
+      },
+      "icon-btn subtle small-btn recipe-discard",
+    );
+    return a("div", "recipe-row-wrap", [r, u]);
+  });
+  return a("section", "card home-card", [
+    a("header", "card-head", [
+      R("summary", "icon card-icon"),
+      a("h2", "card-title", t("Conclu\xEDdas")),
+      e.length > 1 ? a("span", "card-count num", String(e.length)) : null,
+    ]),
+    a("div", "card-body", o),
+  ]);
 }
 function equipmentScreen() {
+  if (drvEnabled()) {
+    hydrateEquipmentsFromCache();
+    if (drvHasToken() && driveEquipmentsState === "idle") loadDriveEquipments(false);
+  }
   const e = X();
   return [
     pageHead(
@@ -819,6 +1263,7 @@ function equipmentScreen() {
           : t("{n} perfis", { n: e.length })
         : "",
     ),
+    driveEquipmentsStatusRow(),
     gn(),
     vn(),
     kn(e),
@@ -1036,6 +1481,7 @@ function oa(e) {
               t("Reabrir leva"),
               () => {
                 (ba(e.id, "active"),
+                  syncBrewToDrive(e.id),
                   h(),
                   c.view === "brewlog" &&
                     ((c.view = "home"),
@@ -1054,6 +1500,7 @@ function oa(e) {
               t("Concluir brassagem"),
               () => {
                 (o ? tt() : ba(e.id, "done"),
+                  syncBrewToDrive(e.id),
                   h(),
                   (c.workspaceSection = "notebook"),
                   b(t("Brassagem conclu\xEDda \u2014 ela mora no Caderno.")),
@@ -1264,6 +1711,7 @@ function En(e) {
       }
       const s = Za(e.id);
       (s && (c.brewLogEntry = s),
+        syncBrewToDrive(e.id),
         b(t("Nota adicionada com data e hora.")),
         c.requestRender());
     },
@@ -1308,20 +1756,30 @@ function myRecipesCard(e = listMyRecipes()) {
       e.length >= 5
         ? (() => {
             const l = document.createElement("input");
-            return (
-              (l.type = "text"),
-              (l.placeholder = t("Buscar receita\u2026")),
-              (l.value = recipeSearchQuery),
-              l.setAttribute("aria-label", t("Buscar receita")),
-              l.setAttribute("data-fkey", "home-search"),
-              l.addEventListener("input", () => {
-                ((recipeSearchQuery = l.value),
-                  (recipeListLimit = 10),
-                  (c.pendingFocusKey = "home-search"),
-                  c.requestRender());
-              }),
-              l
-            );
+            l.type = "text";
+            l.placeholder = t("Buscar receita\u2026");
+            l.value = recipeSearchQuery;
+            l.setAttribute("aria-label", t("Buscar receita"));
+            l.setAttribute("data-fkey", "home-search");
+            l.addEventListener("input", () => {
+              clearTimeout(recipeSearchDebounceTimer);
+              recipeSearchDebounceTimer = setTimeout(() => {
+                recipeSearchQuery = l.value;
+                recipeListLimit = 10;
+                // Save caret position so render restores it without selecting all
+                const caretPos = l.selectionStart ?? l.value.length;
+                const prevFocused = document.activeElement === l;
+                c.requestRender();
+                if (prevFocused) {
+                  const restored = document.querySelector('[data-fkey="home-search"]');
+                  if (restored) {
+                    restored.focus({ preventScroll: true });
+                    try { restored.setSelectionRange(caretPos, caretPos); } catch {}
+                  }
+                }
+              }, 250);
+            });
+            return l;
           })()
         : null,
     s = r.map((l) => {
@@ -1794,7 +2252,7 @@ export function openSettingsSheet() {
           ga({ authorName: k.trim() });
         },
         {
-          placeholder: t("Ex.: Jamal"),
+          placeholder: t("Ex.: Lehmann"),
           "aria-label": t("Seu nome"),
           class: "settings-input",
         },
@@ -2250,6 +2708,7 @@ function Z(e, o = null) {
               const $ = X();
               ((!pe() || $.length === 1 || pe() === v.id) &&
                 (ye(v.id), re(v.params)),
+                syncEquipmentToDrive(v),
                 c.requestRender(),
                 p(v, pe() === v.id));
             }
@@ -2454,6 +2913,7 @@ function In(e) {
           });
           g &&
             (pe() === g.id && re(g.params),
+            syncEquipmentToDrive(g),
             b(
               t('"{name}" calibrado com {source}.', {
                 name: g.name,
@@ -2478,6 +2938,7 @@ function In(e) {
           y &&
             (ye(y.id),
             re(y.params),
+            syncEquipmentToDrive(y),
             b(
               t('Perfil "{name}" criado e definido como principal.', {
                 name: y.name,
@@ -3784,6 +4245,7 @@ export function calibrationPayoffCard(e) {
                 params: { ...r.params, ...p() },
               });
               (g && pe() === g.id && re(g.params),
+                syncEquipmentToDrive(g),
                 E(
                   g,
                   t('"{name}" calibrado com esta brassagem.', { name: r.name }),
@@ -3803,6 +4265,7 @@ export function calibrationPayoffCard(e) {
                 params: { targetVolumeL: i, ...p() },
               });
               (g && (ye(g.id), re(g.params)),
+                syncEquipmentToDrive(g),
                 E(g, t("Perfil criado e definido como principal.")));
             },
             "btn small",
@@ -3817,6 +4280,7 @@ export function calibrationPayoffCard(e) {
                 params: { targetVolumeL: i, ...p() },
               });
               (g && (ye(g.id), re(g.params)),
+                syncEquipmentToDrive(g),
                 E(g, t("Equipamento salvo e definido como principal.")));
             },
             "btn primary",
@@ -5296,12 +5760,16 @@ function vo(e) {
             const n = o.currentTarget;
             n.disabled = !0;
             try {
-              (await drvUpload(Pa(e), Aa(e)),
-                b(
-                  t('"{name}" salvo no Google Drive.', {
-                    name: e.name || t("Receita"),
-                  }),
-                ));
+              const xmlContent = Pa(e);
+              const fileName = Aa(e);
+              const cacheEntry = await drvUpload(xmlContent, fileName, true);
+              // Update the index and persist the pre-computed row
+              const index = loadRecipeIndex();
+              const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
+              newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+              saveRecipeIndex(newIndex);
+              parseAndCacheRecipeRow(cacheEntry.driveFileId, cacheEntry.name, xmlContent);
+              b(t('"{name}" salvo no Google Drive.', { name: e.name || t("Receita") }));
             } catch (r) {
               b(r.message || t("Erro ao salvar no Google Drive."), "error");
             } finally {

@@ -1,2 +1,0 @@
-id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
-recipe-mryip7wa-y37de,Helles,Munich Helles,Andre Lehmann,5,45,127.5,,,0.5,33.2,5,90,1.5,10,4,4,12,10,30

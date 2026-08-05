@@ -1,2 +1,0 @@
-id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
-recipe-mryh5jrq-lwkvo,PFC - Cream Ale,Cream Ale,Jamal,20.8,60,68.1,,,0.0481,11.7,5,90,1.5,10,4,4,12,10,30

@@ -1,2 +1,0 @@
-id,name,styleName,brewer,batchVolumeL,boilTimeMin,mashEfficiencyPct,manualFg,equipmentProfileName,trubLossPct,evaporationPct,whirlpoolNoChillMin,whirlpoolTemperatureC,heatingRateCMin,baseWaterProfile.calciumPpm,baseWaterProfile.magnesiumPpm,baseWaterProfile.sodiumPpm,baseWaterProfile.chloridePpm,baseWaterProfile.sulfatePpm,baseWaterProfile.bicarbonatePpm
-recipe-mryhqjxv-mf7l0,PFC - IRA,Irish Red Ale,Jamal,22,60,73.3,,,0.0455,9.4,5,90,1.5,10,4,4,12,10,30

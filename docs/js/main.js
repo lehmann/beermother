@@ -47,7 +47,6 @@ import {
   setGuideAdditionsDone as he,
   startFermentationFromSummary as At,
 } from "./screens.js";
-import { unseedCourseRecipes as Bt } from "./course-recipes.js";
 import {
   brewGuideSteps as ee,
   currentGuideStep as It,
@@ -62,8 +61,8 @@ import {
   openImportPicker as _t,
   openEditorNew as Gt,
   openSettingsSheet as Ft,
-} from "./editor.js?v=beta47-release1";
-import { analysisScreen as Ot } from "./analysis-screen.js?v=beta44-local1";
+} from "./editor.js";
+import { analysisScreen as Ot } from "./analysis-screen.js";
 import {
   timer as f,
   timerItemsForContext as Ge,
@@ -1255,7 +1254,7 @@ document.addEventListener("paste", (e) => {
         ));
 });
 async function yn() {
-  (ft(), Bt(), (t.workspaceSection = t.workspaceSection || "recipes"));
+  (ft(), (t.workspaceSection = t.workspaceSection || "recipes"));
   const e = ut();
   let n = "";
   try {
