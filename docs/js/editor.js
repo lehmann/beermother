@@ -394,6 +394,7 @@ async function loadDriveRecipes(forceRefresh) {
   try {
     // Step 2: one API call to list metadata; only downloads files whose md5 changed.
     // Filter out index entries whose row was never persisted — they must be re-downloaded.
+    const index = loadRecipeIndex();
     const effectiveIndex = index.filter((m) => loadRecipeRow(m.driveFileId) !== null);
     const { entries, changed } = await drvSyncRecipes(effectiveIndex, forceRefresh);
 
