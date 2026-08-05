@@ -62,6 +62,7 @@ import {
   restorePersistedToken as drvRestoreToken,
   syncRecipesFromDrive as drvSyncRecipes,
   hasDriveToken as drvHasToken,
+  hasDriveCredential as drvHasCredential,
   saveEquipmentToDrive as drvSaveEquipment,
   syncEquipmentsFromDrive as drvSyncEquipments,
   saveBatchToDrive as drvSaveBatch,
@@ -382,6 +383,7 @@ function hydrateRecipeRowsFromCache() {
 }
 
 async function loadDriveRecipes(forceRefresh) {
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
   // Step 1: hydrate driveRows from the index + per-recipe rows synchronously.
   // No XML parsing here — rows are already pre-computed.
   hydrateRecipeRowsFromCache();
@@ -465,7 +467,7 @@ function hydrateEquipmentsFromCache() {
 }
 
 async function loadDriveEquipments(forceRefresh) {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
   if (!forceRefresh && driveEquipmentsState !== "idle") return;
   driveEquipmentsState = "loading";
   if (forceRefresh) c.requestRender();
@@ -518,7 +520,7 @@ function hydrateBatchesFromCache() {
 }
 
 async function loadDriveBatches(forceRefresh) {
-  if (!drvEnabled() || !drvHasToken()) return;
+  if (!drvEnabled() || !(drvHasToken() || (forceRefresh && drvHasCredential()))) return;
   if (!forceRefresh && driveBatchesState !== "idle") return;
   driveBatchesState = "loading";
   if (forceRefresh) c.requestRender();

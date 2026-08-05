@@ -434,3 +434,18 @@ export async function saveBatchToDrive(xmlContent, brewId, interactive = false) 
 export function hasDriveToken() {
   return hasValidToken() || loadPersistedToken();
 }
+
+// Returns true when the user has previously granted Drive access — even if the
+// stored token is now expired.  Used as the guard for interactive operations so
+// that an expired token triggers renewal instead of being silently skipped.
+export function hasDriveCredential() {
+  if (hasValidToken()) return true;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const { access_token } = JSON.parse(raw);
+    return !!access_token;
+  } catch {
+    return false;
+  }
+}

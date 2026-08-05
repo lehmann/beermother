@@ -11,6 +11,7 @@ import { el, button, iconButton, icon, toast, decimalInput } from "./ui.js";
 import { t } from "./i18n.js";
 import {
   hasDriveToken,
+  hasDriveCredential,
   saveInventoryToDrive,
   syncInventoryFromDrive,
 } from "./gdrive.js";
@@ -182,7 +183,7 @@ function hydrateInventoryFromCache() {
 
 // Background sync: fetches Drive metadata, downloads only when md5 changed.
 async function loadDriveInventory(forceRefresh) {
-  if (!loadDriveEnabled() || !hasDriveToken()) return;
+  if (!loadDriveEnabled() || !(hasDriveToken() || (forceRefresh && hasDriveCredential()))) return;
   if (!forceRefresh && driveLoadState !== "idle") return;
   driveLoadState = "loading";
   app.requestRender();
