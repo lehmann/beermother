@@ -178,10 +178,11 @@ describe("equipmentProfileFromXml — Default_(no_sparge).xml (legacy, no BM_ID)
   });
 
   it("generates deterministic id from equipment name", () => {
-    assert.equal(profile.id, "profile-default-no-sparge");
+    // " Default (no sparge)" trimmed → "Default (no sparge)" → slugify → "default--no-sparge"
+    assert.equal(profile.id, "profile-default--no-sparge");
   });
 
-  it("id is stable across multiple parses (no Date.now() drift)", () => {
+  it("id is stable across multiple parses", () => {
     const profile2 = equipmentProfileFromXml(EQUIPMENT_FIXTURE);
     assert.equal(profile2.id, profile.id);
   });
