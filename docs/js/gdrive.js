@@ -85,7 +85,18 @@ function buildTokenClient(prompt) {
   });
 }
 
-function requestTokenInteractive() {
+// Tries a silent token renewal first (no UI). Falls back to the account-picker
+// popup only when the silent attempt fails (session expired, access revoked, etc.).
+function requestTokenSilent() {
+  return new Promise((resolve, reject) => {
+    _pendingResolve = resolve;
+    _pendingReject = reject;
+    const client = buildTokenClient("");
+    client.requestAccessToken({ prompt: "" });
+  });
+}
+
+async function requestTokenInteractive() {
   return new Promise((resolve, reject) => {
     _pendingResolve = resolve;
     _pendingReject = reject;
@@ -118,12 +129,25 @@ export async function requestDriveAccess() {
   await waitForGsi();
   if (hasValidToken()) return _token;
   if (loadPersistedToken()) return _token;
-  return await requestTokenInteractive();
+  // Try silent renewal first — works as long as the user has an active Google
+  // session in the browser. Only falls back to the account-picker popup when
+  // the silent attempt fails (session expired, access revoked, popup blocked).
+  try {
+    return await requestTokenSilent();
+  } catch {
+    return await requestTokenInteractive();
+  }
 }
 
-async function authHeaders() {
+// interactive=true: user-initiated action — re-authenticate if token is missing
+// or expired (may show OAuth consent screen).
+// interactive=false (default): background operation — fail fast if no valid token.
+async function authHeaders(interactive = false) {
   if (!hasValidToken()) loadPersistedToken();
-  if (!hasValidToken()) throw new Error(t("Token do Google Drive não disponível."));
+  if (!hasValidToken()) {
+    if (!interactive) throw new Error(t("Token do Google Drive não disponível."));
+    await requestDriveAccess();
+  }
   return { Authorization: `Bearer ${_token.access_token}` };
 }
 
@@ -133,8 +157,8 @@ async function apiFetch(url, options = {}) {
 
 // ── folder helpers ────────────────────────────────────────────────────────────
 
-async function findOrCreateFolderUnder(name, parentId) {
-  const h = await authHeaders();
+async function findOrCreateFolderUnder(name, parentId, interactive = false) {
+  const h = await authHeaders(interactive);
   const parentClause = parentId
     ? ` and '${parentId}' in parents`
     : " and 'root' in parents";
@@ -167,17 +191,17 @@ async function findOrCreateFolderUnder(name, parentId) {
   return folder.id;
 }
 
-async function resolveSubFolder(subFolder) {
+async function resolveSubFolder(subFolder, interactive = false) {
   const rootName = loadDriveFolderName();
-  const rootId = await findOrCreateFolderUnder(rootName, null);
-  return findOrCreateFolderUnder(subFolder, rootId);
+  const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
+  return findOrCreateFolderUnder(subFolder, rootId, interactive);
 }
 
 // ── file primitives ───────────────────────────────────────────────────────────
 
 // Single metadata-only listing — one API call, no content download.
-async function listFilesMetadataInFolder(folderId, extension) {
-  const h = await authHeaders();
+async function listFilesMetadataInFolder(folderId, extension, interactive = false) {
+  const h = await authHeaders(interactive);
   const extClause = extension ? ` and name contains '${extension}'` : "";
   const q = encodeURIComponent(
     `'${folderId}' in parents and trashed=false${extClause}`,
@@ -194,8 +218,8 @@ async function listFilesMetadataInFolder(folderId, extension) {
   return data.files || [];
 }
 
-async function downloadFileById(fileId) {
-  const h = await authHeaders();
+async function downloadFileById(fileId, interactive = false) {
+  const h = await authHeaders(interactive);
   const r = await apiFetch(`${API}/files/${fileId}?alt=media`, { headers: h });
   if (!r.ok) throw new Error(t("Erro ao baixar arquivo do Google Drive."));
   return r.text();
@@ -233,8 +257,8 @@ export function diffCacheWithMetadata(metaList, cache) {
   return { toDownload, unchanged, deleted };
 }
 
-async function syncFolderWithCache(folderId, extension, cache) {
-  const metaList = await listFilesMetadataInFolder(folderId, extension);
+async function syncFolderWithCache(folderId, extension, cache, interactive = false) {
+  const metaList = await listFilesMetadataInFolder(folderId, extension, interactive);
   const { toDownload, unchanged, deleted } = diffCacheWithMetadata(metaList, cache);
 
   let changed = deleted;
@@ -242,7 +266,7 @@ async function syncFolderWithCache(folderId, extension, cache) {
 
   for (const meta of toDownload) {
     try {
-      const content = await downloadFileById(meta.id);
+      const content = await downloadFileById(meta.id, interactive);
       entries.push({ driveFileId: meta.id, name: meta.name, md5Checksum: meta.md5Checksum, content, fresh: true });
       changed = true;
     } catch {}
@@ -253,8 +277,8 @@ async function syncFolderWithCache(folderId, extension, cache) {
 
 // ── generic upsert ────────────────────────────────────────────────────────────
 
-async function saveFileToFolder(content, fileName, folderId, mimeType = "application/xml") {
-  const h = await authHeaders();
+async function saveFileToFolder(content, fileName, folderId, mimeType = "application/xml", interactive = false) {
+  const h = await authHeaders(interactive);
 
   const q = encodeURIComponent(
     `name='${fileName.replace(/'/g, "\\'")}' and '${folderId}' in parents and trashed=false`,
@@ -300,8 +324,8 @@ async function saveFileToFolder(content, fileName, folderId, mimeType = "applica
   return uploadRes.json();
 }
 
-async function loadSingleFile(folderId, fileName) {
-  const h = await authHeaders();
+async function loadSingleFile(folderId, fileName, interactive = false) {
+  const h = await authHeaders(interactive);
   const q = encodeURIComponent(
     `name='${fileName.replace(/'/g, "\\'")}' and '${folderId}' in parents and trashed=false`,
   );
@@ -321,33 +345,33 @@ async function loadSingleFile(folderId, fileName) {
 
 // cache: [{driveFileId, name, md5Checksum, content}] from localStorage
 // Returns {entries, changed}
-export async function syncRecipesFromDrive(cache) {
-  const folderId = await resolveSubFolder(SUBFOLDER_RECIPES);
-  return syncFolderWithCache(folderId, ".xml", cache);
+export async function syncRecipesFromDrive(cache, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_RECIPES, interactive);
+  return syncFolderWithCache(folderId, ".xml", cache, interactive);
 }
 
 // Saves a recipe and returns {driveFileId, md5Checksum} for cache update
-export async function saveRecipeToDrive(xmlContent, fileName) {
-  const folderId = await resolveSubFolder(SUBFOLDER_RECIPES);
-  const result = await saveFileToFolder(xmlContent, fileName, folderId);
+export async function saveRecipeToDrive(xmlContent, fileName, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_RECIPES, interactive);
+  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml", interactive);
   return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 
 // ── public API — inventory ────────────────────────────────────────────────────
 
-export async function saveInventoryToDrive(xmlContent) {
+export async function saveInventoryToDrive(xmlContent, interactive = false) {
   const rootName = loadDriveFolderName();
-  const rootId = await findOrCreateFolderUnder(rootName, null);
-  return saveFileToFolder(xmlContent, "inventory.xml", rootId);
+  const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
+  return saveFileToFolder(xmlContent, "inventory.xml", rootId, "application/xml", interactive);
 }
 
 // Diff-aware sync: returns {content, md5Checksum, changed}.
 // cachedMd5 is the md5 stored locally from the last successful sync.
 // When the remote md5 matches cachedMd5, content is null and changed is false.
-export async function syncInventoryFromDrive(cachedMd5) {
-  const h = await authHeaders();
+export async function syncInventoryFromDrive(cachedMd5, interactive = false) {
   const rootName = loadDriveFolderName();
-  const rootId = await findOrCreateFolderUnder(rootName, null);
+  const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
+  const h = await authHeaders(interactive);
   const q = encodeURIComponent(
     `name='inventory.xml' and '${rootId}' in parents and trashed=false`,
   );
@@ -365,43 +389,43 @@ export async function syncInventoryFromDrive(cachedMd5) {
   if (md5Checksum && md5Checksum === cachedMd5) {
     return { content: null, md5Checksum, changed: false };
   }
-  const content = await downloadFileById(id);
+  const content = await downloadFileById(id, interactive);
   return { content, md5Checksum, changed: true };
 }
 
-export async function loadInventoryFromDrive() {
+export async function loadInventoryFromDrive(interactive = false) {
   const rootName = loadDriveFolderName();
-  const rootId = await findOrCreateFolderUnder(rootName, null);
-  return loadSingleFile(rootId, "inventory.xml");
+  const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
+  return loadSingleFile(rootId, "inventory.xml", interactive);
 }
 
 // ── public API — equipment ────────────────────────────────────────────────────
 
 // cache: [{driveFileId, name, md5Checksum, content}] from localStorage
-export async function syncEquipmentsFromDrive(cache) {
-  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
-  return syncFolderWithCache(folderId, ".xml", cache);
+export async function syncEquipmentsFromDrive(cache, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS, interactive);
+  return syncFolderWithCache(folderId, ".xml", cache, interactive);
 }
 
-export async function saveEquipmentToDrive(xmlContent, profileId) {
-  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS);
+export async function saveEquipmentToDrive(xmlContent, profileId, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_EQUIPMENTS, interactive);
   const fileName = `${profileId}.xml`;
-  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml");
+  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml", interactive);
   return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 
 // ── public API — batches ──────────────────────────────────────────────────────
 
 // cache: [{driveFileId, name, md5Checksum}] from localStorage
-export async function syncBatchesFromDrive(cache) {
-  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
-  return syncFolderWithCache(folderId, ".xml", cache);
+export async function syncBatchesFromDrive(cache, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES, interactive);
+  return syncFolderWithCache(folderId, ".xml", cache, interactive);
 }
 
-export async function saveBatchToDrive(xmlContent, brewId) {
-  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES);
+export async function saveBatchToDrive(xmlContent, brewId, interactive = false) {
+  const folderId = await resolveSubFolder(SUBFOLDER_BATCHES, interactive);
   const fileName = `${brewId}.xml`;
-  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml");
+  const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml", interactive);
   return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
 

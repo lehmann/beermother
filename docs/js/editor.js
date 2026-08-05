@@ -393,7 +393,7 @@ async function loadDriveRecipes(forceRefresh) {
     // Step 2: one API call to list metadata; only downloads files whose md5 changed.
     // Filter out index entries whose row was never persisted — they must be re-downloaded.
     const effectiveIndex = index.filter((m) => loadRecipeRow(m.driveFileId) !== null);
-    const { entries, changed } = await drvSyncRecipes(effectiveIndex);
+    const { entries, changed } = await drvSyncRecipes(effectiveIndex, forceRefresh);
 
     if (changed) {
       const newIndex = entries.map((e) => ({
@@ -474,7 +474,7 @@ async function loadDriveEquipments(forceRefresh) {
     // Only pass entries whose item exists locally — missing items are treated as
     // changed by the sync so they get downloaded even if their md5 matches the index.
     const effectiveIndex = index.filter((m) => loadEquipmentItem(m.driveFileId) !== null);
-    const { entries, changed } = await drvSyncEquipments(effectiveIndex);
+    const { entries, changed } = await drvSyncEquipments(effectiveIndex, forceRefresh);
     if (changed) {
       const newIndex = entries.map((e) => ({
         driveFileId: e.driveFileId,
@@ -527,7 +527,7 @@ async function loadDriveBatches(forceRefresh) {
     // Only pass entries whose item exists locally — missing items are treated as
     // changed by the sync so they get downloaded even if their md5 matches the index.
     const effectiveIndex = index.filter((m) => loadBatchItem(m.driveFileId) !== null);
-    const { entries, changed } = await drvSyncBatches(effectiveIndex);
+    const { entries, changed } = await drvSyncBatches(effectiveIndex, forceRefresh);
     if (changed) {
       const newIndex = entries.map((e) => ({
         driveFileId: e.driveFileId,
@@ -5767,7 +5767,7 @@ function vo(e) {
             try {
               const xmlContent = Pa(e);
               const fileName = Aa(e);
-              const cacheEntry = await drvUpload(xmlContent, fileName);
+              const cacheEntry = await drvUpload(xmlContent, fileName, true);
               // Update the index and persist the pre-computed row
               const index = loadRecipeIndex();
               const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);

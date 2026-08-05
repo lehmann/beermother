@@ -165,7 +165,7 @@ export function parseInventoryXml(xml) {
 export async function syncInventoryToDrive(inv) {
   if (!loadDriveEnabled() || !hasDriveToken()) return;
   try {
-    const result = await saveInventoryToDrive(inventoryToXml(inv));
+    const result = await saveInventoryToDrive(inventoryToXml(inv), true);
     if (result?.md5Checksum) saveCachedMd5(result.md5Checksum);
   } catch {}
 }
@@ -188,7 +188,7 @@ async function loadDriveInventory(forceRefresh) {
   app.requestRender();
   try {
     const cachedMd5 = forceRefresh ? null : loadCachedMd5();
-    const { content, md5Checksum, changed } = await syncInventoryFromDrive(cachedMd5);
+    const { content, md5Checksum, changed } = await syncInventoryFromDrive(cachedMd5, forceRefresh);
     if (changed && content) {
       const parsed = parseInventoryXml(content);
       if (parsed) {
