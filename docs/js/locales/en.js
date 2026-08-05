@@ -639,7 +639,7 @@ export default {
   "Receita exclu\xEDda.": "Recipe deleted.",
   "os \xFAltimos par\xE2metros usados": "the last parameters used",
   "o padr\xE3o Beermother": "the Beermother default",
-  "Ex.: Jamal": "E.g.: Jamal",
+  "Ex.: Lehmann": "E.g.: Lehmann",
   "Seu nome": "Your name",
   "Cards opcionais no dia: trate as \xE1guas, confira a mostura, registre a fervura. O app aprende quanto \xE1cido a SUA \xE1gua pede \u2014 sem f\xF3rmula.":
     "Optional cards on the day: treat the waters, check the mash, record the boil. The app learns how much acid YOUR water needs \u2014 no formula.",
@@ -866,8 +866,6 @@ export default {
   Nome: "Name",
   Rendimento: "Yield",
   "Salvar na biblioteca": "Save to library",
-  "Abrir receita do curso": "Open course recipe",
-  "Receitas do curso": "Course recipes",
   "Nenhuma brassagem em andamento": "No brew in progress",
   "Escolha uma receita na prateleira e comece \u2014 a leva fica aqui enquanto brassa e fermenta. Ao concluir, ela vai para o Caderno.":
     "Pick a recipe from the shelf and start \u2014 the batch stays here while it brews and ferments. When finished, it moves to the Notebook.",
@@ -1803,11 +1801,6 @@ export default {
   Fenólico: "Phenolic",
   Falhas: "Faults",
   "\xC1cida / selvagem": "Acidic / wild",
-  "Edi\xE7\xE3o comemorativa": "Anniversary edition",
-  "11 anos Beermother": "11 years of Beermother",
-  "Uma receita especial para celebrar essa hist\xF3ria.":
-    "A special recipe to celebrate this story.",
-  "Abrir receita especial": "Open special recipe",
   "Carregar do Drive": "Load from Drive",
   "Atualizar do Drive": "Refresh from Drive",
   "Carregando receitas do Drive…": "Loading recipes from Drive…",

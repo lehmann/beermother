@@ -156,7 +156,6 @@ import {
   formatMaltMass as Ra,
   localeTag as ka,
 } from "./i18n.js";
-import { COURSE_RECIPES as ea } from "./course-recipes-data.js";
 import {
   buildCalibrationDraft as Zt,
   calibrationSessionProperties as en,
@@ -1167,44 +1166,7 @@ function recipesScreen() {
     ),
     driveStatusRow(),
     e.length ? myRecipesCard(e) : emptyRecipesState(),
-    courseRecipesCard(),
   ];
-}
-function courseRecipesCard() {
-  if (!ea.length) return null;
-  const e = ea.map((o) => {
-    const n = d("", () => openCommunityRecipe(o), "recipe-row", {
-      title: t("Abrir receita do curso"),
-    });
-    return (
-      n.append(
-        R("hop", "icon brew-row-icon"),
-        a("div", "recipe-row-main", [
-          a("b", "recipe-row-name", o.name),
-          a("span", "recipe-row-meta", o.styleName),
-        ]),
-        R("chevron", "icon recipe-row-chevron"),
-      ),
-      a("div", "recipe-row-wrap", [n])
-    );
-  });
-  return a("section", "card home-card", [
-    a("header", "card-head", [
-      R("hop", "icon card-icon"),
-      a("h2", "card-title", t("Receitas do curso")),
-      a("span", "card-count", String(ea.length)),
-    ]),
-    a("div", "recipe-list", e),
-  ]);
-}
-function openCommunityRecipe(e) {
-  ((c.editorDraft = draftFromRecipe(parseBeerXml(e.xml))),
-    (fermentablePercentEdit = null),
-    ta(c.editorDraft),
-    ia(),
-    (c.view = "editor"),
-    c.requestRender(),
-    window.scrollTo({ top: 0, behavior: "instant" }));
 }
 function brewsScreen() {
   if (drvEnabled()) {
@@ -2289,7 +2251,7 @@ export function openSettingsSheet() {
           ga({ authorName: k.trim() });
         },
         {
-          placeholder: t("Ex.: Jamal"),
+          placeholder: t("Ex.: Lehmann"),
           "aria-label": t("Seu nome"),
           class: "settings-input",
         },

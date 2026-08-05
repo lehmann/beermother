@@ -657,7 +657,7 @@ export default {
   "Receita exclu\xEDda.": "Receta eliminada.",
   "os \xFAltimos par\xE2metros usados": "los \xFAltimos par\xE1metros usados",
   "o padr\xE3o Beermother": "el est\xE1ndar Beermother",
-  "Ex.: Jamal": "Ej.: Jamal",
+  "Ex.: Lehmann": "Ej.: Lehmann",
   "Seu nome": "Tu nombre",
   "Cards opcionais no dia: trate as \xE1guas, confira a mostura, registre a fervura. O app aprende quanto \xE1cido a SUA \xE1gua pede \u2014 sem f\xF3rmula.":
     "Tarjetas opcionales en el d\xEDa: trata las aguas, revisa la maceraci\xF3n, registra el hervido. La app aprende cu\xE1nto \xE1cido pide TU agua \u2014 sin f\xF3rmula.",
@@ -883,8 +883,6 @@ export default {
   Nome: "Nombre",
   Rendimento: "Rendimiento",
   "Salvar na biblioteca": "Guardar en la biblioteca",
-  "Abrir receita do curso": "Abrir receta del curso",
-  "Receitas do curso": "Recetas del curso",
   "Nenhuma brassagem em andamento": "Ninguna cocci\xF3n en curso",
   "Escolha uma receita na prateleira e comece \u2014 a leva fica aqui enquanto brassa e fermenta. Ao concluir, ela vai para o Caderno.":
     "Elige una receta del estante y empieza \u2014 el lote se queda aqu\xED mientras cuece y fermenta. Al terminar, pasa al Cuaderno.",
@@ -1830,11 +1828,6 @@ export default {
   Fenólico: "Fen\xF3lico",
   Falhas: "Defectos",
   "\xC1cida / selvagem": "\xC1cida / salvaje",
-  "Edi\xE7\xE3o comemorativa": "Edici\xF3n conmemorativa",
-  "11 anos Beermother": "11 a\xF1os de Beermother",
-  "Uma receita especial para celebrar essa hist\xF3ria.":
-    "Una receta especial para celebrar esta historia.",
-  "Abrir receita especial": "Abrir receta especial",
   "Carregar do Drive": "Cargar desde Drive",
   "Atualizar do Drive": "Actualizar desde Drive",
   "Carregando receitas do Drive…": "Cargando recetas desde Drive…",

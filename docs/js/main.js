@@ -47,7 +47,6 @@ import {
   setGuideAdditionsDone as he,
   startFermentationFromSummary as At,
 } from "./screens.js";
-import { unseedCourseRecipes as Bt } from "./course-recipes.js";
 import {
   brewGuideSteps as ee,
   currentGuideStep as It,
@@ -1255,7 +1254,7 @@ document.addEventListener("paste", (e) => {
         ));
 });
 async function yn() {
-  (ft(), Bt(), (t.workspaceSection = t.workspaceSection || "recipes"));
+  (ft(), (t.workspaceSection = t.workspaceSection || "recipes"));
   const e = ut();
   let n = "";
   try {
