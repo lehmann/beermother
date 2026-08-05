@@ -122,7 +122,8 @@ export async function requestDriveAccess() {
 }
 
 async function authHeaders() {
-  if (!hasValidToken()) await requestDriveAccess();
+  if (!hasValidToken()) loadPersistedToken();
+  if (!hasValidToken()) throw new Error(t("Token do Google Drive não disponível."));
   return { Authorization: `Bearer ${_token.access_token}` };
 }
 

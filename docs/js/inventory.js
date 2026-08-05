@@ -13,7 +13,6 @@ import {
   hasDriveToken,
   saveInventoryToDrive,
   syncInventoryFromDrive,
-  restorePersistedToken,
 } from "./gdrive.js";
 import { MALT_LIBRARY, HOP_LIBRARY, YEAST_LIBRARY } from "./library.js";
 
@@ -188,7 +187,6 @@ async function loadDriveInventory(forceRefresh) {
   driveLoadState = "loading";
   app.requestRender();
   try {
-    restorePersistedToken();
     const cachedMd5 = forceRefresh ? null : loadCachedMd5();
     const { content, md5Checksum, changed } = await syncInventoryFromDrive(cachedMd5);
     if (changed && content) {
