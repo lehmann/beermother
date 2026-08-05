@@ -91,12 +91,7 @@ import {
   editorRedo,
 } from "./sheets.js";
 import { animateMarker } from "./animations.js";
-import { loadRecipeIndex, saveRecipeIndex } from "./drive-cache.js";
-import {
-  drvOverwriteFile,
-  drvUpload,
-  parseAndCacheRecipeRow,
-} from "./drive-sync.js";
+import { drvUpload, drvOverwriteFile } from "./drive-sync.js";
 import {
   A,
   H,
@@ -2318,50 +2313,14 @@ function vo(e) {
                   )?.name || null)
                 : null;
               const xmlContent = Pa(e, wpName);
-              const fileName = Aa(e);
-              const index = loadRecipeIndex();
-              const existingEntry =
-                e.id && e.id.startsWith("drive:")
-                  ? index.find(
-                      (entry) =>
-                        entry.driveFileId === e.id.slice("drive:".length),
-                    )
-                  : index.find((entry) => entry.localId === e.id);
-              const existingDriveFileId =
-                e.driveFileId || existingEntry?.driveFileId || null;
-              let cacheEntry;
-              if (existingDriveFileId) {
-                const result = await drvOverwriteFile(
-                  existingDriveFileId,
-                  xmlContent,
-                  fileName,
-                  true,
-                );
-                cacheEntry = {
-                  driveFileId: result.driveFileId,
-                  name: result.name,
-                  md5Checksum: result.md5Checksum,
-                  content: xmlContent,
-                };
+              const fileName = `${e.name || "receita"}.xml`;
+              let result;
+              if (e.driveFileId) {
+                result = await drvOverwriteFile(e.driveFileId, xmlContent, fileName, true);
               } else {
-                cacheEntry = await drvUpload(xmlContent, fileName, true);
+                result = await drvUpload(xmlContent, fileName, true);
+                e.driveFileId = result.driveFileId;
               }
-              e.driveFileId = cacheEntry.driveFileId;
-              const newIndex = index.filter(
-                (entry) => entry.driveFileId !== cacheEntry.driveFileId,
-              );
-              newIndex.push({
-                driveFileId: cacheEntry.driveFileId,
-                name: cacheEntry.name,
-                md5Checksum: cacheEntry.md5Checksum,
-                localId: e.id,
-              });
-              saveRecipeIndex(newIndex);
-              parseAndCacheRecipeRow(
-                cacheEntry.driveFileId,
-                cacheEntry.name,
-                xmlContent,
-              );
               b(
                 t('"{name}" salvo no Google Drive.', {
                   name: e.name || t("Receita"),
