@@ -26,8 +26,8 @@ const CATEGORIES = [
   { id: "fermentables", label: "Fermentáveis", icon: "scale" },
   { id: "hops", label: "Lúpulos", icon: "hop" },
   { id: "yeasts", label: "Leveduras", icon: "ferment" },
-  { id: "others", label: "Outros", icon: "flask" },
   { id: "water", label: "Água", icon: "drop" },
+  { id: "others", label: "Outros", icon: "flask" },
 ];
 
 let activeCategory = "fermentables";
@@ -650,7 +650,7 @@ function itemAmountLabel(cat, item) {
   if (cat === "yeasts") {
     return `${Number(item.amount) || 0} ${item.unit || "pkg"}`;
   }
-  if (cat === "water") return "ppm";
+  if (cat === "water") return "";
   return `${Number(item.amount) || 0} ${item.unit || "g"}`;
 }
 
@@ -660,10 +660,14 @@ function itemSubLabel(cat, item) {
   if (cat === "hops") return `${item.alpha || 10}% AA`;
   if (cat === "yeasts") return `${item.attenuation || 75}% aten.`;
   if (cat === "water") {
-    const ca = item.calciumPpm ?? 0;
-    const cl = item.chloridePpm ?? 0;
-    const so4 = item.sulfatePpm ?? 0;
-    return `Ca ${ca} · Cl ${cl} · SO₄ ${so4}`;
+    return [
+      `Ca ${item.calciumPpm ?? 0}`,
+      `Mg ${item.magnesiumPpm ?? 0}`,
+      `Na ${item.sodiumPpm ?? 0}`,
+      `Cl ${item.chloridePpm ?? 0}`,
+      `SO₄ ${item.sulfatePpm ?? 0}`,
+      `HCO₃ ${item.bicarbonatePpm ?? 0}`,
+    ].join(" · ") + " ppm";
   }
   const parts = [];
   if (item.miscType) parts.push(t(item.miscType));
