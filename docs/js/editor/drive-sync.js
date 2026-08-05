@@ -111,6 +111,7 @@ export function parseAndCacheRecipeRow(driveFileId, fileName, xmlContent) {
   try {
     const recipe = parseBeerXml(xmlContent);
     const draft = draftFromRecipe(recipe);
+    draft.driveFileId = driveFileId;
     const targets = computeTargets(draft);
     const row = {
       id: `drive:${driveFileId}`,
