@@ -8,10 +8,21 @@ import { dirname, join } from "node:path";
 import "./dom-shim.js";
 
 import { parseBeerXml } from "../beerxml.js";
-import { brewEntryFromXml, brewEntryToXml, xmlTag, xmlText, xmlNum } from "../batch-xml.js";
+import {
+  brewEntryFromXml,
+  brewEntryToXml,
+  equipmentProfileFromXml,
+  xmlTag,
+  xmlText,
+  xmlNum,
+} from "../batch-xml.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE = readFileSync(join(__dirname, "fixtures", "001_First_try.xml"), "utf8");
+const EQUIPMENT_FIXTURE = readFileSync(
+  join(__dirname, "fixtures", "Default_(no_sparge).xml"),
+  "utf8",
+);
 
 // Minimal stub for recipeToXml — used only in round-trip test
 function stubRecipeToXml(recipe) {
@@ -151,5 +162,67 @@ describe("brewEntryFromXml — malformed input", () => {
   it("returns null when no RECIPE element present", () => {
     const xml = '<?xml version="1.0"?><EQUIPMENTS><EQUIPMENT><NAME>Test</NAME></EQUIPMENT></EQUIPMENTS>';
     assert.equal(brewEntryFromXml(xml, parseBeerXml), null);
+  });
+});
+
+describe("equipmentProfileFromXml — Default_(no_sparge).xml (legacy, no BM_ID)", () => {
+  let profile;
+
+  before(() => {
+    profile = equipmentProfileFromXml(EQUIPMENT_FIXTURE);
+    assert.ok(profile, "equipmentProfileFromXml returned null — check DOMParser shim or fixture");
+  });
+
+  it("parses name (trimmed)", () => {
+    assert.equal(profile.name, "Default (no sparge)");
+  });
+
+  it("generates deterministic id from equipment name", () => {
+    assert.equal(profile.id, "profile-default-no-sparge");
+  });
+
+  it("id is stable across multiple parses (no Date.now() drift)", () => {
+    const profile2 = equipmentProfileFromXml(EQUIPMENT_FIXTURE);
+    assert.equal(profile2.id, profile.id);
+  });
+
+  it("parses targetVolumeL from BATCH_SIZE", () => {
+    assert.equal(profile.params.targetVolumeL, 5.0);
+  });
+
+  it("parses mashEfficiencyPct from EFFICIENCY", () => {
+    assert.equal(profile.params.mashEfficiencyPct, 75.5);
+  });
+
+  it("parses evaporationPct from EVAP_RATE", () => {
+    assert.equal(profile.params.evaporationPct, 12.66);
+  });
+
+  it("parses grainAbsorptionLkg from GRAIN_ABSORPTION_RATE", () => {
+    assert.equal(profile.params.grainAbsorptionLkg, 0.96);
+  });
+
+  it("parses mashTunDeadSpaceL from MASH_TUN_DEADSPACE", () => {
+    assert.equal(profile.params.mashTunDeadSpaceL, 3.5);
+  });
+
+  it("parses whirlpoolNoChillMin from WHIRLPOOL_TIME", () => {
+    assert.equal(profile.params.whirlpoolNoChillMin, 30);
+  });
+
+  it("computes trubLossPct from TRUB_CHILLER_LOSS / BATCH_SIZE", () => {
+    // 0.3 / 5.0 = 0.06
+    assert.equal(profile.params.trubLossPct, 0.06);
+  });
+});
+
+describe("equipmentProfileFromXml — malformed input", () => {
+  it("returns null for empty string", () => {
+    assert.equal(equipmentProfileFromXml(""), null);
+  });
+
+  it("returns null when no EQUIPMENT element present", () => {
+    const xml = '<?xml version="1.0"?><RECIPES><RECIPE><NAME>Test</NAME></RECIPE></RECIPES>';
+    assert.equal(equipmentProfileFromXml(xml), null);
   });
 });

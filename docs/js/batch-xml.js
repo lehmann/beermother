@@ -1,7 +1,7 @@
 // Serialization and parsing of brew entries and equipment profiles to/from XML.
 // DOMParser is taken from globalThis so it can be shimmed in test environments.
 
-import { toNumber as m, round as T } from "./engine.js";
+import { toNumber as m, round as T, slugify } from "./engine.js";
 
 // ── shared helpers ────────────────────────────────────────────────────────────
 
@@ -55,7 +55,7 @@ export function equipmentProfileFromXml(xmlContent) {
   const targetVolumeL = xmlNum(eq, "BATCH_SIZE", 20);
   const trubLossL = xmlNum(eq, "TRUB_CHILLER_LOSS", targetVolumeL * 0.15);
   return {
-    id: xmlText(eq, "BM_ID") || `profile-${Date.now().toString(36)}`,
+    id: xmlText(eq, "BM_ID") || `profile-${slugify(xmlText(eq, "NAME") || "equipment")}`,
     name: xmlText(eq, "NAME") || "Equipamento",
     updatedAt: xmlText(eq, "BM_UPDATED_AT") || new Date().toISOString(),
     params: {
