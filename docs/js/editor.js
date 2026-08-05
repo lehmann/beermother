@@ -274,11 +274,7 @@ function moveRecipeToBin(recipeId) {
   if (recipeId.startsWith("drive:")) {
     driveFileId = recipeId.slice("drive:".length);
   } else {
-    const entry = index.find((m) => {
-      const row = loadRecipeRow(m.driveFileId);
-      return row && row.id === recipeId;
-    });
-    if (entry) driveFileId = entry.driveFileId;
+    driveFileId = index.find((m) => m.localId === recipeId)?.driveFileId || null;
   }
   if (!driveFileId) return;
   saveRecipeIndex(index.filter((m) => m.driveFileId !== driveFileId));
@@ -5845,9 +5841,12 @@ function vo(e) {
               const fileName = Aa(e);
               // Use overwrite-by-id when a Drive file already exists for this recipe
               // to avoid creating a duplicate when the recipe name changes.
-              // e.driveFileId is set on first save and kept in memory for the session.
-              const existingDriveFileId = e.driveFileId ||
-                (e.id && e.id.startsWith("drive:") ? e.id.slice("drive:".length) : null);
+              // The index entry stores localId so we can find the driveFileId after reload.
+              const index = loadRecipeIndex();
+              const existingEntry = e.id && e.id.startsWith("drive:")
+                ? index.find((m) => m.driveFileId === e.id.slice("drive:".length))
+                : index.find((m) => m.localId === e.id);
+              const existingDriveFileId = e.driveFileId || existingEntry?.driveFileId || null;
               let cacheEntry;
               if (existingDriveFileId) {
                 const result = await drvOverwriteFile(existingDriveFileId, xmlContent, fileName, true);
@@ -5855,12 +5854,10 @@ function vo(e) {
               } else {
                 cacheEntry = await drvUpload(xmlContent, fileName, true);
               }
-              // Remember the Drive file id on the draft so subsequent saves overwrite in-place
               e.driveFileId = cacheEntry.driveFileId;
-              // Update the index and persist the pre-computed row
-              const index = loadRecipeIndex();
+              // Update the index: store localId so re-saves after reload find this entry
               const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
-              newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
+              newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum, localId: e.id });
               saveRecipeIndex(newIndex);
               parseAndCacheRecipeRow(cacheEntry.driveFileId, cacheEntry.name, xmlContent);
               b(t('"{name}" salvo no Google Drive.', { name: e.name || t("Receita") }));
