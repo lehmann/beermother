@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Beermother — Guia do projeto para Claude
 
 ## O que é este projeto
@@ -149,6 +153,27 @@ Converte payload de brassagem Path 2 (BeerXML externo, sem `schema`/`version`) p
 
 ---
 
+## Inventário (`inventory.js`)
+
+- Quatro categorias: `fermentables`, `hops`, `yeasts`, `others`.
+- Persistido como um único objeto em `beermother.fable.inventory.v1` (via `loadInventory`/`saveInventory` em `state.js`).
+- Drive sync: arquivo único `inventory.xml` na pasta raiz do Drive (não usa o padrão de pasta/por-arquivo dos outros). MD5 cacheado em `beermother.drive.inventory.md5`. Após qualquer mutação, `syncInventoryToDrive` é chamado via `afterMutation`.
+- Shapes dos itens: `{ id, name, type, amountKg, yieldPct, ebc }` (fermentáveis), `{ id, name, alpha, amount, form, unit }` (lúpulos), `{ id, name, attenuation, amount, unit }` (leveduras), `{ id, name, amount, unit, use, miscType, qtyPerL }` (outros).
+- IDs gerados como `inv-${Date.now()}-${Math.floor(Math.random() * 1e6)}`.
+
+## Perfil de água — modelo de dados
+
+O perfil de água é um objeto de 6 campos de íons (definido em `engine.js`):
+```js
+{ calciumPpm, magnesiumPpm, sodiumPpm, chloridePpm, sulfatePpm, bicarbonatePpm }
+```
+- `DEFAULT_BASE_WATER_PROFILE` (engine.js): valores padrão moderados (Ca=10, Mg=4, etc.).
+- **No draft de receita**: `draft.baseWaterProfile` + `draft.salts` (array de `{ formula, amountG }`).
+- **No perfil de equipamento**: `profile.params.baseWaterProfile` — presente **apenas quando difere do padrão** (ver `customizedBaseWater` em `recipes.js`).
+- **Na sessão de brassagem**: `session.properties.baseWaterProfile` — seeded a partir do draft ao iniciar.
+- `computeTargets(draft)` (recipes.js) combina `baseWaterProfile` + `salts` → `ions` (ajustado) + `mashPh`.
+- A seção "Água e sais" no editor (`bo()` em `editor.js`) edita `draft.salts` e exibe os íons calculados; o perfil base era editado no sheet de equipamento e **não** no editor de receita.
+
 ## Scripts Python (ferramentas offline)
 
 Não fazem parte do servidor web. São utilitários de desenvolvimento:
@@ -170,8 +195,26 @@ Não fazem parte do servidor web. São utilitários de desenvolvimento:
 
 ## Testes (`docs/js/tests/`)
 
-- Runner: `node:test` nativo (Node 18+). Executar de `docs/js/`: `node --test tests/<arquivo>.test.js`.
+Todos os comandos abaixo devem ser executados a partir de `docs/js/`.
+
+```bash
+# Rodar todos os testes
+node --test tests/*.test.js
+
+# Rodar um arquivo específico
+node --test tests/batch-xml.test.js
+node --test tests/slugify.test.js
+
+# gdrive.test.js importa gdrive.js que depende de state.js (usa `location`).
+# Requer o loader de stubs para rodar em Node:
+node --import ./tests/loader.js --test tests/gdrive.test.js
+
+# Validar sintaxe de um módulo JS (rodar após qualquer edição)
+node --input-type=module --check < editor.js
+```
+
 - **`dom-shim.js`**: parser XML recursivo puro para Node — instala `globalThis.DOMParser`. Importar antes de qualquer módulo que use DOM.
+- **`loader.js`**: loader ESM que substitui `state.js` e `i18n.js` por stubs quando um módulo depende de browser APIs (`location`, `localStorage`). Usar com `--import ./tests/loader.js`.
 - **`batch-xml.test.js`**: 29 testes — helpers XML, brassagem externa (Brewfather), round-trip nativo, malformed, equipamento legacy (`Default_(no_sparge).xml`).
 - **`gdrive.test.js`**: 9 testes para `diffCacheWithMetadata`.
 - **`slugify.test.js`**: 13 testes para `slugify` em `engine.js`.
