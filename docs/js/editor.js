@@ -379,10 +379,7 @@ function hydrateRecipeRowsFromCache() {
   const index = loadRecipeIndex();
   if (!index.length) return;
   const rows = index.map((meta) => loadRecipeRow(meta.driveFileId)).filter(Boolean);
-  if (rows.length) {
-    driveRows = rows;
-    c.requestRender();
-  }
+  if (rows.length) driveRows = rows;
 }
 
 async function loadDriveRecipes(forceRefresh) {
@@ -481,7 +478,6 @@ function hydrateEquipmentsFromCache() {
     // Force re-download by clearing md5 checksums — sync will treat all as changed.
     saveEquipmentIndex(index.map((m) => ({ ...m, md5Checksum: "" })));
   }
-  c.requestRender();
 }
 
 async function loadDriveEquipments(forceRefresh) {
@@ -552,7 +548,6 @@ function hydrateBatchesFromCache() {
     const brewEntry = loadBatchItem(meta.driveFileId);
     if (brewEntry?.id && brewEntry?.payload) mergeBatchFromDrive(brewEntry);
   }
-  c.requestRender();
 }
 
 async function loadDriveBatches(forceRefresh) {
