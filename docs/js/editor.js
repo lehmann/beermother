@@ -5845,17 +5845,9 @@ function vo(e) {
               const fileName = Aa(e);
               // Use overwrite-by-id when a Drive file already exists for this recipe
               // to avoid creating a duplicate when the recipe name changes.
-              const index = loadRecipeIndex();
-              let existingDriveFileId = null;
-              if (e.id && e.id.startsWith("drive:")) {
-                existingDriveFileId = e.id.slice("drive:".length);
-              } else if (e.id) {
-                const entry = index.find((m) => {
-                  const row = loadRecipeRow(m.driveFileId);
-                  return row && row.id === e.id;
-                });
-                if (entry) existingDriveFileId = entry.driveFileId;
-              }
+              // e.driveFileId is set on first save and kept in memory for the session.
+              const existingDriveFileId = e.driveFileId ||
+                (e.id && e.id.startsWith("drive:") ? e.id.slice("drive:".length) : null);
               let cacheEntry;
               if (existingDriveFileId) {
                 const result = await drvOverwriteFile(existingDriveFileId, xmlContent, fileName, true);
@@ -5863,7 +5855,10 @@ function vo(e) {
               } else {
                 cacheEntry = await drvUpload(xmlContent, fileName, true);
               }
+              // Remember the Drive file id on the draft so subsequent saves overwrite in-place
+              e.driveFileId = cacheEntry.driveFileId;
               // Update the index and persist the pre-computed row
+              const index = loadRecipeIndex();
               const newIndex = index.filter((m) => m.driveFileId !== cacheEntry.driveFileId);
               newIndex.push({ driveFileId: cacheEntry.driveFileId, name: cacheEntry.name, md5Checksum: cacheEntry.md5Checksum });
               saveRecipeIndex(newIndex);
