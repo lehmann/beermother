@@ -17,7 +17,7 @@ jobs:
           node-version: 22
 
       - name: Run Node tests
-        run: node --experimental-loader docs/js/tests/loader.js --test docs/js/tests/*.js
+        run: node --experimental-loader ./docs/js/tests/loader.js --test docs/js/tests/*.test.js
 
       - name: Run local-engine tests
         run: node --test docs/js/analysis/local-engine.test.mjs
