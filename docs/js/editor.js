@@ -460,9 +460,23 @@ function hydrateEquipmentsFromCache() {
   driveEquipmentsHydrated = true;
   const index = loadEquipmentIndex();
   if (!index.length) return;
+  // Detect legacy items: IDs generated from slug collide when names differ only by _ vs space.
+  // The new format is `profile-<driveFileId[-8:]>` — deterministically derived from driveFileId.
+  // If a cached item's id doesn't match the expected new format, it may be a legacy slug-based id;
+  // clear all md5s so the next sync re-downloads and applies the corrected id.
+  let hasLegacy = false;
   for (const meta of index) {
     const profile = loadEquipmentItem(meta.driveFileId);
-    if (profile?.id && !X().find((p) => p.id === profile.id)) ne(profile);
+    const expectedNewId = `profile-${meta.driveFileId.slice(-8)}`;
+    if (profile?.id && profile.id !== expectedNewId) {
+      hasLegacy = true;
+    } else if (profile?.id && !X().find((p) => p.id === profile.id)) {
+      ne(profile);
+    }
+  }
+  if (hasLegacy) {
+    // Force re-download by clearing md5 checksums — sync will treat all as changed.
+    saveEquipmentIndex(index.map((m) => ({ ...m, md5Checksum: "" })));
   }
   c.requestRender();
 }
@@ -490,6 +504,9 @@ async function loadDriveEquipments(forceRefresh) {
           if (profile?.id) {
             const isLegacy = !entry.content.includes("<BM_ID>");
             if (isLegacy) {
+              // Slug-based IDs are not unique when names differ only by _ vs space.
+              // Use the driveFileId suffix to guarantee uniqueness across legacy files.
+              profile.id = `profile-${entry.driveFileId.slice(-8)}`;
               const xml = equipmentProfileToXml(profile);
               drvOverwriteFile(entry.driveFileId, xml, entry.name, true)
                 .then((cacheEntry) => {
