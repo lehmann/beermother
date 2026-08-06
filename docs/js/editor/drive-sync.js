@@ -133,12 +133,22 @@ export function parseAndCacheRecipeRow(driveFileId, fileName, xmlContent) {
   }
 }
 
+function ensureRowDriveFileId(row) {
+  if (row?.draft && !row.draft.driveFileId) {
+    row.draft.driveFileId = row.driveFileId;
+    saveRecipeRow(row.driveFileId, row);
+  }
+  return row;
+}
+
 export function hydrateRecipeRowsFromCache() {
   if (driveRowsHydrated) return;
   driveRowsHydrated = true;
   const index = loadRecipeIndex();
   if (!index.length) return;
-  const rows = index.map((meta) => loadRecipeRow(meta.driveFileId)).filter(Boolean);
+  const rows = index
+    .map((meta) => ensureRowDriveFileId(loadRecipeRow(meta.driveFileId)))
+    .filter(Boolean);
   if (rows.length) driveRows = rows;
 }
 
@@ -163,7 +173,7 @@ export async function loadDriveRecipes(forceRefresh) {
           const row = parseAndCacheRecipeRow(entry.driveFileId, entry.name, entry.content);
           if (row) newRows.push(row);
         } else {
-          const row = loadRecipeRow(entry.driveFileId);
+          const row = ensureRowDriveFileId(loadRecipeRow(entry.driveFileId));
           if (row) newRows.push(row);
         }
       }
