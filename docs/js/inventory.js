@@ -5,6 +5,9 @@ import {
   addInventoryItem,
   updateInventoryItem,
   removeInventoryItem,
+  addWaterProfile,
+  updateWaterProfile,
+  removeWaterProfile,
   loadDriveEnabled,
 } from "./state.js";
 import { el, button, iconButton, icon, toast, decimalInput } from "./ui.js";
@@ -23,6 +26,7 @@ const CATEGORIES = [
   { id: "fermentables", label: "Fermentáveis", icon: "scale" },
   { id: "hops", label: "Lúpulos", icon: "hop" },
   { id: "yeasts", label: "Leveduras", icon: "ferment" },
+  { id: "water", label: "Água", icon: "drop" },
   { id: "others", label: "Outros", icon: "flask" },
 ];
 
@@ -82,6 +86,13 @@ export function inventoryToXml(inv) {
     )
     .join("\n");
 
+  const waterProfiles = (inv.waterProfiles || [])
+    .map(
+      (it) =>
+        `<WATER>${tag("ID", it.id)}${tag("NAME", it.name)}${tag("CALCIUM", it.calciumPpm ?? 0)}${tag("MAGNESIUM", it.magnesiumPpm ?? 0)}${tag("SODIUM", it.sodiumPpm ?? 0)}${tag("CHLORIDE", it.chloridePpm ?? 0)}${tag("SULFATE", it.sulfatePpm ?? 0)}${tag("BICARBONATE", it.bicarbonatePpm ?? 0)}</WATER>`,
+    )
+    .join("\n");
+
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     "<BEERMOTHER_INVENTORY>",
@@ -89,6 +100,7 @@ export function inventoryToXml(inv) {
     `<HOPS>\n${hops}\n</HOPS>`,
     `<YEASTS>\n${yeasts}\n</YEASTS>`,
     `<MISCS>\n${others}\n</MISCS>`,
+    `<WATER_PROFILES>\n${waterProfiles}\n</WATER_PROFILES>`,
     "</BEERMOTHER_INVENTORY>",
   ].join("\n");
 }
@@ -155,7 +167,20 @@ export function parseInventoryXml(xml) {
       };
     });
 
-    return { fermentables, hops, yeasts, others };
+    const waterProfiles = Array.from(
+      doc.getElementsByTagName("WATER"),
+    ).map((n) => ({
+      id: getText(n, "ID") || `water-${Date.now()}-${Math.random()}`,
+      name: getText(n, "NAME"),
+      calciumPpm: getNum(n, "CALCIUM"),
+      magnesiumPpm: getNum(n, "MAGNESIUM"),
+      sodiumPpm: getNum(n, "SODIUM"),
+      chloridePpm: getNum(n, "CHLORIDE"),
+      sulfatePpm: getNum(n, "SULFATE"),
+      bicarbonatePpm: getNum(n, "BICARBONATE"),
+    }));
+
+    return { fermentables, hops, yeasts, others, waterProfiles };
   } catch {
     return null;
   }
@@ -254,6 +279,8 @@ function defaultForCategory(cat) {
     return { name: "", amountKg: 0, yieldPct: 78, ebc: 5, type: "Grão" };
   if (cat === "hops") return { name: "", amount: 0, unit: "g", alpha: 10, form: "Pellet" };
   if (cat === "yeasts") return { name: "", amount: 0, unit: "pkg", attenuation: 75 };
+  if (cat === "water")
+    return { name: "", calciumPpm: 0, magnesiumPpm: 0, sodiumPpm: 0, chloridePpm: 0, sulfatePpm: 0, bicarbonatePpm: 0 };
   return { name: "", amount: 0, unit: "g", use: "", miscType: "", qtyPerL: 0 };
 }
 
@@ -426,7 +453,7 @@ function buildFields(cat, item) {
       fieldRow(t("Unidade"), yeastUnitSelect),
       fieldRow(t("Atenuação (%)"), numRefs.attenEl),
     );
-  } else {
+  } else if (cat === "others") {
     const miscUnitSelect = document.createElement("select");
     miscUnitSelect.className = "field-input";
     ["g", "kg", "ml", "L", "un"].forEach((unit) => {
@@ -490,6 +517,23 @@ function buildFields(cat, item) {
       ),
       fieldRow(t("Uso"), miscUseSelect),
     );
+  } else if (cat === "water") {
+    const waterIons = [
+      { key: "calciumPpm", label: "Cálcio (Ca²⁺)" },
+      { key: "magnesiumPpm", label: "Magnésio (Mg²⁺)" },
+      { key: "sodiumPpm", label: "Sódio (Na⁺)" },
+      { key: "chloridePpm", label: "Cloreto (Cl⁻)" },
+      { key: "sulfatePpm", label: "Sulfato (SO₄²⁻)" },
+      { key: "bicarbonatePpm", label: "Bicarbonato (HCO₃⁻)" },
+    ];
+    waterIons.forEach(({ key, label }) => {
+      rows.push(
+        fieldRow(
+          `${label} ppm`,
+          numInput(item[key], (value) => { item[key] = Math.max(0, Math.min(1000, Number(value) || 0)); }, { step: "1", min: "0", max: "1000" }),
+        ),
+      );
+    });
   }
 
   return rows;
@@ -511,7 +555,11 @@ function openAddSheet(cat) {
         toast(t("Informe um nome."), "warn");
         return;
       }
-      addInventoryItem(cat, item);
+      if (cat === "water") {
+        addWaterProfile(item);
+      } else {
+        addInventoryItem(cat, item);
+      }
       afterMutation();
       closeSheet();
       app.requestRender();
@@ -532,7 +580,8 @@ function openAddSheet(cat) {
 
 function openEditSheet(cat, itemId) {
   const inv = loadInventory();
-  const original = (inv[cat] || []).find((it) => it.id === itemId);
+  const list = cat === "water" ? inv.waterProfiles : inv[cat];
+  const original = (list || []).find((it) => it.id === itemId);
   if (!original) return;
 
   const item = { ...original };
@@ -545,7 +594,11 @@ function openEditSheet(cat, itemId) {
         toast(t("Informe um nome."), "warn");
         return;
       }
-      updateInventoryItem(cat, itemId, item);
+      if (cat === "water") {
+        updateWaterProfile(itemId, item);
+      } else {
+        updateInventoryItem(cat, itemId, item);
+      }
       afterMutation();
       closeSheet();
       app.requestRender();
@@ -557,7 +610,11 @@ function openEditSheet(cat, itemId) {
   const del = button(
     t("Remover"),
     () => {
-      removeInventoryItem(cat, itemId);
+      if (cat === "water") {
+        removeWaterProfile(itemId);
+      } else {
+        removeInventoryItem(cat, itemId);
+      }
       afterMutation();
       closeSheet();
       app.requestRender();
@@ -593,6 +650,7 @@ function itemAmountLabel(cat, item) {
   if (cat === "yeasts") {
     return `${Number(item.amount) || 0} ${item.unit || "pkg"}`;
   }
+  if (cat === "water") return "";
   return `${Number(item.amount) || 0} ${item.unit || "g"}`;
 }
 
@@ -601,6 +659,16 @@ function itemSubLabel(cat, item) {
     return `${item.yieldPct || 78}% rend. · ${item.ebc || 0} EBC`;
   if (cat === "hops") return `${item.alpha || 10}% AA`;
   if (cat === "yeasts") return `${item.attenuation || 75}% aten.`;
+  if (cat === "water") {
+    return [
+      `Ca ${item.calciumPpm ?? 0}`,
+      `Mg ${item.magnesiumPpm ?? 0}`,
+      `Na ${item.sodiumPpm ?? 0}`,
+      `Cl ${item.chloridePpm ?? 0}`,
+      `SO₄ ${item.sulfatePpm ?? 0}`,
+      `HCO₃ ${item.bicarbonatePpm ?? 0}`,
+    ].join(" · ") + " ppm";
+  }
   const parts = [];
   if (item.miscType) parts.push(t(item.miscType));
   if (item.qtyPerL) parts.push(`${item.qtyPerL} g/L`);
@@ -644,7 +712,7 @@ export function inventoryScreen() {
 
   const inv = loadInventory();
   const cat = activeCategory;
-  const items = inv[cat] || [];
+  const items = cat === "water" ? (inv.waterProfiles || []) : (inv[cat] || []);
 
   const tabs = el(
     "div",
@@ -741,4 +809,8 @@ export function inventoryMiscItems() {
     ...it,
     fromInventory: true,
   }));
+}
+
+export function inventoryWaterProfiles() {
+  return (loadInventory().waterProfiles || []);
 }

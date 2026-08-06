@@ -193,6 +193,7 @@ export function parseBeerXml(e) {
     salts: K,
     miscs: X,
     baseWaterProfile: baseWaterProfileFromNode(H),
+    waterProfileId: H ? (textOf(H, "BM_WATER_PROFILE_ID", "") || null) : null,
     saltReferenceWaterL: et,
     fermentationProfileName: textOf(r, "BF_FERMENTATION_PROFILE_NAME", ""),
     fermentation: Z,

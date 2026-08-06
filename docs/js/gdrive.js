@@ -13,6 +13,9 @@ const STORAGE_KEY = "beermother.drive.token.v1";
 const SUBFOLDER_RECIPES = "recipes";
 const SUBFOLDER_EQUIPMENTS = "equipments";
 const SUBFOLDER_BATCHES = "batches";
+const SUBFOLDER_BIN = "bin";
+const SUBFOLDER_BIN_RECIPES = "recipes";
+const SUBFOLDER_BIN_EQUIPMENTS = "equipments";
 
 let _tokenClient = null;
 let _token = null;
@@ -457,6 +460,42 @@ export async function saveBatchToDrive(xmlContent, brewId, interactive = false) 
   const result = await saveFileToFolder(xmlContent, fileName, folderId, "application/xml", interactive);
   return { driveFileId: result.id, md5Checksum: result.md5Checksum, name: fileName, content: xmlContent };
 }
+
+// ── public API — bin (trash) ──────────────────────────────────────────────────
+
+async function resolveBinSubFolder(subFolder, interactive = false) {
+  const rootName = loadDriveFolderName();
+  const rootId = await findOrCreateFolderUnder(rootName, null, interactive);
+  const binId = await findOrCreateFolderUnder(SUBFOLDER_BIN, rootId, interactive);
+  return findOrCreateFolderUnder(subFolder, binId, interactive);
+}
+
+// Moves a Drive file to Beer Mother/bin/<subfolder> by updating its parents.
+// subfolder should be SUBFOLDER_BIN_RECIPES or SUBFOLDER_BIN_EQUIPMENTS.
+// Fire-and-forget: callers should not await — local deletion is already done.
+export async function moveFileToBin(driveFileId, subfolder, interactive = false) {
+  const h = await authHeaders(interactive);
+  // Fetch the file's current parents
+  const metaRes = await apiFetch(`${API}/files/${driveFileId}?fields=parents`, { headers: h });
+  if (!metaRes.ok) {
+    if (metaRes.status === 403) revokeLocalToken();
+    throw new Error(t("Erro ao mover arquivo para a lixeira."));
+  }
+  const { parents } = await metaRes.json();
+  const binFolderId = await resolveBinSubFolder(subfolder, interactive);
+  const removeParents = (parents || []).join(",");
+  const moveRes = await apiFetch(
+    `${API}/files/${driveFileId}?addParents=${binFolderId}&removeParents=${removeParents}&fields=id`,
+    { method: "PATCH", headers: { ...h, "Content-Type": "application/json" }, body: "{}" },
+  );
+  if (!moveRes.ok) {
+    if (moveRes.status === 403) revokeLocalToken();
+    throw new Error(t("Erro ao mover arquivo para a lixeira."));
+  }
+}
+
+export const BIN_SUBFOLDER_RECIPES = SUBFOLDER_BIN_RECIPES;
+export const BIN_SUBFOLDER_EQUIPMENTS = SUBFOLDER_BIN_EQUIPMENTS;
 
 // ── misc ──────────────────────────────────────────────────────────────────────
 

@@ -92,6 +92,7 @@ export function newDraft() {
       { name: "Mash out", temperatureC: 76, timeMin: 10 },
     ],
     fermentation: Lt[0].steps.map((t) => ({ ...t })),
+    waterProfileId: null,
     baseWaterProfile: { ...I },
     salts: [
       { formula: "CaCl2", amountG: 0 },
@@ -178,6 +179,7 @@ export function draftFromRecipe(t, a = {}) {
       days: e(o.days, 7),
       ...sanitizeFermentationPressure(o),
     })),
+    waterProfileId: r.waterProfileId || null,
     baseWaterProfile: $(r.baseWaterProfile, I),
     salts: ["CaCl2", "CaSO4", "MgSO4", "NaCl"].map((o) => ({
       formula: o,
@@ -603,8 +605,7 @@ export function customizedBaseWater(t) {
   return B.every((o) => e(a[o.key]) === e(I[o.key])) ? null : a;
 }
 export function saveProductionProfileEntry(t) {
-  const a = customizedBaseWater(t.params?.baseWaterProfile),
-    r = {
+  const r = {
       id:
         t.id ||
         `profile-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
@@ -654,7 +655,6 @@ export function saveProductionProfileEntry(t) {
           10,
           Math.max(0, e(t.params?.heatingRateCMin, v)),
         ),
-        ...(a ? { baseWaterProfile: a } : {}),
       },
     },
     o = listProductionProfiles().filter((m) => m.id !== r.id);
@@ -868,6 +868,7 @@ export function recipeFromDraft(t) {
         amount: e(n.amount),
         unit: n.unit || "g",
       })),
+    waterProfileId: t.waterProfileId || null,
     baseWaterProfile: $(t.baseWaterProfile, I),
     saltReferenceWaterL: a.totalWaterL,
     fermentationProfileName: "",
@@ -984,7 +985,7 @@ function yt(t) {
 function c(t, a) {
   return `<${t}>${yt(a)}</${t}>`;
 }
-export function recipeToBeerXml(t) {
+export function recipeToBeerXml(t, waterProfileName) {
   const a = recipeFromDraft(t),
     r = {
       Fervura: "Boil",
@@ -1063,7 +1064,7 @@ export function recipeToBeerXml(t) {
           `<MISC>${c("NAME", i.name)}${c("VERSION", 1)}${c("TYPE", "Other")}${c("USE", o[i.use] || "Boil")}${Number.isFinite(Number(i.timeMin)) ? c("TIME", i.timeMin) : ""}${c("AMOUNT", i.unit === "g" ? e(i.amount) / 1e3 : e(i.amount))}${c("AMOUNT_IS_WEIGHT", i.unit === "g" || i.unit === "kg" ? "TRUE" : "FALSE")}${c("DISPLAY_AMOUNT", `${i.amount} ${i.unit}`)}</MISC>`,
       ),
       "</MISCS>",
-      `<WATERS><WATER>${c("NAME", "\xC1gua base")}${c("VERSION", 1)}${c("CALCIUM", a.baseWaterProfile.calciumPpm)}${c("MAGNESIUM", a.baseWaterProfile.magnesiumPpm)}${c("SODIUM", a.baseWaterProfile.sodiumPpm)}${c("CHLORIDE", a.baseWaterProfile.chloridePpm)}${c("SULFATE", a.baseWaterProfile.sulfatePpm)}${c("BICARBONATE", a.baseWaterProfile.bicarbonatePpm)}</WATER></WATERS>`,
+      `<WATERS><WATER>${c("NAME", waterProfileName || "\xC1gua base")}${c("VERSION", 1)}${c("CALCIUM", a.baseWaterProfile.calciumPpm)}${c("MAGNESIUM", a.baseWaterProfile.magnesiumPpm)}${c("SODIUM", a.baseWaterProfile.sodiumPpm)}${c("CHLORIDE", a.baseWaterProfile.chloridePpm)}${c("SULFATE", a.baseWaterProfile.sulfatePpm)}${c("BICARBONATE", a.baseWaterProfile.bicarbonatePpm)}${a.waterProfileId ? c("BM_WATER_PROFILE_ID", a.waterProfileId) : ""}</WATER></WATERS>`,
       "<MASH><MASH_STEPS>",
       ...a.mash.map(
         (i) =>

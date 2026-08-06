@@ -774,13 +774,14 @@ export function loadInventory() {
       hops: Array.isArray(raw.hops) ? raw.hops : [],
       yeasts: Array.isArray(raw.yeasts) ? raw.yeasts : [],
       others: Array.isArray(raw.others) ? raw.others : [],
+      waterProfiles: Array.isArray(raw.waterProfiles) ? raw.waterProfiles : [],
     };
   } catch {
     return emptyInventory();
   }
 }
 function emptyInventory() {
-  return { fermentables: [], hops: [], yeasts: [], others: [] };
+  return { fermentables: [], hops: [], yeasts: [], others: [], waterProfiles: [] };
 }
 export function saveInventory(inv) {
   try {
@@ -816,6 +817,25 @@ export function deductInventoryItems(deductions) {
       return { ...it, [field]: Math.max(0, current - (Number(qty) || 0)) };
     });
   }
+  saveInventory(inv);
+}
+export function addWaterProfile(profile) {
+  const inv = loadInventory();
+  const id = `water-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+  inv.waterProfiles = [...(inv.waterProfiles || []), { ...profile, id }];
+  saveInventory(inv);
+  return id;
+}
+export function updateWaterProfile(id, updates) {
+  const inv = loadInventory();
+  inv.waterProfiles = (inv.waterProfiles || []).map((p) =>
+    p.id === id ? { ...p, ...updates } : p,
+  );
+  saveInventory(inv);
+}
+export function removeWaterProfile(id) {
+  const inv = loadInventory();
+  inv.waterProfiles = (inv.waterProfiles || []).filter((p) => p.id !== id);
   saveInventory(inv);
 }
 

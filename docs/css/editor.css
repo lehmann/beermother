@@ -1866,3 +1866,29 @@ select {
   color: var(--ink-soft);
   font-size: var(--text-sm);
 }
+.unit-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  flex: none;
+  margin-left: 4px;
+}
+.unit-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 0 7px;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  cursor: pointer;
+  line-height: 28px;
+  white-space: nowrap;
+}
+.unit-toggle-btn + .unit-toggle-btn {
+  border-left: 1px solid var(--line);
+}
+.unit-toggle-btn.active {
+  background: var(--surface-2);
+  color: var(--ink);
+  font-weight: 500;
+}
