@@ -1,7 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 # Beermother — Guia do projeto para Claude
 
 ## O que é este projeto
@@ -41,7 +37,7 @@ O app usa **ES modules nativos** — sem bundler, sem framework. Cada arquivo é
 | `state.js` | Estado global (`app`), todas as funções de `localStorage` (receitas, brassagens, configurações, autosave) e funções de Drive settings (`loadDriveEnabled`, `saveDriveEnabled`, `loadDriveFolderName`, `saveDriveFolderName`). |
 | `engine.js` | Cálculos puros de cerveja (OG, FG, IBU, ABV, volumes, água). Sem efeitos colaterais. |
 | `recipes.js` | CRUD de receitas (`listMyRecipes`, `saveMyRecipe`, `deleteMyRecipe`), perfis de equipamento, biblioteca de ingredientes do usuário, exportação BeerXML. |
-| `editor.js` | Tela completa do editor de receitas, tela inicial (workspace), tela de log de brassagens e painel de configurações (incluindo seção Google Drive). Arquivo maior do projeto. |
+| `editor.js` | **Barrel file** — re-exporta todos os símbolos públicos dos sub-módulos em `docs/js/editor/`. Não contém lógica direta. Chama `initDriveSync()` e `setEquipmentPickerFn(Z)` no nível de módulo para inicialização. |
 | `screens.js` | Renderização das fases da brassagem (preparo, mostura, fervura, fermentação, resumo). |
 | `beerxml.js` | Parser BeerXML (`parseBeerXml`) e sanitizador. |
 | `i18n.js` | Função `t()` de tradução, locales em `locales/{pt,en,es}.js`. |
@@ -57,6 +53,22 @@ O app usa **ES modules nativos** — sem bundler, sem framework. Cada arquivo é
 | `library.js` | Catálogo de maltes, lúpulos, leveduras, estilos BJCP. |
 | `calibration.js` | Geração da brassagem de calibração de equipamento. |
 | `chart.js` | Gráfico da curva de fermentação. |
+
+### Sub-módulos do editor (`docs/js/editor/`)
+
+`editor.js` foi refatorado para um barrel. A implementação está distribuída nos seguintes sub-módulos:
+
+| Arquivo | Responsabilidade |
+|---|---|
+| `workspace.js` | Telas de "home": `workspaceScreen`, `recipesScreen`, `brewsScreen`, `equipmentScreen`, `brewLogScreen`, `notebookScreen`. Navegação: `openHome`, `openEditorNew`, `openEditorEntry`, `backToBrew`, `openDraftInEditor`. Sheet de perfil de equipamento `Z(e, o)`. `calibrationPayoffCard`. |
+| `recipe-editor.js` | `editorScreen()` e todos os sub-componentes do editor: topbar `zn()`, targets bar, cards de ingredientes, ações `vo()`, sheet de equipamento da sessão. Exporta `setEquipmentPickerFn(fn)` para evitar dependência circular com `workspace.js`. |
+| `settings-backup.js` | Sheets de configurações (`openSettingsSheet`), backup e importação (`openBackupSheet`, `openImportPicker`). |
+| `sheets.js` | Undo/redo (`editorUndo`, `editorRedo`, `canUndo`, `canRedo`) e `confirmDialog`. |
+| `drive-sync.js` | Todo o estado e lógica de sincronização com Drive: `hydrateRecipeRowsFromCache`, `loadDriveRecipes`, `hydrateEquipmentsFromCache`, `loadDriveEquipments`, `hydrateBatchesFromCache`, `loadDriveBatches`, `moveRecipeToBin`, `moveEquipmentToBin`, `syncBrewToDrive`, `syncEquipmentToDrive`, `mergeDriveRecipes`, `parseAndCacheRecipeRow`, `brewEntryToXml`, `normalizeLegacyBatchEntry`, `initDriveSync`. |
+| `drive-cache.js` | Funções puras de acesso ao `localStorage` para os índices e itens de cache de cada entidade (receitas, equipamentos, brassagens). |
+| `animations.js` | `animateMarker` e outras animações de UI usadas pelo editor. |
+
+**Dependência circular evitada**: `recipe-editor.js` precisa abrir o sheet de equipamento `Z` de `workspace.js`. Em vez de importar diretamente (criaria ciclo), `recipe-editor.js` exporta `setEquipmentPickerFn(fn)`, chamado pelo barrel `editor.js` após ambos os módulos carregarem.
 
 ---
 
@@ -143,13 +155,44 @@ Todas as quatro entidades seguem o mesmo padrão:
 - **Índice** (`cache.<entity>.v1`): array de `{driveFileId, name, md5Checksum}` — metadados apenas.
 - **Item** (`cache.<entity>.<driveFileId>`): objeto completo. Para brassagens, armazena o `brewEntry` parseado; para equipamentos, o `profile`; para receitas, o conteúdo XML.
 
+### `driveFileId` no draft de receita
+
+O campo `draft.driveFileId` é injetado manualmente em `parseAndCacheRecipeRow` (em `drive-sync.js`) após chamar `draftFromRecipe(recipe)` — porque `draftFromRecipe` não copia campos extras que não são parte do schema de receita.
+
+```js
+const draft = draftFromRecipe(recipe);
+draft.driveFileId = driveFileId;   // injeção explícita necessária
+```
+
+**Por que é necessário**: `saveMyRecipe` persiste o draft completo via `clonePlain({ ...draft })`, então qualquer campo extra no objeto `draft` sobrevive ao `localStorage`. O `driveFileId` no draft é a fonte de verdade para a decisão de overwrite vs. upload na função `vo()` do editor.
+
+**Migração de entradas antigas** (`ensureRowDriveFileId`): rows salvas antes desta injeção existiam sem o campo. A função `ensureRowDriveFileId(row)` em `drive-sync.js` corrige on-the-fly qualquer row carregada do cache sem `draft.driveFileId`, re-salvando no localStorage. É chamada em `hydrateRecipeRowsFromCache` e no branch non-fresh de `loadDriveRecipes`.
+
+### Estratégia de salvamento de receita no Drive
+
+Em `vo()` de `recipe-editor.js`:
+
+```js
+const fileName = `${e.name || "receita"}.xml`;
+if (e.driveFileId) {
+  result = await drvOverwriteFile(e.driveFileId, xmlContent, fileName, true);
+} else {
+  result = await drvUpload(xmlContent, fileName, true);
+  e.driveFileId = result.driveFileId;
+}
+```
+
+- **Nunca usar `slugify()` no nome do arquivo Drive**: o nome de exibição da receita vai direto como filename (ex: `"Receita do André.xml"`). Usar slugify mudaria o nome no Drive vs. o nome original do arquivo, causando duplicação.
+- **`drvOverwriteFile(id, ...)`** faz PATCH por ID — sobrescreve in-place independentemente de qualquer mudança no nome da receita.
+- O `driveFileId` retornado no primeiro upload é imediatamente atribuído a `e.driveFileId` (o draft em memória) e persiste via `saveMyRecipe` chamado na sequência.
+
 ### `normalizeLegacyBatchEntry`
 
 Converte payload de brassagem Path 2 (BeerXML externo, sem `schema`/`version`) para o formato nativo `beermother-recipe-session` que `validateBrewSessionPayload` aceita. Injeta `schema: "beermother-recipe-session"`, `version: 1`, converte receita via `draftFromRecipe`.
 
-### Atenção: colisão de aliases em `editor.js`
+### Atenção: colisão de aliases nos sub-módulos do editor
 
-`editor.js` usa nomes de variáveis curtos como aliases de import (ex: `xa`, `_a`, `Ia`). Ao adicionar novos imports de `state.js` ou `gdrive.js`, **sempre verifique** se o alias pretendido não colide com uma função ou constante local já existente no arquivo — o browser falha silenciosamente com `duplicate binding`, resultando em tela preta sem erro no console.
+Os sub-módulos em `docs/js/editor/` usam aliases curtos nos imports. Ao adicionar novos imports de `state.js` ou `gdrive.js`, **sempre verifique** se o alias pretendido não colide com uma função ou constante local já existente no arquivo — o browser falha silenciosamente com `duplicate binding`, resultando em tela preta sem erro no console. Valide com `node --input-type=module --check < arquivo.js` após qualquer edição.
 
 ---
 
@@ -211,6 +254,9 @@ node --experimental-loader ./tests/loader.js --test tests/gdrive.test.js
 
 # Validar sintaxe de um módulo JS (rodar após qualquer edição)
 node --input-type=module --check < editor.js
+node --input-type=module --check < editor/workspace.js
+node --input-type=module --check < editor/recipe-editor.js
+node --input-type=module --check < editor/drive-sync.js
 ```
 
 - **`dom-shim.js`**: parser XML recursivo puro para Node — instala `globalThis.DOMParser`. Importar antes de qualquer módulo que use DOM.
@@ -226,7 +272,8 @@ node --input-type=module --check < editor.js
 
 - **Sem bundler**: arquivos servidos diretamente; alterações em `docs/js/` e `docs/css/` têm efeito imediato.
 - **Formatação com Prettier**: todos os arquivos JS e CSS são formatados com `npx prettier`. Não minificar manualmente.
-- **Aliases curtos em `editor.js`**: o arquivo usa aliases curtos nos imports (`as bt`, `as Qa`, etc.). Ao adicionar novos imports, use nomes descritivos sem conflito (ex: `drvEnabled`, `drvUpload`) e valide com `node --input-type=module --check`.
+- **Aliases curtos nos sub-módulos do editor**: os arquivos em `docs/js/editor/` usam aliases curtos nos imports. Ao adicionar novos imports, use nomes descritivos sem conflito (ex: `drvEnabled`, `drvUpload`) e valide com `node --input-type=module --check`.
+- **`c._fermentablePercentEdit`**: estado de edição de percentual de fermentável fica em `app._fermentablePercentEdit` (não em variável de módulo), para que funções de navegação em `workspace.js` possam resetá-lo sem dependência circular.
 - **`null` é válido nos arrays de UI**: as funções de render retornam `null` para elementos condicionais; o código de montagem usa `.filter(Boolean)` antes de `appendChild`.
 - **CSS formatado**: os arquivos CSS são formatados com Prettier. Adicione novas regras ao final do arquivo relevante.
 - **Versionamento de imports**: `main.js` importa alguns módulos com query string (`?v=beta44-release1`). Ao alterar `editor.js` ou `analysis-screen.js` em releases, atualize esse sufixo.
