@@ -40,14 +40,16 @@ export function resetUndoStack(draft) {
 
 export function pushUndoSnapshot(draft) {
   const s = JSON.stringify(draft);
-  if (_lastSnapshot === null) { _lastSnapshot = s; return; }
+  if (_lastSnapshot === null) { _lastSnapshot = s; _skipRedoClear = false; return; }
   if (s !== _lastSnapshot) {
-    _undoStack.push(_lastSnapshot);
-    if (_undoStack.length > MAX_UNDO) _undoStack.shift();
-    if (!_skipRedoClear) _redoStack = [];
-    _skipRedoClear = false;
+    if (!_skipRedoClear) {
+      _undoStack.push(_lastSnapshot);
+      if (_undoStack.length > MAX_UNDO) _undoStack.shift();
+      _redoStack = [];
+    }
     _lastSnapshot = s;
   }
+  _skipRedoClear = false;
 }
 
 export function editorUndo() {
