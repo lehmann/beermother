@@ -29,11 +29,5 @@ export {
 } from "./editor/sheets.js";
 
 import { initDriveSync } from "./editor/drive-sync.js";
-import { setEquipmentPickerFn } from "./editor/recipe-editor.js";
-import { Z } from "./editor/workspace.js";
 
 initDriveSync();
-
-// Wire the equipment profile sheet callback so recipe-editor.js can open it
-// without a circular import dependency.
-setEquipmentPickerFn(Z);

@@ -32,7 +32,7 @@ export function openSheet(content, cls = "") {
 }
 
 const MAX_UNDO = 60;
-let _undoStack = [], _redoStack = [], _lastSnapshot = null;
+let _undoStack = [], _redoStack = [], _lastSnapshot = null, _skipRedoClear = false;
 
 export function resetUndoStack(draft) {
   _undoStack = []; _redoStack = []; _lastSnapshot = draft ? JSON.stringify(draft) : null;
@@ -40,13 +40,16 @@ export function resetUndoStack(draft) {
 
 export function pushUndoSnapshot(draft) {
   const s = JSON.stringify(draft);
-  if (_lastSnapshot === null) { _lastSnapshot = s; return; }
+  if (_lastSnapshot === null) { _lastSnapshot = s; _skipRedoClear = false; return; }
   if (s !== _lastSnapshot) {
-    _undoStack.push(_lastSnapshot);
-    if (_undoStack.length > MAX_UNDO) _undoStack.shift();
-    _redoStack = [];
+    if (!_skipRedoClear) {
+      _undoStack.push(_lastSnapshot);
+      if (_undoStack.length > MAX_UNDO) _undoStack.shift();
+      _redoStack = [];
+    }
     _lastSnapshot = s;
   }
+  _skipRedoClear = false;
 }
 
 export function editorUndo() {
@@ -55,6 +58,7 @@ export function editorUndo() {
   const snap = _undoStack.pop();
   c.editorDraft = JSON.parse(snap);
   _lastSnapshot = snap;
+  _skipRedoClear = true;
   c.editorDraft._fermentablePercentEdit = null;
   c.requestRender();
   return true;
@@ -66,6 +70,7 @@ export function editorRedo() {
   const snap = _redoStack.pop();
   c.editorDraft = JSON.parse(snap);
   _lastSnapshot = snap;
+  _skipRedoClear = true;
   c.editorDraft._fermentablePercentEdit = null;
   c.requestRender();
   return true;

@@ -125,11 +125,6 @@ import { workspaceScreen as homeScreen } from "./workspace.js";
 
 let showIbuPerAddition = false;
 
-// Equipment picker callback — set by workspace.js to avoid circular imports
-let _openEquipmentPicker = null;
-export function setEquipmentPickerFn(fn) {
-  _openEquipmentPicker = fn;
-}
 
 // j() helper: trub-adjusted efficiency factor
 function j(e) {
@@ -398,9 +393,7 @@ function Zn(e) {
         R("chevron", "icon"),
       ],
       () => {
-        _openEquipmentPicker
-          ? _openEquipmentPicker(e)
-          : eo(e);
+        eo(e);
       },
       "equip-chip",
       { title: t("Escolher ou editar o perfil de equipamento.") },
